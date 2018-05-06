@@ -1,0 +1,19 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "C:\\GESchedulingApp\\Experimental\\Michelle\\NodeJsTest1\\log/.audit.json",
+    "files": [
+        {
+            "date": 1525636494110,
+            "name": "C:\\GESchedulingApp\\Experimental\\Michelle\\NodeJsTest1\\log\\trace-2018-05-06-15.log",
+            "hash": "03632720b1102e31a979b53dc85a5a43"
+        },
+        {
+            "date": 1525637018020,
+            "name": "C:\\GESchedulingApp\\Experimental\\Michelle\\NodeJsTest1\\log\\trace-2018-05-06-16.log",
+            "hash": "6a38d0dcea2b39a9050074b1500afcc6"
+        }
+    ]
+}
