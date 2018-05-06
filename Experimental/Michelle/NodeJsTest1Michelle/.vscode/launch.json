@@ -1,0 +1,44 @@
+{
+    // Use IntelliSense to learn about possible Node.js debug attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch", //this makes it launchable from the debug menu
+            "name": "script4",
+            "program": "${workspaceFolder}/script4.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "script1",
+            "program": "${workspaceFolder}/script1.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "script2",
+            "program": "${workspaceFolder}/script2.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "script3",
+            "program": "${workspaceFolder}/script3.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "server1",
+            "program": "${workspaceRoot}\\server1.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "server2",
+            "program": "${workspaceRoot}\\server2.js"
+        }
+    ]
+}
