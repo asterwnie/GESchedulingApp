@@ -4,6 +4,10 @@ const morgan = require('morgan');           // info: lib for http logging.
 const winston = require('winston');         // info: lib for app level logging. https://github.com/winstonjs/winston
 require('winston-daily-rotate-file');       // info: lib for log file handing.  https://github.com/winstonjs/winston-daily-rotate-file
 
+//const { body, validationResult } = require('express-validator/check');
+//const { sanitizeBody } = require('express-validator/filter');
+
+
 var portNum = 900; // The port 80 is already used for web browsing on your machine, pick another unique/unused port.
 var appName = "Web Server3";
 var noPageCaching = true; // During developmnet avoid page caching at the end-user/client machine
@@ -82,6 +86,7 @@ app.use(function(req, res, next){
 // Setup Routes:
 
 app.get('/', homePageHandler); // Show how you can call a separately defined function by name.
+app.get('/Home', homePageHandler); 
 
 function homePageHandler(req, res) {
     var now = new Date();  
@@ -99,6 +104,32 @@ app.get('/About', function (req, res) {
 app.get('/Spaces', function (req, res) {
     logger.verbose("Returning spaces.json");
     res.sendFile(`${appRoot}/data/spaces.json`);
+});
+
+app.get('/registration', function (req, res) {
+    logger.verbose("Returning registration.html");
+    res.sendFile(`${appRoot}/registration.html`);
+});
+
+app.post('/register', function (req, res) {
+    logger.verbose("About to process the registration form.");
+    //sanitizeBody('name').trim();
+    //body('name', 'Empty name').isLength({ min: 1 });
+
+    //var errors = validationResult(req);
+    //if (!errors.isEmpty()) {
+        // There are errors. Render form again with sanitized values/errors messages.
+        // Error messages can be returned in an array using `errors.array()`.
+    //} else {
+        // Data from form is valid.
+        //var name = req.post.name;
+        //var isMale = req.body.male.checked;
+        //var preferredColor = req.body.preferredColor;
+    //}
+
+
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.end('<b>Register!</b>');
 });
 
 

@@ -6,39 +6,45 @@
     "configurations": [
         {
             "type": "node",
-            "request": "launch", //this makes it launchable from the debug menu
-            "name": "script4",
-            "program": "${workspaceFolder}/script4.js"
+            "request": "launch",
+            "name": "Run dbScript1.js",
+            "program": "${workspaceFolder}/dbScript1.js"
         },
         {
             "type": "node",
             "request": "launch",
-            "name": "script1",
+            "name": "Run script1",
             "program": "${workspaceFolder}/script1.js"
         },
         {
             "type": "node",
             "request": "launch",
-            "name": "script2",
+            "name": "Run script2",
             "program": "${workspaceFolder}/script2.js"
         },
         {
             "type": "node",
             "request": "launch",
-            "name": "script3",
+            "name": "Run script3",
             "program": "${workspaceFolder}/script3.js"
         },
         {
             "type": "node",
             "request": "launch",
-            "name": "server1",
+            "name": "Run server1",
             "program": "${workspaceRoot}\\server1.js"
         },
         {
             "type": "node",
             "request": "launch",
-            "name": "server2",
+            "name": "Run server2",
             "program": "${workspaceRoot}\\server2.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Run server3",
+            "program": "${workspaceRoot}\\server3.js"
         }
     ]
 }

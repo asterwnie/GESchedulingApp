@@ -2,14 +2,13 @@ var max = 10;
 
 console.log('Hey, I can count!');
 console.log("Hey, I can count!");
-console.log('Hey, I can count ${max}');
+
 console.log(`Hey, I can count ${max}`);
 
 var i;
 for (i = 0; i < max; i++) { 
     var num = i+1;
     console.log('Counting ' + num.toString());
-    //console.log(`Counting ${num}`);
  } 
 
  console.log('Done counting!');
