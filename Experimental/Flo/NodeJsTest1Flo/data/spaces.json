@@ -1,0 +1,6 @@
+[
+    { "spaceName":"Berkshire Hills", "floor": 2, "roomNumber": "212A", "maxPersonsCapacity" : 50 },
+    { "spaceName":"Blue Ridge", "floor": 3, "roomNumber": "310", "maxPersonsCapacity" : 10 },
+    { "spaceName":"Catskill", "floor": 1, "roomNumber": "100", "maxPersonsCapacity" : 200 },
+    { "spaceName":"Cumberland Plateau", "floor": 15, "roomNumber": "1501", "maxPersonsCapacity" : 20 }
+]
