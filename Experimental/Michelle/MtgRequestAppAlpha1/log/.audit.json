@@ -1,0 +1,29 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "C:\\GESchedulingApp\\GESchedulingApp\\Experimental\\Michelle\\MtgRequestAppAlpha1\\log/.audit.json",
+    "files": [
+        {
+            "date": 1526255960470,
+            "name": "C:\\GESchedulingApp\\GESchedulingApp\\Experimental\\Michelle\\MtgRequestAppAlpha1\\log\\trace-2018-05-13-19.log",
+            "hash": "21087dbf7a08354acf8fca6eb4695593"
+        },
+        {
+            "date": 1526256017588,
+            "name": "C:\\GESchedulingApp\\GESchedulingApp\\Experimental\\Michelle\\MtgRequestAppAlpha1\\log\\trace-2018-05-13-20.log",
+            "hash": "57c7028f00e548ecd8f5804d3ec61ca7"
+        },
+        {
+            "date": 1526256132171,
+            "name": "c:\\GESchedulingApp\\GESchedulingApp\\Experimental\\Michelle\\MtgRequestAppAlpha1\\log\\trace-2018-05-13-20.log",
+            "hash": "73e34472b2d12870a9cb30f049070c39"
+        },
+        {
+            "date": 1526256437761,
+            "name": "C:\\GESchedulingApp\\GESchedulingApp\\Experimental\\Michelle\\MtgRequestAppAlpha1\\log\\trace-2018-05-13-20.log",
+            "hash": "6478aa1cc5467eabe97b9de96f422e4f"
+        }
+    ]
+}
