@@ -1,0 +1,37 @@
+{
+    "siteCode": "HLS-MA",
+
+    "siteName": "GE Health Life Science",
+
+    "siteAddress": "100 Results way, Marlborough, MA 01752",
+
+    "preRequestDoFirst": [
+        "You need to reserve your event space or room first before submitting a request using this application.",
+        "To reserve the Forum for an event:  check the Results Way site calendar in the GAL at ~Health MBO Results Way to see if it is available. For all other conference and training rooms check the GAL for the specific location and reserve the conference room for the date & time of your event.",
+        "*Click here to go the Results Way site calendar: [http://www.ge.com/...]",
+        "*Click here for all other conference and training rooms: [http://www.ge.com/...]",
+        "If you have any questions please reach out to David.Spatara@ge.com."
+    ],
+
+    "appTitle": "Meeting & Event<br>Request",
+
+    "appAboutTitle": "About",
+
+    "appAboutDetail": "This application is for ipsum sapien metus posuere nam praesent dictum, curabitur ad sit tortor tincidunt integer, quisque dictum ante quam nullam consequat.",
+
+    "techSupportTitle": "IT Help",
+
+    "techSupportDetail": "Results Way offers the MyTech Lounge located on the third-floor at tower 3. While onsite, MyTech Lounge is your solution to any IT help & questions you may have.",
+
+    "cateringTitle": "Catering",
+
+    "cateringDetail": [ 
+        "These recommended caterers who are reliable and deliver to the site and accept Amex.",
+        "Click here to see the listing: [http://www.ge.com/...]"
+    ],
+
+    "hotelsTitle": "Hotels",
+
+    "hotelsDetail": "Click here to see the local listing of hotels: [http://www.ge.com/...]"
+
+}

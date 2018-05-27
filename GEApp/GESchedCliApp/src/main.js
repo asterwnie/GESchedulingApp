@@ -5,18 +5,26 @@
 'use strict' // Reason: https://www.w3schools.com/js/js_strict.asp
 
 import Vue from 'vue'
-var VueCookie = require('vue-cookie');
-// Tell Vue to use the plugin
-Vue.use(VueCookie);
-
 import router from './router' // The client-side routes are defined in the index.js file under the client-src/router folder.
-import App from './App.vue'   // The main view for this SPA.
-import { centralStore } from './store/centralStore.js'
+import Vuelidate from 'vuelidate'
+import Promise from 'promise-polyfill'
 
+import App from './App.vue'   // The main view for this SPA.
+import { centralStore } from '@/common/centralStore.js'
+import { prepareApiServerUrlSettings } from '@/common/apiMgr.js';
+
+Vue.use(Vuelidate);
+
+debugger;
+if (!window.Promise) { 
+  window.Promise = Promise 
+}
+
+prepareApiServerUrlSettings();
 
 // This main view will create an App view and injects the App view's html 
 // into the div element with the id of 'app' in the index.html page.
-new Vue({
+var appView = new Vue({
   el: '#app',
   store: centralStore,
   router,

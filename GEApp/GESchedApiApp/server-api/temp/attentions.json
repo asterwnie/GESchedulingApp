@@ -1,0 +1,72 @@
+[
+    {
+        "seqNum": 1,
+        "type": "general",
+        "text": "Please submit all Event Request Forms at least 48 hours prior to event."
+    },
+    {
+        "seqNum": 2,
+        "type": "general",
+        "text": "If the request is within 24 hours of the event date & time follow up in person with David Spatara or someone from the facilities team."
+    },
+    {
+        "seqNum": 3,
+        "type": "general",
+        "text": "Non-GE visitors must sign in and out at reception.   List of attendees is required to be provided to reception prior to arrival and emailed to: ResultsWayCommunityReception@ge.com"
+    },
+    {
+        "seqNum": 4,
+        "type": "general",
+        "text": "All GE employees, visitors & contractors entering a lab are required to be escorted by lab authorized personnel and wear lab appropriate clothing and personal protective equipment. Contact the lab manager or EHS for assistance in advance of events involving entry into labs."
+    },
+    {
+        "seqNum": 5,
+        "type": "general",
+        "text": "It is your responsibility as the event contact to ensure all furniture, trash, food, etc. is cleaned up and put back after the event (Some furnishings will require Facilities assistance to move)."
+    },
+    {
+        "seqNum": 6,
+        "type": "aboutRoom",
+        "text": "The Boardroom is equipped with a monitor, speaker system, phone and ClickShare. Non-GE computers can present."
+    },
+    {
+        "seqNum": 7,
+        "type": "aboutRoom",
+        "text": "Martha’s Vineyard is equipped with a podium, projector, screen, speaker system and ClickShare. Non-GE computers can present. "
+    },
+    {
+        "seqNum": 8,
+        "type": "aboutRoom",
+        "text": "Martha's Vineyard has a podium, projector, drop down screen, Creston and dongle"
+    },
+    {
+        "seqNum": 9,
+        "type": "aboutRoom",
+        "text": "Bunker Hill, Fenway, Wachusett, Nantucket, and Plum Island have monitors and ClickShare. Non-GE computers can present."
+    },
+    {
+        "seqNum": 10,
+        "type": "aboutRoom",
+        "text": "All other huddle and conference rooms are equipped with Crestron units and only GE employees can present wirelessly."
+    },
+    {
+        "seqNum": 11,
+        "type": "guestWiFiAccess",
+        "text": "Via the guest’s smartphone or laptop, find the WiFi network called “Internet”."
+    },
+    {
+        "seqNum": 12,
+        "type": "guestWiFiAccess",
+        "text": "The GE host will provide the password (key) by going to https://guest.ge.com."
+    },
+    {
+        "seqNum": 13,
+        "type": "guestWiFiAccess",
+        "text": "Guest enters the password (key) to access the Guest WiFi provided by host."
+    },
+    {
+        "seqNum": 14,
+        "type": "guestWiFiAccess",
+        "text": "Still having trouble connecting? Contact the MyTech Lounge."
+    }
+]

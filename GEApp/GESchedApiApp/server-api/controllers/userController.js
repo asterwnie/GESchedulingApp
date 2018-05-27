@@ -233,7 +233,8 @@ exports.loginUser = function (req, res) {
                 res.status(200).json(user);  // 200 - OK
             } else {
                 // Create new user to save user's name and phone for future defaulting.
-                res.status(200).json("Logged In");
+                var status = { message: "User Unauthorized!" }
+                res.status(401).json(status);
             }
         })
         .catch((err) => {

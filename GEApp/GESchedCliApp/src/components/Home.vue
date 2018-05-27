@@ -79,6 +79,7 @@ export default {
   activated() {
       console.log('Home.vue activated.');
       this.$store.state.currentViewTitle = this.title;
+      this.$store.state.enableNavBar = true;
   },
 
   created() {

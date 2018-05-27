@@ -1,0 +1,47 @@
+2018-05-25T18:16:45.390Z - verbose: Setting up API routes for the User entity.
+2018-05-25T18:16:45.405Z - info: GEMeetingRequestApiApp listening on port 9090
+2018-05-25T18:17:13.120Z - verbose: Returning index.html
+2018-05-25T18:17:13.623Z - verbose: Returning index.html
+2018-05-25T18:17:15.979Z - verbose: userController.loginUser begin
+2018-05-25T18:17:17.042Z - info: userController.loginUser - User.findOne success. About to send back http response with user: { _id: 5b04be0354441115a097bed2,
+  email: 'johndoe@ge.com',
+  name: 'John Doe',
+  createdAt: 2018-05-23T01:04:03.496Z,
+  updatedAt: 2018-05-23T01:04:03.496Z,
+  __v: 0 }
+2018-05-25T18:17:24.321Z - verbose: Returning index.html
+2018-05-25T18:18:01.249Z - verbose: Returning index.html
+2018-05-25T18:39:55.138Z - verbose: Setting up API routes for the User entity.
+2018-05-25T18:39:55.153Z - info: GEMeetingRequestApiApp listening on port 9090
+2018-05-25T18:40:06.600Z - verbose: Returning index.html
+2018-05-25T18:40:08.767Z - verbose: userController.loginUser begin
+2018-05-25T18:40:09.826Z - info: userController.loginUser - User.findOne success. About to send back http response with user: { _id: 5b04be0354441115a097bed2,
+  email: 'johndoe@ge.com',
+  name: 'John Doe',
+  createdAt: 2018-05-23T01:04:03.496Z,
+  updatedAt: 2018-05-23T01:04:03.496Z,
+  __v: 0 }
+2018-05-25T18:40:18.588Z - verbose: Returning index.html
+2018-05-25T18:40:51.515Z - verbose: userController.loginUser begin
+2018-05-25T18:41:00.296Z - verbose: userController.loginUser begin
+2018-05-25T18:41:00.301Z - info: userController.loginUser - User.findOne success. About to send back http response with user: { _id: 5b04be0354441115a097bed2,
+  email: 'johndoe@ge.com',
+  name: 'John Doe',
+  createdAt: 2018-05-23T01:04:03.496Z,
+  updatedAt: 2018-05-23T01:04:03.496Z,
+  __v: 0 }
+2018-05-25T18:41:04.724Z - verbose: userController.loginUser begin
+2018-05-25T18:41:04.728Z - info: userController.loginUser - User.findOne success. About to send back http response with user: { _id: 5b04be0354441115a097bed2,
+  email: 'johndoe@ge.com',
+  name: 'John Doe',
+  createdAt: 2018-05-23T01:04:03.496Z,
+  updatedAt: 2018-05-23T01:04:03.496Z,
+  __v: 0 }
+2018-05-25T18:41:12.159Z - verbose: Returning index.html
+2018-05-25T18:41:16.232Z - verbose: userController.loginUser begin
+2018-05-25T18:41:16.237Z - info: userController.loginUser - User.findOne success. About to send back http response with user: { _id: 5b04be0354441115a097bed2,
+  email: 'johndoe@ge.com',
+  name: 'John Doe',
+  createdAt: 2018-05-23T01:04:03.496Z,
+  updatedAt: 2018-05-23T01:04:03.496Z,
+  __v: 0 }

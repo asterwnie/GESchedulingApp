@@ -27,6 +27,7 @@ export default {
   activated() {
       console.log('DoFirst.vue activated.');
       this.$store.state.currentViewTitle = this.title;
+      this.$store.state.enableNavBar = true;
   }
 }
 </script>

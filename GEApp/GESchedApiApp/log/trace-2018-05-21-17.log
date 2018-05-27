@@ -1,5 +1,0 @@
-2018-05-21T17:34:51.671Z - verbose: Set up API routes for the Hotel entity.
-2018-05-21T17:34:51.696Z - info: GEMeetingRequestApiApp listening on port 9090
-2018-05-21T17:36:27.440Z - verbose: hotelController.getHotels begin
-2018-05-21T17:36:50.246Z - verbose: hotelController.getHotels begin
-2018-05-21T17:36:51.299Z - info: hotelController.getHotels - Hotel.find success. About to send back http response with 0 hotels

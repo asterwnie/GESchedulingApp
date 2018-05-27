@@ -1,25 +1,27 @@
 <template>
   <div id="app">
   <div class="app-bar-style fixed-top d-flex justify-content-between bd-highlight mb-3">
-    <div class="p-2 align-self-center">
-      <a @click="$router.go(-1)">&nbsp;<b>&lt;</b>&nbsp;</a>
+    <div class="p-2 align-self-center" >
+      <a @click="$router.go(-1)"><span class="fas fa-chevron-left fa-lg" :hidden="!$store.state.enableNavBar"></span></a>
     </div>
     <div class="p-2 align-self-center">{{ title }}</div>
     <div class="p-2 align-self-center">        
-      <div class="dropdown">
-            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            </button>
+      <div class="dropdown" :hidden="!$store.state.enableNavBar">
+            <span class="fas fa-align-justify fa-lg" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+            </span>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item"><router-link to="/login">Login</router-link></a>
-                <a class="dropdown-item"><router-link to="/home">Home</router-link></a>
-                <a class="dropdown-item"><router-link to="/findroom">Find Room</router-link></a>
-                <a class="dropdown-item"><router-link to="/newrequest">New Request</router-link></a>
-                <a class="dropdown-item"><router-link to="/ithelp">IT Help</router-link></a>
-                <a class="dropdown-item"><router-link to="/about">About</router-link></a>
+                <a class="dropdown-item" @click="$router.push('login')">Login</a>
+                <a class="dropdown-item" @click="$router.push('home')">Home</a>
+                <a class="dropdown-item" @click="$router.push('findroom')">Find Room</a>
+                <a class="dropdown-item" @click="$router.push('newrequest')">New Request</a>
+                <a class="dropdown-item" @click="$router.push('ithelp')">IT Help</a>
+                <a class="dropdown-item" @click="$router.push('about')">About</a>
             </div>
       </div>
     </div>
   </div>
+
     <transition>
       <keep-alive>
         <router-view></router-view>
@@ -57,5 +59,9 @@ body {
 .app-bar-style {
   color: #d1d5d8;
   background-color: #2c2c2c;
+}
+
+.white-glyphicon {
+  color: #fff;
 }
 </style>
