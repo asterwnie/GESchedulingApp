@@ -1,0 +1,12 @@
+2018-05-27T21:04:54.074Z - verbose: userController.loginUser begin
+2018-05-27T21:08:55.399Z - verbose: userController.loginUser begin
+2018-05-27T21:11:00.479Z - verbose: userController.loginUser begin
+2018-05-27T21:13:14.042Z - verbose: Setting up API routes for the User entity.
+2018-05-27T21:13:14.056Z - info: GEMeetingRequestApiApp listening on port 9090
+2018-05-27T21:13:37.837Z - verbose: userController.loginUser begin
+2018-05-27T21:13:38.957Z - info: userController.loginUser - User.findOne success. About to send back http response with user: { _id: 5b0af7e32517c124b4f43141,
+  email: 'johndoe@ge.com',
+  name: 'John Doe',
+  createdAt: 2018-05-27T18:24:35.242Z,
+  updatedAt: 2018-05-27T18:24:35.242Z,
+  __v: 0 }

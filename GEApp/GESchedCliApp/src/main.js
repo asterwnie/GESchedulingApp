@@ -15,7 +15,7 @@ import { prepareApiServerUrlSettings } from '@/common/apiMgr.js';
 
 Vue.use(Vuelidate);
 
-debugger;
+// debugger;
 if (!window.Promise) { 
   window.Promise = Promise 
 }

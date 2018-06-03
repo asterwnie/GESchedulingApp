@@ -74,6 +74,11 @@ app.use('/static', express.static(`${appRoot}/client-ui`));
 var userRoutes = require('./server-api/routes/userRoutes');
 userRoutes(app);
 
+// Set up API routes for the RequestPrompt entity:
+var requestPromptRoutes = require('./server-api/routes/requestPromptRoutes');
+requestPromptRoutes(app);
+
+
 
 // Temporary for returning mock data:
 

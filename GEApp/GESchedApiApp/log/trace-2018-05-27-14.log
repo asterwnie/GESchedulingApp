@@ -1,0 +1,47 @@
+2018-05-27T18:21:21.747Z - verbose: Setting up API routes for the User entity.
+2018-05-27T18:21:21.793Z - info: GEMeetingRequestApiApp listening on port 9090
+2018-05-27T18:21:40.028Z - verbose: Returning index.html
+2018-05-27T18:22:46.704Z - verbose: userController.loginUser begin
+2018-05-27T18:23:11.576Z - verbose: userController.loginUser begin
+2018-05-27T18:23:16.023Z - verbose: userController.loginUser begin
+2018-05-27T18:24:35.219Z - info: ADMIN: Adding user (John Doe) to the database.
+2018-05-27T18:24:35.237Z - info: ADMIN: Adding user (Tommy Lee) to the database.
+2018-05-27T18:24:35.374Z - info: ADMIN: createUser - User.save success:
+{ _id: 5b0af7e32517c124b4f43141,
+  email: 'johndoe@ge.com',
+  name: 'John Doe',
+  createdAt: 2018-05-27T18:24:35.242Z,
+  updatedAt: 2018-05-27T18:24:35.242Z,
+  __v: 0 }
+2018-05-27T18:24:36.274Z - info: ADMIN: createUser - User.save success:
+{ _id: 5b0af7e32517c124b4f43142,
+  email: 'tommylee@ge.com',
+  name: 'Tommy Lee',
+  phone: '508-000-0000',
+  isAdmin: true,
+  createdAt: 2018-05-27T18:24:35.242Z,
+  updatedAt: 2018-05-27T18:24:35.242Z,
+  __v: 0 }
+2018-05-27T18:25:50.926Z - verbose: Setting up API routes for the User entity.
+2018-05-27T18:25:50.961Z - info: GEMeetingRequestApiApp listening on port 9090
+2018-05-27T18:25:55.945Z - verbose: userController.loginUser begin
+2018-05-27T18:25:57.150Z - info: userController.loginUser - User.findOne success. About to send back http response with user: { _id: 5b0af7e32517c124b4f43141,
+  email: 'johndoe@ge.com',
+  name: 'John Doe',
+  createdAt: 2018-05-27T18:24:35.242Z,
+  updatedAt: 2018-05-27T18:24:35.242Z,
+  __v: 0 }
+2018-05-27T18:29:15.354Z - verbose: userController.loginUser begin
+2018-05-27T18:29:15.367Z - info: userController.loginUser - User.findOne success. About to send back http response with user: { _id: 5b0af7e32517c124b4f43141,
+  email: 'johndoe@ge.com',
+  name: 'John Doe',
+  createdAt: 2018-05-27T18:24:35.242Z,
+  updatedAt: 2018-05-27T18:24:35.242Z,
+  __v: 0 }
+2018-05-27T18:29:27.633Z - verbose: userController.loginUser begin
+2018-05-27T18:29:27.643Z - info: userController.loginUser - User.findOne success. About to send back http response with user: { _id: 5b0af7e32517c124b4f43141,
+  email: 'johndoe@ge.com',
+  name: 'John Doe',
+  createdAt: 2018-05-27T18:24:35.242Z,
+  updatedAt: 2018-05-27T18:24:35.242Z,
+  __v: 0 }
