@@ -62,8 +62,8 @@
   
     <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
 
-    
-    <div class="fixed-bottom">
+    <br>
+    <div style="color:gray">
         <h4 class="text-center" v-html="$store.state.appConfig.siteName"></h4>
         <h6 class="text-center" v-html="$store.state.appConfig.siteAddress"></h6>
         <br>
@@ -89,7 +89,9 @@ export default {
             canShowError: false,
             
             isSubmitting: false,
-            isLoading: true,
+            isFetchingDefAppConfig: true,
+            isFetchingNotes: true,
+            //isLoading: true,
             hasFailure: false,
             failureMessage: ""
         }
@@ -118,10 +120,17 @@ export default {
             this.accessCode = loginContext.accessCode;
             loginContext.accessCode = null; // Avoid holding it in memory.
         }
+        
 
-        this.getDefAppConfig();
-        this.getAttentionNotes();
+        this.getDefAppConfig(); 
+        this.getNotes();
+        //this.getHotels();    Make this function
+    },
 
+    computed: {
+        isLoading() {
+            return (this.isFetchingDefAppConfig || this.isFetchingNotes); //add isFetchingHotels
+        }
     },
 
     methods: {
@@ -136,30 +145,33 @@ export default {
                     console.log("getDefAppConfig return status: " + res.status);
 
                     vm.$store.state.appConfig = res.data;
-                    vm.isLoading = false;
+                    vm.isFetchingDefAppConfig = false;
                 })
                 .catch((err) => {
                     vm.hasFailure = true;
                     vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
                 })
+
+                
         },
 
-        getAttentionNotes() {
+        getNotes() {
 
             var vm = this;
-            var url = apiMgr.getAttionNotesUrl(); 
+            var url = apiMgr.getNotesUrl(); 
 
             axios.get(url)
                 .then(res => {
-                    console.log("getAttionNotesUrl return status: " + res.status);
+                    console.log("getNotesUrl return status: " + res.status);
 
-                    vm.$store.state.attentionNotes = res.data;
-                    vm.isLoading = false;
+                    vm.$store.state.notes = res.data;
+                    vm.isFetchingNotes = false;
                 })
                 .catch((err) => {
                     vm.hasFailure = true;
                     vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
                 })
+
         },
 
         submit() {

@@ -6,7 +6,10 @@ import Home from '@/components/Home.vue'
 import FindRoom from '@/components/FindRoom.vue'
 import DoFirst from '@/components/DoFirst.vue'
 import NewRequest from '@/components/NewRequest.vue'
-import AttentionNotes from '@/components/AttentionNotes.vue'
+import GuestWiFi from '@/components/GuestWiFi.vue'
+import LocalHotels from '@/components/LocalHotels.vue'
+import LocalCaterers from '@/components/LocalCaterers.vue'
+import Notes from '@/components/Notes.vue'
 import SubmitRequest from '@/components/SubmitRequest.vue'
 import ITHelp from '@/components/ITHelp.vue'
 import About from '@/components/About.vue'
@@ -42,9 +45,24 @@ export default new Router({
       component: NewRequest
     },
     {
-      path: '/attentionnotes',
-      name: 'AttentionNotes',
-      component: AttentionNotes
+      path: '/guestwifi',
+      name: 'GuestWiFi',
+      component: GuestWiFi
+    },
+    {
+      path: '/localhotels',
+      name: 'LocalHotels',
+      component: LocalHotels
+    },
+    {
+      path: '/localcaterers',
+      name: 'LocalCaterers',
+      component: LocalCaterers
+    },
+    {
+      path: '/notes',
+      name: 'Notes',
+      component: Notes
     },
     {
       path: '/submitrequest',

@@ -78,7 +78,7 @@ userRoutes(app);
 var requestPromptRoutes = require('./server-api/routes/requestPromptRoutes');
 requestPromptRoutes(app);
 
-
+//set up another API route for the hotel entities
 
 // Temporary for returning mock data:
 
@@ -93,11 +93,11 @@ app.get('/api/appconfigs', (req, res) => {
 
 }); 
 
-app.get('/api/attentions', (req, res) => {
+app.get('/api/notes', (req, res) => { //was previously attentions
  
-    const jsonData = fs.readFileSync(`${appRoot}/server-api/temp/attentions.json`);
-    const attentions = JSON.parse(jsonData);
-    res.json(attentions);
+    const jsonData = fs.readFileSync(`${appRoot}/server-api/temp/notes.json`);
+    const notes = JSON.parse(jsonData);
+    res.json(notes);
 
 }); 
 

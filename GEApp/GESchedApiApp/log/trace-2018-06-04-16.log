@@ -1,0 +1,3 @@
+2018-06-04T20:29:36.477Z - verbose: Setting up API routes for the User entity.
+2018-06-04T20:29:36.485Z - verbose: Setting up API routes for the RequestPrompt entity.
+2018-06-04T20:29:36.497Z - info: GEMeetingRequestApiApp listening on port 9090

@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // Run this node.js server app as a Windows service in the background.
 // Update the name, description and path accordingly. To run:
-// node runAsWinService
+// node runAsWinService.js
 // Use -u argument to uninstall:
 // node runAsWinService -u
 //

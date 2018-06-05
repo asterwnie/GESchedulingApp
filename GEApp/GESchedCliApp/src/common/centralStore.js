@@ -18,7 +18,7 @@ const store = new Vuex.Store({
 
         appConfig: {},      // Will be assigned aap start
 
-        attentionNotes: {}, // Will be assigned aap start
+        notes: {}, // Will be assigned aap start
 
         appDefConfig: {
 
@@ -33,7 +33,9 @@ const store = new Vuex.Store({
 
             appConfigUrlTmpl: 'http://{0}:{1}/api/appconfigs',
 
-            attentionsUrlTmpl: 'http://{0}:{1}/api/attentions',
+            notesUrlTmpl: 'http://{0}:{1}/api/notes',
+
+            localHotelsUrlTmpl: 'http://{0}:{1}/api/hotels',
 
             // These are use during  development. Be sure the turn all of them off.
 

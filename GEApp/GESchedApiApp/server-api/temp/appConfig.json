@@ -23,15 +23,19 @@
 
     "techSupportDetail": "Results Way offers the MyTech Lounge located on the third-floor at tower 3. While onsite, MyTech Lounge is your solution to any IT help & questions you may have.",
 
-    "cateringTitle": "Catering",
+    "localCaterersTitle": "Catering",
 
-    "cateringDetail": [ 
+    "localCaterersDetail": [ 
         "These recommended caterers who are reliable and deliver to the site and accept Amex.",
         "Click here to see the listing: [http://www.ge.com/...]"
     ],
 
-    "hotelsTitle": "Hotels",
+    "localHotelsTitle": "Hotels",
 
-    "hotelsDetail": "Click here to see the local listing of hotels: [http://www.ge.com/...]"
+    "localHotelsDetail": "Click here to see the local listing of hotels: [http://www.ge.com/...]",
+
+    "guestWifiTitle": "Guest Wifi",
+
+    "guestWifiDetail": "Guest wifi for online access on-site."
 
 }
