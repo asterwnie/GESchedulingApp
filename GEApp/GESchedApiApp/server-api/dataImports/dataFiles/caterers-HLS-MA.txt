@@ -1,0 +1,23 @@
+--caterer.Name: Mel & Ernie's
+--caterer.Address: 310 Commonwealth Road
+--caterer.Address: Wayland, MA 01778
+--caterer.Phone: 508-653-7777
+--caterer.Website: http://www.melscommonwealthcafe.com/Pages/Menu.aspx?DeptID=16389
+
+--caterer.Name: Roche Brothers
+--caterer.Address: 1100 Untion Street 
+--caterer.Address: Westborough, MA 01581
+--caterer.Phone: 508-836-3621, Catering: 508-836-3621
+--caterer.Website: http://rochebros.com/catering/
+
+--caterer.Name: Plum Tomato
+--caterer.Address: 547 Boston Post Road East
+--caterer.Address: Marlborough, MA 01752
+--caterer.Phone: 508-460-6565
+--caterer.Website: http://myplumtomato.com/catering.php
+
+--caterer.Name: Panera Bread
+--caterer.Address: 197 Boston Post Road W
+--caterer.Address: Marlborough, MA 01752
+--caterer.Phone: 508-281-6161
+--caterer.Website: https://catering.panerabread.com/#1/

@@ -74,11 +74,16 @@ app.use('/static', express.static(`${appRoot}/client-ui`));
 var userRoutes = require('./server-api/routes/userRoutes');
 userRoutes(app);
 
+// Set up API routes for the hotel entity:
+var hotelRoutes = require('./server-api/routes/hotelRoutes');
+hotelRoutes(app);
+
 // Set up API routes for the RequestPrompt entity:
 var requestPromptRoutes = require('./server-api/routes/requestPromptRoutes');
 requestPromptRoutes(app);
 
-//set up another API route for the hotel entities
+
+
 
 // Temporary for returning mock data:
 
