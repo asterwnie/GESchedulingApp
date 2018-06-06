@@ -1,3 +1,5 @@
+//THESE DO NOT WORK RIGHT NOW, AND NEED TO BE REVISED FOR REQUEST PROMPTS
+
 'use strict';
 
 // Import requestPrompts to the database.

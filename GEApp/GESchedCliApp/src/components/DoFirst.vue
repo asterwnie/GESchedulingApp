@@ -1,17 +1,22 @@
 <template>
   <div>
 
-    <h5>Complete these items before each new request.</h5>
-    <ul>
-      <!--For each note in noteItems-->
-	    <div v-for="(note, index) in noteItems" :key="index" :hidden="note.type != 'doFirst'">
-        <!--if the object is an array,-->
-	      <template v-if="note.type == 'doFirst'">
-          <!--display each item-->
-	        <li>{{ note.text }}</li>
-	      </template>
-	    </div>
-    </ul>
+    <h5 class="justify-content-center" style="text-align:center;width:100%">Complete these items before each new request.</h5>
+    
+    <div class="container-fluid justify-content-center">
+     
+        <!--For each note in noteItems-->
+        <div style="padding:10px;" class="alert alert-danger card col-sm-12 col-md-3" v-for="(note, index) in noteItems" :key="index" :hidden="note.type != 'doFirst'">
+          <!--if the object is an array,-->
+          <template v-if="note.type == 'doFirst'">
+            <!--display each item-->
+           <!-- <h6 class="alert-heading">Required</h6>-->
+            <!--<hr>-->
+            {{ note.text }}
+          </template>
+        </div>
+    
+    </div>
 
     <div class="fixed-bottom d-flex justify-content-between">
         <button type="button" class="btn btn-primary btn-sm" @click.prevent="$router.push('newrequest')">Begin New Request</button>
@@ -47,7 +52,11 @@ export default {
 <style scoped>
 div {
   display: inline-block;
-  margin: 16px;
+  margin: 10px;
   margin-right: 50px;
+}
+
+.container-fluid{
+  flex-direction: column;
 }
 </style>
