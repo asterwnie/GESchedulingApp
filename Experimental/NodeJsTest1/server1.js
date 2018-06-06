@@ -29,6 +29,10 @@ function ReqResHandlerV2 (req, res) {
 
         res.writeHead(200, {'Content-Type': 'text/html'});
         res.end('<b>All about that bass!</b> (from version 2)');
+    } else if (req.url === "/about") {
+
+        res.writeHead(200, {'Content-Type': 'text/html'}); // display it as a html
+        res.end('<b>All about that bass!</b> (from version 2)'); //that is the html
     }
 }
 

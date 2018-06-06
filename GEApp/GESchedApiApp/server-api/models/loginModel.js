@@ -8,7 +8,7 @@ const Schema = mongoose.Schema;
 
 // The schema definition for a Login entity
 
-const LoginSchema = new Schema({
+const LoginSchema = new Schema({   
 
     email: {
         type: String,
