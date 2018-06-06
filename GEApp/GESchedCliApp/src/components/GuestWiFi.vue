@@ -1,6 +1,6 @@
 <template>
-  <div>
-    {{ msg }}
+  <div class="GuestWiFi">
+     {{ msg }}
   </div>
 </template>
 
@@ -8,13 +8,13 @@
 export default {
   data () {
     return {
-      title: this.$store.state.appConfig.appAboutTitle,
-      msg: this.$store.state.appConfig.appAboutDetail
+      title: this.$store.state.appConfig.guestWifiTitle,
+      msg: this.$store.state.appConfig.guestWifiDetail //wrong thing; pull it from notes.json
     }
   },
 
   activated() {
-      console.log('About.vue activated.');
+      console.log('GuestWiFi.vue activated.');
       this.$store.state.currentViewTitle = this.title;
       this.$store.state.enableNavBar = true;
   }

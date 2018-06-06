@@ -1,6 +1,11 @@
 <template>
 <div>
   <p>to do...</p>
+  test images:
+  <br>
+  <div class="span12 pagination-centered"><img src="@/assets/Classroom-Setup-40-Max.jpg" alt="header" /></div>
+  <br>
+  <div class="span12 pagination-centered"><img src="@/assets/U-Setup-40-Max.jpg" alt="header" /></div>
 </div>
 </template>
 
@@ -15,6 +20,7 @@ export default {
   activated() {
       console.log('FindRoom.vue activated.');
       this.$store.state.currentViewTitle = this.title;
+      this.$store.state.enableNavBar = true;
   },
 
   created() {

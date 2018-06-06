@@ -3,126 +3,280 @@
     <div class="containerDiv container">
 
     <div class="container">
-    <h4 class="display-8 text-center">Meeting &#x26; Event</h4>
-    <h4 class="display-8 text-center">Request</h4>
+    <h4 class="display-8 text-center" v-html="$store.state.appConfig.appTitle"></h4>
+    <br>
 
     <div class="row-fluid">
     <div class="span12 pagination-centered"><img src="@/assets/ge-monogram.svg" alt="header" /></div>
-    </div>
-
-    </div>
-    <br>
-    <br>
-
-      <div class="row">
-        <div class="col-md-8 order-md-1">
-
-          <form class="needs-validation" novalidate>
-
-            <div class="mb-3">
-              <label for="email">Email</label>
-              <input type="email" class="form-control form-control-sm" 
-                     id="email" 
-                     v-model.lazy="loginForm.email"
-                     placeholder="you@example.com">
-              <div class="invalid-feedback">
-                Please enter a valid email address.
-              </div>
-            </div>
-
-            <div class="mb-3">
-              <label for="accessCode">Access Code</label>
-              <input type="password" class="form-control form-control-sm" 
-                     id="accessCode" 
-                     v-model.lazy="loginForm.accessCode">
-              <div class="invalid-feedback">
-                Please enter a valid access code.
-              </div>
-            </div>
-
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="remember-me" v-model="rememberMeChecked">
-              <label class="custom-control-label" for="remember-me">Remember me</label>
-            </div>
-            <br/>
-            <div class="w-25">
-                <button type="submit" 
-                        class="btn btn-primary btn-sm btn-block"
-                        :disabled="isSubmitted"
-                        @click.prevent="submit"
-                >Submit</button>
-            </div>
-          </form>
+    <div id="loading" class="span12 pagination-centered" :hidden="!isLoading||hasFailure">
+        <br>
+        <br>
+        <i class="fas fa-circle-notch fa-spin fa-lg"></i>
         </div>
-      </div>
+    </div>
+    </div>
+    <br>
+    <br>
+    <div id="loginUI" class="row" :hidden="isLoading">
+    <div class="col-md-2 order-md-1"></div>
+    <div class="col-md-8 order-md-2">
+
+        <form class="needs-validation" novalidate>
+
+        <div class="mb-3">
+            <label for="requesterEmail">Email</label>
+            <input type="email" class="form-control form-control-sm" 
+                    id="requesterEmail" 
+                    v-model.lazy="requesterEmail"                    
+                    placeholder="you@example.com">
+            <p v-if="!$v.requesterEmail.email && canShowError" class="text-danger">Please enter a valid email address.</p>
+            <p v-if="!$v.requesterEmail.required  && canShowError" class="text-danger">A email address is required.</p>
+        </div>
+
+        <div class="mb-3">
+            <label for="accessCode">Access Code</label>
+            <input type="password" class="form-control form-control-sm" 
+                    id="accessCode" 
+                    v-model.lazy="accessCode">                 
+            <p v-if="!$v.accessCode.required && canShowError" class="text-danger">The access code is required.</p>
+        </div>
+
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="remember-me" value="remember-me" v-model="rememberMeChecked">
+            <label class="custom-control-label" for="remember-me">Remember me</label>
+        </div>
+        <br/>
+        <div class="w-25">
+            <button type="submit" 
+                    class="btn btn-primary btn-sm btn-block"
+                    :disabled="isSubmitting"
+                    @click.prevent="submit"
+            >Submit</button>
+        </div>
+        <br/>
+        
+        </form>
+    </div>
+
+    </div>
+  
+    <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
+
+    <br>
+    <div style="color:gray">
+        <h4 class="text-center" v-html="$store.state.appConfig.siteName"></h4>
+        <h6 class="text-center" v-html="$store.state.appConfig.siteAddress"></h6>
+        <br>
+    </div>
     </div>
 </template>
 
 <script>
 import axios from 'axios'
+import * as loginContextMgr from '@/common/loginContextMgr.js';
+import * as apiMgr from '@/common/apiMgr.js';
+import { required, email }  from 'vuelidate/lib/validators';
 
 export default {  
     data () {
         return {
             title: "Login",
 
-            loginForm: {
-                email: '',
-                accessCode: '',
-                rememberMeChecked: ''
-            },
+            requesterEmail: '',
+            accessCode: '',
+            rememberMeChecked: 'remember-me',
+
+            canShowError: false,
             
-            isSubmitted: false
+            isSubmitting: false,
+            isFetchingDefAppConfig: true,
+            isFetchingNotes: true,
+            isFetchingHotels: true,
+            hasFailure: false,
+            failureMessage: ""
         }
+    },
+
+    validations: {
+        requesterEmail: { required, email },
+        accessCode: { required }
     },
 
     activated() {
         console.log('Login.vue activated.');
+        var vm = this; 
+    
         this.$store.state.currentViewTitle = this.title;
+        this.$store.state.enableNavBar = false;
 
-        var emailInCookie = this.$cookie.get('requesterEmail');
-        if (emailInCookie != null) {
-            this.loginForm.email = emailInCookie;
-            this.loginForm.rememberMeChecked = 'remember-me';
+        const loginContext = this.$store.state.loginContext;    
+        loginContextMgr.getCachedLoginContext(loginContext);
+
+        if (loginContext.requesterEmail != null && loginContext.requesterEmail != '') {
+            this.requesterEmail = loginContext.requesterEmail; 
         }
-        var accessCodeInCookie = this.$cookie.get('requesterAccessCode');
-        if (accessCodeInCookie != null) {
-            this.loginForm.accessCode = accessCodeInCookie;
+    
+        if (loginContext.accessCode != null && loginContext.accessCode != '') {
+            this.accessCode = loginContext.accessCode;
+            loginContext.accessCode = null; // Avoid holding it in memory.
         }
+        
+
+        this.getDefAppConfig(); 
+        this.getNotes();
+        this.getHotels();
     },
 
-    created() {
-        console.log('Login.vue created.');
+    computed: {
+        isLoading() {
+            return (this.isFetchingDefAppConfig || this.isFetchingNotes || this.isFetchingHotels); 
+        }
     },
 
     methods: {
+
+        getDefAppConfig() {
+
+            var vm = this;
+            var url = apiMgr.getAppConfigUrl(); 
+
+            axios.get(url)
+                .then(res => {
+                    console.log("getDefAppConfig return status: " + res.status);
+
+                    vm.$store.state.appConfig = res.data;
+                    vm.isFetchingDefAppConfig = false;
+                })
+                .catch((err) => {
+                    vm.hasFailure = true;
+                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                })
+
+                
+        },
+
+        getNotes() {
+
+            var vm = this;
+            var url = apiMgr.getNotesUrl(); 
+
+            axios.get(url)
+                .then(res => {
+                    console.log("getNotesUrl return status: " + res.status);
+
+                    vm.$store.state.notes = res.data;
+                    vm.isFetchingNotes = false;
+                })
+                .catch((err) => {
+                    vm.hasFailure = true;
+                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                })
+
+        },
+
+        getHotels() {
+
+            var vm = this;
+            var url = apiMgr.getHotelsUrl(); 
+
+            axios.get(url)
+                .then(res => {
+                    console.log("getHotelsUrl return status: " + res.status);
+
+                    vm.$store.state.hotels = res.data;
+                    vm.isFetchingHotels = false;
+                })
+                .catch((err) => {
+                    vm.hasFailure = true;
+                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                })
+
+        },
+
         submit() {
             var vm = this;
-            vm.isSubmitted = true;
+            vm.isSubmitting = true;
+            vm.hasFailure = false;
 
-            console.log("About to submit Login for: " + vm.loginForm.email);
+            vm.canShowError = true;
 
-            this.$store.state.requesterEmail = vm.loginForm.email;
+            this.$v.requesterEmail.$touch();
+            this.$v.accessCode.$touch();
 
-            this.$cookie.set('requesterEmail', this.$store.state.requesterEmail, 3650);
-            this.$cookie.set('requesterAccessCode', vm.loginForm.accessCode, 3650);
+            var requesterEmailIsInvalid = this.$v.requesterEmail.$error;
+            var accessCodeIsInvalid = this.$v.accessCode.$error;
 
-            const loginUrl = this.$store.state.loginUrl;
-            axios.post(loginUrl, this.loginForm)
+            if (requesterEmailIsInvalid || accessCodeIsInvalid) {
+                vm.isSubmitting = false;
+                return;
+            }
+
+            console.log("About to submit Login for: " + vm.requesterEmail);
+
+            this.$store.state.loginContext.requesterEmail = vm.requesterEmail;
+
+            if (this.rememberMeChecked == 'remember-me') {    
+                const loginContext = this.$store.state.loginContext;
+                loginContext.requesterEmail = vm.requesterEmail;
+                loginContext.accessCode = vm.accessCode;
+                loginContextMgr.cacheLoginContext(loginContext);
+            } else {
+                loginContextMgr.uncacheLoginContext();
+            }
+
+
+            var loginUrl = apiMgr.getLoginUrl();
+
+            var arg = {
+                email: vm.requesterEmail,
+                accessCode: vm.accessCode
+            };
+
+            axios.post(loginUrl, arg)
             .then(res => {
                 console.log("Login status: " + res.status);
-                //To-Do: check for status 401 - Unauthorized. Display login failure message
-                vm.isSubmitted = false;
+                vm.isSubmitting = false;
+                vm.hasFailure = false;
+                const storeState = this.$store.state;
 
-                vm.$router.push('dofirst'); //For demo only - Remove it.
+                if (storeState.appDefConfig.devModeIgnoreLoginFailure) {
+                    vm.$router.push('dofirst');
+                    return;
+                }
+
+                if (res.status == 200 && res.data != null) {
+                    this.$store.state.currentUser = res.data;
+                    if (storeState.currentUser != null && 
+                        storeState.currentUser.name != null) {
+                        storeState.loginContext.requesterName = storeState.currentUser.name;
+                    }
+                    vm.$router.push('dofirst'); 
+                } else {
+                     vm.hasFailure = true;
+                     this.failureMessage = "Login failed. Please try again.";
+                }
+                
             })
-            .catch(err => {
+            .catch((err) => {
                 console.log("Login failed: " + err);
-                vm.isSubmitted = false;
+                vm.isSubmitting = false;
+                vm.hasFailure = true;
 
-                vm.$router.push('dofirst'); //For demo only - Remove it.
+                if (this.$store.state.appDefConfig.devModeIgnoreLoginFailure) {
+                    vm.$router.push('dofirst');
+                    return;
+                }
+
+                vm.isLoginFailed = true;
+                if (err.response != null && err.response.status == 401) { //401 - Unauthorized.                  
+                    this.failureMessage = "Login failed. Please try again.";
+                } else {
+                    this.failureMessage = "Server unavailable or not working at this time.";
+                }
+
             })
         }
+
     }
 }
 </script>

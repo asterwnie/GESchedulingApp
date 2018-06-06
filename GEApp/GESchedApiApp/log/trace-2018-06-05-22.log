@@ -1,6 +1,0 @@
-2018-06-06T03:00:40.132Z - verbose: Setting up API routes for the User entity.
-2018-06-06T03:00:40.205Z - info: GEMeetingRequestApiApp listening on port 9090
-2018-06-06T03:01:11.763Z - verbose: Returning index.html
-2018-06-06T03:01:27.587Z - verbose: userController.loginUser begin
-2018-06-06T03:02:24.832Z - verbose: userController.loginUser begin
-2018-06-06T03:02:24.864Z - error: userController.loginUser - login email cannot be null.

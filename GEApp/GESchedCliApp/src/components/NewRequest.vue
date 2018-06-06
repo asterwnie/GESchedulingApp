@@ -34,7 +34,7 @@
               </div>
               <div class="col-md-6 mb-3">
                 <label for="lastName">Contact</label>
-                <input type="text" class="form-control form-control-sm" id="ContactName" placeholder="" value="" required>
+                <input v-model="contact" type="text" class="form-control form-control-sm" id="ContactName" placeholder="" value="" required>
                 <div class="invalid-feedback">
                   Contact name is required.
                 </div>
@@ -60,7 +60,7 @@
         </div>
       </div>
       <div class="footerBar fixed-bottom d-flex justify-content-between">
-        <button type="button" class="btn btn-primary btn-sm" @click.prevent="$router.push('attentionnotes')">Continue Request ></button>
+        <button type="button" class="btn btn-primary btn-sm" @click.prevent="$router.push('notes')">Continue Request ></button>
       </div>
     </div>
 </template>
@@ -70,6 +70,7 @@ export default {
   data () {
     return {
       title: "New Request",
+      contact: "",
       email: ""  
     }
   },
@@ -77,7 +78,9 @@ export default {
   activated() {
     console.log('NewRequest.vue activated.');
     this.$store.state.currentViewTitle = this.title;
-    this.email = this.$store.state.requesterEmail;
+    this.$store.state.enableNavBar = true;
+    this.email = this.$store.state.loginContext.requesterEmail;
+    this.contact = this.$store.state.loginContext.requesterName;
   },
 
   created() {

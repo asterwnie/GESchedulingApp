@@ -1,0 +1,38 @@
+--hotel.Name: Hilton Garden Inn
+--hotel.Address: 171 Forest Street
+--hotel.Address: Marlborough, MA 01752
+--hotel.Phone: 508-251-6706
+--hotel.Fax: 508-481-1702
+--hotel.CorpRates: Call for GE Rate
+
+--hotel.Name: Embassy Hotel & Suites
+--hotel.Address: 123 Boston Post Road West
+--hotel.Address: Marlborough, MA 01752
+--hotel.Phone: 508-485-5900
+--hotel.Fax: 508-481-3100
+--hotel.CorpRates: Call for GE Rate
+
+--hotel.Name: Marlborough Courtyard Marriott
+--hotel.Address: 75 Felton Street
+--hotel.Address: Marlborough, MA 01752
+--hotel.Phone: 508-480-0015
+--hotel.Fax: 508-485-2242
+--hotel.CorpRates: Call for GE Rate
+
+--hotel.Name: Best Western Royal Plaza Hotel
+--hotel.Address: 181 Boston Post Road West
+--hotel.Address: Marlborough, MA 01752
+--hotel.Phone: 888-543-9500 or 508-460-0700
+--hotel.Fax: 508-480-9343
+--hotel.CorpRates: Call for GE Rate
+
+--hotel.Name: Hyatt Place / Apex Center
+--hotel.Address: 169 Apex Drive
+--hotel.Address: Marlborough, MA 01752
+--hotel.Phone: 508-506-8100
+--hotel.CorpRates: Call for GE Rate
+
+--hotel.Name: Fairfield Inn & Suites / Apex Center
+--hotel.Address: 105 Apex Drive
+--hotel.Address: Marlborough, MA 01752
+--hotel.Phone: 508-720-1500

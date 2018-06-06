@@ -1,6 +1,10 @@
 <template>
   <div>
     <div>{{ message }}</div>
+    <br>
+    <dlv>
+    <a id="emailIT" href="mailto:example@website.com?subject=This%20is%20a%20subject&body=message%20goes%20here.%0D%0ASecond line.">Send email to IT Help</a>
+    </dlv>
   </div>
 </template>
 
@@ -17,6 +21,7 @@ export default {
   activated() {
       console.log('ITHelp.vue activated.');
       this.$store.state.currentViewTitle = this.title;
+      this.$store.state.enableNavBar = true;
   },
 
   created() {

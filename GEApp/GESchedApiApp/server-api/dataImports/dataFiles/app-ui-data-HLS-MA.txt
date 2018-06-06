@@ -1,0 +1,43 @@
+--siteCode
+HLS-MA
+
+--siteName
+GE Health Life Science
+
+--siteAddress
+100 Results way
+Marlborough, MA 01752
+
+--appTitle
+Meeting & Special Event 
+Request
+
+--aboutViewTitle
+About
+
+--aboutViewDescription
+This application is for lorem ipsum sapien metus posuere nam praesent dictum, curabitur ad sit tortor tincidunt integer, quisque dictum ante quam nullam consequat.
+
+--techSupportViewTitle
+IT Help
+
+--techSupportViewDescription
+Results Way offers the MyTech Lounge located on the third-floor at tower 3. While onsite, MyTech Lounge is your solution to any IT help & questions you may have.
+
+--cateringViewTitle
+Catering
+
+--cateringViewDescription
+These recommended caterers who are reliable and deliver to the site and accept Amex.
+
+--hotelsViewTitle
+Hotels
+
+--hotelsViewDescription
+The local listing of hotels.
+
+--guestWiFiAccessViewTitle
+Guest WiFi Access
+
+--guestWiFiAccessViewDescription
+Guest WiFi access instructions.

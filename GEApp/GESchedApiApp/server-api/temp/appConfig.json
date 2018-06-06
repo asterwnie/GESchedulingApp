@@ -1,0 +1,33 @@
+{
+    "siteCode": "HLS-MA",
+
+    "siteName": "GE Health Life Science",
+
+    "siteAddress": "100 Results way, Marlborough, MA 01752",
+
+    "appTitle": "Meeting & Event<br>Request",
+
+    "appAboutTitle": "About",
+
+    "appAboutDetail": "This application is for ipsum sapien metus posuere nam praesent dictum, curabitur ad sit tortor tincidunt integer, quisque dictum ante quam nullam consequat.",
+
+    "techSupportTitle": "IT Help",
+
+    "techSupportDetail": "Results Way offers the MyTech Lounge located on the third-floor at tower 3. While onsite, MyTech Lounge is your solution to any IT help & questions you may have.",
+
+    "localCaterersTitle": "Catering",
+
+    "localCaterersDetail": [ 
+        "These recommended caterers who are reliable and deliver to the site and accept Amex.",
+        "ToDo: Caterer item listing..."
+    ],
+
+    "localHotelsTitle": "Hotels",
+
+    "localHotelsDetail": "The local listing of hotels:",
+
+    "guestWifiTitle": "Guest Wifi",
+
+    "guestWifiDetail": "Guest wifi for online access on-site."
+
+}

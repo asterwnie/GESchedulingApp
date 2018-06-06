@@ -1,0 +1,66 @@
+[36mverbose[39m: Setting up API routes for the User entity.
+[32minfo[39m: GEMeetingRequestApiApp listening on port 9090
+::1 - - [25/May/2018:14:56:21 +0000] "GET /api/appconfigs?site=HLS-MA HTTP/1.1" 200 1751 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+::1 - - [25/May/2018:14:56:36 +0000] "GET /api/appconfigs?site=HLS-MA HTTP/1.1" 200 1751 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+::1 - - [25/May/2018:14:57:04 +0000] "GET /api/appconfigs?site=HLS-MA HTTP/1.1" 200 1751 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+::1 - - [25/May/2018:15:24:38 +0000] "GET /api/appconfigs?site=HLS-MA HTTP/1.1" 200 1751 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+::1 - - [25/May/2018:15:24:43 +0000] "OPTIONS /api/users/login?site=HLS-MA HTTP/1.1" 204 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+[36mverbose[39m: userController.loginUser begin
+[0;36mMongoose:[0m users.findOne({ email: [32m'johndoe@ge.com'[39m }, { fields: {} })
+[32minfo[39m: userController.loginUser - User.findOne success. About to send back http response with user: { _id: 5b04be0354441115a097bed2,
+  email: 'johndoe@ge.com',
+  name: 'John Doe',
+  createdAt: 2018-05-23T01:04:03.496Z,
+  updatedAt: 2018-05-23T01:04:03.496Z,
+  __v: 0 }
+::1 - - [25/May/2018:15:24:44 +0000] "POST /api/users/login?site=HLS-MA HTTP/1.1" 200 163 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+[36mverbose[39m: Setting up API routes for the User entity.
+[32minfo[39m: GEMeetingRequestApiApp listening on port 9090
+::1 - - [25/May/2018:15:49:37 +0000] "GET /api/appconfigs?site=HLS-MA HTTP/1.1" 200 1751 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+::1 - - [25/May/2018:15:50:01 +0000] "OPTIONS /api/users/login?site=HLS-MA HTTP/1.1" 204 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+[36mverbose[39m: userController.loginUser begin
+[0;36mMongoose:[0m users.findOne({ email: [32m'1johndoe@ge.com'[39m }, { fields: {} })
+::1 - - [25/May/2018:15:50:02 +0000] "POST /api/users/login?site=HLS-MA HTTP/1.1" 401 32 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+::1 - - [25/May/2018:15:52:07 +0000] "GET /api/appconfigs?site=HLS-MA HTTP/1.1" 200 1751 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+::1 - - [25/May/2018:16:10:03 +0000] "GET /api/appconfigs?site=HLS-MA HTTP/1.1" 200 1751 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+[36mverbose[39m: Setting up API routes for the User entity.
+[32minfo[39m: GEMeetingRequestApiApp listening on port 9090
+[36mverbose[39m: Returning index.html
+::1 - - [25/May/2018:18:10:08 +0000] "GET / HTTP/1.1" 200 1496 "-" "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; Touch; rv:11.0) like Gecko"
+::1 - - [25/May/2018:18:10:08 +0000] "GET /static/css/app.a634be47313abb6be2e8a2ed267301a6.css HTTP/1.1" 200 862 "http://localhost:9090/" "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; Touch; rv:11.0) like Gecko"
+::1 - - [25/May/2018:18:10:08 +0000] "GET /static/js/manifest.2ae2e69a05c33dfc65f8.js HTTP/1.1" 200 857 "http://localhost:9090/" "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; Touch; rv:11.0) like Gecko"
+::1 - - [25/May/2018:18:10:08 +0000] "GET /static/js/app.68233cacd6a4eddb8e9a.js HTTP/1.1" 200 29351 "http://localhost:9090/" "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; Touch; rv:11.0) like Gecko"
+::1 - - [25/May/2018:18:10:08 +0000] "GET /static/js/vendor.4f2fba29d58573db270c.js HTTP/1.1" 200 157928 "http://localhost:9090/" "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; Touch; rv:11.0) like Gecko"
+::1 - - [25/May/2018:18:10:09 +0000] "GET /favicon.ico HTTP/1.1" 404 150 "-" "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; Touch; rv:11.0) like Gecko"
+[36mverbose[39m: Returning index.html
+::1 - - [25/May/2018:18:10:48 +0000] "GET / HTTP/1.1" 200 1496 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+::1 - - [25/May/2018:18:10:49 +0000] "GET /static/css/app.a634be47313abb6be2e8a2ed267301a6.css HTTP/1.1" 200 862 "http://localhost:9090/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+::1 - - [25/May/2018:18:10:49 +0000] "GET /static/js/manifest.2ae2e69a05c33dfc65f8.js HTTP/1.1" 200 857 "http://localhost:9090/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+::1 - - [25/May/2018:18:10:49 +0000] "GET /static/js/vendor.4f2fba29d58573db270c.js HTTP/1.1" 200 157928 "http://localhost:9090/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+::1 - - [25/May/2018:18:10:49 +0000] "GET /static/js/app.68233cacd6a4eddb8e9a.js HTTP/1.1" 200 29351 "http://localhost:9090/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+::1 - - [25/May/2018:18:10:49 +0000] "GET /api/appconfigs?site=HLS-MA HTTP/1.1" 200 1751 "http://localhost:9090/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+::1 - - [25/May/2018:18:10:49 +0000] "GET /api/attentions?site=HLS-MA HTTP/1.1" 200 2304 "http://localhost:9090/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+::1 - - [25/May/2018:18:10:49 +0000] "GET /favicon.ico HTTP/1.1" 404 150 "http://localhost:9090/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+[36mverbose[39m: Returning index.html
+::1 - - [25/May/2018:18:10:55 +0000] "GET / HTTP/1.1" 200 1496 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+::1 - - [25/May/2018:18:10:55 +0000] "GET /static/css/app.a634be47313abb6be2e8a2ed267301a6.css HTTP/1.1" 200 862 "http://localhost:9090/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+::1 - - [25/May/2018:18:10:55 +0000] "GET /static/js/manifest.2ae2e69a05c33dfc65f8.js HTTP/1.1" 200 857 "http://localhost:9090/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+::1 - - [25/May/2018:18:10:55 +0000] "GET /static/js/app.68233cacd6a4eddb8e9a.js HTTP/1.1" 200 29351 "http://localhost:9090/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+::1 - - [25/May/2018:18:10:55 +0000] "GET /static/js/vendor.4f2fba29d58573db270c.js HTTP/1.1" 200 157928 "http://localhost:9090/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+::1 - - [25/May/2018:18:10:55 +0000] "GET /api/appconfigs?site=HLS-MA HTTP/1.1" 200 1751 "http://localhost:9090/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+::1 - - [25/May/2018:18:10:55 +0000] "GET /api/attentions?site=HLS-MA HTTP/1.1" 200 2304 "http://localhost:9090/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+[36mverbose[39m: Returning index.html
+::1 - - [25/May/2018:18:10:59 +0000] "GET / HTTP/1.1" 200 1496 "-" "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; Touch; rv:11.0) like Gecko"
+::1 - - [25/May/2018:18:10:59 +0000] "GET /static/css/app.a634be47313abb6be2e8a2ed267301a6.css HTTP/1.1" 200 862 "http://localhost:9090/" "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; Touch; rv:11.0) like Gecko"
+::1 - - [25/May/2018:18:10:59 +0000] "GET /static/js/manifest.2ae2e69a05c33dfc65f8.js HTTP/1.1" 200 857 "http://localhost:9090/" "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; Touch; rv:11.0) like Gecko"
+::1 - - [25/May/2018:18:10:59 +0000] "GET /static/js/vendor.4f2fba29d58573db270c.js HTTP/1.1" 200 157928 "http://localhost:9090/" "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; Touch; rv:11.0) like Gecko"
+::1 - - [25/May/2018:18:10:59 +0000] "GET /static/js/app.68233cacd6a4eddb8e9a.js HTTP/1.1" 200 29351 "http://localhost:9090/" "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; Touch; rv:11.0) like Gecko"
+[36mverbose[39m: userController.loginUser begin
+[0;36mMongoose:[0m users.findOne({ email: [32m'johndoe@ge.com'[39m }, { fields: {} })
+[32minfo[39m: userController.loginUser - User.findOne success. About to send back http response with user: { _id: 5b04be0354441115a097bed2,
+  email: 'johndoe@ge.com',
+  name: 'John Doe',
+  createdAt: 2018-05-23T01:04:03.496Z,
+  updatedAt: 2018-05-23T01:04:03.496Z,
+  __v: 0 }
+::1 - - [25/May/2018:18:11:46 +0000] "POST /api/users/login?site=HLS-MA HTTP/1.1" 200 163 "http://localhost:9090/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"

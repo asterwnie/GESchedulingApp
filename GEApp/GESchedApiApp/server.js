@@ -8,7 +8,8 @@ const bodyParser = require('body-parser');      // Help convert JSON data in the
 const cookieParser = require('cookie-parser')   // Help parse name/value pairs in request cookie. https://www.npmjs.com/package/cookie-parser
 const appConfig = require('./server.config');   // Load app configuration settings.
 const logger = require('./server-api/logger');  // Create logging helper
-var cors = require('cors');                     // Enables Cross-origin resource sharing. https://github.com/expressjs/cors#enabling-cors-pre-flight
+const cors = require('cors');                     // Enables Cross-origin resource sharing. https://github.com/expressjs/cors#enabling-cors-pre-flight
+const fs = require('fs');                       // File system.
 
 const portNum = appConfig.port;
 const appName = appConfig.appServerName;
@@ -73,6 +74,37 @@ app.use('/static', express.static(`${appRoot}/client-ui`));
 var userRoutes = require('./server-api/routes/userRoutes');
 userRoutes(app);
 
+// Set up API routes for the hotel entity:
+var hotelRoutes = require('./server-api/routes/hotelRoutes');
+hotelRoutes(app);
+
+// Set up API routes for the RequestPrompt entity:
+var requestPromptRoutes = require('./server-api/routes/requestPromptRoutes');
+requestPromptRoutes(app);
+
+
+
+
+// Temporary for returning mock data:
+
+app.get('/api/appconfigs', (req, res) => {
+ 
+    const jsonData = fs.readFileSync(`${appRoot}/server-api/temp/appConfig.json`);
+    const appConfigForSite = JSON.parse(jsonData);
+
+    appConfigForSite.sites = appConfig.sites;
+    appConfigForSite.defaultSite = appConfig.defaultSite;
+    res.json(appConfigForSite);
+
+}); 
+
+app.get('/api/notes', (req, res) => { //was previously attentions
+ 
+    const jsonData = fs.readFileSync(`${appRoot}/server-api/temp/notes.json`);
+    const notes = JSON.parse(jsonData);
+    res.json(notes);
+
+}); 
 
 
 // Start web server:
