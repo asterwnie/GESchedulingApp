@@ -1,5 +1,0 @@
-2018-05-23T00:23:02.174Z - verbose: Setting up API routes for the User entity.
-2018-05-23T00:23:02.189Z - info: GEMeetingRequestApiApp listening on port 9090
-2018-05-23T00:23:19.136Z - verbose: Returning index.html
-2018-05-23T00:23:19.524Z - verbose: Returning index.html
-2018-05-23T00:23:28.945Z - verbose: userController.loginUser begin

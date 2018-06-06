@@ -6,149 +6,34 @@
     "auditLog": "c:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log/.audit.json",
     "files": [
         {
-            "date": 1526924091684,
-            "name": "c:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-21-17.log",
-            "hash": "67c40202eb06d213fcfdc79669942868"
+            "date": 1527111389240,
+            "name": "C:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-23-16.log",
+            "hash": "ec83d497e70104df68ce5a0b8bd27225"
         },
         {
-            "date": 1526924745505,
-            "name": "C:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-21-17.log",
-            "hash": "fd1f01e61312f2a4369b84ad6f538935"
+            "date": 1527112217267,
+            "name": "C:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-23-16.log",
+            "hash": "33db500c52f34ce7b1468272ce2287cc"
         },
         {
-            "date": 1526926943610,
-            "name": "C:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-21-18.log",
-            "hash": "f468fcccf64210dc5c228f405e296cdc"
+            "date": 1528137814422,
+            "name": "C:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-06-04-13.log",
+            "hash": "2098525f6f292697cf6b6ba4dc108c7c"
         },
         {
-            "date": 1526927057950,
-            "name": "C:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-21-18.log",
-            "hash": "d3460b1acc3574b8d77f1503450ba287"
+            "date": 1528138800654,
+            "name": "C:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-06-04-14.log",
+            "hash": "7f40beddfa0517fb0f0e8e3c7311ebbb"
         },
         {
-            "date": 1526927123155,
-            "name": "C:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-21-18.log",
-            "hash": "a584561d146339e183588808dd83a3db"
+            "date": 1528252581996,
+            "name": "C:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-06-05-21.log",
+            "hash": "7a402775e347332f0a974bb011fede8b"
         },
         {
-            "date": 1526933232935,
-            "name": "C:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-21-20.log",
-            "hash": "1b27e83980874279384ab0318ebf0f60"
-        },
-        {
-            "date": 1526933632602,
-            "name": "C:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-21-20.log",
-            "hash": "7a450c867d5f00e444eda40a2e2970be"
-        },
-        {
-            "date": 1526934333376,
-            "name": "C:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-21-20.log",
-            "hash": "2c6b926465bb9f3825a3097bb747ce30"
-        },
-        {
-            "date": 1526934572973,
-            "name": "C:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-21-20.log",
-            "hash": "ad9dec7c1519945cd126f3ad8b5173ed"
-        },
-        {
-            "date": 1526934696698,
-            "name": "C:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-21-20.log",
-            "hash": "1eed957e3e9d350eb70ddfd4f604c182"
-        },
-        {
-            "date": 1526934813423,
-            "name": "C:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-21-20.log",
-            "hash": "5ffffba2a2937cc057aad650a6e9079a"
-        },
-        {
-            "date": 1526934931151,
-            "name": "C:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-21-20.log",
-            "hash": "283f6c35647dfadc44f422143e6081a4"
-        },
-        {
-            "date": 1526935203728,
-            "name": "C:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-21-20.log",
-            "hash": "e64868fabc96ba9c82689568d1bdc637"
-        },
-        {
-            "date": 1526935302569,
-            "name": "C:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-21-20.log",
-            "hash": "9b5a1610006d149fc68544b333c15aad"
-        },
-        {
-            "date": 1526935727354,
-            "name": "C:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-21-20.log",
-            "hash": "a1607134229745487dc9c59ede7876f2"
-        },
-        {
-            "date": 1526935840979,
-            "name": "C:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-21-20.log",
-            "hash": "55f7fa034417998a0027797980e3b443"
-        },
-        {
-            "date": 1526935877279,
-            "name": "C:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-21-20.log",
-            "hash": "e327fdfc8847d24c4db3f78eda289c83"
-        },
-        {
-            "date": 1526955091807,
-            "name": "c:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-22-02.log",
-            "hash": "16ed40355ee077fadb4a1d5931a56ecc"
-        },
-        {
-            "date": 1526955300337,
-            "name": "c:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-22-02.log",
-            "hash": "f395f53003b131b6c90158a6e585532c"
-        },
-        {
-            "date": 1526955376283,
-            "name": "c:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-22-02.log",
-            "hash": "57b6bbaf05440338552b2e09567eb63f"
-        },
-        {
-            "date": 1526955432183,
-            "name": "c:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-22-02.log",
-            "hash": "cc29c1604f95fa2bd99745869f1b8ac6"
-        },
-        {
-            "date": 1526956596491,
-            "name": "c:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-22-02.log",
-            "hash": "412b85aa2aa3bcd0159dc960583530e2"
-        },
-        {
-            "date": 1526957094518,
-            "name": "c:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-22-02.log",
-            "hash": "d467f8a5bc31f6640dd3b487aaf975e5"
-        },
-        {
-            "date": 1526957455060,
-            "name": "C:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-22-02.log",
-            "hash": "0a680f652e1b4973c058bc7a4c0dd69d"
-        },
-        {
-            "date": 1526992710806,
-            "name": "C:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-22-12.log",
-            "hash": "e9e774acf61c7309c1cd831033f565cb"
-        },
-        {
-            "date": 1526992723468,
-            "name": "c:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-22-12.log",
-            "hash": "8c43bcbcf4c9115791deb1f0e5f7594f"
-        },
-        {
-            "date": 1526993099985,
-            "name": "c:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-22-12.log",
-            "hash": "cd9bf1b052f024302f243e303f542866"
-        },
-        {
-            "date": 1527032817071,
-            "name": "C:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-22-23.log",
-            "hash": "ee57e291b35307053e8c227f241ac1a8"
-        },
-        {
-            "date": 1527034982184,
-            "name": "C:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-05-23-00.log",
-            "hash": "644a17c139adff4c584090ec4d9612bb"
+            "date": 1528254040180,
+            "name": "C:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\log\\trace-2018-06-05-22.log",
+            "hash": "b3b88f6e3883c4fa4a1d99a1e661a21d"
         }
     ]
 }

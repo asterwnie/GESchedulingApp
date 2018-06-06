@@ -6,9 +6,9 @@ const getDbConnection = require(`${appRoot}/server-api/databaseManager`);
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// The schema definition for a Login entity
+// The schema definition for a attention entity will be updated soon
 
-const LoginSchema = new Schema({   
+const AttentionSchema = new Schema({   //change this later
 
     email: {
         type: String,
