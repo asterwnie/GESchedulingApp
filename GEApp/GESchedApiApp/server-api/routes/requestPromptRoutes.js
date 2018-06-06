@@ -3,7 +3,6 @@
 var logger = require('../logger');
 
 // Use the callback functions defined in requestPromptController.js
-// NOT SET UP YET
 var requestPromptController = require('../controllers/requestPromptController');
 
 
@@ -24,10 +23,6 @@ module.exports = function (app) {
         app.route('/api/RequestPrompts/:id')
             .get(requestPromptController.getRequestPrompt)
             .delete(requestPromptController.deleteRequestPrompt);
-
-            //app.route('/api/RequestPrompts/login')
-          //  .post(requestPromptController.loginUser)
-
             
     } catch (err) {
         logger.error(`Set up API routes for the RequestPrompt entity failed. Error: ${err}`);
