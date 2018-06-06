@@ -1,0 +1,3 @@
+2018-06-05T19:44:21.033Z - error: ADMIN: Error importing the Hotel collection into the database! Error: SyntaxError: Unexpected number in JSON at position 1
+2018-06-05T19:44:24.038Z - error: ADMIN: Error importing the Hotel collection into the database! Error: SyntaxError: Unexpected number in JSON at position 1
+2018-06-05T19:44:27.040Z - error: ADMIN: Error importing the Hotel collection into the database! Error: SyntaxError: Unexpected number in JSON at position 1

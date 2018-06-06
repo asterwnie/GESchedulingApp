@@ -1,0 +1,66 @@
+2018-06-05T22:55:06.812Z - info: ADMIN: Adding hotel (Hilton Garden Inn) to the database.
+2018-06-05T22:55:17.513Z - info: ADMIN: Adding hotel (Embassy Hotel & Suites) to the database.
+2018-06-05T22:55:19.995Z - info: ADMIN: Adding hotel (Marlborough Courtyard Marriott) to the database.
+2018-06-05T22:55:22.111Z - info: ADMIN: Adding hotel (Best Western Royal Plaza Hotel) to the database.
+2018-06-05T22:55:22.968Z - info: ADMIN: Adding hotel (Hyatt Place / Apex Center) to the database.
+2018-06-05T22:55:23.833Z - info: ADMIN: Adding hotel (Fairfield Inn & Suites / Apex Center) to the database.
+2018-06-05T22:55:27.065Z - info: ADMIN: createHotel - Hotel.save success:
+{ address: [],
+  _id: 5b1714ceb909a82004919dd7,
+  seqNum: 1,
+  name: 'Hilton Garden Inn',
+  phone: '508-251-6706',
+  corpRates: 'Call for GE Rate',
+  createdAt: 2018-06-05T22:55:25.138Z,
+  updatedAt: 2018-06-05T22:55:25.138Z,
+  __v: 0 }
+2018-06-05T22:55:27.810Z - info: ADMIN: createHotel - Hotel.save success:
+{ address: [],
+  _id: 5b1714d7b909a82004919dd8,
+  seqNum: 2,
+  name: 'Embassy Hotel & Suites',
+  phone: '508-485-5900',
+  corpRates: 'Call for GE Rate',
+  createdAt: 2018-06-05T22:55:25.138Z,
+  updatedAt: 2018-06-05T22:55:25.138Z,
+  __v: 0 }
+2018-06-05T22:55:31.198Z - info: ADMIN: createHotel - Hotel.save success:
+{ address: [],
+  _id: 5b1714dab909a82004919dd9,
+  seqNum: 3,
+  name: 'Marlborough Courtyard Marriott',
+  phone: '508-480-0015',
+  corpRates: 'Call for GE Rate',
+  createdAt: 2018-06-05T22:55:25.138Z,
+  updatedAt: 2018-06-05T22:55:25.138Z,
+  __v: 0 }
+2018-06-05T22:55:31.200Z - info: ADMIN: createHotel - Hotel.save success:
+{ address: [],
+  _id: 5b1714dab909a82004919dda,
+  seqNum: 4,
+  name: 'Best Western Royal Plaza Hotel',
+  phone: '888-543-9500 or 508-460-0700',
+  corpRates: 'Call for GE Rate',
+  createdAt: 2018-06-05T22:55:25.138Z,
+  updatedAt: 2018-06-05T22:55:25.138Z,
+  __v: 0 }
+2018-06-05T22:55:31.201Z - info: ADMIN: createHotel - Hotel.save success:
+{ address: [],
+  _id: 5b1714dbb909a82004919ddb,
+  seqNum: 5,
+  name: 'Hyatt Place / Apex Center',
+  phone: '508-506-8100',
+  corpRates: 'Call for GE Rate',
+  createdAt: 2018-06-05T22:55:25.138Z,
+  updatedAt: 2018-06-05T22:55:25.138Z,
+  __v: 0 }
+2018-06-05T22:55:31.205Z - info: ADMIN: createHotel - Hotel.save success:
+{ address: [],
+  _id: 5b1714ddb909a82004919ddc,
+  seqNum: 6,
+  name: 'Fairfield Inn & Suites / Apex Center',
+  phone: '508-720-1500',
+  createdAt: 2018-06-05T22:55:25.138Z,
+  updatedAt: 2018-06-05T22:55:25.138Z,
+  __v: 0 }
+2018-06-05T22:58:43.356Z - info: ADMIN: All hotels deleted for site: HLS-MA

@@ -16,7 +16,7 @@ const HotelSchema = new Schema({
     },
 
     address: {
-        type: String,
+        type: [String],
         required: [true, 'Hotel address is required!']
     },
 
@@ -24,7 +24,7 @@ const HotelSchema = new Schema({
         type: String
     },
 
-    corporateRates: {
+    corpRates: {
         type: String
     },
 

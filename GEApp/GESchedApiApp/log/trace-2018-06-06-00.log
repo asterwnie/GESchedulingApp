@@ -1,0 +1,173 @@
+2018-06-06T00:12:53.577Z - info: ADMIN: All hotels deleted for site: HLS-MA
+2018-06-06T00:13:12.510Z - info: ADMIN: All hotels deleted for site: HLS-MA
+2018-06-06T00:13:28.644Z - info: ADMIN: Adding hotel (Hilton Garden Inn) to the database.
+2018-06-06T00:17:01.717Z - info: ADMIN: Adding hotel (Hilton Garden Inn) to the database.
+2018-06-06T00:17:11.640Z - info: ADMIN: Adding hotel (Embassy Hotel & Suites) to the database.
+2018-06-06T00:17:34.990Z - info: ADMIN: Adding hotel (Marlborough Courtyard Marriott) to the database.
+2018-06-06T00:17:36.565Z - info: ADMIN: Adding hotel (Best Western Royal Plaza Hotel) to the database.
+2018-06-06T00:17:39.489Z - info: ADMIN: Adding hotel (Hyatt Place / Apex Center) to the database.
+2018-06-06T00:17:40.769Z - info: ADMIN: Adding hotel (Fairfield Inn & Suites / Apex Center) to the database.
+2018-06-06T00:17:41.248Z - info: ADMIN: createHotel - Hotel.save success:
+{ address: [ 'Marlborough, MA 01752' ],
+  _id: 5b1727fd6aa6c1479c72767a,
+  seqNum: 1,
+  name: 'Hilton Garden Inn',
+  phone: '508-251-6706',
+  corpRates: 'Call for GE Rate',
+  createdAt: 2018-06-06T00:17:41.212Z,
+  updatedAt: 2018-06-06T00:17:41.212Z,
+  __v: 0 }
+2018-06-06T00:17:47.059Z - info: ADMIN: createHotel - Hotel.save success:
+{ address: [ 'Marlborough, MA 01752' ],
+  _id: 5b1728076aa6c1479c72767b,
+  seqNum: 2,
+  name: 'Embassy Hotel & Suites',
+  phone: '508-485-5900',
+  corpRates: 'Call for GE Rate',
+  createdAt: 2018-06-06T00:17:41.213Z,
+  updatedAt: 2018-06-06T00:17:41.213Z,
+  __v: 0 }
+2018-06-06T00:17:48.064Z - info: ADMIN: createHotel - Hotel.save success:
+{ address: [ 'Marlborough, MA 01752' ],
+  _id: 5b17281e6aa6c1479c72767c,
+  seqNum: 3,
+  name: 'Marlborough Courtyard Marriott',
+  phone: '508-480-0015',
+  corpRates: 'Call for GE Rate',
+  createdAt: 2018-06-06T00:17:41.213Z,
+  updatedAt: 2018-06-06T00:17:41.213Z,
+  __v: 0 }
+2018-06-06T00:17:48.065Z - info: ADMIN: createHotel - Hotel.save success:
+{ address: [ 'Marlborough, MA 01752' ],
+  _id: 5b1728206aa6c1479c72767d,
+  seqNum: 4,
+  name: 'Best Western Royal Plaza Hotel',
+  phone: '888-543-9500 or 508-460-0700',
+  corpRates: 'Call for GE Rate',
+  createdAt: 2018-06-06T00:17:41.213Z,
+  updatedAt: 2018-06-06T00:17:41.213Z,
+  __v: 0 }
+2018-06-06T00:17:48.065Z - info: ADMIN: createHotel - Hotel.save success:
+{ address: [ 'Marlborough, MA 01752' ],
+  _id: 5b1728236aa6c1479c72767e,
+  seqNum: 5,
+  name: 'Hyatt Place / Apex Center',
+  phone: '508-506-8100',
+  corpRates: 'Call for GE Rate',
+  createdAt: 2018-06-06T00:17:41.213Z,
+  updatedAt: 2018-06-06T00:17:41.213Z,
+  __v: 0 }
+2018-06-06T00:17:49.069Z - info: ADMIN: createHotel - Hotel.save success:
+{ address: [ 'Marlborough, MA 01752' ],
+  _id: 5b1728246aa6c1479c72767f,
+  seqNum: 6,
+  name: 'Fairfield Inn & Suites / Apex Center',
+  phone: '508-720-1500',
+  createdAt: 2018-06-06T00:17:41.213Z,
+  updatedAt: 2018-06-06T00:17:41.213Z,
+  __v: 0 }
+2018-06-06T00:20:32.608Z - info: ADMIN: All hotels deleted for site: HLS-MA
+2018-06-06T00:20:49.019Z - info: Processing line: --hotel.Name: Hilton Garden Inn
+2018-06-06T00:20:49.020Z - info: Processing line: --hotel.Address: 171 Forest Street
+2018-06-06T00:20:49.020Z - info: Processing line: --hotel.Address: Marlborough, MA 01752
+2018-06-06T00:20:49.021Z - info: Processing line: --hotel.Phone: 508-251-6706
+2018-06-06T00:20:49.021Z - info: Processing line: --hotel.Fax: 508-481-1702
+2018-06-06T00:20:49.021Z - info: Processing line: --hotel.CorpRates: Call for GE Rate
+2018-06-06T00:20:49.022Z - info: Processing line: 
+2018-06-06T00:20:49.022Z - info: Processing line: --hotel.Name: Embassy Hotel & Suites
+2018-06-06T00:20:49.022Z - info: Processing line: --hotel.Address: 123 Boston Post Road West
+2018-06-06T00:20:49.023Z - info: Processing line: --hotel.Address: Marlborough, MA 01752
+2018-06-06T00:20:49.023Z - info: Processing line: --hotel.Phone: 508-485-5900
+2018-06-06T00:20:49.023Z - info: Processing line: --hotel.Fax: 508-481-3100
+2018-06-06T00:20:49.024Z - info: Processing line: --hotel.CorpRates: Call for GE Rate
+2018-06-06T00:20:49.024Z - info: Processing line: 
+2018-06-06T00:20:49.024Z - info: Processing line: --hotel.Name: Marlborough Courtyard Marriott
+2018-06-06T00:20:49.025Z - info: Processing line: --hotel.Address: 75 Felton Street
+2018-06-06T00:20:49.025Z - info: Processing line: --hotel.Address: Marlborough, MA 01752
+2018-06-06T00:20:49.025Z - info: Processing line: --hotel.Phone: 508-480-0015
+2018-06-06T00:20:49.025Z - info: Processing line: --hotel.Fax: 508-485-2242
+2018-06-06T00:20:49.026Z - info: Processing line: --hotel.CorpRates: Call for GE Rate
+2018-06-06T00:20:49.026Z - info: Processing line: 
+2018-06-06T00:20:49.026Z - info: Processing line: --hotel.Name:      Best Western Royal Plaza Hotel
+2018-06-06T00:20:49.027Z - info: Processing line: --hotel.Address: 181 Boston Post Road West
+2018-06-06T00:20:49.027Z - info: Processing line: --hotel.Address: Marlborough, MA 01752
+2018-06-06T00:20:49.027Z - info: Processing line: --hotel.Phone: 888-543-9500 or 508-460-0700
+2018-06-06T00:20:49.027Z - info: Processing line: --hotel.Fax: 508-480-9343
+2018-06-06T00:20:49.028Z - info: Processing line: --hotel.CorpRates: Call for GE Rate
+2018-06-06T00:20:49.028Z - info: Processing line: 
+2018-06-06T00:20:49.028Z - info: Processing line: --hotel.Name: Hyatt Place / Apex Center
+2018-06-06T00:20:49.029Z - info: Processing line: --hotel.Address: 169 Apex Drive
+2018-06-06T00:20:49.029Z - info: Processing line: --hotel.Address: Marlborough, MA 01752
+2018-06-06T00:20:49.029Z - info: Processing line: --hotel.Phone: 508-506-8100
+2018-06-06T00:20:49.030Z - info: Processing line: --hotel.CorpRates: Call for GE Rate
+2018-06-06T00:20:49.030Z - info: Processing line: 
+2018-06-06T00:20:49.030Z - info: Processing line: --hotel.Name: Fairfield Inn & Suites / Apex Center
+2018-06-06T00:20:49.030Z - info: Processing line: --hotel.Address: 105 Apex Drive
+2018-06-06T00:20:49.031Z - info: Processing line: --hotel.Address: Marlborough, MA 01752
+2018-06-06T00:20:49.031Z - info: Processing line: --hotel.Phone: 508-720-1500
+2018-06-06T00:20:49.031Z - info: Processing line: 
+2018-06-06T00:20:49.037Z - info: ADMIN: Adding hotel (Hilton Garden Inn) to the database.
+2018-06-06T00:20:55.629Z - info: ADMIN: Adding hotel (Embassy Hotel & Suites) to the database.
+2018-06-06T00:20:58.276Z - info: ADMIN: Adding hotel (Marlborough Courtyard Marriott) to the database.
+2018-06-06T00:20:58.277Z - info: ADMIN: Adding hotel (Best Western Royal Plaza Hotel) to the database.
+2018-06-06T00:20:58.278Z - info: ADMIN: Adding hotel (Hyatt Place / Apex Center) to the database.
+2018-06-06T00:20:58.278Z - info: ADMIN: Adding hotel (Fairfield Inn & Suites / Apex Center) to the database.
+2018-06-06T00:20:58.299Z - info: ADMIN: createHotel - Hotel.save success:
+{ address: [ '171 Forest Street', 'Marlborough, MA 01752' ],
+  _id: 5b1728e158723d2f6c75b7e2,
+  seqNum: 1,
+  name: 'Hilton Garden Inn',
+  phone: '508-251-6706',
+  corpRates: 'Call for GE Rate',
+  createdAt: 2018-06-06T00:20:58.284Z,
+  updatedAt: 2018-06-06T00:20:58.284Z,
+  __v: 0 }
+2018-06-06T00:20:59.309Z - info: ADMIN: createHotel - Hotel.save success:
+{ address: [ '123 Boston Post Road West', 'Marlborough, MA 01752' ],
+  _id: 5b1728e758723d2f6c75b7e3,
+  seqNum: 2,
+  name: 'Embassy Hotel & Suites',
+  phone: '508-485-5900',
+  corpRates: 'Call for GE Rate',
+  createdAt: 2018-06-06T00:20:58.284Z,
+  updatedAt: 2018-06-06T00:20:58.284Z,
+  __v: 0 }
+2018-06-06T00:21:00.309Z - info: ADMIN: createHotel - Hotel.save success:
+{ address: [ '181 Boston Post Road West', 'Marlborough, MA 01752' ],
+  _id: 5b1728ea58723d2f6c75b7e5,
+  seqNum: 4,
+  name: 'Best Western Royal Plaza Hotel',
+  phone: '888-543-9500 or 508-460-0700',
+  corpRates: 'Call for GE Rate',
+  createdAt: 2018-06-06T00:20:58.284Z,
+  updatedAt: 2018-06-06T00:20:58.284Z,
+  __v: 0 }
+2018-06-06T00:21:00.310Z - info: ADMIN: createHotel - Hotel.save success:
+{ address: [ '75 Felton Street', 'Marlborough, MA 01752' ],
+  _id: 5b1728ea58723d2f6c75b7e4,
+  seqNum: 3,
+  name: 'Marlborough Courtyard Marriott',
+  phone: '508-480-0015',
+  corpRates: 'Call for GE Rate',
+  createdAt: 2018-06-06T00:20:58.284Z,
+  updatedAt: 2018-06-06T00:20:58.284Z,
+  __v: 0 }
+2018-06-06T00:21:00.310Z - info: ADMIN: createHotel - Hotel.save success:
+{ address: [ '169 Apex Drive', 'Marlborough, MA 01752' ],
+  _id: 5b1728ea58723d2f6c75b7e6,
+  seqNum: 5,
+  name: 'Hyatt Place / Apex Center',
+  phone: '508-506-8100',
+  corpRates: 'Call for GE Rate',
+  createdAt: 2018-06-06T00:20:58.284Z,
+  updatedAt: 2018-06-06T00:20:58.284Z,
+  __v: 0 }
+2018-06-06T00:21:01.315Z - info: ADMIN: createHotel - Hotel.save success:
+{ address: [ '105 Apex Drive', 'Marlborough, MA 01752' ],
+  _id: 5b1728ea58723d2f6c75b7e7,
+  seqNum: 6,
+  name: 'Fairfield Inn & Suites / Apex Center',
+  phone: '508-720-1500',
+  createdAt: 2018-06-06T00:20:58.284Z,
+  updatedAt: 2018-06-06T00:20:58.284Z,
+  __v: 0 }

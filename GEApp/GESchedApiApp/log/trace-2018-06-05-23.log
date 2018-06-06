@@ -1,0 +1,55 @@
+2018-06-05T23:00:15.355Z - info: ADMIN: Adding hotel (Hilton Garden Inn) to the database.
+2018-06-05T23:00:15.378Z - info: ADMIN: Adding hotel (Embassy Hotel & Suites) to the database.
+2018-06-05T23:00:15.385Z - info: ADMIN: Adding hotel (Marlborough Courtyard Marriott) to the database.
+2018-06-05T23:00:15.386Z - info: ADMIN: Adding hotel (Best Western Royal Plaza Hotel) to the database.
+2018-06-05T23:00:15.388Z - info: ADMIN: Adding hotel (Hyatt Place / Apex Center) to the database.
+2018-06-05T23:00:15.450Z - info: ADMIN: Adding hotel (Fairfield Inn & Suites / Apex Center) to the database.
+2018-06-05T23:00:15.479Z - info: ADMIN: createHotel - Hotel.save success:
+{ address: [],
+  _id: 5b1715ff34257e46c4c7d5c1,
+  seqNum: 1,
+  name: 'Hilton Garden Inn',
+  phone: '508-251-6706',
+  corpRates: 'Call for GE Rate',
+  createdAt: 2018-06-05T23:00:15.453Z,
+  updatedAt: 2018-06-05T23:00:15.453Z,
+  __v: 0 }
+2018-06-05T23:00:16.469Z - info: ADMIN: createHotel - Hotel.save success:
+{ address: [],
+  _id: 5b1715ff34257e46c4c7d5c3,
+  seqNum: 3,
+  name: 'Marlborough Courtyard Marriott',
+  phone: '508-480-0015',
+  corpRates: 'Call for GE Rate',
+  createdAt: 2018-06-05T23:00:15.455Z,
+  updatedAt: 2018-06-05T23:00:15.455Z,
+  __v: 0 }
+2018-06-05T23:00:16.471Z - info: ADMIN: createHotel - Hotel.save success:
+{ address: [],
+  _id: 5b1715ff34257e46c4c7d5c2,
+  seqNum: 2,
+  name: 'Embassy Hotel & Suites',
+  phone: '508-485-5900',
+  corpRates: 'Call for GE Rate',
+  createdAt: 2018-06-05T23:00:15.455Z,
+  updatedAt: 2018-06-05T23:00:15.455Z,
+  __v: 0 }
+2018-06-05T23:00:17.476Z - info: ADMIN: createHotel - Hotel.save success:
+{ address: [],
+  _id: 5b1715ff34257e46c4c7d5c4,
+  seqNum: 4,
+  name: 'Best Western Royal Plaza Hotel',
+  phone: '888-543-9500 or 508-460-0700',
+  corpRates: 'Call for GE Rate',
+  createdAt: 2018-06-05T23:00:15.455Z,
+  updatedAt: 2018-06-05T23:00:15.455Z,
+  __v: 0 }
+2018-06-05T23:00:17.476Z - info: ADMIN: createHotel - Hotel.save success:
+{ address: [],
+  _id: 5b1715ff34257e46c4c7d5c6,
+  seqNum: 6,
+  name: 'Fairfield Inn & Suites / Apex Center',
+  phone: '508-720-1500',
+  createdAt: 2018-06-05T23:00:15.455Z,
+  updatedAt: 2018-06-05T23:00:15.455Z,
+  __v: 0 }
