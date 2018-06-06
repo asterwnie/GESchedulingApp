@@ -19,7 +19,7 @@
 --hotel.Fax: 508-485-2242
 --hotel.CorpRates: Call for GE Rate
 
---hotel.Name:      Best Western Royal Plaza Hotel
+--hotel.Name: Best Western Royal Plaza Hotel
 --hotel.Address: 181 Boston Post Road West
 --hotel.Address: Marlborough, MA 01752
 --hotel.Phone: 888-543-9500 or 508-460-0700

@@ -63,5 +63,15 @@ export const getNotesUrl = () => {
     return url;
 }
 
+export const getHotelsUrl = () => {
+    //debugger; // Uncomment to trigger breakpoint.
+
+    const appDefConfig = centralStore.state.appDefConfig;
+    var url = appDefConfig.hotelsUrlTmpl.replace('{0}', appDefConfig.apiHost);
+    url = url.replace('{1}', appDefConfig.apiPort);
+    url = url + "?site=" + appDefConfig.site;
+    return url;
+}
+
 
 //construct the same, but for hotels

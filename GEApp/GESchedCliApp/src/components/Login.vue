@@ -91,7 +91,7 @@ export default {
             isSubmitting: false,
             isFetchingDefAppConfig: true,
             isFetchingNotes: true,
-            //isLoading: true,
+            isFetchingHotels: true,
             hasFailure: false,
             failureMessage: ""
         }
@@ -124,12 +124,12 @@ export default {
 
         this.getDefAppConfig(); 
         this.getNotes();
-        //this.getHotels();    Make this function
+        this.getHotels();
     },
 
     computed: {
         isLoading() {
-            return (this.isFetchingDefAppConfig || this.isFetchingNotes); //add isFetchingHotels
+            return (this.isFetchingDefAppConfig || this.isFetchingNotes || this.isFetchingHotels); 
         }
     },
 
@@ -166,6 +166,25 @@ export default {
 
                     vm.$store.state.notes = res.data;
                     vm.isFetchingNotes = false;
+                })
+                .catch((err) => {
+                    vm.hasFailure = true;
+                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                })
+
+        },
+
+        getHotels() {
+
+            var vm = this;
+            var url = apiMgr.getHotelsUrl(); 
+
+            axios.get(url)
+                .then(res => {
+                    console.log("getHotelsUrl return status: " + res.status);
+
+                    vm.$store.state.hotels = res.data;
+                    vm.isFetchingHotels = false;
                 })
                 .catch((err) => {
                     vm.hasFailure = true;

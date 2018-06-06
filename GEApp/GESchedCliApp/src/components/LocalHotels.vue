@@ -1,6 +1,23 @@
 <template>
-  <div class="LocalHotels">
-     {{ msg }}
+  <div class="container">
+    <p>{{ description }}</p>
+
+    <br/>
+
+    <div v-for="(hotel, index) in hotels" :key="index" width="100%">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title">{{hotel.name}}</h6>
+          <p class="card-text" v-for="(line, index) in hotel.address" :key="index">
+            {{line}}
+          </p>
+          <p class="card-text" :hidden="hotel.phone == null ||hotel.phone == ''">phone: {{hotel.phone}}</p>
+          <p class="card-text" :hidden="hotel.fax == null ||hotel.fax == ''">Fax: {{hotel.fax}}</p>
+          <p class="card-text" :hidden="hotel.corpRates == null ||hotel.corpRates == ''">Discount: {{hotel.corpRates}}</p>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -9,7 +26,8 @@ export default {
   data () {
     return {
       title: this.$store.state.appConfig.localHotelsTitle,
-      msg: this.$store.state.appConfig.localHotelsDetail
+      description: this.$store.state.appConfig.localHotelsDetail,
+      hotels: this.$store.state.hotels
     }
   },
 
@@ -23,9 +41,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-div {
+.container {
   display: inline-block;
-  margin: 20px 20px;
+  margin-top: 24px;
 }
-
 </style>
