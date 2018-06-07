@@ -3,23 +3,27 @@
 const appRoot = require('app-root-path');
 const appConfig = require(`${appRoot}/server.config`); // Load app configuration settings.
 
-const requestHelper = require(`${appRoot}/server-api/requestHelper`);
+const httpRequestHelper = require(`${appRoot}/server-api/httpRequestHelper`);
 const logger = require(`${appRoot}/server-api/logger`);
 const getHotelType = require(`${appRoot}/server-api/models/hotelModel`);
 
 
+// GET Hotels
+// Sample GET requests:
+// http://localhost:9090/api/hotels
+// http://localhost:9090/api/hotels?orderBy=seqNum:1
 
 exports.getHotels = function (req, res) {
     logger.verbose('hotelController.getHotels begin');
 
-    let siteCode = requestHelper.getSite(req);
+    let siteCode = httpRequestHelper.getSite(req);
     let Hotel = getHotelType(siteCode);
 
     var sortDirective = { "name": 1}; //default, order by name, ascending
-    if (req.query.orderby != null) {
-        if (req.query.orderby.toLowerCase() == 'seqnum:1') {
+    if (req.query.orderBy != null) {
+        if (req.query.orderBy == 'seqNum:1') {
             sortDirective = { "seqNum": 1};  //ascending order
-        } else if (req.query.orderby.toLowerCase() == 'seqnum:-1') {
+        } else if (req.query.orderBy == 'seqNum:-1') {
             sortDirective = { "seqNum": -1}; //descending order
         }
     }
@@ -43,22 +47,21 @@ exports.getHotels = function (req, res) {
 };
 
 
-
+// POST (create) a new hotel.
 exports.createHotel = function (req, res) {
     logger.verbose('hotelController.createHotel begin');
 
     try {
-        let siteCode = requestHelper.getSite(req); 
+        let siteCode = httpRequestHelper.getSite(req); 
         let Hotel = getHotelType(siteCode);
         var newHotel = new Hotel(req.body);
 
         var validationErr = newHotel.validateSync();
         if (validationErr != null) {
             for (var prop in validationErr.errors) {
-                logger.error(`hotelController.createHotel - create new Hotel validation error: ${validationErr.errors[prop]}`);
+                logger.error(`hotelController.createHotel - got create new Hotel validation error: ${validationErr.errors[prop]}`);
             }
-            var errMsg = `hotelController.createHotel - create new Hotel failed validation. ${validationErr}`;
-            logger.error(errMsg);
+
             res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST
             return;
         }
@@ -71,26 +74,25 @@ exports.createHotel = function (req, res) {
     }
 
     newHotel.save()
-    .then((hotel) => {
-        logger.info(`hotelController.createHotel - Hotel.save success. About to send back http response with hotel called ${hotel}`);
-        res.status(201).json(hotel); // 201 - CREATED
-    })
-    .catch((err) => {
-        var errMsg = `hotelController.createHotel - Hotel.save failed. Error: ${err}`
-        logger.error(errMsg);
-        res.status(500).json({ error: errMsg }); // 500 - INTERNAL SERVER ERROR
-    });
+        .then((hotel) => {
+            logger.info(`hotelController.createHotel - Hotel.save success. About to send back http response with hotel called ${hotel}`);
+            res.status(201).json(hotel); // 201 - CREATED
+        })
+        .catch((err) => {
+            var errMsg = `hotelController.createHotel - Hotel.save failed. Error: ${err}`
+            logger.error(errMsg);
+            res.status(500).json({ error: errMsg }); // 500 - INTERNAL SERVER ERROR
+        });
 
 };
 
 
-
+// PUT (update) a hotel using it's id.
 exports.updateHotel = function (req, res) {
     logger.verbose('hotelController.updateHotel begin');
 
     try {
-
-        let siteCode = requestHelper.getSite(req);
+        let siteCode = httpRequestHelper.getSite(req);
         var Hotel = getHotelType(siteCode);
 
         var toUpdateHotel = new Hotel(req.body);
@@ -100,8 +102,7 @@ exports.updateHotel = function (req, res) {
             for (var prop in validationErr.errors) {
                 logger.error(`hotelController.updateHotel - the updated Hotel validation error: ${validationErr.errors[prop]}`);
             }
-            var errMsg = `hotelController.updateHotel - the updated Hotel failed validation. ${validationErr}`;
-            logger.error(errMsg);
+
             res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST
             return;
         }
@@ -113,17 +114,9 @@ exports.updateHotel = function (req, res) {
         return;
     };
 
-    // Create a set of object properties to be updated and excluding the special ones such as timestamps and version managed internally by MongoDB.
-    var updateWith = {
-        name: toUpdateHotel.name, 
-        address: toUpdateHotel.address 
-    };
-    if (toUpdateHotel.phone != null) { updateWith.phone = toUpdateHotel.phone; }
-    if (toUpdateHotel.corporateRates != null) { updateWith.corporateRates = toUpdateHotel.corporateRates; }
-    if (toUpdateHotel.seqNum != null) { updateWith.seqNum = toUpdateHotel.seqNum; }
+    toUpdateHotel.updatedAt = Date.now();
 
-
-    Hotel.update({"_id": toUpdateHotel._id }, { $set: updateWith }, function (err) {
+    Hotel.update({"_id": toUpdateHotel._id }, { $set: toUpdateHotel }, function (err) {
         if (err) {
             var errMsg = `hotelController.updateHotel - Hotel.find failed. Error: ${err}`
             logger.error(errMsg);
@@ -153,11 +146,11 @@ exports.updateHotel = function (req, res) {
 };
 
 
-
+// GET a hotel by id.
 exports.getHotel = function (req, res) {
     logger.verbose('hotelController.getHotel begin');
 
-    let siteCode = requestHelper.getSite(req);
+    let siteCode = httpRequestHelper.getSite(req);
     let Hotel = getHotelType(siteCode);
 
     Hotel.findById(req.params.id)
@@ -180,11 +173,11 @@ exports.getHotel = function (req, res) {
 };
 
 
-
+// DELETE a hotel by id.
 exports.deleteHotel = function (req, res) {
     logger.verbose('hotelController.deleteHotel begin');
 
-    let siteCode = requestHelper.getSite(req);
+    let siteCode = httpRequestHelper.getSite(req);
     let Hotel = getHotelType(siteCode);
 
     Hotel.findByIdAndRemove(req.params.id)

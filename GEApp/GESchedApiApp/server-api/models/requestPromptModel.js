@@ -56,18 +56,25 @@ const RequestPromptSchema = new Schema({
         type: Number,
         required: [true, 'Sequence Number is required!']
     },
+
     type: {
         type: String,
         required: [true, 'Type is required!']
     },
+
     label: {
         type: String,
         required: [true, 'Label is required!']
     },
+
     inputType: {
-        type: InputTypeSchema,
-        required: [true, 'Input Type is required!']
-        // object of InputType
+        type: InputTypeSchema // object of InputType
+        //required: [true, 'Input Type is required!']
+    },
+
+    screenNum: {
+        type: Number,
+        required: [true, 'Sequence Number is required!']
     },
    // subInputType: {
       //  type: InputType,
@@ -76,13 +83,7 @@ const RequestPromptSchema = new Schema({
     dependsOn: {
         type: String,
         ctrlDataId: Number
-    },
-    screenNum: { 
-        type: Number,
-        required: [true, 'Screen Number is required!']
     }
-    
-
 });
 
 

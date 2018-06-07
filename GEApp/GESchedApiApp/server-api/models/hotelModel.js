@@ -24,7 +24,11 @@ const HotelSchema = new Schema({
         type: String
     },
 
-    corpRates: {
+    fax: {
+        type: String
+    },
+
+    discount: {
         type: String
     },
 

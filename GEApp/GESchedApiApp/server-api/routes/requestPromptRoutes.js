@@ -8,19 +8,19 @@ var requestPromptController = require('../controllers/requestPromptController');
 
 module.exports = function (app) {
 
-    logger.verbose('Setting up API routes for the RequestPrompt entity.');
+    logger.verbose('Setting up RESTful API routes for the RequestPrompt entity.');
 
     try {
         // Note: For POST, PUT & PATCH the client caller must set a http header with
         // Content-Type = application/json; charset=UTF-8
 
-        app.route('/api/RequestPrompts')
+        app.route('/api/requestPrompts')
             .get(requestPromptController.getRequestPrompts)
             .post(requestPromptController.createRequestPrompt)
             .put(requestPromptController.updateRequestPrompt)
             .patch(requestPromptController.updateRequestPrompt);
 
-        app.route('/api/RequestPrompts/:id')
+        app.route('/api/requestPrompts/:id')
             .get(requestPromptController.getRequestPrompt)
             .delete(requestPromptController.deleteRequestPrompt);
             

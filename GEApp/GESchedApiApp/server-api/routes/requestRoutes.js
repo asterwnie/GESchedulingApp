@@ -8,7 +8,7 @@ var requestController = require('../controllers/requestController');
 
 module.exports = function (app) {
 
-    logger.verbose('Set up API routes for the Request entity.');
+    logger.verbose('Setting up RESTful API routes for the Request entity.');
 
     try {
         // Note: For POST, PUT & PATCH the client caller must set a http header with

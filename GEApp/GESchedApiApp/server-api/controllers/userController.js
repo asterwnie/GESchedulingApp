@@ -3,7 +3,7 @@
 const appRoot = require('app-root-path');
 const appConfig = require(`${appRoot}/server.config`); // Load app configuration settings.
 
-const requestHelper = require(`${appRoot}/server-api/requestHelper`);
+const httpRequestHelper = require(`${appRoot}/server-api/httpRequestHelper`);
 const logger = require(`${appRoot}/server-api/logger`);
 const getUserType = require(`${appRoot}/server-api/models/userModel`);
 const getLoginType = require(`${appRoot}/server-api/models/loginModel`);
@@ -13,14 +13,14 @@ const getLoginType = require(`${appRoot}/server-api/models/loginModel`);
 exports.getUsers = function (req, res) {
     logger.verbose('userController.getUsers begin');
 
-    let siteCode = requestHelper.getSite(req);
+    let siteCode = httpRequestHelper.getSite(req);
     let User = getUserType(siteCode);
 
     var sortDirective = { "name": 1}; //default, order by name, ascending
 
     var filterDirective = {}; //default, no filering
-    if (req.query.namecontains != null) {    
-        const regExpression = new RegExp(`(${req.query.namecontains})`);
+    if (req.query.nameContains != null) {    
+        const regExpression = new RegExp(`(${req.query.nameContains})`);
         filterDirective = { "name": regExpression};        
     }
 
@@ -42,7 +42,7 @@ exports.createUser = function (req, res) {
     logger.verbose('userController.createUser begin');
 
     try {
-        let siteCode = requestHelper.getSite(req); 
+        let siteCode = httpRequestHelper.getSite(req); 
         let User = getUserType(siteCode);
         var newUser = new User(req.body);
 
@@ -51,8 +51,6 @@ exports.createUser = function (req, res) {
             for (var prop in validationErr.errors) {
                 logger.error(`userController.createUser - create new User validation error: ${validationErr.errors[prop]}`);
             }
-            var errMsg = `userController.createUser - create new User failed validation. ${validationErr}`;
-            logger.error(errMsg);
             res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST
             return;
         }
@@ -65,26 +63,25 @@ exports.createUser = function (req, res) {
     }
 
     newUser.save()
-    .then((user) => {
-        logger.info(`userController.createUser - User.save success. About to send back http response with user called ${user}`);
-        res.status(201).json(user); // 201 - CREATED
-    })
-    .catch((err) => {
-        var errMsg = `userController.createUser - User.save failed. Error: ${err}`
-        logger.error(errMsg);
-        res.status(500).json({ error: errMsg }); // 500 - INTERNAL SERVER ERROR
-    });
+        .then((user) => {
+            logger.info(`userController.createUser - User.save success. About to send back http response with user called ${user}`);
+            res.status(201).json(user); // 201 - CREATED
+        })
+        .catch((err) => {
+            var errMsg = `userController.createUser - User.save failed. Error: ${err}`
+            logger.error(errMsg);
+            res.status(500).json({ error: errMsg }); // 500 - INTERNAL SERVER ERROR
+        });
 
 };
 
 
-
+// PUT (update) a user using it's id.
 exports.updateUser = function (req, res) {
     logger.verbose('userController.updateUser begin');
 
     try {
-
-        let siteCode = requestHelper.getSite(req);
+        let siteCode = httpRequestHelper.getSite(req);
         var User = getUserType(siteCode);
 
         var toUpdateUser = new User(req.body);
@@ -94,8 +91,6 @@ exports.updateUser = function (req, res) {
             for (var prop in validationErr.errors) {
                 logger.error(`userController.updateUser - the updated User validation error: ${validationErr.errors[prop]}`);
             }
-            var errMsg = `userController.updateUser - the updated User failed validation. ${validationErr}`;
-            logger.error(errMsg);
             res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST
             return;
         }
@@ -107,17 +102,9 @@ exports.updateUser = function (req, res) {
         return;
     };
 
-    // Create a set of object properties to be updated and excluding the special ones such as timestamps and version managed internally by MongoDB.
-    var updateWith = {
-        name: toUpdateUser.name, 
-        address: toUpdateUser.address 
-    };
-    if (toUpdateUser.phone != null) { updateWith.phone = toUpdateUser.phone; }
-    if (toUpdateUser.corporateRates != null) { updateWith.corporateRates = toUpdateUser.corporateRates; }
-    if (toUpdateUser.seqNum != null) { updateWith.seqNum = toUpdateUser.seqNum; }
+    toUpdateUser.updatedAt = Date.now();
 
-
-    User.update({"_id": toUpdateUser._id }, { $set: updateWith }, function (err) {
+    User.update({"_id": toUpdateUser._id }, { $set: toUpdateUser }, function (err) {
         if (err) {
             var errMsg = `userController.updateUser - User.find failed. Error: ${err}`
             logger.error(errMsg);
@@ -140,18 +127,16 @@ exports.updateUser = function (req, res) {
                 logger.error(errMsg);
                 res.status(500).json({ error: errMsg }); // 500 - INTERNAL SERVER ERROR 
             });
-
         }
     });
-
 };
 
 
-
+// GET a user by id.
 exports.getUser = function (req, res) {
     logger.verbose('userController.getUser begin');
 
-    let siteCode = requestHelper.getSite(req);
+    let siteCode = httpRequestHelper.getSite(req);
     let User = getUserType(siteCode);
 
     User.findById(req.params.id)
@@ -174,11 +159,11 @@ exports.getUser = function (req, res) {
 };
 
 
-
+// DELETE a user by id.
 exports.deleteUser = function (req, res) {
     logger.verbose('userController.deleteUser begin');
 
-    let siteCode = requestHelper.getSite(req);
+    let siteCode = httpRequestHelper.getSite(req);
     let User = getUserType(siteCode);
 
     User.findByIdAndRemove(req.params.id)
@@ -200,12 +185,12 @@ exports.deleteUser = function (req, res) {
 };
 
 
-
+// Do user login
 exports.loginUser = function (req, res) {
     logger.verbose('userController.loginUser begin');
 
     try {
-        var siteCode = requestHelper.getSite(req);
+        var siteCode = httpRequestHelper.getSite(req);
         var User = getUserType(siteCode);
         var Login = getLoginType(siteCode);
 

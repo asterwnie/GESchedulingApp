@@ -27,13 +27,15 @@ var totalNumOfUsers = 0;
 var totalNumOfUsersCreated = 0;
 
 const delyInSecs = 3;
-setInterval(() => doSheetImport(), delyInSecs * 1000); // Ensures db connection is established in getUserType since it's an async operation.
+const timer = setInterval(() => doUsersImport(), delyInSecs * 1000); // Ensures db connection is established in getUserType since it's an async operation.
 
 
 
-function doSheetImport() {
+function doUsersImport() {
 
     try {
+        clearInterval(timer);
+
         const jsonData = fs.readFileSync(`./server-api/dataImports/dataFiles/${fileName}`);
         const usersFromSheet = JSON.parse(jsonData);
 

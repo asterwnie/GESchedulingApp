@@ -23,12 +23,14 @@ if (args.length == 3 && args[2] != null) { siteCode = args[2]; }
 let User = getUserType(siteCode);
 
 const delyInSecs = 3;
-setInterval(() => deleteUsers(), delyInSecs * 1000); // Ensures db connection is established in getUserType since it's an async operation.
+const timer = setInterval(() => deleteUsers(), delyInSecs * 1000); // Ensures db connection is established in getUserType since it's an async operation.
 
 
 
 function deleteUsers() {
 
+    clearInterval(timer);
+    
     // Match any name therefore, deleting all.
     User.deleteMany({ name: /(.*?)/ }) 
         .then(function () {

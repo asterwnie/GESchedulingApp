@@ -3,7 +3,7 @@
 const appRoot = require('app-root-path');
 const appConfig = require(`${appRoot}/server.config`); // Load app configuration settings.
 
-const requestHelper = require(`${appRoot}/server-api/requestHelper`);
+const httpRequestHelper = require(`${appRoot}/server-api/httpRequestHelper`);
 const logger = require(`${appRoot}/server-api/logger`);
 const getRequestPromptType = require(`${appRoot}/server-api/models/requestPromptModel`);
 
@@ -12,7 +12,7 @@ const getRequestPromptType = require(`${appRoot}/server-api/models/requestPrompt
 exports.getRequestPrompts = function (req, res) {
     logger.verbose('requestPromptController.getRequestPrompts begin');
 
-    let siteCode = requestHelper.getSite(req);
+    let siteCode = httpRequestHelper.getSite(req);
     let RequestPrompt = getRequestPromptType(siteCode);
 
     var sortDirective = { "seqNum": 1}; //default, order by sequence number, ascending
@@ -41,7 +41,7 @@ exports.createRequestPrompt = function (req, res) {
     logger.verbose('requestPromptController.createRequestPrompt begin');
 
     try {
-        let siteCode = requestHelper.getSite(req); 
+        let siteCode = httpRequestHelper.getSite(req); 
         let RequestPrompt = getRequestPromptType(siteCode);
         var newRequestPrompt = new RequestPrompt(req.body);
 
@@ -83,7 +83,7 @@ exports.updateRequestPrompt = function (req, res) {
 
     try {
 
-        let siteCode = requestHelper.getSite(req);
+        let siteCode = httpRequestHelper.getSite(req);
         var RequestPrompt = getRequestPromptType(siteCode);
 
         var toUpdateRequestPrompt = new RequestPrompt(req.body);
@@ -106,16 +106,7 @@ exports.updateRequestPrompt = function (req, res) {
         return;
     };
 
-    //NEED TO REVISIT THIS UPDATE SPECIFIC TO REQUEST PROMPT*************************************
-    // Create a set of object properties to be updated and excluding the special ones such as timestamps and version managed internally by MongoDB.
- /*   var updateWith = {
-        name: toUpdateRequestPrompt.name, 
-        address: toUpdateRequestPrompt.address 
-    };
-    if (toUpdateRequestPrompt.phone != null) { updateWith.phone = toUpdateRequestPrompt.phone; }
-    if (toUpdateRequestPrompt.corporateRates != null) { updateWith.corporateRates = toUpdateRequestPrompt.corporateRates; }
-    if (toUpdateRequestPrompt.seqNum != null) { updateWith.seqNum = toUpdateRequestPrompt.seqNum; }*/
-
+    toUpdateRequestPrompt.updatedAt = Date.now();
 
     RequestPrompt.update({"_id": toUpdateRequestPrompt._id }, { $set: updateWith }, function (err) {
         if (err) {
@@ -151,7 +142,7 @@ exports.updateRequestPrompt = function (req, res) {
 exports.getRequestPrompt = function (req, res) {
     logger.verbose('requestPromptController.getRequestPrompt begin');
 
-    let siteCode = requestHelper.getSite(req);
+    let siteCode = httpRequestHelper.getSite(req);
     let RequestPrompt = getRequestPromptType(siteCode);
 
     RequestPrompt.findById(req.params.id)
@@ -178,7 +169,7 @@ exports.getRequestPrompt = function (req, res) {
 exports.deleteRequestPrompt = function (req, res) {
     logger.verbose('requestPromptController.deleteRequestPrompt begin');
 
-    let siteCode = requestHelper.getSite(req);
+    let siteCode = httpRequestHelper.getSite(req);
     let RequestPrompt = getRequestPromptType(siteCode);
 
     RequestPrompt.findByIdAndRemove(req.params.id)

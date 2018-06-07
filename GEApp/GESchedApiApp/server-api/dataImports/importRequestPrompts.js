@@ -21,7 +21,7 @@ var siteCode = appConfig.defaultSite; // The current default in HLS-MA in server
 // Note: currently in VS Code debug mode you have to rely on using the appConfig.defaultSite setting.
 if (args.length == 3 && args[2] != null) { siteCode = args[2]; }
 
-const fileName = `requestPrompts-${siteCode}.txt`;
+const fileName = `request-prompts-${siteCode}.txt`;
 
 let RequestPrompt = getRequestPromptType(siteCode);
 
@@ -29,11 +29,11 @@ var totalNumOfRequestPrompts = 0;
 var totalNumOfRequestPromptsCreated = 0;
 
 const delyInSecs = 3;
-const timer = setInterval(() => doSheetImport(), delyInSecs * 1000); // Ensures db connection is established in getRequestPromptType since it's an async operation.
+const timer = setInterval(() => doRequestPromptsImport(), delyInSecs * 1000); // Ensures db connection is established in getRequestPromptType since it's an async operation.
 
 
 
-function doSheetImport() {
+function doRequestPromptsImport() {
 
     try {
         clearInterval(timer);
@@ -42,8 +42,16 @@ function doSheetImport() {
         
         var result = extractRequestPromptItems(fileData);
         if (result.success) {
-            console.log(`Total number of requestPrompts parsed: ${result.requestPrompts.length}`);
-            console.log(result.requestPrompts);
+
+            logger.info(`Total number of requestPrompts parsed: ${result.requestPrompts.length}`);
+
+            if (result.requestPrompts.length == 0) {
+                logger.info('No requestPrompts got extracted from the data file!');
+                process.exit();
+            }
+         
+            logger.info(result.requestPrompts);
+
             result.requestPrompts.forEach((requestPrompt) => createRequestPrompt(requestPrompt));
         } else {
             process.exit();
@@ -71,7 +79,7 @@ function extractRequestPromptItems(fileData) {
 
         logger.info(`Processing line: ${line}`);
 
-        directive = "--requestPrompt.Name:";
+        directive = "--Prompt.Type.Standard";
         if (line.search(directive) > -1) {            
             // Complete and store the previous pending requestPrompt object if exist.
             if (newRequestPrompt != null) {
@@ -82,57 +90,34 @@ function extractRequestPromptItems(fileData) {
                 }
             }
 
-            var requestPromptName = line.replace(directive, "").trim();
-            // Start a new requestPrompt instance to gather its properties.
-            if (requestPromptName != "") {
+            currentItemSeq += 1;
 
-                currentItemSeq += 1;
-
-                newRequestPrompt = { 
-                    seqNum: currentItemSeq,
-                    name: requestPromptName 
-                }
-            } else {
-                logger.error("ERROR: The requestPrompt name is required!");
-                errorEncountered = true;
-                return false; // Return false to stop additional line processing.
+            newRequestPrompt = { 
+                type: "standard",
+                seqNum: currentItemSeq
             }
-
             lineProcessed = true;
         }
 
-        directive = "--requestPrompt.Address:"; // Note, there can be multiple address lines.
+        directive = "--Prompt.Label:";
         if (!lineProcessed && line.search(directive) > -1) {
-            var requestPromptAddressLine = line.replace(directive, "").trim();
-            if (requestPromptAddressLine != "") {
-                if (!newRequestPrompt.hasOwnProperty("address")) {
-                    newRequestPrompt.address = []; // Create the address line array.               
+            var requestPromptLabel = line.replace(directive, "").trim();
+            if (requestPromptLabel != "") {
+                newRequestPrompt.label = requestPromptLabel;
+            }
+        }
+
+        directive = "--Prompt.OnScreen:";
+        if (!lineProcessed && line.search(directive) > -1) {
+            var requestOnScreeen = line.replace(directive, "").trim();
+            if (requestOnScreeen != "") {
+                try {
+                newRequestPrompt.screenNum = parseInt(requestOnScreeen);
+                } catch (err) {
+                    logger.error(`ERROR: Unable to parse ${requestOnScreeen} to a number!`);
+                    errorEncountered = true;
+                    return false; // Return false to stop additional line processing.
                 }
-                newRequestPrompt.address.push(requestPromptAddressLine);
-            }
-        }
-
-        directive = "--requestPrompt.Phone:";
-        if (!lineProcessed && line.search(directive) > -1) {
-            var requestPromptPhone = line.replace(directive, "").trim();
-            if (requestPromptPhone != "") {
-                newRequestPrompt.phone = requestPromptPhone;
-            }
-        }
-
-        directive = "--requestPrompt.Fax:";
-        if (!lineProcessed && line.search(directive) > -1) {
-            var requestPromptFax = line.replace(directive, "").trim();
-            if (requestPromptFax != "") {
-                newRequestPrompt.fax = requestPromptFax;
-            }
-        }
-
-        directive = "--requestPrompt.CorpRates:";
-        if (!lineProcessed && line.search(directive) > -1) {
-            var requestPromptCorpRates = line.replace(directive, "").trim();
-            if (requestPromptCorpRates != "") {
-                newRequestPrompt.corpRates = requestPromptCorpRates;
             }
         }
 
@@ -173,12 +158,12 @@ function ValidateAndCollectRequestPrompt(newRequestPrompt, requestPromptItems) {
 
 
 function ValidateRequestPrompt(newRequestPrompt) {
-    if (!newRequestPrompt.hasOwnProperty("name") || newRequestPrompt.name == "") {
-        logger.error("ERROR: The requestPrompt name is required!");
+    if (!newRequestPrompt.hasOwnProperty("label") || newRequestPrompt.name == "") {
+        logger.error("ERROR: The request Prompt.Label is required!");
         return false;
     }
-    if (!newRequestPrompt.hasOwnProperty("address") || newRequestPrompt.address.length == 0) {
-        logger.error("ERROR: The requestPrompt address is required!");
+    if (!newRequestPrompt.hasOwnProperty("screenNum") || newRequestPrompt.screenNum < 1) {
+        logger.error("ERROR: The request Prompt.OnScreen property is required!");
         return false;
     }
     return true;
