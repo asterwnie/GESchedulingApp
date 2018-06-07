@@ -12,7 +12,7 @@
     {
         "seqNum": 3,
         "type": "attention",
-        "text": "Non-GE visitors must sign in and out at reception.   List of attendees is required to be provided to reception prior to arrival and emailed to: ResultsWayCommunityReception@ge.com"
+        "text": "Non-GE visitors must sign in and out at reception. List of attendees is required to be provided to reception prior to arrival and emailed to: ResultsWayCommunityReception@ge.com"
     },
     {
         "seqNum": 4,
@@ -57,7 +57,7 @@
     {
         "seqNum": 12,
         "type": "guestWiFiAccess",
-        "text": "The GE host will provide the password (key) by going to https://guest.ge.com."
+        "text": "The GE host will provide the password (key) by going to: [https://guest.ge.com]"
     },
     {
         "seqNum": 13,
@@ -77,7 +77,7 @@
     {
         "seqNum": 16,
         "type": "doFirst",
-        "text": "To reserve the Forum for an event:  check the Results Way site calendar in the GAL at ~Health MBO Results Way to see if it is available. For all other conference and training rooms check the GAL for the specific location and reserve the conference room for the date & time of your event."
+        "text": "To reserve the Forum for an event:  check the Results Way site calendar in the GAL at [Health MBO Results Way] to see if it is available. For all other conference and training rooms check the GAL for the specific location and reserve the conference room for the date & time of your event."
     },
     {
         "seqNum": 17,

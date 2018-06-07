@@ -14,7 +14,7 @@
             <!--display each item-->
            <!-- <h6 class="alert-heading">Required</h6>-->
             <!--<hr>-->
-            {{ note.text }}
+            <span class="text-center" v-html="note.text"></span>
           </template>
           </div>
         </div>
