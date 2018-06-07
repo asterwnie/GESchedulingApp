@@ -1,18 +1,24 @@
 <template>
   <div>
-    <ul>
-      <!--For each note in noteItems-->
-	    <div v-for="(note, index) in noteItems" :key="index" :hidden="note.type != 'attention'">
-        <!--if the object is an array,-->
-	      <template v-if="note.type == 'attention'">
-          <!--display each item-->
-	        <li>{{ note.text }}</li>
-	      </template>
-	    </div>
-    </ul>
+    <div class="container-fluid" style="width:100%">
+      <div class="row">
+        <div class="col col-sm-1 col-md-2 col-lg-4"></div>
+        <div class="col col-sm-10 col-md-8 col-lg-4" style="width:100%;">
+          <!--For each note in noteItems-->
+          <div style="padding:10px; width:100%" class="alert alert-warning card" v-for="(note, index) in noteItems" :key="index" :hidden="note.type != 'attention'">
+            <!--if the object is an array,-->
+            <template v-if="note.type == 'attention'">
+              <!--display each item-->
+              {{ note.text }}
+            </template>
 
-    <div class="fixed-bottom d-flex justify-content-between">
-        <button type="button" class="btn btn-primary btn-sm" @click.prevent="$router.push('submitrequest')">Continue Request ></button>
+          </div>
+        </div>
+        <div class="col col-sm-1 col-md-2 col-lg-4"></div>
+      </div>
+    </div>
+    <div class="fixed-bottom d-flex justify-content-between" style="margin: 10px;">
+      <button type="button" class="btn btn-primary btn-sm" @click.prevent="$router.push('submitrequest')">Continue Request ></button>
     </div>
   </div>
 </template>
@@ -44,7 +50,12 @@ export default {
 <style scoped>
 div {
   display: inline-block;
-  margin: 16px;
-  margin-right: 50px;
+  /*margin: 10px;*/
+  
+}
+.container{
+  -webkit-flex-direction: row;
+  flex-direction: column;
+  display: flex;
 }
 </style>

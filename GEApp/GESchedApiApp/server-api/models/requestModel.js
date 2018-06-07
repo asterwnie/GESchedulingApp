@@ -12,6 +12,7 @@ const HotelSchema = new Schema({
 
     title: {
         type: String,
+<<<<<<< HEAD
         required: [true, 'Title name is required!']
     },
 
@@ -23,10 +24,24 @@ const HotelSchema = new Schema({
     reqestName: {
         type: String,
         required: [true, 'Request Name is required!']
+=======
+        required: [true, 'Title is required!']
+    },
+
+    requestEmail: {
+        type: String,
+        required: [true, 'Request email is required!']
+    },
+
+    requesterName: {
+        type: String,
+        required: [true, 'Requester name is required!']
+>>>>>>> 1d1531b85eb881e7a33ff471e234e2d59fb07c41
     },
 
     numOfGeEmpAttending: {
         type: String,
+<<<<<<< HEAD
         required: [true, 'number of GE employee Attending is required!']
     },
 
@@ -34,6 +49,16 @@ const HotelSchema = new Schema({
         type: String,
         required: [true, 'number of non GE employee  Attending is required!']
     },
+=======
+        required: [true, 'Number of GE Employees attending is required!']
+    },
+
+    numOfNonGeAttending: {
+        type: Number,
+        required: [true, 'Number of Non-GE Employees attending is required!']
+    }
+
+>>>>>>> 1d1531b85eb881e7a33ff471e234e2d59fb07c41
 }, 
 {
     timestamps: true // auto-add createdAt and updatedAt

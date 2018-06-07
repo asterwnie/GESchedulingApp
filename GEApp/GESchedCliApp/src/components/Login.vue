@@ -1,73 +1,77 @@
 <template>
 
-    <div class="containerDiv container">
+    <div class="containerDiv container-fluid" style="width:100%">
+        <div class="row">
+            <div class="col col-sm-1 col-md-2 col-lg-4"></div>
+            <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%">
+                <div>
+                    <h4 class="display-8 text-center" v-html="$store.state.appConfig.appTitle"></h4>
+                    <br>
 
-    <div class="container">
-    <h4 class="display-8 text-center" v-html="$store.state.appConfig.appTitle"></h4>
-    <br>
+                    <div>
+                        <div class="pagination-centered"><img src="@/assets/ge-monogram.svg" alt="header" /></div>
+                        <div id="loading" class="pagination-centered" :hidden="!isLoading||hasFailure">
+                            <br>
+                            <br>
+                            <i class="fas fa-circle-notch fa-spin fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
 
-    <div class="row-fluid">
-    <div class="span12 pagination-centered"><img src="@/assets/ge-monogram.svg" alt="header" /></div>
-    <div id="loading" class="span12 pagination-centered" :hidden="!isLoading||hasFailure">
-        <br>
-        <br>
-        <i class="fas fa-circle-notch fa-spin fa-lg"></i>
+                <br>
+                <br>
+                <div id="loginUI" :hidden="isLoading" style="width:100%">
+
+
+                        <form class="needs-validation" novalidate>
+
+                        <div class="mb-3">
+                            <label for="requesterEmail">Email</label>
+                            <input type="email" class="form-control form-control-sm" 
+                                    id="requesterEmail" 
+                                    v-model.lazy="requesterEmail"                    
+                                    placeholder="you@example.com">
+                            <p v-if="!$v.requesterEmail.email && canShowError" class="text-danger">Please enter a valid email address.</p>
+                            <p v-if="!$v.requesterEmail.required  && canShowError" class="text-danger">A email address is required.</p>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="accessCode">Access Code</label>
+                            <input type="password" class="form-control form-control-sm" 
+                                    id="accessCode" 
+                                    v-model.lazy="accessCode">                 
+                            <p v-if="!$v.accessCode.required && canShowError" class="text-danger">The access code is required.</p>
+                        </div>
+
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="remember-me" value="remember-me" v-model="rememberMeChecked">
+                            <label class="custom-control-label" for="remember-me">Remember me</label>
+                        </div>
+                        <br/>
+                        <div class="w-25">
+                            <button type="submit" 
+                                    class="btn btn-primary btn-sm btn-block"
+                                    :disabled="isSubmitting"
+                                    @click.prevent="submit"
+                            >Submit</button>
+                        </div>
+                        <br/>
+                        
+                        </form>
+                    </div>
+            
+                    <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
+
+                    <br>
+                    <div style="color:gray">
+                        <h4 class="text-center" v-html="$store.state.appConfig.siteName"></h4>
+                        <h6 class="text-center" v-html="$store.state.appConfig.siteAddress"></h6>
+                        <br>
+                    </div>
+
+            </div>
+            <div class="col col-sm-1 col-md-2 col-lg-4"></div>
         </div>
-    </div>
-    </div>
-    <br>
-    <br>
-    <div id="loginUI" class="row" :hidden="isLoading">
-    <div class="col-md-2 order-md-1"></div>
-    <div class="col-md-8 order-md-2">
-
-        <form class="needs-validation" novalidate>
-
-        <div class="mb-3">
-            <label for="requesterEmail">Email</label>
-            <input type="email" class="form-control form-control-sm" 
-                    id="requesterEmail" 
-                    v-model.lazy="requesterEmail"                    
-                    placeholder="you@example.com">
-            <p v-if="!$v.requesterEmail.email && canShowError" class="text-danger">Please enter a valid email address.</p>
-            <p v-if="!$v.requesterEmail.required  && canShowError" class="text-danger">A email address is required.</p>
-        </div>
-
-        <div class="mb-3">
-            <label for="accessCode">Access Code</label>
-            <input type="password" class="form-control form-control-sm" 
-                    id="accessCode" 
-                    v-model.lazy="accessCode">                 
-            <p v-if="!$v.accessCode.required && canShowError" class="text-danger">The access code is required.</p>
-        </div>
-
-        <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="remember-me" value="remember-me" v-model="rememberMeChecked">
-            <label class="custom-control-label" for="remember-me">Remember me</label>
-        </div>
-        <br/>
-        <div class="w-25">
-            <button type="submit" 
-                    class="btn btn-primary btn-sm btn-block"
-                    :disabled="isSubmitting"
-                    @click.prevent="submit"
-            >Submit</button>
-        </div>
-        <br/>
-        
-        </form>
-    </div>
-
-    </div>
-  
-    <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
-
-    <br>
-    <div style="color:gray">
-        <h4 class="text-center" v-html="$store.state.appConfig.siteName"></h4>
-        <h6 class="text-center" v-html="$store.state.appConfig.siteAddress"></h6>
-        <br>
-    </div>
     </div>
 </template>
 
@@ -289,5 +293,6 @@ export default {
 .containerDiv {
   display: inline-block;
   margin-top: 16px;
+
 }
 </style>
