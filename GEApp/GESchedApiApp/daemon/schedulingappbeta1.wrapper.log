@@ -46,3 +46,19 @@
 2018-05-25 18:12:57 - Send SIGINT 12408
 2018-05-25 18:12:57 - SIGINT to 12408 failed - Killing as fallback
 2018-05-25 18:12:57 - Finished schedulingappbeta1.exe
+2018-06-06 14:29:33 - Starting C:\Program Files\nodejs\node.exe  --harmony --max_old_space_size=4096 C:\Users\jacknip\AppData\Roaming\npm\node_modules\node-windows\lib\wrapper.js --file C:\GESchedulingApp\GESchedulingApp\GEApp\GESchedApiApp\server.js --log "SchedulingAppBeta1 wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2018-06-06 14:29:33 - Started 15920
+2018-06-06 15:06:37 - Stopping schedulingappbeta1.exe
+2018-06-06 15:06:37 - ProcessKill 15920
+2018-06-06 15:06:37 - Found child process: 3792 Name: conhost.exe
+2018-06-06 15:06:37 - Found child process: 9232 Name: node.exe
+2018-06-06 15:06:38 - Stopping process 3792
+2018-06-06 15:06:38 - Send SIGINT 3792
+2018-06-06 15:06:38 - SIGINT to 3792 failed - Killing as fallback
+2018-06-06 15:06:38 - Stopping process 9232
+2018-06-06 15:06:38 - Send SIGINT 9232
+2018-06-06 15:06:38 - SIGINT to 9232 failed - Killing as fallback
+2018-06-06 15:06:38 - Stopping process 15920
+2018-06-06 15:06:38 - Send SIGINT 15920
+2018-06-06 15:06:38 - SIGINT to 15920 failed - Killing as fallback
+2018-06-06 15:06:38 - Finished schedulingappbeta1.exe

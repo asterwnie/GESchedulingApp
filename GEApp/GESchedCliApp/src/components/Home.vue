@@ -91,8 +91,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.container {
-  display: inline-block;
-  margin-top: 24px;
-}
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <p>{{ description }}</p>
+    <p>{{ viewDescription }}</p>
 
     <br/>
 
@@ -25,8 +25,8 @@
 export default {
   data () {
     return {
-      title: this.$store.state.appConfig.localHotelsTitle,
-      description: this.$store.state.appConfig.localHotelsDetail,
+      title: this.$store.state.appConfig.hotelsViewTitle,
+      viewDescription: this.$store.state.appConfig.hotelsViewDescription,
       hotels: this.$store.state.hotels
     }
   },
@@ -41,8 +41,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.container {
-  display: inline-block;
-  margin-top: 24px;
-}
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{ msg }}
+    {{ viewDescription }}
   </div>
 </template>
 
@@ -8,8 +8,8 @@
 export default {
   data () {
     return {
-      title: this.$store.state.appConfig.appAboutTitle,
-      msg: this.$store.state.appConfig.appAboutDetail
+      title: this.$store.state.appConfig.aboutViewTitle,
+      viewDescription: this.$store.state.appConfig.aboutViewDescription
     }
   },
 

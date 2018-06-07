@@ -1,6 +1,6 @@
 <template>
   <div class="GuestWiFi">
-     {{ msg }}
+     {{ viewDescription }}
   </div>
 </template>
 
@@ -8,8 +8,8 @@
 export default {
   data () {
     return {
-      title: this.$store.state.appConfig.guestWifiTitle,
-      msg: this.$store.state.appConfig.guestWifiDetail //wrong thing; pull it from notes.json
+      title: this.$store.state.appConfig.guestWifiViewTitle,
+      viewDescription: this.$store.state.appConfig.guestWifiViewDescription
     }
   },
 

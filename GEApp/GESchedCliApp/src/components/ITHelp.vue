@@ -2,9 +2,9 @@
   <div>
     <div>{{ message }}</div>
     <br>
-    <dlv>
+    <div>
     <a id="emailIT" href="mailto:example@website.com?subject=This%20is%20a%20subject&body=message%20goes%20here.%0D%0ASecond line.">Send email to IT Help</a>
-    </dlv>
+    </div>
   </div>
 </template>
 

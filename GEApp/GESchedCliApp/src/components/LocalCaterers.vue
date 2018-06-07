@@ -1,7 +1,9 @@
 <template>
-  <div class="LocalCaterers">
-    <div v-for="(msg, index) in msgList" :key="index">
-        <p>{{ msg }}</p> <!--style this so it has less spacing later-->
+  <div class="container">
+    <p>{{ viewDescription }}</p>
+    <br/>
+    <div v-for="(caterer, index) in caterers" :key="index">
+        <p>{{ caterer }}</p> <!--style this so it has less spacing later-->
     </div>
   </div>
 </template>
@@ -10,8 +12,9 @@
 export default {
   data () {
     return {
-      title: this.$store.state.appConfig.localCaterersTitle,
-      msgList: this.$store.state.appConfig.localCaterersDetail //this message is an array right now
+      title: this.$store.state.appConfig.caterersViewTitle,
+      viewDescription: this.$store.state.appConfig.caterersViewDescription,
+      caterers: this.$store.state.caterers
     }
   },
 
@@ -31,5 +34,4 @@ div {
   display: inline-block;
   margin: 20px 20px;
 }
-
 </style>

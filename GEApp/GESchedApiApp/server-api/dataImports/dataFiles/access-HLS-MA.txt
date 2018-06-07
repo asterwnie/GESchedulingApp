@@ -1,0 +1,12 @@
+--AccessCode.ForUsers: pw123
+--AccessCode.ForUsers: pw456
+
+--AccessCode.ForAdministrators: secret123
+--AccessCode.ForAdministrators: secret007
+
+--Admin.Email: tommylee@somewhere.com
+--Admin.Name: Tommy Lee
+--Admin.Phone: 508-000-000
+
+--Admin.Email: janedoe@somewhere.com
+--Admin.Name: Jane W. Doe
