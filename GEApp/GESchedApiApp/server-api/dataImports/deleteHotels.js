@@ -23,12 +23,14 @@ if (args.length == 3 && args[2] != null) { siteCode = args[2]; }
 let Hotel = getHotelType(siteCode);
 
 const delyInSecs = 3;
-setInterval(() => deleteHotels(), delyInSecs * 1000); // Ensures db connection is established in getHotelType since it's an async operation.
+const timer = setInterval(() => deleteHotels(), delyInSecs * 1000); // Ensures db connection is established in getHotelType since it's an async operation.
 
 
 
 function deleteHotels() {
 
+    clearInterval(timer);
+    
     // Match any name therefore, deleting all.
     Hotel.deleteMany({ name: /(.*?)/ }) 
         .then(function () {

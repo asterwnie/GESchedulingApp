@@ -38,8 +38,8 @@
 export default {
   data () {
     return {
-      title: this.$store.state.appConfig.localHotelsTitle,
-      description: this.$store.state.appConfig.localHotelsDetail,
+      title: this.$store.state.appConfig.hotelsViewTitle,
+      viewDescription: this.$store.state.appConfig.hotelsViewDescription,
       hotels: this.$store.state.hotels
     }
   },

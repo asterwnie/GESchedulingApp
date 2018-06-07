@@ -27,11 +27,11 @@ var totalNumOfHotels = 0;
 var totalNumOfHotelsCreated = 0;
 
 const delyInSecs = 3;
-const timer = setInterval(() => doSheetImport(), delyInSecs * 1000); // Ensures db connection is established in getHotelType since it's an async operation.
+const timer = setInterval(() => doHotelImport(), delyInSecs * 1000); // Ensures db connection is established in getHotelType since it's an async operation.
 
 
 
-function doSheetImport() {
+function doHotelImport() {
 
     try {
         clearInterval(timer);
@@ -40,8 +40,14 @@ function doSheetImport() {
         
         var result = extractHotelItems(fileData);
         if (result.success) {
-            console.log(`Total number of hotels parsed: ${result.hotels.length}`);
-            console.log(result.hotels);
+            logger.info(`Total number of hotels parsed: ${result.hotels.length}`);
+
+            if (result.hotels.length == 0) {
+                logger.info('No hotel got extracted from the data file!');
+                process.exit();
+            }
+            logger.info(result.hotels);
+            
             result.hotels.forEach((hotel) => createHotel(hotel));
         } else {
             process.exit();
@@ -69,7 +75,7 @@ function extractHotelItems(fileData) {
 
         logger.info(`Processing line: ${line}`);
 
-        directive = "--hotel.Name:";
+        directive = "--Hotel.Name:";
         if (line.search(directive) > -1) {            
             // Complete and store the previous pending hotel object if exist.
             if (newHotel != null) {
@@ -99,7 +105,7 @@ function extractHotelItems(fileData) {
             lineProcessed = true;
         }
 
-        directive = "--hotel.Address:"; // Note, there can be multiple address lines.
+        directive = "--Hotel.Address:"; // Note, there can be multiple address lines.
         if (!lineProcessed && line.search(directive) > -1) {
             var hotelAddressLine = line.replace(directive, "").trim();
             if (hotelAddressLine != "") {
@@ -110,7 +116,7 @@ function extractHotelItems(fileData) {
             }
         }
 
-        directive = "--hotel.Phone:";
+        directive = "--Hotel.Phone:";
         if (!lineProcessed && line.search(directive) > -1) {
             var hotelPhone = line.replace(directive, "").trim();
             if (hotelPhone != "") {
@@ -118,7 +124,7 @@ function extractHotelItems(fileData) {
             }
         }
 
-        directive = "--hotel.Fax:";
+        directive = "--Hotel.Fax:";
         if (!lineProcessed && line.search(directive) > -1) {
             var hotelFax = line.replace(directive, "").trim();
             if (hotelFax != "") {
@@ -126,11 +132,11 @@ function extractHotelItems(fileData) {
             }
         }
 
-        directive = "--hotel.CorpRates:";
+        directive = "--Hotel.Discount:";
         if (!lineProcessed && line.search(directive) > -1) {
-            var hotelCorpRates = line.replace(directive, "").trim();
-            if (hotelCorpRates != "") {
-                newHotel.corpRates = hotelCorpRates;
+            var hotelDiscount = line.replace(directive, "").trim();
+            if (hotelDiscount != "") {
+                newHotel.discount = hotelDiscount;
             }
         }
 

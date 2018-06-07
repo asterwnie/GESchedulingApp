@@ -32,9 +32,7 @@
 export default {
   data () {
     return {
-      title: "Do First",
-      //To-Do: fetch these using the REST API
-      //only pull the do first notes
+      title: this.$store.state.appConfig.doFirstViewTitle
     }
   },
 
@@ -47,9 +45,14 @@ export default {
   activated() {
       console.log('DoFirst.vue activated.');
       this.$store.state.currentViewTitle = this.title;
-      this.$store.state.enableNavBar = true;
+      this.$store.state.enableNavBar = true;     
   }
+
 }
+
+// ToDo: Add a method called process text to look for [links] and convert it to html:
+// <a :href="link-goes-here"><span :class="badge badge-info">website</span></a>
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

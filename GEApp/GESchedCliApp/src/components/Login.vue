@@ -53,7 +53,7 @@
                                     class="btn btn-primary btn-sm btn-block"
                                     :disabled="isSubmitting"
                                     @click.prevent="submit"
-                            >Submit</button>
+                            >Login</button>
                         </div>
                         <br/>
                         
@@ -79,6 +79,7 @@
 import axios from 'axios'
 import * as loginContextMgr from '@/common/loginContextMgr.js';
 import * as apiMgr from '@/common/apiMgr.js';
+import * as textTranformer from '@/common/textTranformer.js';
 import { required, email }  from 'vuelidate/lib/validators';
 
 export default {  
@@ -168,7 +169,7 @@ export default {
                 .then(res => {
                     console.log("getNotesUrl return status: " + res.status);
 
-                    vm.$store.state.notes = res.data;
+                    vm.$store.state.notes = textTranformer.tranformNotes(res.data);
                     vm.isFetchingNotes = false;
                 })
                 .catch((err) => {

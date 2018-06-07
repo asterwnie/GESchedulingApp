@@ -5,14 +5,15 @@
         <div class="col col-sm-1 col-md-2 col-lg-4"></div>
         <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%;">
           
-            <div class="GuestWiFi">
-              {{ msg }}
-            </div>
+          <div class="GuestWiFi">
+            {{ viewDescription }}
+          </div>
 
 
         </div>
       </div>
     </div>
+
 
 
 </template>
@@ -21,8 +22,8 @@
 export default {
   data () {
     return {
-      title: this.$store.state.appConfig.guestWifiTitle,
-      msg: this.$store.state.appConfig.guestWifiDetail //wrong thing; pull it from notes.json
+      title: this.$store.state.appConfig.guestWifiViewTitle,
+      viewDescription: this.$store.state.appConfig.guestWifiViewDescription
     }
   },
 

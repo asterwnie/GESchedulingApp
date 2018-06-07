@@ -22,6 +22,18 @@
             "request": "launch",
             "name": "ADMIN: Delete Hotels",
             "program": "${workspaceFolder}/server-api/dataImports/deleteHotels.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "ADMIN: Import RequestPrompts",
+            "program": "${workspaceFolder}/server-api/dataImports/importRequestPrompts.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "ADMIN: Delete RequestPrompts",
+            "program": "${workspaceFolder}/server-api/dataImports/deleteRequestPrompts.js"
         }
     ]
 }

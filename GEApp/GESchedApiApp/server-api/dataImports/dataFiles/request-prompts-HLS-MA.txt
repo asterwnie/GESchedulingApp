@@ -1,0 +1,64 @@
+--Prompt.Type.Standard
+--Prompt.Label: Event title
+--Prompt.InputType.Text[data-id=eventTitle]
+--Prompt.OnScreen: 1
+
+--Prompt.Type.Standard
+--Prompt.Label: Event Date(s) / Time(s)
+--Prompt.InputType.Custom[data-id=eventDateTimeDataObj|ctrl-id=eventDateTimeCtrl]
+--Prompt.OnScreen: 1
+
+--Prompt.Type.Standard
+--Prompt.Label: Location of event
+--Prompt.InputType.Custom[data-id=locationOfEvent|ctrl-id=locationOfEventCtrl]
+--Prompt.OnScreen: 1
+
+--Prompt.Type.Standard
+--Prompt.Label: Onsite GE contact person for the event
+--Prompt.InputType.Text[data-id=eventGEContactPersonName]
+--Prompt.OnScreen: 1
+
+--Prompt.Type.Standard
+--Prompt.Label: Contact Person's Email
+--Prompt.InputType.Email[data-id=eventGEContactPersonEmail]
+--Prompt.OnScreen: 1
+
+--Prompt.Type.Standard
+--Prompt.Label: Contact Person's Phone
+--Prompt.InputType.Text[data-id=eventGEContactPersonEmail]
+--Prompt.OnScreen: 1
+
+--Prompt.Type.Standard
+--Prompt.Label: AV Requirements
+--Prompt.InputType.TextArea[data-id=avRequirements]
+--Prompt.OnScreen: 2
+
+--Prompt.Type.Standard
+--Prompt.Label: Room setup
+--Prompt.InputType.Custom[data-id=roomSetup|ctrl-id=roomSetupPickerCtrl]
+--Prompt.OnScreen: 2
+
+--Prompt.Type.Standard
+--Prompt.Label: Special requests
+--Prompt.InputType.Custom[data-id=specialRequestDataObj|ctrl-id=specialRequestCtrl]
+--Prompt.OnScreen: 2
+
+--Prompt.Type.Standard
+--Prompt.Label: Number of GE employee attending
+--Prompt.InputType.Numeric[data-id=numOfGeEmpAttending]
+--Prompt.OnScreen: 3
+
+--Prompt.Type.Standard
+--Prompt.Label: Number of non-GE attending
+--Prompt.InputType.Numeric[data-id=numOfNonGeAttending]
+--Prompt.OnScreen: 3
+
+--Prompt.Type.Standard
+--Prompt.Label: Site tour requested?
+--Prompt.InputType.YesNo[data-id=siteTourRequested]
+--Prompt.OnScreen: 3
+
+--Prompt.Type.Standard
+--Prompt.Label: If Yes, Subject Matter Expert needed?
+--Prompt.InputType.YesNo[data-id=subjectMatterExpertNeeded|dependsOn:siteTourRequested]
+--Prompt.OnScreen: 3

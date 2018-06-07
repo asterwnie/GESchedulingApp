@@ -3,7 +3,7 @@
 const appRoot = require('app-root-path');
 const appConfig = require(`${appRoot}/server.config`); // Load app configuration settings.
 
-const requestHelper = require(`${appRoot}/server-api/requestHelper`);
+const httpRequestHelper = require(`${appRoot}/server-api/httpRequestHelper`);
 const logger = require(`${appRoot}/server-api/logger`);
 const getRequestType = require(`${appRoot}/server-api/models/requestModel`);
 
@@ -12,22 +12,14 @@ const getRequestType = require(`${appRoot}/server-api/models/requestModel`);
 exports.getRequests = function (req, res) {
     logger.verbose('requestController.getRequests begin');
 
-    let siteCode = requestHelper.getSite(req);
+    let siteCode = httpRequestHelper.getSite(req);
     let Request = getRequestType(siteCode);
 
-    var sortDirective = { "name": 1}; //default, order by name, ascending
-    if (req.query.orderby != null) {
-        if (req.query.orderby.toLowerCase() == 'seqnum:1') {
-            sortDirective = { "seqNum": 1};  //ascending order
-        } else if (req.query.orderby.toLowerCase() == 'seqnum:-1') {
-            sortDirective = { "seqNum": -1}; //descending order
-        }
-    }
+    var sortDirective = { "createdAt": -1}; //default, order by createdAt, ascending
 
     var filterDirective = {}; //default, no filering
-    if (req.query.namecontains != null) {    
-        const regExpression = new RegExp(`(${req.query.namecontains})`);
-        filterDirective = { "name": regExpression};        
+    if (req.query.requestEmail != null) {    
+        filterDirective = { "requestEmail": req.query.requestEmail};        
     }
 
     Request.find(filterDirective).sort(sortDirective)
@@ -48,7 +40,7 @@ exports.createRequest = function (req, res) {
     logger.verbose('requestController.createRequest begin');
 
     try {
-        let siteCode = requestHelper.getSite(req); 
+        let siteCode = httpRequestHelper.getSite(req); 
         let Request = getRequestType(siteCode);
         var newRequest = new Request(req.body);
 
@@ -90,7 +82,7 @@ exports.updateRequest = function (req, res) {
 
     try {
 
-        let siteCode = requestHelper.getSite(req);
+        let siteCode = httpRequestHelper.getSite(req);
         var Request = getRequestType(siteCode);
 
         var toUpdateRequest = new Request(req.body);
@@ -113,17 +105,9 @@ exports.updateRequest = function (req, res) {
         return;
     };
 
-  /*  // Create a set of object properties to be updated and excluding the special ones such as timestamps and version managed internally by MongoDB.
-    var updateWith = {
-        name: toUpdateRequest.name, 
-        address: toUpdateRequest.address 
-    };
-    if (toUpdateRequest.phone != null) { updateWith.phone = toUpdateRequest.phone; }
-    if (toUpdateRequest.corporateRates != null) { updateWith.corporateRates = toUpdateRequest.corporateRates; }
-    if (toUpdateRequest.seqNum != null) { updateWith.seqNum = toUpdateRequest.seqNum; }*/
+    toUpdateRequest.updatedAt = Date.now();
 
-
-    Request.update({"_id": toUpdateRequest._id }, { $set: updateWith }, function (err) {
+    Request.update({"_id": toUpdateRequest._id }, { $set: toUpdateRequest }, function (err) {
         if (err) {
             var errMsg = `requestController.updateRequest - Request.find failed. Error: ${err}`
             logger.error(errMsg);
@@ -157,7 +141,7 @@ exports.updateRequest = function (req, res) {
 exports.getRequest = function (req, res) {
     logger.verbose('requestController.getRequest begin');
 
-    let siteCode = requestHelper.getSite(req);
+    let siteCode = httpRequestHelper.getSite(req);
     let Request = getRequestType(siteCode);
 
     Request.findById(req.params.id)
@@ -184,7 +168,7 @@ exports.getRequest = function (req, res) {
 exports.deleteRequest = function (req, res) {
     logger.verbose('requestController.deleteRequest begin');
 
-    let siteCode = requestHelper.getSite(req);
+    let siteCode = httpRequestHelper.getSite(req);
     let Request = getRequestType(siteCode);
 
     Request.findByIdAndRemove(req.params.id)

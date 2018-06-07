@@ -7,27 +7,28 @@
 
     "appTitle": "Meeting & Event<br>Request",
 
-    "appAboutTitle": "About",
+    "aboutViewTitle": "About",
 
-    "appAboutDetail": "This application is for ipsum sapien metus posuere nam praesent dictum, curabitur ad sit tortor tincidunt integer, quisque dictum ante quam nullam consequat.",
+    "aboutViewDescription": "This application is for ipsum sapien metus posuere nam praesent dictum, curabitur ad sit tortor tincidunt integer, quisque dictum ante quam nullam consequat.",
 
-    "techSupportTitle": "IT Help",
+    "doFirstViewTitle": "Do First",
 
-    "techSupportDetail": "Results Way offers the MyTech Lounge located on the third-floor at tower 3. While onsite, MyTech Lounge is your solution to any IT help & questions you may have.",
+    "attentionNotesViewTitle": "Attention",
 
-    "localCaterersTitle": "Catering",
+    "techSupportViewTitle": "IT Help",
 
-    "localCaterersDetail": [ 
-        "These recommended caterers who are reliable and deliver to the site and accept Amex.",
-        "ToDo: Caterer item listing..."
-    ],
+    "techSupportViewDescription": "Results Way offers the MyTech Lounge located on the third-floor at tower 3. While onsite, MyTech Lounge is your solution to any IT help & questions you may have.",
 
-    "localHotelsTitle": "Hotels",
+    "caterersViewTitle": "Local Caterers",
 
-    "localHotelsDetail": "The local listing of hotels:",
+    "caterersViewDescription": "These recommended caterers who are reliable and deliver to the site and accept Amex.",
 
-    "guestWifiTitle": "Guest Wifi",
+    "hotelsViewTitle": "Local Hotels",
 
-    "guestWifiDetail": "Guest wifi for online access on-site."
+    "hotelsViewDescription": "The local listing of hotels:",
+
+    "guestWifiViewTitle": "Guest Wifi",
+
+    "guestWifiViewDescription": "Guest wifi for online access on-site."
 
 }

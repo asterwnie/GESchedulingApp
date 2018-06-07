@@ -6,9 +6,9 @@ const getDbConnection = require(`${appRoot}/server-api/databaseManager`);
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// The schema definition for a hotel entity
+// The schema definition for a request entity
 
-const HotelSchema = new Schema({
+const RequestSchema = new Schema({
 
     title: {
         type: String,
@@ -26,34 +26,32 @@ const HotelSchema = new Schema({
     },
 
     numOfGeEmpAttending: {
-        type: String,
+        type: Number,
         required: [true, 'Number of GE Employees attending is required!']
     },
 
     numOfNonGeAttending: {
-        type: Number,
-        required: [true, 'Number of Non-GE Employees attending is required!']
+        type: Number
     }
-
 }, 
 {
     timestamps: true // auto-add createdAt and updatedAt
 });
 
 
-// Object to hold a hotel model per site.
-var hotelModelBySite = {};
+// Object to hold a request model per site.
+var requestModelBySite = {};
 
 
-// Return a hotel model using the corresponding site database connection.
+// Return a request model using the corresponding site database connection.
 module.exports = function (siteCode) {   
 
     let siteCodeUpper = siteCode.toUpperCase();
-    if (hotelModelBySite[siteCodeUpper] == null) {
+    if (requestModelBySite[siteCodeUpper] == null) {
         let dbConnection = getDbConnection(siteCodeUpper);       
         // Mongoose automatically creates a hotel collection if one does not exist.
-        hotelModelBySite[siteCodeUpper] = dbConnection.model(`hotel`, HotelSchema);
+        requestModelBySite[siteCodeUpper] = dbConnection.model(`request`, RequestSchema);
     }
-    return hotelModelBySite[siteCodeUpper];
+    return requestModelBySite[siteCodeUpper];
 
 }

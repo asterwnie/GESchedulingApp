@@ -16,9 +16,10 @@ const store = new Vuex.Store({
 
         currentUser: null,  // Will be assigned during login
 
-        appConfig: {},      // Will be assigned aap start
-        notes: {},          // Will be assigned aap start
-        hotels: {},          // Will be assigned aap start
+        appConfig: {},      // Will be assigned app start
+        notes: {},          // Will be assigned app start
+        hotels: {},         // Will be assigned app start
+        caterers: {},       // Will be assigned app start
 
         appDefConfig: {
 

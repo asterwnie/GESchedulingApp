@@ -24,14 +24,16 @@ if (args.length == 3 && args[2] != null) { siteCode = args[2]; }
 let RequestPrompt = getRequestPromptType(siteCode);
 
 const delyInSecs = 3;
-setInterval(() => deleteRequestPrompts(), delyInSecs * 1000); // Ensures db connection is established in getRequestPromptType since it's an async operation.
+const timer = setInterval(() => deleteRequestPrompts(), delyInSecs * 1000); // Ensures db connection is established in getRequestPromptType since it's an async operation.
 
 
 
 function deleteRequestPrompts() {
 
+    clearInterval(timer);
+    
     // Match any name therefore, deleting all.
-    RequestPrompt.deleteMany({ name: /(.*?)/ }) 
+    RequestPrompt.deleteMany({ type: /(.*?)/ }) 
         .then(function () {
             logger.info(`ADMIN: All requestPrompts deleted for site: ${siteCode}`);
 

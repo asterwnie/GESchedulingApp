@@ -8,7 +8,7 @@ var hotelController = require('../controllers/hotelController');
 
 module.exports = function (app) {
 
-    logger.verbose('Set up API routes for the Hotel entity.');
+    logger.verbose('Setting up RESTful API routes for the Hotel entity.');
 
     try {
         // Note: For POST, PUT & PATCH the client caller must set a http header with

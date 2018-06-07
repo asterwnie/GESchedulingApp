@@ -27,7 +27,7 @@
 export default {
   data () {
     return {
-      title: "Notes",
+      title: this.$store.state.appConfig.attentionNotesViewTitle
       
     }
   },

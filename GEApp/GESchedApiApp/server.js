@@ -88,7 +88,6 @@ requestRoutes(app);
 
 
 
-
 // Temporary for returning mock data:
 
 app.get('/api/appconfigs', (req, res) => {

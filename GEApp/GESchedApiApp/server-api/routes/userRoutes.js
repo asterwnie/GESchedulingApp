@@ -8,23 +8,23 @@ var userController = require('../controllers/userController');
 
 module.exports = function (app) {
 
-    logger.verbose('Setting up API routes for the User entity.');
+    logger.verbose('Setting up RESTful API routes for the User entity.');
 
     try {
         // Note: For POST, PUT & PATCH the client caller must set a http header with
         // Content-Type = application/json; charset=UTF-8
 
-        app.route('/api/Users')
+        app.route('/api/users')
             .get(userController.getUsers)
             .post(userController.createUser)
             .put(userController.updateUser)
             .patch(userController.updateUser);
 
-        app.route('/api/Users/:id')
+        app.route('/api/users/:id')
             .get(userController.getUser)
             .delete(userController.deleteUser);
 
-            app.route('/api/Users/login')
+            app.route('/api/users/login')
             .post(userController.loginUser)
 
             

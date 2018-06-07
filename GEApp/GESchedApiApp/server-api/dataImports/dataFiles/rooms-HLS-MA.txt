@@ -1,23 +1,42 @@
---room.Name: Wellfleet
---room.Size: Medium Conference
---room.SeatingCapacity: 16
---room.Floor: 1
---room.Building: Health MBO
---room.RoomNumber: 1132
---room.RoomPhone: 774-843-7142
---room.AddressGAL: Health MBO Wellfleet
---room.SpecialNote: FDA inspection takes priority over previously scheduled meetings
+--Room.Name: Wellfleet
+--Room.Size: Medium Conference
+--Room.SeatingCapacity: 16
+--Room.Floor: 1
+--Room.Building: Health MBO
+--Room.RoomNumber: 1132
+--Room.RoomPhone: 774-843-7142
+--Room.AddressGAL: Health MBO Wellfleet
+--Room.SpecialNote: FDA inspection takes priority over previously scheduled meetings
 
---room.Name: Martha's Vineyard
---room.Size: Large Training Room
---room.SeatingCapacity: 40
---room.Floor: 3
---room.Building: Health MBO
---room.RoomNumber: 3133
---room.RoomPhone: 508-683-2216
---room.AddressGAL: Health MBO Martha Vineyard Training - 40
---room.SpecialNote:
---room.Capability: Telephone available upon request
---room.Configuration: U-Setup-14-max
---room.Configuration: Classroom-Setup-16-max
---room.Configuration: Conference-Setup-16-max
+--Room.Name: Plum Island
+--Room.Size: Small Training Room
+--Room.SeatingCapacity: 16
+--Room.Floor: 3
+--Room.Building: Health MBO
+--Room.RoomNumber: 3131
+--Room.RoomPhone: 508-683-2216
+--Room.AddressGAL: Health MBO Plum Island Training - 16
+--Room.Capability: Telephone available upon request
+--Room.Capability: Monitors|ClickShare
+--Room.Capability: Non-GE computers can present
+--Room.Configuration: U-Setup-14-People-max
+--Room.Configuration: Classroom-Setup-16-People-max
+--Room.Configuration: Conference-Setup-16-People-max
+
+--Room.Name: Martha's Vineyard
+--Room.Size: Large Training Room
+--Room.SeatingCapacity: 40
+--Room.Floor: 3
+--Room.Building: Health MBO
+--Room.RoomNumber: 3133
+--Room.RoomPhone: 508-683-2216
+--Room.AddressGAL: Health MBO Martha Vineyard Training - 40
+--Room.SpecialNote:
+--Room.Capability: Telephone available upon request
+--Room.Capability: Podium|Projector|Screen|Speaker System|ClickShare
+--Room.Capability: Non-GE computers can present
+--Room.Configuration: Classroom-Setup-40-People-max
+--Room.Configuration: Conference-Setup-24-People-max
+--Room.Configuration: Split-V-Setup-40-People-max
+--Room.Configuration: U-Setup-24-People-max
+--Room.Configuration: Theather-Setup-40-People-max

@@ -3,26 +3,30 @@
   <div class="container-fluid" style="width:100%;">
     <div class="row">
       <div class="col col-sm-1 col-md-2 col-lg-4"></div>
-      <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%; background-color:blue">
-
+      <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%;">
+          <p>{{ viewDescription }}</p>
+          <br/>
           <div class="LocalCaterers">
-            <div v-for="(msg, index) in msgList" :key="index">
-                <p>{{ msg }}</p> <!--style this so it has less spacing later-->
+            <div v-for="(caterer, index) in caterers" :key="index">
+                <p>{{ caterer }}</p> <!--style this so it has less spacing later-->
             </div>
           </div>
 
       </div>
+
+    
+    
     </div>
   </div>
-
 </template>
 
 <script>
 export default {
   data () {
     return {
-      title: this.$store.state.appConfig.localCaterersTitle,
-      msgList: this.$store.state.appConfig.localCaterersDetail //this message is an array right now
+      title: this.$store.state.appConfig.caterersViewTitle,
+      viewDescription: this.$store.state.appConfig.caterersViewDescription,
+      caterers: this.$store.state.caterers
     }
   },
 
