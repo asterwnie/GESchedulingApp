@@ -45,8 +45,9 @@ export default {
   activated() {
       console.log('DoFirst.vue activated.');
       this.$store.state.currentViewTitle = this.title;
-      this.$store.state.enableNavBar = true;
+      this.$store.state.enableNavBar = true;     
   }
+
 }
 
 // ToDo: Add a method called process text to look for [links] and convert it to html:
