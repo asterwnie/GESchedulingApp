@@ -113,14 +113,22 @@ exports.updateRequest = function (req, res) {
         return;
     };
 
+<<<<<<< HEAD
+   /* // Create a set of object properties to be updated and excluding the special ones such as timestamps and version managed internally by MongoDB.
+=======
   /*  // Create a set of object properties to be updated and excluding the special ones such as timestamps and version managed internally by MongoDB.
+>>>>>>> 1d1531b85eb881e7a33ff471e234e2d59fb07c41
     var updateWith = {
         name: toUpdateRequest.name, 
         address: toUpdateRequest.address 
     };
     if (toUpdateRequest.phone != null) { updateWith.phone = toUpdateRequest.phone; }
     if (toUpdateRequest.corporateRates != null) { updateWith.corporateRates = toUpdateRequest.corporateRates; }
+<<<<<<< HEAD
+    if (toUpdateRequest.seqNum != null) { updateWith.seqNum = toUpdateRequest.seqNum; } */
+=======
     if (toUpdateRequest.seqNum != null) { updateWith.seqNum = toUpdateRequest.seqNum; }*/
+>>>>>>> 1d1531b85eb881e7a33ff471e234e2d59fb07c41
 
 
     Request.update({"_id": toUpdateRequest._id }, { $set: updateWith }, function (err) {
