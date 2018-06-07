@@ -2,11 +2,11 @@
   <div>
 
     <h5 class="justify-content-center" style="text-align:center;width:100%">Complete these items before each new request.</h5>
-  
+    <br>
     <div class="container-fluid" style="width:100%">
       <div class="row">
         <div class="col col-sm-1 col-md-2 col-lg-4"></div>
-        <div class="col col-sm-10 col-md-8 col-lg-4" style="width:100%;">
+        <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%;">
           <!--For each note in noteItems-->
           <div style="padding:10px; width:100%" class="alert alert-danger card" v-for="(note, index) in noteItems" :key="index" :hidden="note.type != 'doFirst'">
             <!--if the object is an array,-->
@@ -18,7 +18,7 @@
           </template>
           </div>
         </div>
-        <div class="col col-sm-1 col-md-2 col-lg-4"></div>
+
       </div>
     </div>
 
@@ -57,12 +57,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-div {
-  display: inline-block;
-  
-}
-
 .container-fluid{
   flex-direction: column;
+  display: flex;
 }
 </style>

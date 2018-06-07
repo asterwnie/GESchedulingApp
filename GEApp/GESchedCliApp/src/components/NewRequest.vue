@@ -1,10 +1,12 @@
 <template>
-    <div class="container">
+    <div class="container-fluid">
       <div class="row">
-        <div class="col-md-8 order-md-1">
+        <div class="col col-sm-1 col-md-2 col-lg-4"></div>
+        <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%;">
 
           <form class="needs-validation" novalidate>
 
+            <!--The formatting here is still off. It's supposed to be row-column, but here you have column-row...-->
             <div class="row">
               <div class="dropdown">
                 &nbsp;&nbsp;&nbsp;<button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -58,6 +60,7 @@
 
           </form>
         </div>
+
       </div>
       <div class="footerBar fixed-bottom d-flex justify-content-between">
         <button type="button" class="btn btn-primary btn-sm" @click.prevent="$router.push('attentionNotes')">Continue Request ></button>
@@ -110,5 +113,9 @@ export default {
 .footerBar {
   display: inline-block;
   margin: 16px;
+}
+.container{
+  flex-direction: column;
+  display: flex;
 }
 </style>
