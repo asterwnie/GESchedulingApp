@@ -1,7 +1,8 @@
 <template>
-  <div class="container">
+  <div class="container-fluid">
     <div class="row">
-      <div class="col-md-8 order-md-1">
+      <div class="col col-sm-1 col-md-2 col-lg-4"></div>
+        <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%;">
         <form class="needs-validation" novalidate>
           <button class="btn btn-primary btn-block" type="submit" @click.prevent="$router.push('dofirst')">New Request</button>
         </form>

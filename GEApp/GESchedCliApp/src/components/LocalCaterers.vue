@@ -1,9 +1,20 @@
 <template>
-  <div class="LocalCaterers">
-    <div v-for="(msg, index) in msgList" :key="index">
-        <p>{{ msg }}</p> <!--style this so it has less spacing later-->
+
+  <div class="container-fluid" style="width:100%;">
+    <div class="row">
+      <div class="col col-sm-1 col-md-2 col-lg-4"></div>
+      <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%; background-color:blue">
+
+          <div class="LocalCaterers">
+            <div v-for="(msg, index) in msgList" :key="index">
+                <p>{{ msg }}</p> <!--style this so it has less spacing later-->
+            </div>
+          </div>
+
+      </div>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -27,9 +38,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-div {
-  display: inline-block;
-  margin: 20px 20px;
-}
+
 
 </style>
