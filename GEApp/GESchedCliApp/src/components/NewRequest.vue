@@ -60,7 +60,7 @@
         </div>
       </div>
       <div class="footerBar fixed-bottom d-flex justify-content-between">
-        <button type="button" class="btn btn-primary btn-sm" @click.prevent="$router.push('notes')">Continue Request ></button>
+        <button type="button" class="btn btn-primary btn-sm" @click.prevent="$router.push('attentionNotes')">Continue Request ></button>
       </div>
     </div>
 </template>

@@ -53,7 +53,7 @@
                                     class="btn btn-primary btn-sm btn-block"
                                     :disabled="isSubmitting"
                                     @click.prevent="submit"
-                            >Submit</button>
+                            >Login</button>
                         </div>
                         <br/>
                         
