@@ -82,6 +82,10 @@ hotelRoutes(app);
 var requestPromptRoutes = require('./server-api/routes/requestPromptRoutes');
 requestPromptRoutes(app);
 
+// Set up API routes for the Request entity:
+var requestRoutes = require('./server-api/routes/requestRoutes');
+requestRoutes(app);
+
 
 
 
