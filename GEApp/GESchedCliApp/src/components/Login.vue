@@ -90,13 +90,14 @@ export default {
             requesterEmail: '',
             accessCode: '',
             rememberMeChecked: 'remember-me',
-
-            canShowError: false,
             
             isSubmitting: false,
+
             isFetchingDefAppConfig: true,
             isFetchingNotes: true,
             isFetchingHotels: true,
+
+            canShowError: false,
             hasFailure: false,
             failureMessage: ""
         }
@@ -125,8 +126,11 @@ export default {
             this.accessCode = loginContext.accessCode;
             loginContext.accessCode = null; // Avoid holding it in memory.
         }
-        
 
+        this.isFetchingDefAppConfig = true;
+        this.isFetchingNotes = true;
+        this.isFetchingHotels = true;
+        
         this.getDefAppConfig(); 
         this.getNotes();
         this.getHotels();
@@ -182,7 +186,7 @@ export default {
         getHotels() {
 
             var vm = this;
-            var url = apiMgr.getHotelsUrl(); 
+            var url = apiMgr.getHotelsUrl() + '?orderBy=seqNum:1'; 
 
             axios.get(url)
                 .then(res => {
