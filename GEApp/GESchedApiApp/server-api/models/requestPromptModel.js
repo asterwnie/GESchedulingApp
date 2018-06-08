@@ -13,36 +13,43 @@ const InputTypeSchema = new Schema({
         type: String,
         required: [true, 'ctrlDataId is required!']
     },
+
     ctrlType: {
         type: String,
-        required: [true, 'ctrlType is required!'],
-        // values: text, textarea, yesno, checkbox, choices, custom
-        // for this: check if type is = to these values ***********************************************************
-        // if not, return back "invalid ctrlType"
+        enum: ['Text', 'Email', 'Number', 'TextArea', 'YesNo', 'Checkbox', 'Choices', 'Custom'],
+        required: [true, 'ctrlType is required!']
     },
+
     valueChoices: {
         type: [String],
     },
+
     isValueBoolean: {
         type: Boolean, //(default: false) - for .yesno and .checkbox
         // is this a check for this.ctrlType.type == yesno or checkbox? *******************************************
     },
+
     isValueNumber: {
         type: Boolean, //(default: false) for .numeric
         // is this a check for this.ctrlType.type == numeric ******************************************************
     },
+
     maxTextLen: {
         type: Number // (optional)
     },
+
     numberRange: {
         type: [Number], //(2 items)
     },
+
     validatorId: {
         type: String //(optional - identify special stocked validators.e.g. email)
     },
+
     validationRegEx: {
         type: String //(optional)
     },
+
     customCtrlId: {
         type: String // optional
     }
