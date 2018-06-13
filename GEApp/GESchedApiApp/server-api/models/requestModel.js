@@ -15,14 +15,23 @@ const RequestSchema = new Schema({
         required: [true, 'Title is required!']
     },
 
-    requestEmail: {
+    locationOfEvent: {
         type: String,
-        required: [true, 'Request email is required!']
+        required: [true, 'The location of the event is required!']
+    },
+
+    requesterEmail: {
+        type: String,
+        required: [true, 'Requester email is required!']
     },
 
     requesterName: {
         type: String,
         required: [true, 'Requester name is required!']
+    },
+
+    requesterPhone: {
+        type: String
     },
 
     numOfGeEmpAttending: {
@@ -35,7 +44,8 @@ const RequestSchema = new Schema({
     }
 }, 
 {
-    timestamps: true // auto-add createdAt and updatedAt
+    timestamps: true, // auto-add createdAt and updatedAt
+    strict: false
 });
 
 
