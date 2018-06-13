@@ -213,16 +213,16 @@ exports.getDistinct = function (req, res) { // shouldn't this be done at the end
             Room.rooms.distinct("capability")
             .then((list) => {
                 if (list == null) {
-                    var errMsg = `roomController.getRoom - Room.findById did not find a room with id ${req.params.id}.`;
+                    var errMsg = `roomController.getDistinct - Room.rooms.distinct did not find any capabilities.`;
                     logger.error(errMsg);
                     res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
                 } else {
-                    logger.info(`roomController.getRoom - Room.findById success. About to to send back http response with room:\n ${room}`);
-                    res.status(200).json(room);  // 200 - OK
+                    logger.info(`roomController.getDistinct - Room.fingetDistinctdById success. About to to send back http response with list:\n ${list}`);
+                    res.status(200).json(list);  // 200 - OK
                 }
             })
             .catch((err) => {
-                var errMsg = `roomController.getRoom - Room.findById failed. Error: ${err}`;
+                var errMsg = `roomController.getDistinct - Room.rooms.distinct failed. Error: ${err}`;
                 logger.error(errMsg);
                 res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
             });
