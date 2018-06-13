@@ -18,8 +18,8 @@ exports.getRequests = function (req, res) {
     var sortDirective = { "createdAt": -1}; //default, order by createdAt, ascending
 
     var filterDirective = {}; //default, no filering
-    if (req.query.requestEmail != null) {    
-        filterDirective = { "requestEmail": req.query.requestEmail};        
+    if (req.query.requestEmailContains != null) {    
+        filterDirective = { "requestEmail": req.query.requesterEmailContains};        
     }
 
     Request.find(filterDirective).sort(sortDirective)
