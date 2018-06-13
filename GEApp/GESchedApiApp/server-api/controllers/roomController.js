@@ -26,13 +26,35 @@ exports.getRooms = function (req, res) {
         } else if (req.query.orderBy == 'seqNum:-1') {
             sortDirective = { "seqNum": -1}; //descending order
         }
+
+        if (req.query.orderBy == 'seatCapacity:1') {
+            sortDirective = { "seatCapacity": 1};  //ascending order
+        } else if (req.query.orderBy == 'seatCapacity:-1') {
+            sortDirective = { "seatCapacity": -1}; //descending order
+        }
     }
 
-    var filterDirective = {}; //default, no filering
+    var filterDirective = {}; //default is no filering
     if (req.query.nameContains != null) {    
         const regExpression = new RegExp(`(${req.query.nameContains})`);
         filterDirective = { "name": regExpression};        
     }
+
+    if (req.query.buildingContains != null) {    
+        const regExpression = new RegExp(`(${req.query.buildingContains})`);
+        filterDirective = { "building": regExpression};        
+    }
+
+    if (req.query.sizeTypeContains != null) {    
+        const regExpression = new RegExp(`(${req.query.sizeTypeContains})`);
+        filterDirective = { "sizeType": regExpression};        
+    }
+
+    if (req.query.capabilityContains != null) {    
+        const regExpression = new RegExp(`(${req.query.capabilityContains})`);
+        filterDirective = { "capability": regExpression};        
+    }
+
 
     Room.find(filterDirective).sort(sortDirective)
         .then((rooms) => {
@@ -200,7 +222,7 @@ exports.deleteRoom = function (req, res) {
 
 
 //create distinct capabilities
-exports.getDistinct = function (req, res) { // shouldn't this be done at the end of every operation, so the capabilities are updated?
+exports.getDistinct = function (req, res) {
     logger.verbose('roomController.getDistinct begin');
 
     let siteCode = httpRequestHelper.getSite(req);

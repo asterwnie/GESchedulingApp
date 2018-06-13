@@ -15,9 +15,9 @@ const RoomSchema = new Schema({
         required: [true, 'Room name is required!']
     },
 
-    size: {
+    sizeType: {
         type: String,
-        required: [true, 'Room size is required!']
+        required: [true, 'Room size type is required!']
     },
 
     seatingCapacity: {

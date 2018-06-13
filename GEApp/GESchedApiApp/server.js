@@ -86,6 +86,10 @@ requestPromptRoutes(app);
 var requestRoutes = require('./server-api/routes/requestRoutes');
 requestRoutes(app);
 
+// Set up API routes for the Room entity:
+var roomRoutes = require('./server-api/routes/roomRoutes');
+roomRoutes(app);
+
 
 
 // Temporary for returning mock data:
@@ -108,6 +112,10 @@ app.get('/api/notes', (req, res) => { //was previously attentions
     res.json(notes);
 
 }); 
+
+
+// create distinct lists
+// code...
 
 
 // Start web server:

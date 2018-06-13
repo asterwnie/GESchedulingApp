@@ -1,5 +1,5 @@
 --Room.Name: Wellfleet
---Room.Size: Medium Conference
+--Room.SizeType: Medium Conference
 --Room.SeatingCapacity: 16
 --Room.Floor: 1
 --Room.Building: Health MBO
@@ -9,7 +9,7 @@
 --Room.SpecialNote: FDA inspection takes priority over previously scheduled meetings
 
 --Room.Name: Plum Island
---Room.Size: Small Training Room
+--Room.SizeType: Small Training Room
 --Room.SeatingCapacity: 16
 --Room.Floor: 3
 --Room.Building: Health MBO
@@ -24,7 +24,7 @@
 --Room.Configuration: Conference-Setup-16-People-max
 
 --Room.Name: Martha's Vineyard
---Room.Size: Large Training Room
+--Room.SizeType: Large Training Room
 --Room.SeatingCapacity: 40
 --Room.Floor: 3
 --Room.Building: Health MBO

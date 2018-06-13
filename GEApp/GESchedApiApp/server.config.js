@@ -14,4 +14,9 @@ appConfig.sites = [
     { site: 'SITE-2', description:'Test Site 2', address: '100 Main Street, Sometown, MA 10011'}];
 
 
+//appConfig.distinctRoomConfigurations = [];
+//appConfig.distinctRoomCapabilities = [];
+//appConfig.distinctRoomSizeTypes = [];
+
+
 module.exports = appConfig;
