@@ -29,8 +29,8 @@ exports.getHotels = function (req, res) {
     }
 
     var filterDirective = {}; //default, no filering
-    if (req.query.namecontains != null) {    
-        const regExpression = new RegExp(`(${req.query.namecontains})`);
+    if (req.query.nameContains != null) {    
+        const regExpression = new RegExp(`(${req.query.nameContains})`);
         filterDirective = { "name": regExpression};        
     }
 

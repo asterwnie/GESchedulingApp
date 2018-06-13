@@ -16,7 +16,7 @@ const InputTypeSchema = new Schema({
 
     ctrlType: {
         type: String,
-        enum: ['Text', 'Email', 'Number', 'TextArea', 'YesNo', 'Checkbox', 'Choices', 'Custom'],
+        enum: ['text', 'email', 'number', 'textArea', 'yesNo', 'checkbox', 'choices', 'custom'],
         required: [true, 'ctrlType is required!']
     },
 
@@ -39,7 +39,16 @@ const InputTypeSchema = new Schema({
     },
 
     numberRange: {
-        type: [Number], //(2 items)
+        type: [Number], 
+        required: function(){
+            if (this.numberRange == null) {
+                return true;
+            } else if (this.numberRange.length == 2) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     },
 
     validatorId: {
@@ -66,6 +75,7 @@ const RequestPromptSchema = new Schema({
 
     type: {
         type: String,
+        enum: ['standard', 'special'],
         required: [true, 'Type is required!']
     },
 
@@ -75,13 +85,13 @@ const RequestPromptSchema = new Schema({
     },
 
     inputType: {
-        type: InputTypeSchema // object of InputType
-        //required: [true, 'Input Type is required!']
+        type: InputTypeSchema,
+        required: [true, 'Input Type is required!']
     },
 
     screenNum: {
         type: Number,
-        required: [true, 'Sequence Number is required!']
+        required: [true, 'Screen number is required!']
     },
    // subInputType: {
       //  type: InputType,

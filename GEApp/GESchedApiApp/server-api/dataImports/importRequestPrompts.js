@@ -83,19 +83,18 @@ function extractRequestPromptItems(fileData) {
         if (line.search(directive) > -1) {            
             // Complete and store the previous pending requestPrompt object if exist.
             if (newRequestPrompt != null) {
-                var success = ValidateAndCollectRequestPrompt(newRequestPrompt, requestPromptItems);
+                var success = validateAndCollectRequestPrompt(newRequestPrompt, requestPromptItems);
                 if (!success) {
                     errorEncountered = true;
                     return false; // Return false to stop additional line processing.
                 }
             }
-
             currentItemSeq += 1;
 
-            newRequestPrompt = { 
+            newRequestPrompt = new RequestPrompt({ 
                 type: "standard",
                 seqNum: currentItemSeq
-            }
+            });
             lineProcessed = true;
         }
 
@@ -126,7 +125,7 @@ function extractRequestPromptItems(fileData) {
 
     // Check to see if there's one last pending new one to be collected.
     if (errorEncountered == false && newRequestPrompt != null) {
-        var success = ValidateAndCollectRequestPrompt(newRequestPrompt, requestPromptItems);
+        var success = validateAndCollectRequestPrompt(newRequestPrompt, requestPromptItems);
         if (!success) {
             errorEncountered = true;
         }
@@ -145,7 +144,7 @@ function extractRequestPromptItems(fileData) {
 }
 
 
-function ValidateAndCollectRequestPrompt(newRequestPrompt, requestPromptItems) {
+function validateAndCollectRequestPrompt(newRequestPrompt, requestPromptItems) {
     var valid = ValidateRequestPrompt(newRequestPrompt);
     if (valid) {
         requestPromptItems.push(newRequestPrompt);
@@ -157,15 +156,26 @@ function ValidateAndCollectRequestPrompt(newRequestPrompt, requestPromptItems) {
 }
 
 
-function ValidateRequestPrompt(newRequestPrompt) {
-    if (!newRequestPrompt.hasOwnProperty("label") || newRequestPrompt.name == "") {
-        logger.error("ERROR: The request Prompt.Label is required!");
+function validateRequestPrompt(newRequestPrompt) {
+    // if (!newRequestPrompt.hasOwnProperty("label") || newRequestPrompt.name == "") {
+    //     logger.error("ERROR: The request Prompt.Label is required!");
+    //     return false;
+    // }
+    // if (!newRequestPrompt.hasOwnProperty("screenNum") || newRequestPrompt.screenNum < 1) {
+    //     logger.error("ERROR: The request Prompt.OnScreen property is required!");
+    //     return false;
+    // }   
+
+    var validationErr = newRequestPrompt.validateSync();
+    if (validationErr != null) {
+        for (var prop in validationErr.errors) {
+            logger.error(`ADMIN: validateRequestPrompt - create new RequestPrompt validation error: ${validationErr.errors[prop]}`);
+        }
+        var errMsg = `ADMIN: validateRequestPrompt - create new RequestPrompt failed validation. ${validationErr}`;
+        logger.error(errMsg);
         return false;
     }
-    if (!newRequestPrompt.hasOwnProperty("screenNum") || newRequestPrompt.screenNum < 1) {
-        logger.error("ERROR: The request Prompt.OnScreen property is required!");
-        return false;
-    }
+
     return true;
 }
 
