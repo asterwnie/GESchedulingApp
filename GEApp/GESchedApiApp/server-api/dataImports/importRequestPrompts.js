@@ -157,14 +157,6 @@ function validateAndCollectRequestPrompt(newRequestPrompt, requestPromptItems) {
 
 
 function validateRequestPrompt(newRequestPrompt) {
-    // if (!newRequestPrompt.hasOwnProperty("label") || newRequestPrompt.name == "") {
-    //     logger.error("ERROR: The request Prompt.Label is required!");
-    //     return false;
-    // }
-    // if (!newRequestPrompt.hasOwnProperty("screenNum") || newRequestPrompt.screenNum < 1) {
-    //     logger.error("ERROR: The request Prompt.OnScreen property is required!");
-    //     return false;
-    // }   
 
     var validationErr = newRequestPrompt.validateSync();
     if (validationErr != null) {

@@ -92,10 +92,11 @@ function extractHotelItems(fileData) {
 
                 currentItemSeq += 1;
 
-                newHotel = { 
+                newHotel = new Hotel({ 
                     seqNum: currentItemSeq,
                     name: hotelName 
-                }
+                });
+                
             } else {
                 logger.error("ERROR: The hotel name is required!");
                 errorEncountered = true;
@@ -177,12 +178,14 @@ function ValidateAndCollectHotel(newHotel, hotelItems) {
 
 
 function ValidateHotel(newHotel) {
-    if (!newHotel.hasOwnProperty("name") || newHotel.name == "") {
-        logger.error("ERROR: The hotel name is required!");
-        return false;
-    }
-    if (!newHotel.hasOwnProperty("address") || newHotel.address.length == 0) {
-        logger.error("ERROR: The hotel address is required!");
+
+    var validationErr = newHotel.validateSync();
+    if (validationErr != null) {
+        for (var prop in validationErr.errors) {
+            logger.error(`ADMIN: ValidateHotel - create new newHotel validation error: ${validationErr.errors[prop]}`);
+        }
+        var errMsg = `ADMIN: ValidateHotel - create new newHotel failed validation. ${validationErr}`;
+        logger.error(errMsg);
         return false;
     }
     return true;
