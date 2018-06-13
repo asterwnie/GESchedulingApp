@@ -13,38 +13,58 @@ const getHotelType = require(`${appRoot}/server-api/models/hotelModel`);
 // http://localhost:9090/api/hotels
 // http://localhost:9090/api/hotels?orderBy=seqNum:1
 
-exports.getHotels = function (req, res) {
+exports.getHotels = async function (req, res) {
     logger.verbose('hotelController.getHotels begin');
 
     let siteCode = httpRequestHelper.getSite(req);
+    
+    await queryHotels(siteCode, req.query.orderBy, req.query.nameContains, (result) => {
+        if (result.success) {
+            logger.info(`hotelController.getHotels - Hotel.find success. About to send back http response with ${result.hotels.length} hotels`);
+            res.status(200).json(result.hotels);
+        } else {
+            logger.error(`hotelController.getHotels failed. Error: ${result.errMsg}`);
+            res.status(500).json({ error: result.errMsg });
+        }
+    });
+
+    logger.verbose('hotelController.getHotels ends.');        
+};
+
+
+async function queryHotels (siteCode, orderBy, nameContains, callback) {
+
     let Hotel = getHotelType(siteCode);
 
     var sortDirective = { "name": 1}; //default, order by name, ascending
-    if (req.query.orderBy != null) {
-        if (req.query.orderBy == 'seqNum:1') {
+    if (orderBy != null) {
+        if (orderBy == 'seqNum:1') {
             sortDirective = { "seqNum": 1};  //ascending order
-        } else if (req.query.orderBy == 'seqNum:-1') {
+        } else if (orderBy == 'seqNum:-1') {
             sortDirective = { "seqNum": -1}; //descending order
         }
     }
 
     var filterDirective = {}; //default, no filering
-    if (req.query.nameContains != null) {    
-        const regExpression = new RegExp(`(${req.query.nameContains})`);
-        filterDirective = { "name": regExpression};        
+    if (nameContains != null) {    
+        const regExpression = new RegExp(`(${nameContains})`);
+        filterDirective = { "name": regExpression };        
     }
 
-    Hotel.find(filterDirective).sort(sortDirective)
+    await Hotel.find(filterDirective).sort(sortDirective)
         .then((hotels) => {
-            logger.info(`hotelController.getHotels - Hotel.find success. About to send back http response with ${hotels.length} hotels`);
-            res.status(200).json(hotels);  // 200 - OK
+            logger.info(`hotelController.queryHotels - Hotel.find success. Got back ${hotels.length} hotels`);           
+            callback({ success: true, hotels: hotels });
         })
         .catch((err) => {
-            var errMsg = `hotelController.getHotels - Hotel.find failed. Error: ${err}`;
+            var errMsg = `hotelController.queryHotels - Hotel.find failed. Error: ${err}`;
             logger.error(errMsg);
-            res.status(500).json({ error: errMsg }); // 500 - INTERNAL SERVER ERROR
+            callback({ success: false, errMsg: errMsg });
         });
-};
+}
+
+
+exports.queryHotels = queryHotels;
 
 
 // POST (create) a new hotel.
