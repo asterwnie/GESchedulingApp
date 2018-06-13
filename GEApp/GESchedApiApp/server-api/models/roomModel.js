@@ -21,13 +21,13 @@ const RoomSchema = new Schema({
     },
 
     seatingCapacity: {
-        type: String,
+        type: Number,
         required: [true, 'Room seating capacity is required!']
     },
 
     floor: {
         type: String,
-        required: [true, 'Room building is required!']
+        required: [true, 'Room floor is required!']
     },
 
     building: {
@@ -37,7 +37,7 @@ const RoomSchema = new Schema({
 
     roomNumber: {
         type: String, //in case of mixed numbers like 11B
-        required: [true, 'Room building is required!']
+        required: [true, 'Room number is required!']
     },
 
     roomPhone: {

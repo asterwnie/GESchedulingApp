@@ -221,42 +221,79 @@ exports.deleteRoom = function (req, res) {
 };
 
 
-//create distinct capabilities
-exports.getDistinct = function (req, res) {
-    logger.verbose('roomController.getDistinct begin');
+//create distinct lists
+exports.getCapabilities = function (req, res) {
+    logger.verbose('roomController.getCapabilities begin');
 
     let siteCode = httpRequestHelper.getSite(req);
     let Room = getRoomType(siteCode);
 
-    //will continue work
-    if (req.query.orderBy != null) {
-        if(req.query.orderBy == "capability"){
-
-            Room.rooms.distinct("capability")
+            // note: .sort() does not work with distinct
+            Room.distinct("capability") //Room.find().distinct() may work/be needed instead
             .then((list) => {
                 if (list == null) {
-                    var errMsg = `roomController.getDistinct - Room.rooms.distinct did not find any capabilities.`;
+                    var errMsg = `roomController.getCapabilities - Room.distinct did not find any capabilities.`;
                     logger.error(errMsg);
                     res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
                 } else {
-                    logger.info(`roomController.getDistinct - Room.fingetDistinctdById success. About to to send back http response with list:\n ${list}`);
+                    logger.info(`roomController.getCapabilities - Room.distinct success. About to to send back http response with list:\n ${list}`);
                     res.status(200).json(list);  // 200 - OK
                 }
             })
             .catch((err) => {
-                var errMsg = `roomController.getDistinct - Room.rooms.distinct failed. Error: ${err}`;
+                var errMsg = `roomController.getCapabilities - Room.distinct failed. Error: ${err}`;
                 logger.error(errMsg);
                 res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
             });
+    
+};
 
-        }
-        if(req.query.orderBy == "sizeType"){
+exports.getRoomSizes = function (req, res) {
+    logger.verbose('roomController.getRoomSizes begin');
 
-        }
-        if(req.query.orderBy == "building"){
+    let siteCode = httpRequestHelper.getSite(req);
+    let Room = getRoomType(siteCode);
 
-        }
+            Room.distinct("sizeType")
+            .then((list) => {
+                if (list == null) {
+                    var errMsg = `roomController.getRoomSizes - Room.distinct did not find any sizeTypes.`;
+                    logger.error(errMsg);
+                    res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
+                } else {
+                    logger.info(`roomController.getRoomSizes - Room.distinct success. About to to send back http response with list:\n ${list}`);
+                    res.status(200).json(list);  // 200 - OK
+                }
+            })
+            .catch((err) => {
+                var errMsg = `roomController.getRoomSizes - Room.distinct failed. Error: ${err}`;
+                logger.error(errMsg);
+                res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
+            });
+    
+};
 
-    }
+exports.getRoomBuildings = function (req, res) {
+    logger.verbose('roomController.getRoomBuildings begin');
+
+    let siteCode = httpRequestHelper.getSite(req);
+    let Room = getRoomType(siteCode);
+
+            Room.distinct("building")
+            .then((list) => {
+                if (list == null) {
+                    var errMsg = `roomController.getRoomBuildings - Room.distinct did not find any room buildings.`;
+                    logger.error(errMsg);
+                    res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
+                } else {
+                    logger.info(`roomController.getRoomBuildings - Room.distinct success. About to to send back http response with list:\n ${list}`);
+                    res.status(200).json(list);  // 200 - OK
+                }
+            })
+            .catch((err) => {
+                var errMsg = `roomController.getRoomBuildings - Room.distinct failed. Error: ${err}`;
+                logger.error(errMsg);
+                res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
+            });
     
 };

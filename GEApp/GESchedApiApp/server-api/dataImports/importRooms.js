@@ -146,7 +146,7 @@ function extractRoomItems(fileData) {
         if (!lineProcessed && line.search(directive) > -1) {
             var roomNumber = line.replace(directive, "").trim();
             if (roomNumber != "") {
-                newRoom.roomNumber = roomNumber;
+                newRoom.roomNumber = parseInt(roomNumber);
             }
         }
 
@@ -184,14 +184,14 @@ function extractRoomItems(fileData) {
                     newRoom.capability = []; // Create the capability line array.               
                 }
                 
-                // Deparate capabilities by | if needed.
+                // Separate capabilities by | if needed.
                 if (roomCapabilityLine.search("|") > -1){
                         var capabilityArray = roomCapabilityLine.split("|");
                         for(let capabilityItem of capabilityArray){ //for each item in the array
-                            newRoom.capability.push(capabilityItem); //add it to the capability array in the db
+                            newRoom.capability.push(capabilityItem.trim()); //add it to the capability array in the db
                         }
                 }else{
-                        newRoom.capability.push(roomCapabilityLine); //if it is a one-liner, add the one item
+                        newRoom.capability.push(roomCapabilityLine.trim()); //if it is a one-liner, add the one item
                 }
             }
         }
@@ -203,7 +203,7 @@ function extractRoomItems(fileData) {
                 if (!newRoom.hasOwnProperty("configuration")) {
                     newRoom.configuration = []; // Create the configuration line array.               
                 }
-                newRoom.configuration.push(roomConfigurationLine);
+                newRoom.configuration.push(roomConfigurationLine.trim());
             }
         }
 

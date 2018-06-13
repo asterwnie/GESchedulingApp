@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <transition>
+    <transition name="slide" mode="out-in">
       <keep-alive>
         <!--Current Page-->
         <router-view></router-view>
@@ -103,4 +103,6 @@ body {
         opacity: 0;
     }
 }
+
+
 </style>
