@@ -110,11 +110,11 @@ function extractRoomItems(fileData) {
         }
 
 
-        directive = "--Room.Size:";
+        directive = "--Room.SizeType:";
         if (!lineProcessed && line.search(directive) > -1) {
-            var roomSize = line.replace(directive, "").trim();
-            if (roomSize != "") {
-                newRoom.size = roomSize;
+            var roomSizeType = line.replace(directive, "").trim();
+            if (roomSizeType != "") {
+                newRoom.sizeType = roomSizeType;
             }
         }
 
@@ -248,8 +248,8 @@ function ValidateRoom(newRoom) {
         logger.error("ERROR: The room name is required!");
         return false;
     }
-    if (!newRoom.hasOwnProperty("size") || newRoom.size == "") {
-        logger.error("ERROR: The room size is required!");
+    if (!newRoom.hasOwnProperty("sizeType") || newRoom.sizeType == "") {
+        logger.error("ERROR: The room size type is required!");
         return false;
     }
     if (!newRoom.hasOwnProperty("seatingCapacity") || newRoom.seatingCapacity == "") {

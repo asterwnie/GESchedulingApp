@@ -25,7 +25,12 @@ module.exports = function (app) {
             .delete(roomController.deleteRoom);
 
           //  .get(roomController.getDistinct); // not a get, but here is where the function should be.
-            
+          
+     /*   app.route('/api/rooms/sizes')
+        .get(roomController.getRoomSizes)
+
+        app.route('/api/rooms/capabilities')
+        .get(roomController.getCapabilities)*/
             
     } catch (err) {
         logger.error(`Set up API routes for the Room entity failed. Error: ${err}`);
