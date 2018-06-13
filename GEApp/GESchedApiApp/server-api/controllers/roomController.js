@@ -29,8 +29,8 @@ exports.getRooms = function (req, res) {
     }
 
     var filterDirective = {}; //default, no filering
-    if (req.query.namecontains != null) {    
-        const regExpression = new RegExp(`(${req.query.namecontains})`);
+    if (req.query.nameContains != null) {    
+        const regExpression = new RegExp(`(${req.query.nameContains})`);
         filterDirective = { "name": regExpression};        
     }
 
@@ -87,7 +87,7 @@ exports.createRoom = function (req, res) {
 };
 
 
-// PUT (update) a room using it's id.
+// PUT (update) a room using its id.
 exports.updateRoom = function (req, res) {
     logger.verbose('roomController.updateRoom begin');
 
@@ -196,4 +196,45 @@ exports.deleteRoom = function (req, res) {
         logger.error(errMsg);
         res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
     });
+};
+
+
+//create distinct capabilities
+exports.getDistinct = function (req, res) { // shouldn't this be done at the end of every operation, so the capabilities are updated?
+    logger.verbose('roomController.getDistinct begin');
+
+    let siteCode = httpRequestHelper.getSite(req);
+    let Room = getRoomType(siteCode);
+
+    //will continue work
+    if (req.query.orderBy != null) {
+        if(req.query.orderBy == "capability"){
+
+            Room.rooms.distinct("capability")
+            .then((list) => {
+                if (list == null) {
+                    var errMsg = `roomController.getRoom - Room.findById did not find a room with id ${req.params.id}.`;
+                    logger.error(errMsg);
+                    res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
+                } else {
+                    logger.info(`roomController.getRoom - Room.findById success. About to to send back http response with room:\n ${room}`);
+                    res.status(200).json(room);  // 200 - OK
+                }
+            })
+            .catch((err) => {
+                var errMsg = `roomController.getRoom - Room.findById failed. Error: ${err}`;
+                logger.error(errMsg);
+                res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
+            });
+
+        }
+        if(req.query.orderBy == "sizeType"){
+
+        }
+        if(req.query.orderBy == "building"){
+
+        }
+
+    }
+    
 };
