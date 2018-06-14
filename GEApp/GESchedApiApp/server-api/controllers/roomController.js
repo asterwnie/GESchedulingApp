@@ -261,7 +261,7 @@ async function queryRoomCapabilities(siteCode, callback) {
             callback({ success: false, errMsg: errMsg });
         } else {
             logger.info(`roomController.getCapabilities - Room.distinct success. About to to send back http response with capabilities:\n ${capabilities}`);
-            callback({ success: true, capabilities: capabilities });
+            callback({ success: true, capabilities: capabilities.sort() });
         }
     })
     .catch((err) => {
