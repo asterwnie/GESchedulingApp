@@ -21,10 +21,13 @@ module.exports = function (app) {
             .patch(roomController.updateRoom);
 
         app.route('/api/rooms/sizes')
-            .get(roomController.getRoomSizes);
+            .get(roomController.getSizeTypes);
 
         app.route('/api/rooms/capabilities')
             .get(roomController.getCapabilities);
+
+        app.route('/api/rooms/buildings')
+            .get(roomController.getBuildings);
 
         app.route('/api/rooms/:id')
             .get(roomController.getRoom)

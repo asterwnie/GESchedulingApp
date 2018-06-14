@@ -121,9 +121,26 @@ app.get('/api/appconfigs', async (req, res) => {
         });
     
     //sizes
+    await roomController.queryRoomSizeTypes(siteCode, (result) => {
+        if (result.success) {
+            logger.info(`roomController.getSizeTypes - Rooms.distinct success. About to send back http response with ${result.sizeTypes.length} sizeTypes`);
+            appConfigForSite.sizeTypes = result.sizeTypes;
+        } else {
+            logger.error(`roomController.getSizeTypes failed. Error: ${result.errMsg}`);
+            res.status(500).json({ error: result.errMsg });
+        }
+        });
 
-    //....
-
+    //buildings
+    await roomController.queryBuildings(siteCode, (result) => {
+        if (result.success) {
+            logger.info(`roomController.getBuildings - Rooms.distinct success. About to send back http response with ${result.buildings.length} buildings`);
+            appConfigForSite.buildings = result.buildings;
+        } else {
+            logger.error(`roomController.getBuildings failed. Error: ${result.errMsg}`);
+            res.status(500).json({ error: result.errMsg });
+        }
+        });
 
     res.json(appConfigForSite);
 
