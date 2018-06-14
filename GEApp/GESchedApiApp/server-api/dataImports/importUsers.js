@@ -19,7 +19,7 @@ var siteCode = appConfig.defaultSite; // The current default in HLS-MA in server
 // Note: currently in VS Code debug mode you have to rely on using the appConfig.defaultSite setting.
 if (args.length == 3 && args[2] != null) { siteCode = args[2]; }
 
-const fileName = `usersSheet-${siteCode}.json`;
+const fileName = `users-temp-${siteCode}.json`;
 
 let User = getUserType(siteCode);
 
@@ -37,12 +37,12 @@ function doUsersImport() {
         clearInterval(timer);
 
         const jsonData = fs.readFileSync(`./server-api/dataImports/dataFiles/${fileName}`);
-        const usersFromSheet = JSON.parse(jsonData);
+        const users = JSON.parse(jsonData);
 
         // Count the total first.
-        usersFromSheet.forEach((userFromSheet) => totalNumOfUsers += 1 );
+        users.forEach((user) => totalNumOfUsers += 1 );
 
-        usersFromSheet.forEach((userFromSheet) => createUser(userFromSheet));
+        users.forEach((user) => createUser(user));
 
     } catch (err) {
         logger.error(`ADMIN: Error importing the User collection into the database! Error: ${err}`);
@@ -53,18 +53,18 @@ function doUsersImport() {
 
 
 
-function createUser(userFromSheet) {
+function createUser(user) {
 
     try {
-        logger.info(`ADMIN: Adding user (${userFromSheet.Name}) to the database.`);
+        logger.info(`ADMIN: Adding user (${user.Name}) to the database.`);
 
         // The properies from the import spreedsheet does not match directly 
         // so map them to a object that conforms to the User schema.
         var userInDBFormat = {
-            email: userFromSheet.Email,
-            name: userFromSheet.Name,  
-            phone: userFromSheet.Phone,
-            isAdmin: userFromSheet.IsAdministrator
+            email: user.email,
+            name: user.name,  
+            phone: user.phone,
+            isAdmin: user.isAdministrator
         };
 
         var newUser = new User(userInDBFormat);
