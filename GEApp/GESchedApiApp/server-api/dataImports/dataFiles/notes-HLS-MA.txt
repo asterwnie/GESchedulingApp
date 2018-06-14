@@ -2,13 +2,13 @@
 You need to reserve your event space or room first before submitting a request using this application.
 
 --Note.DoFirst
-To reserve the Forum for an event:  check the Results Way site calendar in the GAL at ~Health MBO Results Way to see if it is available. For all other conference and training rooms check the GAL for the specific location and reserve the conference room for the date & time of your event.
+To reserve the [Forum] for an event: check the Results Way site calendar in the GAL at Health MBO Results Way to see if it is available. For all other conference and training rooms check the GAL for the specific location and reserve the conference room for the date & time of your event.
 
 --Note.DoFirst
-Click here to go the Results Way site calendar: [http://www.ge.com/...]
+Click here to go the Results Way site calendar: [http://www.ge.com]
 
 --Note.DoFirst
-Click here for all other conference and training rooms: [http://www.ge.com/...]
+Click here for all other conference and training rooms: [http://www.ge.com]
 
 --Note.DoFirst
 If you have any questions please reach out to David.Spatara@ge.com. 
@@ -20,7 +20,7 @@ Please submit all Event Request Forms at least 48 hours prior to event.
 If the request is within 24 hours of the event date & time follow up in person with David Spatara or someone from the facilities team.
 
 --Note.Attention
-Non-GE visitors must sign in and out at reception.   List of attendees is required to be provided to reception prior to arrival and emailed to: ResultsWayCommunityReception@ge.com
+Non-GE visitors must sign in and out at reception. List of attendees is required to be provided to reception prior to arrival and emailed to: ResultsWayCommunityReception@ge.com
 
 --Note.Attention
 All GE employees, visitors & contractors entering a lab are required to be escorted by lab authorized personnel and wear lab appropriate clothing and personal protective equipment. Contact the lab manager or EHS for assistance in advance of events involving entry into labs.
@@ -47,7 +47,7 @@ All other huddle and conference rooms are equipped with Crestron units and only 
 Via the guest’s smartphone or laptop, find the WiFi network called “Internet”.
 
 --Note.GuestWiFiAccess
-The GE host will provide the password (key) by going to https://guest.ge.com.
+The GE host will provide the password (key) by going to https://guest.ge.com [https://guest.ge.com].
 
 --Note.GuestWiFiAccess
 Guest enters the password (key) to access the Guest WiFi provided by host.
