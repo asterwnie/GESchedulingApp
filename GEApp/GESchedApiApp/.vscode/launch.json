@@ -46,6 +46,24 @@
             "request": "launch",
             "name": "ADMIN: Delete Rooms",
             "program": "${workspaceFolder}/server-api/dataImports/deleteRooms.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "ADMIN: Import Users",
+            "program": "${workspaceFolder}/server-api/dataImports/importUsers.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "ADMIN: Delete Users",
+            "program": "${workspaceFolder}/server-api/dataImports/deleteUsers.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "ADMIN: Import Notes",
+            "program": "${workspaceFolder}/server-api/dataImports/importNotes.js"
         }
     ]
 }
