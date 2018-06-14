@@ -79,7 +79,7 @@ function extractHotelItems(fileData) {
         if (line.search(directive) > -1) {            
             // Complete and store the previous pending hotel object if exist.
             if (newHotel != null) {
-                var success = ValidateAndCollectHotel(newHotel, hotelItems);
+                var success = validateAndCollectHotel(newHotel, hotelItems);
                 if (!success) {
                     errorEncountered = true;
                     return false; // Return false to stop additional line processing.
@@ -110,9 +110,7 @@ function extractHotelItems(fileData) {
         if (!lineProcessed && line.search(directive) > -1) {
             var hotelAddressLine = line.replace(directive, "").trim();
             if (hotelAddressLine != "") {
-                if (!newHotel.hasOwnProperty("address")) {
-                    newHotel.address = []; // Create the address line array.               
-                }
+                // Add address line to the array:
                 newHotel.address.push(hotelAddressLine);
             }
         }
@@ -146,7 +144,7 @@ function extractHotelItems(fileData) {
 
     // Check to see if there's one last pending new one to be collected.
     if (errorEncountered == false && newHotel != null) {
-        var success = ValidateAndCollectHotel(newHotel, hotelItems);
+        var success = validateAndCollectHotel(newHotel, hotelItems);
         if (!success) {
             errorEncountered = true;
         }
@@ -165,8 +163,8 @@ function extractHotelItems(fileData) {
 }
 
 
-function ValidateAndCollectHotel(newHotel, hotelItems) {
-    var valid = ValidateHotel(newHotel);
+function validateAndCollectHotel(newHotel, hotelItems) {
+    var valid = validateHotel(newHotel);
     if (valid) {
         hotelItems.push(newHotel);
         totalNumOfHotels += 1;
@@ -177,14 +175,14 @@ function ValidateAndCollectHotel(newHotel, hotelItems) {
 }
 
 
-function ValidateHotel(newHotel) {
+function validateHotel(newHotel) {
 
     var validationErr = newHotel.validateSync();
     if (validationErr != null) {
         for (var prop in validationErr.errors) {
-            logger.error(`ADMIN: ValidateHotel - create new newHotel validation error: ${validationErr.errors[prop]}`);
+            logger.error(`ADMIN: validateHotel - create new newHotel validation error: ${validationErr.errors[prop]}`);
         }
-        var errMsg = `ADMIN: ValidateHotel - create new newHotel failed validation. ${validationErr}`;
+        var errMsg = `ADMIN: validateHotel - create new newHotel failed validation. ${validationErr}`;
         logger.error(errMsg);
         return false;
     }
@@ -192,30 +190,9 @@ function ValidateHotel(newHotel) {
 }
 
 
-function createHotel(hotel) {
+function createHotel(newHotel) {
 
-    try {
-        logger.info(`ADMIN: Adding hotel (${hotel.name}) to the database.`);
-
-        var newHotel = new Hotel(hotel);
-
-        var validationErr = newHotel.validateSync();
-        if (validationErr != null) {
-            for (var prop in validationErr.errors) {
-                logger.error(`ADMIN: createHotel - create new Hotel validation error: ${validationErr.errors[prop]}`);
-            }
-            var errMsg = `ADMIN: createHotel - create new Hotel failed validation. ${validationErr}`;
-            logger.error(errMsg);
-            mongoose.disconnect();
-            return;
-        }
-
-    } catch (err) {
-        var errMsg = `ADMIN: createHotel - problem with creating a new Hotel. Error: ${err}`;
-        logger.error(errMsg);
-        mongoose.disconnect();
-        return;
-    }
+    logger.info(`ADMIN: Adding hotel (${newHotel.name}) to the database.`);
 
     newHotel.save()
         .then((hotel) => {

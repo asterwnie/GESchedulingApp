@@ -1,5 +1,3 @@
-//THESE DO NOT WORK RIGHT NOW, AND NEED TO BE REVISED FOR REQUEST PROMPTS
-
 'use strict';
 
 // Import requestPrompts to the database.
@@ -145,7 +143,7 @@ function extractRequestPromptItems(fileData) {
 
 
 function validateAndCollectRequestPrompt(newRequestPrompt, requestPromptItems) {
-    var valid = ValidateRequestPrompt(newRequestPrompt);
+    var valid = validateRequestPrompt(newRequestPrompt);
     if (valid) {
         requestPromptItems.push(newRequestPrompt);
         totalNumOfRequestPrompts += 1;
@@ -172,30 +170,9 @@ function validateRequestPrompt(newRequestPrompt) {
 }
 
 
-function createRequestPrompt(requestPrompt) {
+function createRequestPrompt(newRequestPrompt) {
 
-    try {
-        logger.info(`ADMIN: Adding requestPrompt (${requestPrompt.name}) to the database.`);
-
-        var newRequestPrompt = new RequestPrompt(requestPrompt);
-
-        var validationErr = newRequestPrompt.validateSync();
-        if (validationErr != null) {
-            for (var prop in validationErr.errors) {
-                logger.error(`ADMIN: createRequestPrompt - create new RequestPrompt validation error: ${validationErr.errors[prop]}`);
-            }
-            var errMsg = `ADMIN: createRequestPrompt - create new RequestPrompt failed validation. ${validationErr}`;
-            logger.error(errMsg);
-            mongoose.disconnect();
-            return;
-        }
-
-    } catch (err) {
-        var errMsg = `ADMIN: createRequestPrompt - problem with creating a new RequestPrompt. Error: ${err}`;
-        logger.error(errMsg);
-        mongoose.disconnect();
-        return;
-    }
+    logger.info(`ADMIN: Adding request prompt (${newRequestPrompt.label}) to the database.`);
 
     newRequestPrompt.save()
         .then((requestPrompt) => {
