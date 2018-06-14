@@ -54,11 +54,11 @@ const RoomSchema = new Schema({
         type: String
     },
 
-    capability: {
+    capabilities: {
         type: [String]
     },
 
-    configuration: {
+    configurations: {
         type: [String]
     },
 

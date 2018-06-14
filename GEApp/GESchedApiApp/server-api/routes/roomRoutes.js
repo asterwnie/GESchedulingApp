@@ -20,15 +20,15 @@ module.exports = function (app) {
             .put(roomController.updateRoom)
             .patch(roomController.updateRoom);
 
-        app.route('/api/rooms/id/:id')
-            .get(roomController.getRoom)
-            .delete(roomController.deleteRoom);
-
         app.route('/api/rooms/sizes')
             .get(roomController.getRoomSizes);
 
         app.route('/api/rooms/capabilities')
             .get(roomController.getCapabilities);
+
+        app.route('/api/rooms/:id')
+            .get(roomController.getRoom)
+            .delete(roomController.deleteRoom);
             
 
     } catch (err) {

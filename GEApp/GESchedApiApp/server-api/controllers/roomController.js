@@ -37,24 +37,31 @@ exports.getRooms = function (req, res) {
     var filterDirective = {}; //default is no filering
     if (req.query.nameContains != null) {    
         const regExpression = new RegExp(`(${req.query.nameContains})`);
-        filterDirective = { "name": regExpression};        
+        filterDirective.name = regExpression;        
     }
 
     if (req.query.buildingContains != null) {    
         const regExpression = new RegExp(`(${req.query.buildingContains})`);
-        filterDirective = { "building": regExpression};        
+        filterDirective.building = regExpression;        
     }
 
     if (req.query.sizeTypeContains != null) {    
         const regExpression = new RegExp(`(${req.query.sizeTypeContains})`);
-        filterDirective = { "sizeType": regExpression};        
+        filterDirective.sizeType = regExpression;        
     }
 
-    if (req.query.capabilityContains != null) {    
-        const regExpression = new RegExp(`(${req.query.capabilityContains})`);
-        filterDirective = { "capability": regExpression};        
+    //modify for multiple
+    if (req.query.hasTheseCapabilities != null) {    
+        const regExpression = new RegExp(`(${req.query.hasTheseCapabilities})`);
+        filterDirective.capabilities = regExpression;        
     }
 
+    if (req.query.seatingCapacityGreaterOrEqual != null) {    
+        const strVal = req.query.seatingCapacityGreaterOrEqual;
+        let requestedSeatingCapacity = parseInt(strVal);
+        
+        filterDirective.seatingCapacity = {$gte: requestedSeatingCapacity};        
+    }
 
     Room.find(filterDirective).sort(sortDirective)
         .then((rooms) => {
@@ -222,31 +229,51 @@ exports.deleteRoom = function (req, res) {
 
 
 //create distinct lists
-exports.getCapabilities = function (req, res) {
+exports.getCapabilities = async function (req, res) {
     logger.verbose('roomController.getCapabilities begin');
 
     let siteCode = httpRequestHelper.getSite(req);
-    let Room = getRoomType(siteCode);
-
-            // note: .sort() does not work with distinct
-            Room.distinct("capability") //Room.find().distinct() may work/be needed instead
-            .then((list) => {
-                if (list == null) {
-                    var errMsg = `roomController.getCapabilities - Room.distinct did not find any capabilities.`;
-                    logger.error(errMsg);
-                    res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
-                } else {
-                    logger.info(`roomController.getCapabilities - Room.distinct success. About to to send back http response with list:\n ${list}`);
-                    res.status(200).json(list);  // 200 - OK
-                }
-            })
-            .catch((err) => {
-                var errMsg = `roomController.getCapabilities - Room.distinct failed. Error: ${err}`;
-                logger.error(errMsg);
-                res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
-            });
+   
+    await queryRoomCapabilities(siteCode, (result) => {
+        if (result.success) {
+            logger.info(`roomController.getCapabilities - Rooms.distinct success. About to send back http response with ${result.capabilities.length} capabilities`);
+            res.status(200).json(result.capabilities);
+        } else {
+            logger.error(`roomController.getCapabilities failed. Error: ${result.errMsg}`);
+            res.status(500).json({ error: result.errMsg });
+        }
+        });
+            
     
 };
+
+async function queryRoomCapabilities(siteCode, callback) {
+
+    let Room = getRoomType(siteCode);
+
+    // note: .sort() does not work with distinct
+    // make your own manual sort
+    await Room.distinct("capabilities") //Room.find().distinct() may work/be needed instead
+    .then((capabilities) => {
+        if (capabilities == null) {
+            var errMsg = `roomController.getCapabilities - Room.distinct did not find any capabilities.`;
+            logger.error(errMsg);
+            callback({ success: false, errMsg: errMsg });
+        } else {
+            logger.info(`roomController.getCapabilities - Room.distinct success. About to to send back http response with capabilities:\n ${capabilities}`);
+            callback({ success: true, capabilities: capabilities });
+        }
+    })
+    .catch((err) => {
+        var errMsg = `roomController.getCapabilities - Room.distinct failed. Error: ${err}`;
+        logger.error(errMsg);
+        callback({ success: false, errMsg: errMsg });
+    });
+}
+
+exports.queryRoomCapabilities = queryRoomCapabilities;
+
+
 
 exports.getRoomSizes = function (req, res) {
     logger.verbose('roomController.getRoomSizes begin');
@@ -271,7 +298,22 @@ exports.getRoomSizes = function (req, res) {
                 res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
             });
     
+
+            /*
+            await queryHotels(siteCode, req.query.orderBy, req.query.nameContains, (result) => {
+                if (result.success) {
+                    logger.info(`hotelController.getHotels - Hotel.find success. About to send back http response with ${result.hotels.length} hotels`);
+                    res.status(200).json(result.hotels);
+                } else {
+                    logger.error(`hotelController.getHotels failed. Error: ${result.errMsg}`);
+                    res.status(500).json({ error: result.errMsg });
+                }
+             });
+            */
 };
+
+
+
 
 exports.getRoomBuildings = function (req, res) {
     logger.verbose('roomController.getRoomBuildings begin');

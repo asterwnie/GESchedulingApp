@@ -11,10 +11,14 @@ const logger = require('./server-api/logger');  // Create logging helper
 const cors = require('cors');                     // Enables Cross-origin resource sharing. https://github.com/expressjs/cors#enabling-cors-pre-flight
 const fs = require('fs');                       // File system.
 
+
 const portNum = appConfig.port;
 const appName = appConfig.appServerName;
 
 const app = express();
+
+const httpRequestHelper = require(`${appRoot}/server-api/httpRequestHelper`);
+var roomController = require(`${appRoot}/server-api/controllers/roomController`);
 
 if (appConfig.devMode) {
     app.use(morgan('combined'));
@@ -92,15 +96,35 @@ roomRoutes(app);
 
 
 
+
 // Temporary for returning mock data:
 
-app.get('/api/appconfigs', (req, res) => {
+app.get('/api/appconfigs', async (req, res) => {
  
     const jsonData = fs.readFileSync(`${appRoot}/server-api/temp/appConfig.json`);
     const appConfigForSite = JSON.parse(jsonData);
 
     appConfigForSite.sites = appConfig.sites;
     appConfigForSite.defaultSite = appConfig.defaultSite;
+
+    let siteCode = httpRequestHelper.getSite(req);
+   
+    //room capabilities
+    await roomController.queryRoomCapabilities(siteCode, (result) => {
+        if (result.success) {
+            logger.info(`roomController.getCapabilities - Rooms.distinct success. About to send back http response with ${result.capabilities.length} capabilities`);
+            appConfigForSite.roomCapabilities = result.capabilities;
+        } else {
+            logger.error(`roomController.getCapabilities failed. Error: ${result.errMsg}`);
+            res.status(500).json({ error: result.errMsg });
+        }
+        });
+    
+    //sizes
+
+    //....
+
+
     res.json(appConfigForSite);
 
 }); 
@@ -114,13 +138,10 @@ app.get('/api/notes', (req, res) => { //was previously attentions
 }); 
 
 
-// create distinct lists
-// code...
-
-
 // Start web server:
 
 var server = app.listen(portNum, function () {
     var port = server.address().port
     logger.info(`${appName} listening on port ${port}`);
 });
+

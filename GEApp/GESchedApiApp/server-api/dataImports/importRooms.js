@@ -96,10 +96,10 @@ function extractRoomItems(fileData) {
 
                 currentItemSeq += 1;
 
-                newRoom = { 
+                newRoom = new Room({ 
                     seqNum: currentItemSeq,
                     name: roomName 
-                }
+                });
             } else {
                 logger.error("ERROR: The room name is required!");
                 errorEncountered = true;
@@ -179,19 +179,14 @@ function extractRoomItems(fileData) {
             var roomCapabilityLine = line.replace(directive, "").trim();
 
             if (roomCapabilityLine != "") {
-
-                if (!newRoom.hasOwnProperty("capability")) {
-                    newRoom.capability = []; // Create the capability line array.               
-                }
-                
                 // Separate capabilities by | if needed.
-                if (roomCapabilityLine.search("|") > -1){
+                if (roomCapabilityLine.indexOf("|") > -1){
                         var capabilityArray = roomCapabilityLine.split("|");
                         for(let capabilityItem of capabilityArray){ //for each item in the array
-                            newRoom.capability.push(capabilityItem.trim()); //add it to the capability array in the db
+                            newRoom.capabilities.push(capabilityItem.trim()); //add it to the capability array in the db
                         }
                 }else{
-                        newRoom.capability.push(roomCapabilityLine.trim()); //if it is a one-liner, add the one item
+                        newRoom.capabilities.push(roomCapabilityLine.trim()); //if it is a one-liner, add the one item
                 }
             }
         }
@@ -200,10 +195,7 @@ function extractRoomItems(fileData) {
         if (!lineProcessed && line.search(directive) > -1) {
             var roomConfigurationLine = line.replace(directive, "").trim();
             if (roomConfigurationLine != "") {
-                if (!newRoom.hasOwnProperty("configuration")) {
-                    newRoom.configuration = []; // Create the configuration line array.               
-                }
-                newRoom.configuration.push(roomConfigurationLine.trim());
+                newRoom.configurations.push(roomConfigurationLine.trim());
             }
         }
 
@@ -244,42 +236,17 @@ function ValidateAndCollectRoom(newRoom, roomItems) {
 
 
 function ValidateRoom(newRoom) {
-    if (!newRoom.hasOwnProperty("name") || newRoom.name == "") {
-        logger.error("ERROR: The room name is required!");
+   
+    var validationErr = newRoom.validateSync();
+    if (validationErr != null) {
+        for (var prop in validationErr.errors) {
+            logger.error(`ADMIN: ValidateRoom - create new Room validation error: ${validationErr.errors[prop]}`);
+        }
+        var errMsg = `ADMIN: ValidateRoom - create new Room failed validation. ${validationErr}`;
+        logger.error(errMsg);
         return false;
     }
-    if (!newRoom.hasOwnProperty("sizeType") || newRoom.sizeType == "") {
-        logger.error("ERROR: The room size type is required!");
-        return false;
-    }
-    if (!newRoom.hasOwnProperty("seatingCapacity") || newRoom.seatingCapacity == "") {
-        logger.error("ERROR: The room seating capacity is required!");
-        return false;
-    }
-    if (!newRoom.hasOwnProperty("floor") || newRoom.floor == "") {
-        logger.error("ERROR: The room floor is required!");
-        return false;
-    }
-    if (!newRoom.hasOwnProperty("building") || newRoom.building == "") {
-        logger.error("ERROR: The room building is required!");
-        return false;
-    }
-    if (!newRoom.hasOwnProperty("roomNumber") || newRoom.roomNumber == "") {
-        logger.error("ERROR: The room number is required!");
-        return false;
-    }
-    if (!newRoom.hasOwnProperty("roomPhone") || newRoom.roomPhone == "") {
-        logger.error("ERROR: The room phone is required!");
-        return false;
-    }
-    if (!newRoom.hasOwnProperty("addressGAL") || newRoom.addressGAL == "") {
-        logger.error("ERROR: The room address in the GAL is required!");
-        return false;
-    }
-   /* if (!newRoom.hasOwnProperty("capability") || newRoom.capability.length == 0) {
-        logger.error("ERROR: The room capability is required!");
-        return false;
-    }*/
+    
     return true;
 }
 

@@ -74,4 +74,12 @@ export const getHotelsUrl = () => {
 }
 
 
-//construct the same, but for hotels
+export const getRoomsUrl = () => {
+    //debugger; // Uncomment to trigger breakpoint.
+
+    const appDefConfig = centralStore.state.appDefConfig;
+    var url = appDefConfig.roomsUrlTmpl.replace('{0}', appDefConfig.apiHost);
+    url = url.replace('{1}', appDefConfig.apiPort);
+    url = url + "?site=" + appDefConfig.site;
+    return url;
+}

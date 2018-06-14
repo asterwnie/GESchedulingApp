@@ -38,6 +38,8 @@ const store = new Vuex.Store({
 
             hotelsUrlTmpl: 'http://{0}:{1}/api/hotels',
 
+            roomsUrlTmpl: 'http://{0}:{1}/api/rooms',
+
             // These are use during  development. Be sure the turn all of them off.
 
             devModeIgnoreLoginFailure: false

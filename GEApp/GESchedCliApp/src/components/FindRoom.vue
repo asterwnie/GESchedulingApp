@@ -1,11 +1,25 @@
 <template>
 <div>
+
+  <!--Create a drop list with a for-each taking all of the roomCapabilties-->
+
   <p>to do...</p>
   test images:
   <br>
   <div class="span12 pagination-centered"><img src="@/assets/Classroom-Setup-40-Max.jpg" alt="header" /></div>
   <br>
   <div class="span12 pagination-centered"><img src="@/assets/U-Setup-40-Max.jpg" alt="header" /></div>
+  
+  <!--not working right now-->
+  <div v-for="(room, index) in rooms" :key="index" width="100%">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title">{{room.name}}</h6>
+        <p class="card-text" :hidden="room.sizeType == null ||room.sizeType == ''">phone: {{room.sizeType}}</p>
+      </div>
+    </div>
+  </div>
+
 </div>
 </template>
 
@@ -13,7 +27,9 @@
 export default {
   data () {
     return {
-      title: "Find Room"    
+      title: this.$store.state.appConfig.roomsViewTitle,
+      viewDescription: this.$store.state.appConfig.roomsViewDescription,
+      rooms: this.$store.state.rooms
     }
   },
 
