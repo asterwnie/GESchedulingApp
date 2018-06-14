@@ -44,8 +44,8 @@ const RequestSchema = new Schema({
     }
 }, 
 {
-    timestamps: true, // auto-add createdAt and updatedAt
-    strict: false
+    timestamps: true,   // auto-add createdAt and updatedAt
+    strict: false       // Can add other fields not enforced by the schema
 });
 
 

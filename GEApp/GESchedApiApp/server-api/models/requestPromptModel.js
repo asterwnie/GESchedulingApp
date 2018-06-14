@@ -16,28 +16,40 @@ const InputTypeSchema = new Schema({
 
     ctrlType: {
         type: String,
-        enum: ['text', 'email', 'number', 'textArea', 'yesNo', 'checkbox', 'choices', 'custom'],
+        enum: [
+            'text',     // A single-line text control.
+            'email',    // A single-line text control for entering a email address only.
+            'number',   // A single-line text control for entering a number only.
+            'textArea', // A multi-line text box.
+            'yesNo',    // Two toggle radio buttons. One for Yes another for No. Maps to a boolean value.
+            'checkbox', // A checkbox control. Maps to a boolean value.
+            'choices',  // A dropdown choice control to pick a single option
+            'custom'    // A custom UI for more advanced UI
+        ],
         required: [true, 'ctrlType is required!']
     },
 
+    // optional
     valueChoices: {
         type: [String],
     },
 
+    // optional
     isValueBoolean: {
-        type: Boolean, //(default: false) - for .yesno and .checkbox
-        // is this a check for this.ctrlType.type == yesno or checkbox? *******************************************
+        type: Boolean, // default: false - guide validation for this.ctrlType.type == yesno or checkbox
     },
 
+    // optional
     isValueNumber: {
-        type: Boolean, //(default: false) for .numeric
-        // is this a check for this.ctrlType.type == numeric ******************************************************
+        type: Boolean, // default: false - guide validation for this.ctrlType.type == number. It's a text control for entering a number only.
     },
 
+    // optional
     maxTextLen: {
-        type: Number // (optional)
+        type: Number
     },
 
+    // optional
     numberRange: {
         type: [Number], 
         required: function(){
@@ -51,16 +63,25 @@ const InputTypeSchema = new Schema({
         }
     },
 
+    // optional - identify special stocked validators.e.g. email
     validatorId: {
-        type: String //(optional - identify special stocked validators.e.g. email)
+        type: String 
     },
 
+    // optional
     validationRegEx: {
-        type: String //(optional)
+        type: String 
     },
 
+    // optional
     customCtrlId: {
-        type: String // optional
+        type: String
+    },
+
+    // optional
+    dependsOn: {
+        type: String,
+        ctrlDataId: Number
     }
 });
 
@@ -92,15 +113,16 @@ const RequestPromptSchema = new Schema({
     screenNum: {
         type: Number,
         required: [true, 'Screen number is required!']
-    },
+    }
    // subInputType: {
       //  type: InputType,
         //(optional - enablement automatically depends on inputType state. This sub-control is mainly used for the special request prompt.)
    // }
-    dependsOn: {
-        type: String,
-        ctrlDataId: Number
-    }
+
+}, 
+{
+    timestamps: true,   // auto-add createdAt and updatedAt
+    strict: false       // Can add other fields not enforced by the schema
 });
 
 
@@ -122,7 +144,9 @@ module.exports = function (siteCode) {
     if (requestPromptModelBySite[siteCodeUpper] == null) {
         let dbConnection = getDbConnection(siteCodeUpper);       
         // Mongoose automatically creates a request prompt collection if one does not exist.
-        requestPromptModelBySite[siteCodeUpper] = dbConnection.model(`requestPrompts`, RequestPromptSchema);
+        let requestPromptModel = dbConnection.model(`requestPrompts`, RequestPromptSchema);
+        requestPromptModel.InputType = dbConnection.model(`inputTypes`, InputTypeSchema);
+        requestPromptModelBySite[siteCodeUpper] = requestPromptModel;
     }
     return requestPromptModelBySite[siteCodeUpper];
 

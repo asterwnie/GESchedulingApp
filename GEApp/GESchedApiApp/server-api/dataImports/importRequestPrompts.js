@@ -47,8 +47,6 @@ function doRequestPromptsImport() {
                 logger.info('No requestPrompts got extracted from the data file!');
                 process.exit();
             }
-         
-            logger.info(result.requestPrompts);
 
             result.requestPrompts.forEach((requestPrompt) => createRequestPrompt(requestPrompt));
         } else {
@@ -104,12 +102,118 @@ function extractRequestPromptItems(fileData) {
             }
         }
 
+        directive = "--Prompt.InputType.Text";
+        if (!lineProcessed && line.search(directive) > -1) {
+            var inputDataId = line.replace(directive, "").replace("[", "").replace("]", "");
+            if (inputDataId != "") {
+                var idParts = inputDataId.split("=");
+                if (idParts[0] == "dataId") {
+                    let inputType = new RequestPrompt.InputType({
+                        ctrlDataId: idParts[1],
+                        ctrlType: "text"
+                    });
+                    newRequestPrompt.inputType = inputType;
+                }
+            }
+        }
+
+        directive = "--Prompt.InputType.TextArea";
+        if (!lineProcessed && line.search(directive) > -1) {
+            var inputDataId = line.replace(directive, "").replace("[", "").replace("]", "");
+            if (inputDataId != "") {
+                var idParts = inputDataId.split("=");
+                if (idParts[0] == "dataId") {
+                    let inputType = new RequestPrompt.InputType({
+                        ctrlDataId: idParts[1],
+                        ctrlType: "textArea"
+                    });
+                    newRequestPrompt.inputType = inputType;
+                }
+            }
+        }
+
+        directive = "--Prompt.InputType.number";
+        if (!lineProcessed && line.search(directive) > -1) {
+            var inputDataId = line.replace(directive, "").replace("[", "").replace("]", "");
+            if (inputDataId != "") {
+                var idParts = inputDataId.split("=");
+                if (idParts[0] == "dataId") {
+                    let inputType = new RequestPrompt.InputType({
+                        ctrlDataId: idParts[1],
+                        ctrlType: "number"
+                    });
+                    newRequestPrompt.inputType = inputType;
+                }
+            }
+        }
+        
+        directive = "--Prompt.InputType.Custom";
+        if (!lineProcessed && line.search(directive) > -1) {
+            var inputData = line.replace(directive, "").replace("[", "").replace("]", "");
+            if (inputData != "") {
+                var nameValPairs = inputData.split("|");
+
+                var dataIdParts = nameValPairs[0].split("=");
+                if (dataIdParts[0] == "dataId") {
+                    let inputType = new RequestPrompt.InputType({
+                        ctrlDataId: dataIdParts[1],
+                        ctrlType: "custom"
+                    });
+                    newRequestPrompt.inputType = inputType;
+                }
+
+                var ctrlIdParts = nameValPairs[1].split("=");
+                if (ctrlIdParts[0] == "ctrlId") {
+                    newRequestPrompt.inputType.customCtrlId = ctrlIdParts[1];
+                }
+            }
+        }
+
+        directive = "--Prompt.InputType.YesNo";
+        if (!lineProcessed && line.search(directive) > -1) {
+            var inputData = line.replace(directive, "").replace("[", "").replace("]", "");
+            if (inputData != "") {
+                var nameValPairs = inputData.split("|");
+
+                var dataIdParts = nameValPairs[0].split("=");
+                if (dataIdParts[0] == "dataId") {
+                    let inputType = new RequestPrompt.InputType({
+                        ctrlDataId: dataIdParts[1],
+                        ctrlType: "yesNo"
+                    });
+                    newRequestPrompt.inputType = inputType;
+                }
+
+                if (nameValPairs[1] != null) {
+                    var ctrlIdParts = nameValPairs[1].split("=");
+                    if (ctrlIdParts[0] == "dependsOn") {
+                        newRequestPrompt.inputType.dependsOn = ctrlIdParts[1];
+                    }
+                }
+            }
+        }
+
+        directive = "--Prompt.InputType.Email";
+        if (!lineProcessed && line.search(directive) > -1) {
+            var inputDataId = line.replace(directive, "").replace("[", "").replace("]", "");
+            if (inputDataId != "") {
+                var idParts = inputDataId.split("=");
+                if (idParts[0] == "dataId") {
+                    let inputType = new RequestPrompt.InputType({
+                        ctrlDataId: idParts[1],
+                        ctrlType: "email"
+                    });
+                    newRequestPrompt.inputType = inputType;
+                }
+            }
+        }
+
         directive = "--Prompt.OnScreen:";
         if (!lineProcessed && line.search(directive) > -1) {
             var requestOnScreeen = line.replace(directive, "").trim();
             if (requestOnScreeen != "") {
                 try {
-                newRequestPrompt.screenNum = parseInt(requestOnScreeen);
+                    newRequestPrompt.screenNum = parseInt(requestOnScreeen);
                 } catch (err) {
                     logger.error(`ERROR: Unable to parse ${requestOnScreeen} to a number!`);
                     errorEncountered = true;
@@ -157,6 +261,16 @@ function validateAndCollectRequestPrompt(newRequestPrompt, requestPromptItems) {
 function validateRequestPrompt(newRequestPrompt) {
 
     var validationErr = newRequestPrompt.validateSync();
+    if (validationErr != null) {
+        for (var prop in validationErr.errors) {
+            logger.error(`ADMIN: validateRequestPrompt - create new RequestPrompt validation error: ${validationErr.errors[prop]}`);
+        }
+        var errMsg = `ADMIN: validateRequestPrompt - create new RequestPrompt failed validation. ${validationErr}`;
+        logger.error(errMsg);
+        return false;
+    }
+
+    validationErr = newRequestPrompt.inputType.validateSync();
     if (validationErr != null) {
         for (var prop in validationErr.errors) {
             logger.error(`ADMIN: validateRequestPrompt - create new RequestPrompt validation error: ${validationErr.errors[prop]}`);
