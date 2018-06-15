@@ -35,7 +35,7 @@ function deleteNotes() {
     // Match any name therefore, deleting all.
     Note.deleteMany({ type: /(.*?)/ }) 
         .then(function () {
-            logger.info(`ADMIN: All requestPrompts deleted for site: ${siteCode}`);
+            logger.info(`ADMIN: All Notes deleted for site: ${siteCode}`);
 
             mongoose.disconnect((err) => {
                 if (err) {
