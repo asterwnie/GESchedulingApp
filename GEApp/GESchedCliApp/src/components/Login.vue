@@ -96,6 +96,7 @@ export default {
             isFetchingDefAppConfig: true,
             isFetchingNotes: true,
             isFetchingHotels: true,
+            isFetchingRequestPrompts: true,
 
             canShowError: false,
             hasFailure: false,
@@ -130,15 +131,22 @@ export default {
         this.isFetchingDefAppConfig = true;
         this.isFetchingNotes = true;
         this.isFetchingHotels = true;
+        this.isFetchingRequestPrompts = true;
         
         this.getDefAppConfig(); 
         this.getNotes();
         this.getHotels();
+        this.getRequestPrompts();
     },
 
     computed: {
         isLoading() {
-            return (this.isFetchingDefAppConfig || this.isFetchingNotes || this.isFetchingHotels); 
+            return (
+                this.isFetchingDefAppConfig || 
+                this.isFetchingNotes || 
+                this.isFetchingHotels ||
+                this.isFetchingRequestPrompts
+                ); 
         }
     },
 
@@ -162,6 +170,25 @@ export default {
                 })
 
                 
+        },
+
+        getRequestPrompts() {
+
+            var vm = this;
+            var url = apiMgr.getRequestPromptsUrl(); 
+
+            axios.get(url)
+                .then(res => {
+                    console.log("getRequestPrompt return status: " + res.status);
+
+                    vm.$store.state.requestPrompts = res.data;
+                    vm.isFetchingRequestPrompts = false;
+                })
+                .catch((err) => {
+                    vm.hasFailure = true;
+                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                })
+
         },
 
         getNotes() {

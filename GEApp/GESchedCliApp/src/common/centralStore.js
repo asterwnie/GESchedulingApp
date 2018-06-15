@@ -14,12 +14,16 @@ const store = new Vuex.Store({
             accessCode: null
         },
 
-        currentUser: null,  // Will be assigned during login
+        currentUser: null,  // Will be assigned after successful login
 
-        appConfig: {},      // Will be assigned app start
-        notes: {},          // Will be assigned app start
-        hotels: {},         // Will be assigned app start
-        caterers: {},       // Will be assigned app start
+
+        // These reference data Will be assigned during login page startup
+        appConfig: {},      
+        notes: null,          
+        hotels: null,         
+        caterers: null,       
+        requestPrompts: null,
+
 
         appDefConfig: {
 
@@ -39,6 +43,8 @@ const store = new Vuex.Store({
             hotelsUrlTmpl: 'http://{0}:{1}/api/hotels',
 
             roomsUrlTmpl: 'http://{0}:{1}/api/rooms',
+
+            requestPromptsUrlTmpl: 'http://{0}:{1}/api/requestPrompts',
 
             // These are use during  development. Be sure the turn all of them off.
 
