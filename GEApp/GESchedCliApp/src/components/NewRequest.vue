@@ -72,18 +72,33 @@
 export default {
   data () {
     return {
-      title: "New Request",
-      contact: "",
-      email: ""  
+    }
+  },
+
+  computed: {
+    title() {
+      return this.$store.state.appConfig.requestViewTitle; 
+    },
+ /*   viewDescription() {
+      return this.$store.state.appConfig.requestViewDescription; 
+    },*/
+    email() {
+      return this.$store.state.loginContext.requesterEmail;
+    },
+    contact(){
+      return this.$store.state.loginContext.requesterName;
     }
   },
 
   activated() {
     console.log('NewRequest.vue activated.');
+
+    if (this.$store.state.appConfig.requestViewTitle == null) {
+      this.$router.push('login'); // Config data lost, force back to login to refetch data.
+    }
+
     this.$store.state.currentViewTitle = this.title;
     this.$store.state.enableNavBar = true;
-    this.email = this.$store.state.loginContext.requesterEmail;
-    this.contact = this.$store.state.loginContext.requesterName;
   },
 
   created() {

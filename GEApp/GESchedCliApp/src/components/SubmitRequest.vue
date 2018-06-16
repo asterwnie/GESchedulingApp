@@ -21,13 +21,26 @@
 <script>
 export default {
   data () {
-    return {
-      title: "Submit Request"    
+    return {  
     }
+  },
+
+  computed: {
+    title() {
+      return this.$store.state.appConfig.submitRequestViewTitle; 
+    },
+  /*  viewDescription() {
+      return this.$store.state.appConfig.hotelsViewDescription; 
+    },*/
   },
 
   activated() {
     console.log('SubmitRequest.vue activated.');
+
+    if (this.$store.state.appConfig.submitRequestViewTitle == null) {
+      this.$router.push('login'); // Config data lost, force back to login to refetch data.
+    }
+
     this.$store.state.currentViewTitle = this.title;
     this.$store.state.enableNavBar = true;
   },
