@@ -27,21 +27,30 @@
 export default {
   data () {
     return {
-      title: this.$store.state.appConfig.attentionNotesViewTitle
-      
     }
   },
   
   computed: {
-        noteItems() {
+    title() {
+      return this.$store.state.appConfig.attentionNotesViewTitle; 
+    },
+    viewDescription() {
+      return this.$store.state.appConfig.attentionNotesDescription; 
+    },
+    noteItems() {
             return this.$store.state.notes;
-        }
+    }
   },
 
   activated() {
-      console.log('Notes.vue activated.');
-      this.$store.state.currentViewTitle = this.title;
-      this.$store.state.enableNavBar = true;
+    console.log('AttentionNotes.vue activated.');
+
+    if (this.$store.state.appConfig.attentionNotesViewTitle == null) {
+      this.$router.push('login'); // Config data lost, force back to login to refetch data.
+    }
+
+    this.$store.state.currentViewTitle = this.title;
+    this.$store.state.enableNavBar = true;
   }
 }
 </script>

@@ -14,7 +14,7 @@ mongoose.Promise = global.Promise;
 const args = process.argv; 
 var siteCode = appConfig.defaultSite; // The current default in HLS-MA in server.config.js
 
-// if a site code is passed in on the command-line then use it. For example:
+// if a site code is passed in on the command-block then use it. For example:
 // node ./server-api/dataImports/importHotels.js HLS-MA
 // Note: currently in VS Code debug mode you have to rely on using the appConfig.defaultSite setting.
 if (args.length == 3 && args[2] != null) { siteCode = args[2]; }
@@ -68,25 +68,26 @@ function extractHotelItems(fileData) {
     var errorEncountered = false;
     var currentItemSeq = 0;
 
-    fileData.split(/\r?\n/).every((line) => {
+    fileData.split(/\r?\n/).every((block) => {
 
         var directive = null;
-        var lineProcessed = false;
+        var blockProcessed = false;
 
-        logger.info(`Processing line: ${line}`);
+        logger.info(`Processing block: ${block}`);
 
         directive = "--Hotel.Name:";
-        if (line.search(directive) > -1) {            
+        if (block.search(directive) > -1) {            
             // Complete and store the previous pending hotel object if exist.
             if (newHotel != null) {
                 var success = validateAndCollectHotel(newHotel, hotelItems);
                 if (!success) {
                     errorEncountered = true;
-                    return false; // Return false to stop additional line processing.
+                    return false; // Return false to stop additional block processing.
                 }
             }
 
-            var hotelName = line.replace(directive, "").trim();
+            
+            var hotelName = block.replace(directive, "").trim();
             // Start a new hotel instance to gather its properties.
             if (hotelName != "") {
 
@@ -100,46 +101,46 @@ function extractHotelItems(fileData) {
             } else {
                 logger.error("ERROR: The hotel name is required!");
                 errorEncountered = true;
-                return false; // Return false to stop additional line processing.
+                return false; // Return false to stop additional block processing.
             }
 
-            lineProcessed = true;
+            blockProcessed = true;
         }
 
-        directive = "--Hotel.Address:"; // Note, there can be multiple address lines.
-        if (!lineProcessed && line.search(directive) > -1) {
-            var hotelAddressLine = line.replace(directive, "").trim();
-            if (hotelAddressLine != "") {
-                // Add address line to the array:
-                newHotel.address.push(hotelAddressLine);
+        directive = "--Hotel.Address:"; // Note, there can be multiple address blocks.
+        if (!blockProcessed && block.search(directive) > -1) {
+            var hotelAddressBlock = block.replace(directive, "").trim();
+            if (hotelAddressBlock != "") {
+                // Add address block to the array:
+                newHotel.address.push(hotelAddressBlock);
             }
         }
 
         directive = "--Hotel.Phone:";
-        if (!lineProcessed && line.search(directive) > -1) {
-            var hotelPhone = line.replace(directive, "").trim();
+        if (!blockProcessed && block.search(directive) > -1) {
+            var hotelPhone = block.replace(directive, "").trim();
             if (hotelPhone != "") {
                 newHotel.phone = hotelPhone;
             }
         }
 
         directive = "--Hotel.Fax:";
-        if (!lineProcessed && line.search(directive) > -1) {
-            var hotelFax = line.replace(directive, "").trim();
+        if (!blockProcessed && block.search(directive) > -1) {
+            var hotelFax = block.replace(directive, "").trim();
             if (hotelFax != "") {
                 newHotel.fax = hotelFax;
             }
         }
 
         directive = "--Hotel.Discount:";
-        if (!lineProcessed && line.search(directive) > -1) {
-            var hotelDiscount = line.replace(directive, "").trim();
+        if (!blockProcessed && block.search(directive) > -1) {
+            var hotelDiscount = block.replace(directive, "").trim();
             if (hotelDiscount != "") {
                 newHotel.discount = hotelDiscount;
             }
         }
 
-        return true; // Return true to continue processing for the next line item.
+        return true; // Return true to continue processing for the next block item.
     })
 
     // Check to see if there's one last pending new one to be collected.

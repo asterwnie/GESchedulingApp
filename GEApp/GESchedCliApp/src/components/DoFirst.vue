@@ -12,8 +12,6 @@
             <!--if the object is an array,-->
           <template v-if="note.type == 'doFirst'">
             <!--display each item-->
-           <!-- <h6 class="alert-heading">Required</h6>-->
-            <!--<hr>-->
             <span v-html="note.text"></span>
           </template>
           </div>
@@ -32,22 +30,31 @@
 export default {
   data () {
     return {
-      title: this.$store.state.appConfig.doFirstViewTitle
     }
   },
 
   computed: {
-        noteItems() {
+    title() {
+      return this.$store.state.appConfig.doFirstViewTitle; 
+    },
+    viewDescription() {
+      return this.$store.state.appConfig.doFirstDescription; 
+    },
+    noteItems() {
             return this.$store.state.notes;
-        }
+    }
   },
-  
-  activated() {
-      console.log('DoFirst.vue activated.');
-      this.$store.state.currentViewTitle = this.title;
-      this.$store.state.enableNavBar = true;     
-  }
 
+  activated() {
+    console.log('DoFirst.vue activated.');
+
+    if (this.$store.state.appConfig.doFirstViewTitle == null) {
+      this.$router.push('login'); // Config data lost, force back to login to refetch data.
+    }
+
+    this.$store.state.currentViewTitle = this.title;
+    this.$store.state.enableNavBar = true;
+  }
 }
 
 // ToDo: Add a method called process text to look for [links] and convert it to html:

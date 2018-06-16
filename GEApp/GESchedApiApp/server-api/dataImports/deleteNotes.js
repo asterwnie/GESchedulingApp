@@ -1,14 +1,13 @@
-//THESE DO NOT WORK RIGHT NOW, AND NEED TO BE REVISED FOR REQUEST PROMPTS
 'use strict';
 
-// Delete all requestPrompts for a site.
+// Delete all notes for a site.
 
 const fs = require('fs'); // File system.
 const appRoot = require('app-root-path'); 
 const mongoose = require('mongoose'); // Helper libray for MongoDB. http://mongoosejs.com/ 
 const appConfig = require(`${appRoot}/server.config`); // Load app configuration settings server.config.js
 const logger = require(`${appRoot}/server-api/logger`); // Create logging helper
-const getNoteType = require(`${appRoot}/server-api/models/requestPromptModel`);
+const getNoteType = require(`${appRoot}/server-api/models/noteModel`);
 
 mongoose.Promise = global.Promise;
 

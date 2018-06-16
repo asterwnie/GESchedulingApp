@@ -32,7 +32,7 @@ It is your responsibility as the event contact to ensure all furniture, trash, f
 The Boardroom is equipped with a monitor, speaker system, phone and ClickShare. Non-GE computers can present.
 
 --Note.AboutRoom
-Martha’s Vineyard is equipped with a podium, projector, screen, speaker system and ClickShare. Non-GE computers can present. 
+Marthaï¿½s Vineyard is equipped with a podium, projector, screen, speaker system and ClickShare. Non-GE computers can present. 
 
 --Note.AboutRoom
 Martha's Vineyard has a podium, projector, drop down screen, Creston and dongle
@@ -44,7 +44,7 @@ Bunker Hill, Fenway, Wachusett, Nantucket, and Plum Island have monitors and Cli
 All other huddle and conference rooms are equipped with Crestron units and only GE employees can present wirelessly.
 
 --Note.GuestWiFiAccess
-Via the guest’s smartphone or laptop, find the WiFi network called “Internet”.
+Via the guestï¿½s smartphone or laptop, find the WiFi network called ï¿½Internetï¿½.
 
 --Note.GuestWiFiAccess
 The GE host will provide the password (key) by going to https://guest.ge.com [https://guest.ge.com].
