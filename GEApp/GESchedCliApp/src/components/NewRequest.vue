@@ -64,14 +64,15 @@
 
             </div>
             <br>
+            <div class="mb-3">
+              <button type="button" class="btn btn-primary btn-sm" @click.prevent="onContinue">Continue Request ></button>
+            </div>
 
           </form>
         </div>
 
       </div>
-      <div class="footerBar fixed-bottom d-flex justify-content-between">
-        <button type="button" class="btn btn-primary btn-sm" @click.prevent="onContinue">Continue Request ></button>
-      </div>
+
     </div>
 </template>
 
