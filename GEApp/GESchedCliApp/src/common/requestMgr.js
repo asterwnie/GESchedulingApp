@@ -88,7 +88,7 @@ export const validateRequest = (request, currentScreenNum) => {
 
 export const bindUiValuesFromRequest = (request, currentScreenNum) => {
 
-    debugger; // Uncomment to trigger breakpoint.
+    //debugger; // Uncomment to trigger breakpoint.
 
     var assignmentCount = 0;
 
