@@ -14,7 +14,9 @@ const store = new Vuex.Store({
             accessCode: null
         },
 
-        currentUser: null,  // Will be assigned after successful login
+        currentRequest: null,   // To be assigned a new or exiting request for editing.
+
+        currentUser: null,      // Will be assigned after successful login.
 
 
         // These reference data Will be assigned during login page startup

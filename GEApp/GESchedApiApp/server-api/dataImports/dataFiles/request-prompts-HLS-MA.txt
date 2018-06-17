@@ -1,26 +1,31 @@
 --Prompt.Type.Standard
 --Prompt.Label: Event title
 --Prompt.InputType.Text[dataId=eventTitle]
+--Prompt.Required
 --Prompt.OnScreen: 1
 
 --Prompt.Type.Standard
 --Prompt.Label: Event Date(s) / Time(s)
 --Prompt.InputType.Custom[dataId=eventDateTimeData|ctrlId=eventDateTimeCtrl]
+--Prompt.Required
 --Prompt.OnScreen: 1
 
 --Prompt.Type.Standard
 --Prompt.Label: Location of event
 --Prompt.InputType.Custom[dataId=locationOfEvent|ctrlId=locationOfEventCtrl]
+--Prompt.Required
 --Prompt.OnScreen: 1
 
 --Prompt.Type.Standard
 --Prompt.Label: Onsite GE contact person for the event
 --Prompt.InputType.Text[dataId=eventGEContactPersonName]
+--Prompt.Required
 --Prompt.OnScreen: 1
 
 --Prompt.Type.Standard
 --Prompt.Label: Contact Person's Email
 --Prompt.InputType.Email[dataId=eventGEContactPersonEmail]
+--Prompt.Required
 --Prompt.OnScreen: 1
 
 --Prompt.Type.Standard

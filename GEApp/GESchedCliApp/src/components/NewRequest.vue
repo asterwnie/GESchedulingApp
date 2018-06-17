@@ -6,55 +6,53 @@
 
           <form class="needs-validation" novalidate>
 
-            <!--The formatting here is still off. It's supposed to be row-column, but here you have column-row...-->
-            <div class="row">
-              <div class="dropdown">
-                &nbsp;&nbsp;&nbsp;<button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Room Quick Pick
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Forum</a>
-                <a class="dropdown-item" href="#">Room 1</a>
-                <a class="dropdown-item" href="#">Room 2</a>
-                </div>
-              </div>
-               &nbsp;
-              <button type="button" class="btn btn-secondary btn-sm" @click.prevent="$router.push('findroom')">Find</button>
-             <div class="col-md-6 mb-3">
-                
-              </div>
-              <div class="col-md-6 mb-3">
-                <label for="firstName">Room Scheduled</label>
-               <textarea class="form-control" aria-label="With textarea"></textarea>
-              </div>
-              <div class="col-md-6 mb-3">
-                <label for="lastName">Meeting/Event Title</label>
-                <input type="text" class="form-control form-control-sm" id="ContactName" placeholder="" value="" required>
-                <div class="invalid-feedback">
-                  The meeting/event tilte is required.
-                </div>
-              </div>
-              <div class="col-md-6 mb-3">
-                <label for="lastName">Contact</label>
-                <input v-model="contact" type="text" class="form-control form-control-sm" id="ContactName" placeholder="" value="" required>
-                <div class="invalid-feedback">
-                  Contact name is required.
-                </div>
-              </div>
-            </div>
+            <div class="mb-3" v-for="(requestPrompt, index) in requestPrompts" :key="index">
 
+              <template v-if="requestPrompt.inputType.ctrlType == 'text'"> 
+                <text-input 
+                  :screenNum="currentScreenNum"
+                  :ctrlId="requestPrompt.inputType.ctrlDataId" 
+                  :promptLabel="requestPrompt.label"
+                  :dataRequiredMsgId="'REQUIRED-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"
+                  :dataInvalidMsgId="'INVALID-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"></text-input>
+              </template>
 
-            <div class="mb-3">
-              <label for="email">Email</label>
-              <input v-model="email" type="email" class="form-control form-control-sm" id="email" placeholder="you@example.com">
-              <div class="invalid-feedback">
-                Please enter a valid email address for shipping updates.
-              </div>
-            </div>
+              <template v-if="requestPrompt.inputType.ctrlType == 'textArea'"> 
+                <text-area-input 
+                  :screenNum="currentScreenNum"
+                  :ctrlId="requestPrompt.inputType.ctrlDataId" 
+                  :promptLabel="requestPrompt.label"
+                  :dataRequiredMsgId="'REQUIRED-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"
+                  :dataInvalidMsgId="'INVALID-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"></text-area-input>
+              </template>
 
-            <br>
-            <div class="alert alert-light" role="alert">
-              More UI will be added...
+              <template v-if="requestPrompt.inputType.ctrlType == 'email'"> 
+                <email-input 
+                  :screenNum="currentScreenNum"
+                  :ctrlId="requestPrompt.inputType.ctrlDataId" 
+                  :promptLabel="requestPrompt.label" 
+                  :dataRequiredMsgId="'REQUIRED-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"
+                  :dataInvalidMsgId="'INVALID-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"></email-input>
+              </template>
+
+              <template v-if="(requestPrompt.inputType.ctrlType == 'custom' && requestPrompt.inputType.customCtrlId == 'locationOfEventCtrl')"> 
+                <meeting-location-input 
+                  :screenNum="currentScreenNum"
+                  :ctrlId="requestPrompt.inputType.ctrlDataId" 
+                  :promptLabel="requestPrompt.label" 
+                  :dataRequiredMsgId="'REQUIRED-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"
+                  :dataInvalidMsgId="'INVALID-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"></meeting-location-input>
+              </template>
+
+              <template v-if="(requestPrompt.inputType.ctrlType == 'custom' && requestPrompt.inputType.customCtrlId == 'eventDateTimeCtrl')"> 
+                <meeting-date-time-input 
+                  :screenNum="currentScreenNum"
+                  :ctrlId="requestPrompt.inputType.ctrlDataId" 
+                  :promptLabel="requestPrompt.label" 
+                  :dataRequiredMsgId="'REQUIRED-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"
+                  :dataInvalidMsgId="'INVALID-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"></meeting-date-time-input>
+              </template>
+
             </div>
             <br>
 
@@ -63,18 +61,50 @@
 
       </div>
       <div class="footerBar fixed-bottom d-flex justify-content-between">
-        <button type="button" class="btn btn-primary btn-sm" @click.prevent="$router.push('attentionNotes')">Continue Request ></button>
+        <button type="button" class="btn btn-primary btn-sm" @click.prevent="onContinue">Continue Request ></button>
       </div>
     </div>
 </template>
 
 <script>
+import { validateRequest, bindUiValuesFromRequest } from '@/common/requestMgr.js'
+
+import textInputCtrl from '@/components/requestPrompts/TextInput.vue'
+import textAreaInputCtrl from '@/components/requestPrompts/TextAreaInput.vue'
+import emailInputCtrl from '@/components/requestPrompts/EmailInput.vue'
+import meetingLocInputCtrl from '@/components/requestPrompts/MeetingLocationInput.vue'
+import meetingDateTimeInputCtrl from '@/components/requestPrompts/MeetingDateTimeInput.vue'
+
 export default {
   data () {
     return {
       title: "New Request",
+      currentScreenNum: 1,
       contact: "",
-      email: ""  
+      email: "",
+      ctrlId: "ID111" ,
+      ctrlPrompt: "Prompt 1:",
+      ctrlType: "textArea"
+    }
+  },
+
+  components: {
+    textInput: textInputCtrl,
+    textAreaInput: textAreaInputCtrl,
+    emailInput: emailInputCtrl,
+    meetingLocationInput: meetingLocInputCtrl,
+    meetingDateTimeInput: meetingDateTimeInputCtrl
+  },
+
+  computed: {
+    title() {
+      return this.$store.state.appConfig.aboutViewTitle; 
+    },
+    viewDescription() {
+      return this.$store.state.appConfig.aboutViewDescription; 
+    },
+    requestPrompts() {
+        return this.$store.state.requestPrompts;
     }
   },
 
@@ -82,8 +112,20 @@ export default {
     console.log('NewRequest.vue activated.');
     this.$store.state.currentViewTitle = this.title;
     this.$store.state.enableNavBar = true;
+
+    if (this.$store.state.currentRequest == null) {
+      this.$store.state.currentRequest = {}
+    }
+
+    var vm = this;
+    var ctrls = $('.is-request-data');
+    $.each(ctrls, function (index, inputCtrl) {
+      vm.$store.state.currentRequest['ValidStateFor' + inputCtrl.id] = true;
+    });
+
     this.email = this.$store.state.loginContext.requesterEmail;
     this.contact = this.$store.state.loginContext.requesterName;
+
   },
 
   created() {
@@ -92,17 +134,20 @@ export default {
   },
 
   methods: {
-    onSubmit (evt) {
-      evt.preventDefault();
-      alert(JSON.stringify(this.form));
-    },
-    onReset (evt) {
-      evt.preventDefault();
-      /* Reset our form values */
-      this.form.email = '';
-      /* Trick to reset/clear native browser form validation state */
-      this.show = false;
-      this.$nextTick(() => { this.show = true });
+    onContinue (evt) {
+      var vm = this;
+      var ctrls = $('.is-request-data');
+      $.each(ctrls, function (index, inputCtrl) {
+        vm.$store.state.currentRequest[inputCtrl.id] = $(inputCtrl).val();
+      });
+
+      var assignmentCount =  bindUiValuesFromRequest(vm.$store.state.currentRequest, vm.currentScreenNum);
+      
+      var hasInvalidData = validateRequest(vm.$store.state.currentRequest, vm.currentScreenNum);
+      
+      if (!hasInvalidData) {
+        this.$router.push('attentionNotes');
+      }
     }
   }
 }

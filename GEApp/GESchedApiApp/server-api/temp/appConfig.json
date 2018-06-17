@@ -13,7 +13,11 @@
 
     "doFirstViewTitle": "Do First",
 
+    "doFirstViewDescription": "Complete these items before each new request.",
+
     "attentionNotesViewTitle": "Attention",
+
+    "attentionNotesViewDescription": "",
 
     "techSupportViewTitle": "IT Help",
 

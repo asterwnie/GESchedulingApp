@@ -208,6 +208,11 @@ function extractRequestPromptItems(fileData) {
             }
         }
 
+        directive = "--Prompt.Required";
+        if (!lineProcessed && line.search(directive) > -1) {
+            newRequestPrompt.isRequired = true;
+        }
+
         directive = "--Prompt.OnScreen:";
         if (!lineProcessed && line.search(directive) > -1) {
             var requestOnScreeen = line.replace(directive, "").trim();
