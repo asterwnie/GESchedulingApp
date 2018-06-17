@@ -36,21 +36,21 @@
               </template>
 
               <template v-if="(requestPrompt.inputType.ctrlType == 'custom' && requestPrompt.inputType.customCtrlId == 'locationOfEventCtrl')"> 
-                <meeting-location-input 
+                <event-location-input 
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
                   :promptLabel="requestPrompt.label" 
                   :dataRequiredMsgId="'REQUIRED-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"
-                  :dataInvalidMsgId="'INVALID-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"></meeting-location-input>
+                  :dataInvalidMsgId="'INVALID-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"></event-location-input>
               </template>
 
               <template v-if="(requestPrompt.inputType.ctrlType == 'custom' && requestPrompt.inputType.customCtrlId == 'eventDateTimeCtrl')"> 
-                <meeting-date-time-input 
+                <event-date-time-input 
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
                   :promptLabel="requestPrompt.label" 
                   :dataRequiredMsgId="'REQUIRED-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"
-                  :dataInvalidMsgId="'INVALID-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"></meeting-date-time-input>
+                  :dataInvalidMsgId="'INVALID-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"></event-date-time-input>
               </template>
 
             </div>
@@ -72,8 +72,8 @@ import { validateRequest, bindUiValuesFromRequest } from '@/common/requestMgr.js
 import textInputCtrl from '@/components/requestPrompts/TextInput.vue'
 import textAreaInputCtrl from '@/components/requestPrompts/TextAreaInput.vue'
 import emailInputCtrl from '@/components/requestPrompts/EmailInput.vue'
-import meetingLocInputCtrl from '@/components/requestPrompts/MeetingLocationInput.vue'
-import meetingDateTimeInputCtrl from '@/components/requestPrompts/MeetingDateTimeInput.vue'
+import eventLocInputCtrl from '@/components/requestPrompts/EventLocationInput.vue'
+import eventDateTimeInputCtrl from '@/components/requestPrompts/EventDateTimeInput.vue'
 
 export default {
   data () {
@@ -86,8 +86,8 @@ export default {
     textInput: textInputCtrl,
     textAreaInput: textAreaInputCtrl,
     emailInput: emailInputCtrl,
-    meetingLocationInput: meetingLocInputCtrl,
-    meetingDateTimeInput: meetingDateTimeInputCtrl
+    eventLocationInput: eventLocInputCtrl,
+    eventDateTimeInput: eventDateTimeInputCtrl
   },
 
   computed: {
@@ -121,6 +121,11 @@ export default {
     if (this.$store.state.currentRequest == null) {
       this.$store.state.currentRequest = {}
     }
+
+    this.$store.state.currentRequest["eventGEContactPersonEmail"] = this.email;
+    this.$store.state.currentRequest["eventGEContactPersonName"] = this.contact;
+
+    bindUiValuesFromRequest(this.$store.state.currentRequest, this.currentScreenNum);
 
     var vm = this;
     var ctrls = $('.is-request-data');
