@@ -13,15 +13,25 @@
         </div>
       </div>
       <div class="fixed-bottom d-flex justify-content-between">
-        <button type="button" class="btn btn-primary btn-sm" @click.prevent="$router.push('home')">Submit Request</button>
+        
+        <button type="button" class="btn btn-primary btn-sm" 
+          :disabled="isSubmitting" 
+          @click.prevent="onSubmitRequest">Submit Request</button>
+          <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
     </div>
     </div>
 </template>
 
 <script>
+import axios from 'axios'
+import * as apiMgr from '@/common/apiMgr.js';
+
 export default {
   data () {
     return {  
+      isSubmitting: false,
+      hasFailure: false,
+      failureMessage: ""
     }
   },
 
@@ -47,6 +57,50 @@ export default {
 
   created() {
       console.log('SubmitRequest.vue created.');
+  },
+
+  methods: {
+    onSubmitRequest (evt) {
+      var vm = this;
+
+      var requestsUrl = apiMgr.getRequestsUrl();
+
+      axios.post(requestsUrl, vm.$store.state.currentRequest)
+      .then(res => {
+          console.log("Login status: " + res.status);
+          vm.isSubmitting = false;
+          vm.hasFailure = false;
+          const storeState = this.$store.state;
+
+          if (res.status == 201 && res.data != null) {
+              var requestCreated = res.data;
+
+              vm.$router.push('home'); 
+          } else {
+                vm.hasFailure = true;
+                vm.failureMessage = "Unable to create the meeting request. Please try again.";
+          }
+          
+      })
+      .catch((err) => {
+          console.log("Create request failed: " + err);
+          vm.isSubmitting = false;
+          vm.hasFailure = true;
+
+          if (err.response != null && err.response.status == 401) { //401 - Unauthorized.                  
+              vm.failureMessage = "You're not authorized to create a meeting request.";
+            
+          } else if (err.response != null && err.response.status == 400) { //400 - Bad Request.                  
+              vm.failureMessage = "The Meeting Request server received a bad request. Please contact your administrator if this problem persist.";
+
+          } else {
+              vm.failureMessage = "The Meeting Request server is unavailable or not working at this time.";
+          }
+      })
+
+
+
+    }
   }
 }
 </script>

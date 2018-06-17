@@ -48,6 +48,8 @@ const store = new Vuex.Store({
 
             requestPromptsUrlTmpl: 'http://{0}:{1}/api/requestPrompts',
 
+            requestsUrlTmpl: 'http://{0}:{1}/api/requests',
+
             // These are use during  development. Be sure the turn all of them off.
 
             devModeIgnoreLoginFailure: false

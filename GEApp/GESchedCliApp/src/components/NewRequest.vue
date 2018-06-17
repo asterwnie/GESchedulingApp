@@ -8,7 +8,7 @@
 
             <div class="mb-3" v-for="(requestPrompt, index) in requestPrompts" :key="index">
 
-              <template v-if="requestPrompt.inputType.ctrlType == 'text'"> 
+              <template v-if="(requestPrompt.inputType.ctrlType == 'text' && requestPrompt.screenNum == currentScreenNum)"> 
                 <text-input 
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
@@ -17,7 +17,7 @@
                   :dataInvalidMsgId="'INVALID-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"></text-input>
               </template>
 
-              <template v-if="requestPrompt.inputType.ctrlType == 'textArea'"> 
+              <template v-if="(requestPrompt.inputType.ctrlType == 'textArea' && requestPrompt.screenNum == currentScreenNum)"> 
                 <text-area-input 
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
@@ -26,7 +26,7 @@
                   :dataInvalidMsgId="'INVALID-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"></text-area-input>
               </template>
 
-              <template v-if="requestPrompt.inputType.ctrlType == 'email'"> 
+              <template v-if="(requestPrompt.inputType.ctrlType == 'email' && requestPrompt.screenNum == currentScreenNum)"> 
                 <email-input 
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
@@ -35,7 +35,16 @@
                   :dataInvalidMsgId="'INVALID-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"></email-input>
               </template>
 
-              <template v-if="(requestPrompt.inputType.ctrlType == 'custom' && requestPrompt.inputType.customCtrlId == 'locationOfEventCtrl')"> 
+              <template v-if="(requestPrompt.inputType.ctrlType == 'number' && requestPrompt.screenNum == currentScreenNum)"> 
+                <number-input 
+                  :screenNum="currentScreenNum"
+                  :ctrlId="requestPrompt.inputType.ctrlDataId" 
+                  :promptLabel="requestPrompt.label" 
+                  :dataRequiredMsgId="'REQUIRED-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"
+                  :dataInvalidMsgId="'INVALID-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"></number-input>
+              </template>
+
+              <template v-if="(requestPrompt.inputType.ctrlType == 'custom' && requestPrompt.inputType.customCtrlId == 'locationOfEventCtrl' && requestPrompt.screenNum == currentScreenNum)"> 
                 <event-location-input 
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
@@ -44,7 +53,7 @@
                   :dataInvalidMsgId="'INVALID-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"></event-location-input>
               </template>
 
-              <template v-if="(requestPrompt.inputType.ctrlType == 'custom' && requestPrompt.inputType.customCtrlId == 'eventDateTimeCtrl')"> 
+              <template v-if="(requestPrompt.inputType.ctrlType == 'custom' && requestPrompt.inputType.customCtrlId == 'eventDateTimeCtrl' && requestPrompt.screenNum == currentScreenNum)"> 
                 <event-date-time-input 
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
@@ -72,6 +81,7 @@ import { validateRequest, bindUiValuesFromRequest } from '@/common/requestMgr.js
 import textInputCtrl from '@/components/requestPrompts/TextInput.vue'
 import textAreaInputCtrl from '@/components/requestPrompts/TextAreaInput.vue'
 import emailInputCtrl from '@/components/requestPrompts/EmailInput.vue'
+import numberInputCtrl from '@/components/requestPrompts/NumberInput.vue'
 import eventLocInputCtrl from '@/components/requestPrompts/EventLocationInput.vue'
 import eventDateTimeInputCtrl from '@/components/requestPrompts/EventDateTimeInput.vue'
 
@@ -86,6 +96,7 @@ export default {
     textInput: textInputCtrl,
     textAreaInput: textAreaInputCtrl,
     emailInput: emailInputCtrl,
+    numberInput: numberInputCtrl,
     eventLocationInput: eventLocInputCtrl,
     eventDateTimeInput: eventDateTimeInputCtrl
   },
@@ -126,15 +137,6 @@ export default {
     this.$store.state.currentRequest["eventGEContactPersonName"] = this.contact;
 
     bindUiValuesFromRequest(this.$store.state.currentRequest, this.currentScreenNum);
-
-    var vm = this;
-    var ctrls = $('.is-request-data');
-    $.each(ctrls, function (index, inputCtrl) {
-      vm.$store.state.currentRequest['ValidStateFor' + inputCtrl.id] = true;
-    });
-
-    this.email = this.$store.state.loginContext.requesterEmail;
-    this.contact = this.$store.state.loginContext.requesterName;
 
   },
 

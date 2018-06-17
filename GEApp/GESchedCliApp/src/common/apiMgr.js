@@ -93,3 +93,13 @@ export const getRequestPromptsUrl = () => {
     url = url + "?site=" + appDefConfig.site;
     return url;
 }
+
+export const getRequestsUrl = () => {
+    //debugger; // Uncomment to trigger breakpoint.
+
+    const appDefConfig = centralStore.state.appDefConfig;
+    var url = appDefConfig.requestsUrlTmpl.replace('{0}', appDefConfig.apiHost);
+    url = url.replace('{1}', appDefConfig.apiPort);
+    url = url + "?site=" + appDefConfig.site;
+    return url;
+}

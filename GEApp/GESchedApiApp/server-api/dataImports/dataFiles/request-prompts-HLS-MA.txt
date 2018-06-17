@@ -34,6 +34,17 @@
 --Prompt.OnScreen: 1
 
 --Prompt.Type.Standard
+--Prompt.Label: Number of GE employee attending
+--Prompt.InputType.number[dataId=numOfGeEmpAttending]
+--Prompt.Required
+--Prompt.OnScreen: 1
+
+--Prompt.Type.Standard
+--Prompt.Label: Number of non-GE attending
+--Prompt.InputType.number[dataId=numOfNonGeAttending]
+--Prompt.OnScreen: 1
+
+--Prompt.Type.Standard
 --Prompt.Label: AV Requirements
 --Prompt.InputType.TextArea[dataId=avRequirements]
 --Prompt.OnScreen: 2
@@ -44,26 +55,16 @@
 --Prompt.OnScreen: 2
 
 --Prompt.Type.Standard
---Prompt.Label: Special requests
---Prompt.InputType.Custom[dataId=specialRequestData|ctrlId=specialRequestCtrl]
---Prompt.OnScreen: 2
-
---Prompt.Type.Standard
---Prompt.Label: Number of GE employee attending
---Prompt.InputType.number[dataId=numOfGeEmpAttending]
---Prompt.OnScreen: 3
-
---Prompt.Type.Standard
---Prompt.Label: Number of non-GE attending
---Prompt.InputType.number[dataId=numOfNonGeAttending]
---Prompt.OnScreen: 3
-
---Prompt.Type.Standard
 --Prompt.Label: Site tour requested?
 --Prompt.InputType.YesNo[dataId=siteTourRequested]
---Prompt.OnScreen: 3
+--Prompt.OnScreen: 2
 
 --Prompt.Type.Standard
 --Prompt.Label: If Yes, Subject Matter Expert needed?
 --Prompt.InputType.YesNo[dataId=subjectMatterExpertNeeded|dependsOn=siteTourRequested]
---Prompt.OnScreen: 3
+--Prompt.OnScreen: 2
+
+--Prompt.Type.Standard
+--Prompt.Label: Special requests
+--Prompt.InputType.Custom[dataId=specialRequestData|ctrlId=specialRequestCtrl]
+--Prompt.OnScreen: 2
