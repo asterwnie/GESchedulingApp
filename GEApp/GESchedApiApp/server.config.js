@@ -13,10 +13,4 @@ appConfig.sites = [
     { site: 'HLS-MA', description:'GE Healthcare Life Science', address: '100 Results Way, Marlborough, MA 01752'}, 
     { site: 'SITE-2', description:'Test Site 2', address: '100 Main Street, Sometown, MA 10011'}];
 
-
-//appConfig.distinctRoomConfigurations = [];
-//appConfig.distinctRoomCapabilities = [];
-//appConfig.distinctRoomSizeTypes = [];
-
-
 module.exports = appConfig;

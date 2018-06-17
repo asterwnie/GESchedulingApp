@@ -9,7 +9,7 @@
             <p>{{ description }}</p>
 
           <br/>
-          <div v-for="(hotel, index) in hotels" :key="index" width="100%">
+          <div v-for="(hotel, index) in hotelItems" :key="index" width="100%">
             <div class="card">
               <div class="card-body">
                 <h6 class="card-title">{{hotel.name}}</h6>
@@ -38,16 +38,30 @@
 export default {
   data () {
     return {
-      title: this.$store.state.appConfig.hotelsViewTitle,
-      viewDescription: this.$store.state.appConfig.hotelsViewDescription,
-      hotels: this.$store.state.hotels
+    }
+  },
+
+  computed: {
+    title() {
+      return this.$store.state.appConfig.hotelsViewTitle; 
+    },
+    viewDescription() {
+      return this.$store.state.appConfig.hotelsViewDescription; 
+    },
+    hotelItems() {
+      return this.$store.state.hotels;
     }
   },
 
   activated() {
-      console.log('LocalHotels.vue activated.');
-      this.$store.state.currentViewTitle = this.title;
-      this.$store.state.enableNavBar = true;
+    console.log('LocalHotels.vue activated.');
+
+    if (this.$store.state.appConfig.hotelsViewTitle == null) {
+      this.$router.push('login'); // Config data lost, force back to login to refetch data.
+    }
+
+    this.$store.state.currentViewTitle = this.title;
+    this.$store.state.enableNavBar = true;
   }
 }
 </script>

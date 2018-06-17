@@ -13,15 +13,27 @@
 export default {
   data () {
     return {
-      title: "IT Help",
-      message: "Results Way offers the MyTech Lounge located on the third-floor at tower 3. While onsite, MyTech Lounge is your solution to any IT help & questions you may have."
     }
   },
 
+  computed: {
+    title() {
+      return this.$store.state.appConfig.techSupportViewTitle; 
+    },
+    viewDescription() {
+      return this.$store.state.appConfig.techSupportViewDescription; 
+    },
+  },
+
   activated() {
-      console.log('ITHelp.vue activated.');
-      this.$store.state.currentViewTitle = this.title;
-      this.$store.state.enableNavBar = true;
+    console.log('ITHelp.vue activated.');
+
+    if (this.$store.state.appConfig.techSupportViewTitle == null) {
+      this.$router.push('login'); // Config data lost, force back to login to refetch data.
+    }
+
+    this.$store.state.currentViewTitle = this.title;
+    this.$store.state.enableNavBar = true;
   },
 
   created() {

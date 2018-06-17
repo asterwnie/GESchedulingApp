@@ -78,13 +78,7 @@ import meetingDateTimeInputCtrl from '@/components/requestPrompts/MeetingDateTim
 export default {
   data () {
     return {
-      title: "New Request",
-      currentScreenNum: 1,
-      contact: "",
-      email: "",
-      ctrlId: "ID111" ,
-      ctrlPrompt: "Prompt 1:",
-      ctrlType: "textArea"
+      currentScreenNum: 1
     }
   },
 
@@ -105,11 +99,22 @@ export default {
     },
     requestPrompts() {
         return this.$store.state.requestPrompts;
+    },
+    email() {
+      return this.$store.state.loginContext.requesterEmail;
+    },
+    contact(){
+      return this.$store.state.loginContext.requesterName;
     }
   },
 
   activated() {
     console.log('NewRequest.vue activated.');
+
+    if (this.$store.state.appConfig.requestViewTitle == null) {
+      this.$router.push('login'); // Config data lost, force back to login to refetch data.
+    }
+
     this.$store.state.currentViewTitle = this.title;
     this.$store.state.enableNavBar = true;
 
@@ -130,7 +135,6 @@ export default {
 
   created() {
       console.log('NewRequest.vue created.');
-
   },
 
   methods: {
@@ -140,9 +144,7 @@ export default {
       $.each(ctrls, function (index, inputCtrl) {
         vm.$store.state.currentRequest[inputCtrl.id] = $(inputCtrl).val();
       });
-
-      var assignmentCount =  bindUiValuesFromRequest(vm.$store.state.currentRequest, vm.currentScreenNum);
-      
+ 
       var hasInvalidData = validateRequest(vm.$store.state.currentRequest, vm.currentScreenNum);
       
       if (!hasInvalidData) {

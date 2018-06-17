@@ -72,15 +72,28 @@ const existingRequestsData = [
 export default {
   data () {
     return {
-      title: "Home",
       requestItems: existingRequestsData
       }
   },
 
+  computed: {
+    title() {
+      return this.$store.state.appConfig.homeViewTitle; 
+    },
+    viewDescription() {
+      return this.$store.state.appConfig.homeViewDescription; 
+    },
+  },
+
   activated() {
-      console.log('Home.vue activated.');
-      this.$store.state.currentViewTitle = this.title;
-      this.$store.state.enableNavBar = true;
+    console.log('Home.vue activated.');
+
+    if (this.$store.state.appConfig.homeViewTitle == null) {
+      this.$router.push('login'); // Config data lost, force back to login to refetch data.
+    }
+
+    this.$store.state.currentViewTitle = this.title;
+    this.$store.state.enableNavBar = true;
   },
 
   created() {

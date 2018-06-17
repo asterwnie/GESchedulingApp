@@ -7,6 +7,8 @@
 
     "appTitle": "Meeting & Event<br>Request",
 
+    "homeViewTitle": "Home",
+
     "aboutViewTitle": "About",
 
     "aboutViewDescription": "This application is for ipsum sapien metus posuere nam praesent dictum, curabitur ad sit tortor tincidunt integer, quisque dictum ante quam nullam consequat.",
@@ -14,6 +16,10 @@
     "doFirstViewTitle": "Do First",
 
     "doFirstViewDescription": "Complete these items before each new request.",
+    
+    "requestViewTitle": "New Request",
+
+    "submitRequestViewTitle": "Submit Request",
 
     "attentionNotesViewTitle": "Attention",
 
@@ -33,6 +39,8 @@
 
     "guestWifiViewTitle": "Guest Wifi",
 
-    "guestWifiViewDescription": "Guest wifi for online access on-site."
+    "guestWifiViewDescription": "Guest wifi for online access on-site.",
+
+    "roomsViewTitle": "Find Room"
 
 }

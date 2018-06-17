@@ -7,7 +7,7 @@
           <p>{{ viewDescription }}</p>
           <br/>
           <div class="LocalCaterers">
-            <div v-for="(caterer, index) in caterers" :key="index">
+            <div v-for="(caterer, index) in catererItems" :key="index">
                 <p>{{ caterer }}</p> <!--style this so it has less spacing later-->
             </div>
           </div>
@@ -24,16 +24,30 @@
 export default {
   data () {
     return {
-      title: this.$store.state.appConfig.caterersViewTitle,
-      viewDescription: this.$store.state.appConfig.caterersViewDescription,
-      caterers: this.$store.state.caterers
+    }
+  },
+
+  computed: {
+    title() {
+      return this.$store.state.appConfig.caterersViewTitle; 
+    },
+    viewDescription() {
+      return this.$store.state.appConfig.caterersViewDescription; 
+    },
+    catererItems() {
+      return this.$store.state.caterers;
     }
   },
 
   activated() {
-      console.log('LocalCaterers.vue activated.');
-      this.$store.state.currentViewTitle = this.title;
-      this.$store.state.enableNavBar = true;
+    console.log('LocalCaterers.vue activated.');
+
+    if (this.$store.state.appConfig.caterersViewTitle == null) {
+      this.$router.push('login'); // Config data lost, force back to login to refetch data.
+    }
+
+    this.$store.state.currentViewTitle = this.title;
+    this.$store.state.enableNavBar = true;
   }
 }
 

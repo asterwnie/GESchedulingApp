@@ -94,6 +94,11 @@ requestRoutes(app);
 var roomRoutes = require('./server-api/routes/roomRoutes');
 roomRoutes(app);
 
+// Set up API routes for the Note  entity:
+var noteRoutes = require('./server-api/routes/noteRoutes');
+noteRoutes(app);
+
+
 
 
 
@@ -109,7 +114,7 @@ app.get('/api/appconfigs', async (req, res) => {
 
     let siteCode = httpRequestHelper.getSite(req);
    
-    //room capabilities
+    // get distinct room capabilities
     await roomController.queryRoomCapabilities(siteCode, (result) => {
         if (result.success) {
             logger.info(`roomController.getCapabilities - Rooms.distinct success. About to send back http response with ${result.capabilities.length} capabilities`);
@@ -120,7 +125,7 @@ app.get('/api/appconfigs', async (req, res) => {
         }
         });
     
-    //sizes
+    // get distinct sizes
     await roomController.queryRoomSizeTypes(siteCode, (result) => {
         if (result.success) {
             logger.info(`roomController.getSizeTypes - Rooms.distinct success. About to send back http response with ${result.sizeTypes.length} sizeTypes`);
@@ -131,7 +136,7 @@ app.get('/api/appconfigs', async (req, res) => {
         }
         });
 
-    //buildings
+    // get distinct buildings
     await roomController.queryBuildings(siteCode, (result) => {
         if (result.success) {
             logger.info(`roomController.getBuildings - Rooms.distinct success. About to send back http response with ${result.buildings.length} buildings`);
@@ -143,14 +148,6 @@ app.get('/api/appconfigs', async (req, res) => {
         });
 
     res.json(appConfigForSite);
-
-}); 
-
-app.get('/api/notes', (req, res) => { //was previously attentions
- 
-    const jsonData = fs.readFileSync(`${appRoot}/server-api/temp/notes.json`);
-    const notes = JSON.parse(jsonData);
-    res.json(notes);
 
 }); 
 

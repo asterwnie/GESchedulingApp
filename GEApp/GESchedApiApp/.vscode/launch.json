@@ -64,6 +64,24 @@
             "request": "launch",
             "name": "ADMIN: Import Notes",
             "program": "${workspaceFolder}/server-api/dataImports/importNotes.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "ADMIN: Delete Notes",
+            "program": "${workspaceFolder}/server-api/dataImports/deleteNotes.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "ADMIN: Import Caterers",
+            "program": "${workspaceFolder}/server-api/dataImports/importCaterers.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "ADMIN: Delete Caterers",
+            "program": "${workspaceFolder}/server-api/dataImports/deleteCaterers.js"
         }
     ]
 }

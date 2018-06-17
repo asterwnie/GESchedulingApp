@@ -6,9 +6,9 @@ const getDbConnection = require(`${appRoot}/server-api/databaseManager`);
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// The schema definition for a notes entity
+// The schema definition for a note entity
 
-const NotesSchema = new Schema({
+const NoteSchema = new Schema({
 
     type: {
         type: String,
@@ -31,18 +31,18 @@ const NotesSchema = new Schema({
 
 
 // Object to hold a notes model per site.
-var notesModelBySite = {};
+var noteModelBySite = {};
 
 
 // Return a notes model using the corresponding site database connection.
 module.exports = function (siteCode) {   
 
     let siteCodeUpper = siteCode.toUpperCase();
-    if (notesModelBySite[siteCodeUpper] == null) {
+    if (noteModelBySite[siteCodeUpper] == null) {
         let dbConnection = getDbConnection(siteCodeUpper);       
         // Mongoose automatically creates a notes collection if one does not exist.
-        notesModelBySite[siteCodeUpper] = dbConnection.model(`notes`, NotesSchema);
+        noteModelBySite[siteCodeUpper] = dbConnection.model(`notes`, NoteSchema);
     }
-    return notesModelBySite[siteCodeUpper];
+    return noteModelBySite[siteCodeUpper];
 
 }

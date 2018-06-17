@@ -14,15 +14,15 @@ module.exports = function (app) {
         // Note: For POST, PUT & PATCH the client caller must set a http header with
         // Content-Type = application/json; charset=UTF-8
 
-        app.route('/api/Notes')
-            .get(NoteController.getRequestPrompts)
-            .post(NoteController.createRequestPrompt)
-            .put(NoteController.updateRequestPrompt)
-            .patch(NoteController.updateRequestPrompt);
+        app.route('/api/notes')
+            .get(NoteController.getNotes)
+            .post(NoteController.createNote)
+            .put(NoteController.updateNote)
+            .patch(NoteController.updateNote);
 
-        app.route('/api/Notes/:id')
-            .get(NoteController.getRequestPrompt)
-            .delete(NoteController.deleteRequestPrompt);
+        app.route('/api/notes/:id')
+            .get(NoteController.getNote)
+            .delete(NoteController.deleteNote);
             
     } catch (err) {
         logger.error(`Set up API routes for the Note entity failed. Error: ${err}`);

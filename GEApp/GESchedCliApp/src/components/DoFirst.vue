@@ -8,12 +8,10 @@
         <div class="col col-sm-1 col-md-2 col-lg-4"></div>
         <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%;">
           <!--For each note in noteItems-->
-          <div style="padding:10px; width:100%" class="alert alert-danger card" v-for="(note, index) in noteItems" :key="index" :hidden="note.type != 'doFirst'">
+          <div style="padding:10px; width:100%" class="alert alert-danger card" v-for="(note, index) in noteItems" :key="index" :hidden="note.type != 'DoFirst'">
             <!--if the object is an array,-->
-          <template v-if="note.type == 'doFirst'">
+          <template v-if="note.type == 'DoFirst'">
             <!--display each item-->
-           <!-- <h6 class="alert-heading">Required</h6>-->
-            <!--<hr>-->
             <span v-html="note.text"></span>
           </template>
           </div>
@@ -32,22 +30,31 @@
 export default {
   data () {
     return {
-      title: this.$store.state.appConfig.doFirstViewTitle
     }
   },
 
   computed: {
-        noteItems() {
-            return this.$store.state.notes;
-        }
+    title() {
+      return this.$store.state.appConfig.doFirstViewTitle; 
+    },
+    viewDescription() {
+      return this.$store.state.appConfig.doFirstDescription; 
+    },
+    noteItems() {
+      return this.$store.state.notes;
+    }
   },
-  
-  activated() {
-      console.log('DoFirst.vue activated.');
-      this.$store.state.currentViewTitle = this.title;
-      this.$store.state.enableNavBar = true;     
-  }
 
+  activated() {
+    console.log('DoFirst.vue activated.');
+
+    if (this.$store.state.appConfig.doFirstViewTitle == null) {
+      this.$router.push('login'); // Config data lost, force back to login to refetch data.
+    }
+
+    this.$store.state.currentViewTitle = this.title;
+    this.$store.state.enableNavBar = true;
+  }
 }
 
 // ToDo: Add a method called process text to look for [links] and convert it to html:

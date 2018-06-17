@@ -27,20 +27,30 @@
 export default {
   data () {
     return {
-      title: this.$store.state.appConfig.roomsViewTitle,
-      viewDescription: this.$store.state.appConfig.roomsViewDescription,
-      rooms: this.$store.state.rooms
+    }
+  },
+
+  computed: {
+    title() {
+      return this.$store.state.appConfig.roomsViewTitle; 
+    },
+    viewDescription() {
+      return this.$store.state.appConfig.roomsViewDescription; 
+    },
+    rooms() {
+            return this.$store.state.rooms;
     }
   },
 
   activated() {
-      console.log('FindRoom.vue activated.');
-      this.$store.state.currentViewTitle = this.title;
-      this.$store.state.enableNavBar = true;
-  },
+    console.log('FindRoom.vue activated.');
 
-  created() {
-    console.log('FindRoom.vue created.');
+    if (this.$store.state.appConfig.roomsViewTitle == null) {
+      this.$router.push('login'); // Config data lost, force back to login to refetch data.
+    }
+
+    this.$store.state.currentViewTitle = this.title;
+    this.$store.state.enableNavBar = true;
   }
 }
 </script>
