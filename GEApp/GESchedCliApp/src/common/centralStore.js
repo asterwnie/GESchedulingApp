@@ -38,6 +38,8 @@ const store = new Vuex.Store({
 
             loginUrlTmpl: 'http://{0}:{1}/api/users/login',
 
+            usersUrlTmpl: 'http://{0}:{1}/api/users',
+
             appConfigUrlTmpl: 'http://{0}:{1}/api/appconfigs',
 
             notesUrlTmpl: 'http://{0}:{1}/api/notes',
@@ -48,11 +50,8 @@ const store = new Vuex.Store({
 
             requestPromptsUrlTmpl: 'http://{0}:{1}/api/requestPrompts',
 
-            requestsUrlTmpl: 'http://{0}:{1}/api/requests',
+            requestsUrlTmpl: 'http://{0}:{1}/api/requests'
 
-            // These are use during  development. Be sure the turn all of them off.
-
-            devModeIgnoreLoginFailure: false
         }
   
     }

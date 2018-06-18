@@ -77,7 +77,7 @@
 
 <script>
 import axios from 'axios'
-import * as loginContextMgr from '@/common/loginContextMgr.js';
+import * as localCacheMgr from '@/common/localCacheMgr.js';
 import * as apiMgr from '@/common/apiMgr.js';
 import * as textTranformer from '@/common/textTranformer.js';
 import { required, email }  from 'vuelidate/lib/validators';
@@ -112,20 +112,23 @@ export default {
     activated() {
         console.log('Login.vue activated.');
         var vm = this; 
+        var storeState = this.$store.state;
     
-        this.$store.state.currentViewTitle = this.title;
-        this.$store.state.enableNavBar = false;
+        storeState.currentViewTitle = this.title;
+        storeState.enableNavBar = false;
+ 
+        var cachedLoginContext = localCacheMgr.getCachedItem("loginContextKey");
+        if (cachedLoginContext != null) {
+            storeState.loginContext = cachedLoginContext;  
+        }
 
-        const loginContext = this.$store.state.loginContext;    
-        loginContextMgr.getCachedLoginContext(loginContext);
-
-        if (loginContext.requesterEmail != null && loginContext.requesterEmail != '') {
-            this.requesterEmail = loginContext.requesterEmail; 
+        if (storeState.loginContext != null && storeState.loginContext.requesterEmail != null && storeState.loginContext.requesterEmail != '') {
+            this.requesterEmail = storeState.loginContext.requesterEmail; 
         }
     
-        if (loginContext.accessCode != null && loginContext.accessCode != '') {
-            this.accessCode = loginContext.accessCode;
-            loginContext.accessCode = null; // Avoid holding it in memory.
+        if (storeState.loginContext != null && storeState.loginContext.accessCode != null && storeState.loginContext.accessCode != '') {
+            this.accessCode = storeState.loginContext.accessCode;
+            storeState.loginContext.accessCode = null; // Avoid holding it in memory.
         }
 
         this.isFetchingDefAppConfig = true;
@@ -278,9 +281,9 @@ export default {
                 const loginContext = this.$store.state.loginContext;
                 loginContext.requesterEmail = vm.requesterEmail;
                 loginContext.accessCode = vm.accessCode;
-                loginContextMgr.cacheLoginContext(loginContext);
+                localCacheMgr.cacheItem("loginContextKey", loginContext);
             } else {
-                loginContextMgr.uncacheLoginContext();
+                localCacheMgr.uncacheItem("loginContextKey");
             }
 
 
@@ -297,11 +300,6 @@ export default {
                 vm.isSubmitting = false;
                 vm.hasFailure = false;
                 const storeState = this.$store.state;
-
-                if (storeState.appDefConfig.devModeIgnoreLoginFailure) {
-                    vm.$router.push('dofirst');
-                    return;
-                }
 
                 if ((res.status == 200 || res.status == 201) && res.data != null) {
                     storeState.currentUser = res.data;
@@ -320,11 +318,6 @@ export default {
                 console.log("Login failed: " + err);
                 vm.isSubmitting = false;
                 vm.hasFailure = true;
-
-                if (this.$store.state.appDefConfig.devModeIgnoreLoginFailure) {
-                    vm.$router.push('home');
-                    return;
-                }
 
                 vm.isLoginFailed = true;
                 if (err.response != null && err.response.status == 401) { //401 - Unauthorized.                  

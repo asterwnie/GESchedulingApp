@@ -78,6 +78,9 @@
 </template>
 
 <script>
+import axios from 'axios'
+import * as apiMgr from '@/common/apiMgr.js';
+
 import { validateRequest, bindUiValuesFromRequest } from '@/common/requestMgr.js'
 
 import textInputCtrl from '@/components/requestPrompts/TextInput.vue'
@@ -113,11 +116,14 @@ export default {
     requestPrompts() {
         return this.$store.state.requestPrompts;
     },
-    email() {
+    currentUserEmail() {
       return this.$store.state.currentUser.email;
     },
-    contact(){
+    currentUserName(){
       return this.$store.state.currentUser.name;
+    },
+    currentUserPhone(){
+      return this.$store.state.currentUser.phone;
     }
   },
 
@@ -135,8 +141,9 @@ export default {
       this.$store.state.currentRequest = {}
     }
 
-    this.$store.state.currentRequest["eventGEContactPersonEmail"] = this.email;
-    this.$store.state.currentRequest["eventGEContactPersonName"] = this.contact;
+    this.$store.state.currentRequest["eventGEContactPersonEmail"] = this.currentUserEmail;
+    this.$store.state.currentRequest["eventGEContactPersonName"] = this.currentUserName;
+    this.$store.state.currentRequest["eventGEContactPersonPhone"] = this.currentUserPhone;
 
     bindUiValuesFromRequest(this.$store.state.currentRequest, this.currentScreenNum);
 
@@ -147,19 +154,49 @@ export default {
   },
 
   methods: {
+
     onContinue (evt) {
+
       var vm = this;
+      var storeState = vm.$store.state;
+
       var ctrls = $('.is-request-data');
       $.each(ctrls, function (index, inputCtrl) {
         //index becomes a property (acts like currentRequest.------)
         //this references the current request
-        vm.$store.state.currentRequest[inputCtrl.id] = $(inputCtrl).val();
+        storeState.currentRequest[inputCtrl.id] = $(inputCtrl).val();
       });
  
-      var hasInvalidData = validateRequest(vm.$store.state.currentRequest, vm.currentScreenNum);
+      var hasInvalidData = validateRequest(storeState.currentRequest, vm.currentScreenNum);
       
       if (!hasInvalidData) {
-        this.$router.push('attentionNotes');
+
+        storeState.currentUser.name = vm.$store.state.currentRequest["eventGEContactPersonName"];
+        storeState.currentUser.email = vm.$store.state.currentRequest["eventGEContactPersonEmail"];
+        storeState.currentUser.phone = vm.$store.state.currentRequest["eventGEContactPersonPhone"];
+
+        var usersUrl = apiMgr.getUsersUrl();
+
+        axios.put(usersUrl, vm.$store.state.currentUser)
+        .then(res => {
+        
+            console.log("Successfully saved the user's profile: " + res.status);
+            if (res.data != null) {
+              storeState.currentUser = res.data;
+            }
+            vm.isSubmitting = false;
+            vm.hasFailure = false;
+            vm.$router.push('attentionNotes');
+        })
+        .catch((err) => {
+          
+            console.log("Not able to save user profile: " + err);
+            // But should not stop the UI from going to the next screen.
+            vm.isSubmitting = false;
+            vm.hasFailure = false;
+            vm.$router.push('attentionNotes');
+        })
+        
       }
     }
   }
