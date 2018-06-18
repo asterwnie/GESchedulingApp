@@ -35,6 +35,7 @@
                   :dataInvalidMsgId="'INVALID-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"></email-input>
               </template>
 
+              <!--needs validation-->
               <template v-if="(requestPrompt.inputType.ctrlType == 'number' && requestPrompt.screenNum == currentScreenNum)"> 
                 <number-input 
                   :screenNum="currentScreenNum"
@@ -150,6 +151,8 @@ export default {
       var vm = this;
       var ctrls = $('.is-request-data');
       $.each(ctrls, function (index, inputCtrl) {
+        //index becomes a property (acts like currentRequest.------)
+        //this references the current request
         vm.$store.state.currentRequest[inputCtrl.id] = $(inputCtrl).val();
       });
  

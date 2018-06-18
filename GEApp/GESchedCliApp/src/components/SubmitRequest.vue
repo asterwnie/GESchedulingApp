@@ -84,6 +84,7 @@ export default {
       })
       .catch((err) => {
           console.log("Create request failed: " + err);
+          //prevent spam clicking
           vm.isSubmitting = false;
           vm.hasFailure = true;
 

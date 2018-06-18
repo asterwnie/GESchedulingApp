@@ -14,7 +14,7 @@
             <!--if the object is an array,-->
             <template v-if="note.type == 'GuestWiFiAccess'">
               <!--display each item-->
-              {{ note.text }}
+              <span v-html="note.text"></span>
             </template>
 
           </div>

@@ -132,11 +132,14 @@ export default {
         this.isFetchingNotes = true;
         this.isFetchingHotels = true;
         this.isFetchingRequestPrompts = true;
+        this.isFetchingRooms = true;
         
         this.getDefAppConfig(); 
         this.getNotes();
         this.getHotels();
         this.getRequestPrompts();
+        this.getRooms();
+
     },
 
     computed: {
@@ -229,6 +232,26 @@ export default {
 
         },
 
+        getRooms() {
+
+            var vm = this;
+            var url = apiMgr.getRoomsUrl(); 
+
+            axios.get(url)
+                .then(res => {
+                    console.log("getRoomsUrl return status: " + res.status);
+
+                    vm.$store.state.rooms = res.data;
+                    vm.isFetchingRooms = false;
+                })
+                .catch((err) => {
+                    vm.hasFailure = true;
+                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                })
+
+        },
+
+
         onLogin() {
             var vm = this;
             vm.isSubmitting = true;
@@ -286,7 +309,7 @@ export default {
                         storeState.currentUser.name != null) {
                         storeState.loginContext.requesterName = storeState.currentUser.name;
                     }
-                    vm.$router.push('dofirst'); 
+                    vm.$router.push('home'); 
                 } else {
                      vm.hasFailure = true;
                      vm.failureMessage = "Login failed. Please try again.";
@@ -299,7 +322,7 @@ export default {
                 vm.hasFailure = true;
 
                 if (this.$store.state.appDefConfig.devModeIgnoreLoginFailure) {
-                    vm.$router.push('dofirst');
+                    vm.$router.push('home');
                     return;
                 }
 
@@ -325,6 +348,5 @@ export default {
 .containerDiv {
   display: inline-block;
   margin-top: 16px;
-
 }
 </style>
