@@ -2,88 +2,104 @@
 
 <div class="containerDiv container-fluid" style="width:100%">
   <div class="row">
-      <div class="col col-sm-1 col-md-2 col-lg-4"></div>
-      <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%">
+    <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
+    <div class="col col-12 col-auto" style="color:gray">
+      <h4 class="text-center" v-html="$store.state.appConfig.siteName"></h4>
+      <h6 class="text-center" v-html="$store.state.appConfig.siteAddress"></h6>
+      <br>
+    </div>
+    <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
+  </div>
+  <div class="row">
+    <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
 
-        <div style="color:gray">
-          <h4 class="text-center" v-html="$store.state.appConfig.siteName"></h4>
-          <h6 class="text-center" v-html="$store.state.appConfig.siteAddress"></h6>
-          <br>
-        </div>
+    <div id="searchUI" class="col col-12 col-sm-10 col-md-3 col-lg-3 col-xl-2" style="margin-bottom:20px">
+      <div class="card">
+      <div class="card-header bg-info text-light" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Search Menu <i class="fa fa-search-plus" aria-hidden="true"></i>&nbsp;&nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i>
+      </div>
+      <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+          <div id="filterMenu" class="card-body" style="padding:10px; width:100%;">
 
-        <div id="filterMenu" class="card" style="padding:10px; width:100%;">
-
-          <div id="searchMenu" style="display:flex;">
-            <div class="input-group input-group-sm mb-3">
+            <div id="inputRoomName" class="input-group input-group-sm mb-3">
               <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">Search</span>
+                <span class="input-group-text" id="inputGroup-sizing-sm">Room Name</span>
               </div>
               <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
             </div>
-          </div>
-
-          <div id="filterButtons" style="display:flex;">
-            <div class="input-group input-group-sm mb-3">
-              
+            
+            <div id="inputSeatingCapacity" class="input-group input-group-sm mb-3">
               <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">Filter</span>
+                <span class="input-group-text" id="inputGroup-sizing-sm">Seating Capacity</span>
               </div>
-
-              <!--use custom forms instead? https://getbootstrap.com/docs/4.1/components/input-group/-->
+              <input type="text" placeholder="ex. 50" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+            </div>
+    
+            <div id="inputSizeType" class="input-group input-group-sm mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm">Size Type</span>
+              </div>
               <select class="custom-select" id="sizeTypeGroupSelect">
-                <option selected>Room Type</option>
-                <div v-for="(sizeLabel, index) in sizeTypes" :key="index">
-                  <option v-bind:value='index' v-bind:id="sizeLabel" v-on:click="filterView">{{sizeLabel}}</option>
-                </div>
+                <option selected></option>
+                  <option v-bind:id="sizeLabel" v-bind:value='sizeLabel' v-for="(sizeLabel, index) in sizeTypes" :key="index">
+                    {{sizeLabel}}
+                  </option>
               </select>
-              
-              <!--modify for multi-check - maybe modo?-->
-              <div class="dropdown capabilities">
-                <button class="btn btn-sm btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Capabilities
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            </div>
+
+            
+            <div id="inputCapabilities" class="card">
+              <div style="text-align:left" class="card-header btn btn-sm" id="headingTwo" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                    Capabilities&nbsp;&nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i>
+              </div>
+              <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordion">
+                <div class="card-body">
+                  <!--modify for modal?-->
                   <div v-for="(capabilityLabel, index) in capabilities" :key="index" width="100%">
-                    <a class="dropdown-item" v-bind:id="capabilityLabel" v-on:click="filterView">{{capabilityLabel}}</a> <!--note: removed href="#"-->
+                    <input class="capabilityCheckbox" v-bind:id="capabilityLabel" type="checkbox">&nbsp;{{capabilityLabel}}
                   </div>
                 </div>
               </div>
-
-              <button type="button" class="btn btn-sm btn-secondary" v-on:click="resetFilterView">Reset</button>
             </div>
-
+              
+            
+            <br>
+            <button type="button" class="btn btn-sm btn-info" v-on:click="filterView">Search</button>
+            <button type="button" class="btn btn-sm btn-secondary" v-on:click="resetFilterView">Reset</button>
           </div>
-        </div>
-
-        <br>
-
-        <!--for each room, display by filter type-->
-        <div v-for="(room, index) in rooms" :key="index">
-          <!--only show rooms if showAllRooms=true, or a match is found for sizeType or capabilities-->
-            <div :hidden="!(showAllRooms | (room.sizeType==showRoomFilter | (room.capabilities.indexOf(showRoomFilter) > -1)))">
-                <div class="card">
-                  <div class="card-body">
-                    <h6 class="card-title">{{room.name}}</h6>
-                    <p class="card-text" :hidden="room.sizeType == null || room.sizeType == ''">Size Type: {{room.sizeType}}</p>
-
-                  </div>
-                </div>
-            </div>
         </div>
       </div>
-    <div class="col col-sm-1 col-md-2 col-lg-4"></div>
+    </div>
+
+    <div id="roomUI" class="col col-12 col-sm-10 col-md-5 col-lg-5 col-xl-6">
+      <div class="card">
+        <div class="card-body bg-secondary text-light">
+          Rooms
+        </div>
+      </div>
+      <!--This seems to only regenerate when the page is reactivated.-->
+      <div v-for="(room, index) in rooms" :key="index">
+        <div class="card">
+          <div class="card-body">
+            <h6 class="card-title">{{room.name}}</h6>
+            <p class="card-text" :hidden="room.sizeType == null || room.sizeType == ''">Size Type: {{room.sizeType}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
   </div>
-</div>
+  </div>
 </template>
 
 <script>
 import axios from 'axios'
+import * as apiMgr from '@/common/apiMgr.js';
 
 export default {
   data () {
     return {
-      showRoomFilter: '',
-      showAllRooms: true,
     }
   },
 
@@ -118,20 +134,99 @@ export default {
 
   methods: {
 
-    //may revisit to narrow by BOTH room type and Capability
-    //right now, it can only each room type OR capabilitys
     filterView: function(event) {
       if(event){
-        this.showRoomFilter = event.target.id;
-        this.showAllRooms = false;
+        var queryString = '';
+        var vm = this;
+
+        //gather name to query
+        //......
+
+        //gather seating capacity to query
+        //......
+
+        //gather sizeType to query
+        var sizeTypeToQuery = '';
+        var sizeTypeSet = $("#inputSizeType select option");
+
+        $.each(sizeTypeSet, function( index, item ){
+          if (item.selected){
+            sizeTypeToQuery = item.id;
+          }
+        });
+
+        //gather capabilities to query
+        var capabilitiesToQuery = [];
+        var capabilitySet = $(".capabilityCheckbox");
+
+        $.each(capabilitySet, function( index, item ){
+          if (item.checked){
+            capabilitiesToQuery.push(item.id);
+          }
+        });
+
+
+        //append to queryString
+        queryString += '&';
+
+        if (sizeTypeToQuery!='') {
+          queryString += `sizeTypeContains=${sizeTypeToQuery}`;
+          queryString += '&'
+        }
+
+        if (capabilitiesToQuery.length!=0) {
+          var capabilityString = '';
+          for(let capability in capabilitiesToQuery){
+            capabilityString += `hasTheseCapabilities=${capabilitiesToQuery[capability]}|`;
+          }
+          //trim last |
+          capabilityString = capabilityString.substring(0, capabilityString.length-1);
+          queryString += capabilityString;
+          queryString.replace('|', '%7C');
+        }
+        console.log(`FindRoom.vue - Query string: ${queryString}`);
+
+  
+        //get queried rooms
+        var url = apiMgr.getRoomsUrl() + queryString; 
+
+            axios.get(url)
+                .then(res => {
+                    console.log("getRoomsUrl return status: " + res.status);
+                    debugger;
+                    vm.$store.state.rooms = res.data;
+                    vm.isFetchingRooms = false;
+                })
+                .catch((err) => {
+                    vm.hasFailure = true;
+                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                })
+
+        
       }
-      
     },
 
     resetFilterView: function(event){
        if(event){
-        this.showRoomFilter = '';
-        this.showAllRooms = true;
+        //reset all input boxes and checkboxes
+        ///.....
+
+
+         //get full list of rooms
+        var vm = this;
+        var url = apiMgr.getRoomsUrl(); 
+
+            axios.get(url)
+                .then(res => {
+                    console.log("getRoomsUrl return status: " + res.status);
+                    debugger;
+                    vm.$store.state.rooms = res.data;
+                    vm.isFetchingRooms = false;
+                })
+                .catch((err) => {
+                    vm.hasFailure = true;
+                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                })
       }
       
     }
