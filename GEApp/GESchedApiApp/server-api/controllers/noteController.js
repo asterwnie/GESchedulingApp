@@ -81,7 +81,7 @@ exports.createNote = function (req, res) {
             for (var prop in validationErr.errors) {
                 logger.error(`noteController.createNote - got create new Note validation error: ${validationErr.errors[prop]}`);
             }
-
+            var errMsg = `createNote failed on validation. Error: ${validationErr}`;
             res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST
             return;
         }

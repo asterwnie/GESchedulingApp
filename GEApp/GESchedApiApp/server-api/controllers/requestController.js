@@ -49,8 +49,7 @@ exports.createRequest = function (req, res) {
             for (var prop in validationErr.errors) {
                 logger.error(`requestController.createRequest - create new Request validation error: ${validationErr.errors[prop]}`);
             }
-            var errMsg = `requestController.createRequest - create new Request failed validation. ${validationErr}`;
-            logger.error(errMsg);
+            var errMsg = `createRequest failed on validation. Error: ${validationErr}`;
             res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST
             return;
         }

@@ -37,43 +37,61 @@ exports.getUsers = function (req, res) {
 };
 
 
-
-exports.createUser = function (req, res) {
-    logger.verbose('userController.createUser begin');
+async function createNewUser(siteCode, newUser, callback) {
+    logger.verbose('userController.createNewUser begin');
 
     try {
-        let siteCode = httpRequestHelper.getSite(req); 
-        let User = getUserType(siteCode);
-        var newUser = new User(req.body);
-
         var validationErr = newUser.validateSync();
         if (validationErr != null) {
             for (var prop in validationErr.errors) {
-                logger.error(`userController.createUser - create new User validation error: ${validationErr.errors[prop]}`);
+                logger.error(`userController.createNewUser - create new User validation error: ${validationErr.errors[prop]}`);
             }
-            res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST
+            var errMsg = `createNewUser failed on validation. Error: ${validationErr}`;
+            callback({ success: false, statusCode: 400, errMsg: errMsg }); // 400 - INVALID REQUEST 
             return;
         }
 
     } catch (err) {
-        var errMsg = `userController.createUser - problem with creating a new User. Error: ${err}`;
+        var errMsg = `userController.createNewUser - problem with creating a new User. Error: ${err}`;
         logger.error(errMsg);
-        res.status(500).json({ error: errMsg }); // 500 - INTERNAL SERVER ERROR
+        callback({ success: false,  statusCode: 500, errMsg: errMsg }); // 500 - INTERNAL SERVER ERROR
         return;
     }
 
     newUser.save()
         .then((user) => {
-            logger.info(`userController.createUser - User.save success. About to send back http response with user called ${user}`);
-            res.status(201).json(user); // 201 - CREATED
+            logger.info(`userController.createNewUser - User.save success. About to send back http response with user called ${user}`);
+            callback({ success: true, statusCode: 201, user: user }); // 201 - CREATED
         })
         .catch((err) => {
-            var errMsg = `userController.createUser - User.save failed. Error: ${err}`
+            var errMsg = `userController.createNewUser - User.save failed. Error: ${err}`
             logger.error(errMsg);
-            res.status(500).json({ error: errMsg }); // 500 - INTERNAL SERVER ERROR
+            callback({ success: false,  statusCode: 500, errMsg: errMsg }); // 500 - INTERNAL SERVER ERROR
         });
 
 };
+
+
+
+exports.createUser = async function (req, res) {
+    logger.verbose('userController.createUser begin');
+
+    let siteCode = httpRequestHelper.getSite(req);
+    let User = getUserType(siteCode);
+    var newUser = new User(req.body);
+    
+    await createNewUser(siteCode, newUser, (result) => {
+        if (result.success) {
+            logger.info(`userController.createUser success. About to send back http response with the new user (${result.user.email})`);
+            res.status(result.statusCode).json(result.hotels);
+        } else {
+            logger.error(`userController.createUser failed. Error: ${result.errMsg}`);
+            res.status(result.statusCode).json({ error: result.errMsg });
+        }
+    });
+
+};
+
 
 
 // PUT (update) a user using it's id.
@@ -186,15 +204,20 @@ exports.deleteUser = function (req, res) {
 
 
 // Do user login
-exports.loginUser = function (req, res) {
+exports.loginUser = async function (req, res) {
     logger.verbose('userController.loginUser begin');
 
-    try {
-        var siteCode = httpRequestHelper.getSite(req);
-        var User = getUserType(siteCode);
-        var Login = getLoginType(siteCode);
+    let siteCode = null;
+    let Login = null;
+    let User = null;
+    let login = null;
 
-        var login = new Login(req.body);
+    try {
+        siteCode = httpRequestHelper.getSite(req);
+        User = getUserType(siteCode);
+        Login = getLoginType(siteCode);
+
+        login = new Login(req.body);
 
         if (login.email == null || login.email.length === 0) {
             var errMsg = "userController.loginUser - login email cannot be null.";
@@ -203,32 +226,53 @@ exports.loginUser = function (req, res) {
             return;
         }
     } catch (err) {
-        var errMsg = `userController.loginUser failed. Error: ${err}`;
+        let errMsg = `userController.loginUser failed. Error: ${err}`;
         logger.error(errMsg);
         res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST
         return;
     }
      
+    var needToCreateUser = false;
+
     // TODO: AccessCode.findOne({ accessCode: login.accessCode })
 
-    User.findOne({ 'email': login.email })
+    if (login.accessCode != "ge123" && login.accessCode != "password123") {
+        let status = { message: "User Unauthorized!" }
+        res.status(401).json(status);
+        return;
+    }
+
+    await User.findOne({ 'email': login.email })
         .then((user) => {
             if (user != null) {
                 logger.info(`userController.loginUser - User.findOne success. About to send back http response with user: ${user}`);
                 res.status(200).json(user);  // 200 - OK
-            } else {
-                // Create new user to save user's name and phone for future defaulting.
-
-                // placeholder
-                var status = { message: "User Unauthorized!" }
-                res.status(401).json(status);
+                return;
+            } else {               
+                needToCreateUser = true;
             }
         })
         .catch((err) => {
-            var errMsg = `userController.loginUser - User.findOne failed. Error: ${err}`;
+            let errMsg = `userController.loginUser - User.findOne failed. Error: ${err}`;
             logger.error(errMsg);
             res.status(500).json({ error: errMsg }); // 500 - INTERNAL SERVER ERROR
         });
+
+    if (needToCreateUser) {
+        // Create new user object in the database to save user's name and phone for future defaulting.
+
+        let newUser = new User(req.body);
+
+        createNewUser(siteCode, newUser, (result) => {
+            if (result.success) {
+                logger.info(`userController.createUser success. About to send back http response with the new user (${result.user.email})`);
+                res.status(result.statusCode).json(result.user);
+            } else {
+                logger.error(`userController.createUser failed. Error: ${result.errMsg}`);
+                res.status(result.statusCode).json({ error: result.errMsg });
+            }
+        });
+    }
 
 };
 

@@ -50,8 +50,7 @@ exports.createRequestPrompt = function (req, res) {
             for (var prop in validationErr.errors) {
                 logger.error(`requestPromptController.createRequestPrompt - create new RequestPrompt validation error: ${validationErr.errors[prop]}`);
             }
-            var errMsg = `requestPromptController.createRequestPrompt - create new RequestPrompt failed validation. ${validationErr}`;
-            logger.error(errMsg);
+            var errMsg = `createRequestPrompt failed on validation. Error: ${validationErr}`;
             res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST
             return;
         }

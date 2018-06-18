@@ -16,8 +16,7 @@ const UserSchema = new Schema({
     },
 
     name: {
-        type: String,
-        required: [true, 'User name is required!']
+        type: String
     },
 
     phone: {
@@ -26,6 +25,10 @@ const UserSchema = new Schema({
 
     isAdmin: {
         type: Boolean
+    },
+
+    lastLoggedInAt: {
+        type: Date
     }
 
 

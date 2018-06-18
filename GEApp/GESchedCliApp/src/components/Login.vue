@@ -52,7 +52,7 @@
                             <button type="submit" 
                                     class="btn btn-primary btn-sm btn-block"
                                     :disabled="isSubmitting"
-                                    @click.prevent="submit"
+                                    @click.prevent="onLogin"
                             >Login</button>
                         </div>
                         <br/>
@@ -229,7 +229,7 @@ export default {
 
         },
 
-        submit() {
+        onLogin() {
             var vm = this;
             vm.isSubmitting = true;
             vm.hasFailure = false;
@@ -280,8 +280,8 @@ export default {
                     return;
                 }
 
-                if (res.status == 200 && res.data != null) {
-                    vm.$store.state.currentUser = res.data;
+                if ((res.status == 200 || res.status == 201) && res.data != null) {
+                    storeState.currentUser = res.data;
                     if (storeState.currentUser != null && 
                         storeState.currentUser.name != null) {
                         storeState.loginContext.requesterName = storeState.currentUser.name;

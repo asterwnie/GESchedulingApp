@@ -105,7 +105,7 @@ exports.createRoom = function (req, res) {
             for (var prop in validationErr.errors) {
                 logger.error(`roomController.createRoom - got create new Room validation error: ${validationErr.errors[prop]}`);
             }
-
+            var errMsg = `createRoom failed on validation. Error: ${validationErr}`;
             res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST
             return;
         }

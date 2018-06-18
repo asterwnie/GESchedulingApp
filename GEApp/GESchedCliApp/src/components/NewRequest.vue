@@ -113,10 +113,10 @@ export default {
         return this.$store.state.requestPrompts;
     },
     email() {
-      return this.$store.state.loginContext.requesterEmail;
+      return this.$store.state.currentUser.email;
     },
     contact(){
-      return this.$store.state.loginContext.requesterName;
+      return this.$store.state.currentUser.name;
     }
   },
 

@@ -123,7 +123,7 @@ app.get('/api/appconfigs', async (req, res) => {
             logger.error(`roomController.getCapabilities failed. Error: ${result.errMsg}`);
             res.status(500).json({ error: result.errMsg });
         }
-        });
+    });
     
     // get distinct sizes
     await roomController.queryRoomSizeTypes(siteCode, (result) => {
@@ -134,7 +134,7 @@ app.get('/api/appconfigs', async (req, res) => {
             logger.error(`roomController.getSizeTypes failed. Error: ${result.errMsg}`);
             res.status(500).json({ error: result.errMsg });
         }
-        });
+    });
 
     // get distinct buildings
     await roomController.queryBuildings(siteCode, (result) => {
@@ -145,7 +145,7 @@ app.get('/api/appconfigs', async (req, res) => {
             logger.error(`roomController.getBuildings failed. Error: ${result.errMsg}`);
             res.status(500).json({ error: result.errMsg });
         }
-        });
+     });
 
     res.json(appConfigForSite);
 
