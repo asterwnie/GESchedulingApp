@@ -12,32 +12,41 @@ Marlborough, MA 01752
 Meeting & Special Event 
 Request
 
---AboutViewTitle
+--About.ViewTitle
 About
 
---AboutViewDescription
+--About.ViewDescription
 This application is for lorem ipsum sapien metus posuere nam praesent dictum, curabitur ad sit tortor tincidunt integer, quisque dictum ante quam nullam consequat.
 
---TechSupportViewTitle
+--TechSupport.ViewTitle
 IT Help
 
---TechSupportViewDescription
+--TechSupport.ViewDescription
 Results Way offers the MyTech Lounge located on the third-floor at tower 3. While onsite, MyTech Lounge is your solution to any IT help & questions you may have.
 
---CateringViewTitle
+--Caterers.ViewTitle
 Catering
 
---CateringViewDescription
+--Caterers.ViewDescription
 These recommended caterers who are reliable and deliver to the site and accept Amex.
 
---HotelsViewTitle
+--Hotels.ViewTitle
 Hotels
 
---HotelsViewDescription
+--Hotels.ViewDescription
 The local listing of hotels.
 
---GuestWiFiAccessViewTitle
+--GuestWiFiAccess.ViewTitle
 Guest WiFi Access
 
---GuestWiFiAccessViewDescription
+--GuestWiFiAccess.ViewDescription
 Guest WiFi access instructions.
+
+--RequestStatusMessage.UnderReview
+You request will be processed within 2 business days. 
+
+--RequestStatusMessage.Approved
+You request has been approved. 
+
+--RequestStatusMessage.Rejected
+You request has been rejected. Please review and update your request before resubmitting it. 
