@@ -10,9 +10,18 @@ const Schema = mongoose.Schema;
 
 const RequestSchema = new Schema({
 
-    title: {
+    processingStatus: {
+        type: String
+    },
+
+    eventTitle: {
         type: String,
         required: [true, 'Title is required!']
+    },
+
+    eventDateTimeData: {
+        type: String,
+        required: [true, 'The location of the event is required!']
     },
 
     locationOfEvent: {
@@ -20,17 +29,17 @@ const RequestSchema = new Schema({
         required: [true, 'The location of the event is required!']
     },
 
-    requesterEmail: {
+    eventGEContactPersonEmail: {
         type: String,
         required: [true, 'Requester email is required!']
     },
 
-    requesterName: {
+    eventGEContactPersonName: {
         type: String,
         required: [true, 'Requester name is required!']
     },
 
-    requesterPhone: {
+    eventGEContactPersonPhone: {
         type: String
     },
 

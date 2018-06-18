@@ -304,7 +304,7 @@ export default {
                 }
 
                 if (res.status == 200 && res.data != null) {
-                    this.$store.state.currentUser = res.data;
+                    vm.$store.state.currentUser = res.data;
                     if (storeState.currentUser != null && 
                         storeState.currentUser.name != null) {
                         storeState.loginContext.requesterName = storeState.currentUser.name;
@@ -312,7 +312,7 @@ export default {
                     vm.$router.push('dofirst'); 
                 } else {
                      vm.hasFailure = true;
-                     this.failureMessage = "Login failed. Please try again.";
+                     vm.failureMessage = "Login failed. Please try again.";
                 }
                 
             })
@@ -328,9 +328,9 @@ export default {
 
                 vm.isLoginFailed = true;
                 if (err.response != null && err.response.status == 401) { //401 - Unauthorized.                  
-                    this.failureMessage = "Login failed. Please try again.";
+                    vm.failureMessage = "Login failed. Please try again.";
                 } else {
-                    this.failureMessage = "Server unavailable or not working at this time.";
+                    vm.failureMessage = "Server unavailable or not working at this time.";
                 }
 
             })

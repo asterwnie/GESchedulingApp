@@ -1,31 +1,47 @@
 --Prompt.Type.Standard
 --Prompt.Label: Event title
 --Prompt.InputType.Text[dataId=eventTitle]
+--Prompt.Required
 --Prompt.OnScreen: 1
 
 --Prompt.Type.Standard
 --Prompt.Label: Event Date(s) / Time(s)
 --Prompt.InputType.Custom[dataId=eventDateTimeData|ctrlId=eventDateTimeCtrl]
+--Prompt.Required
 --Prompt.OnScreen: 1
 
 --Prompt.Type.Standard
 --Prompt.Label: Location of event
 --Prompt.InputType.Custom[dataId=locationOfEvent|ctrlId=locationOfEventCtrl]
+--Prompt.Required
 --Prompt.OnScreen: 1
 
 --Prompt.Type.Standard
 --Prompt.Label: Onsite GE contact person for the event
 --Prompt.InputType.Text[dataId=eventGEContactPersonName]
+--Prompt.Required
 --Prompt.OnScreen: 1
 
 --Prompt.Type.Standard
 --Prompt.Label: Contact Person's Email
 --Prompt.InputType.Email[dataId=eventGEContactPersonEmail]
+--Prompt.Required
 --Prompt.OnScreen: 1
 
 --Prompt.Type.Standard
 --Prompt.Label: Contact Person's Phone
 --Prompt.InputType.Text[dataId=eventGEContactPersonPhone]
+--Prompt.OnScreen: 1
+
+--Prompt.Type.Standard
+--Prompt.Label: Number of GE employee attending
+--Prompt.InputType.number[dataId=numOfGeEmpAttending]
+--Prompt.Required
+--Prompt.OnScreen: 1
+
+--Prompt.Type.Standard
+--Prompt.Label: Number of non-GE attending
+--Prompt.InputType.number[dataId=numOfNonGeAttending]
 --Prompt.OnScreen: 1
 
 --Prompt.Type.Standard
@@ -39,26 +55,16 @@
 --Prompt.OnScreen: 2
 
 --Prompt.Type.Standard
---Prompt.Label: Special requests
---Prompt.InputType.Custom[dataId=specialRequestData|ctrlId=specialRequestCtrl]
---Prompt.OnScreen: 2
-
---Prompt.Type.Standard
---Prompt.Label: Number of GE employee attending
---Prompt.InputType.number[dataId=numOfGeEmpAttending]
---Prompt.OnScreen: 3
-
---Prompt.Type.Standard
---Prompt.Label: Number of non-GE attending
---Prompt.InputType.number[dataId=numOfNonGeAttending]
---Prompt.OnScreen: 3
-
---Prompt.Type.Standard
 --Prompt.Label: Site tour requested?
 --Prompt.InputType.YesNo[dataId=siteTourRequested]
---Prompt.OnScreen: 3
+--Prompt.OnScreen: 2
 
 --Prompt.Type.Standard
 --Prompt.Label: If Yes, Subject Matter Expert needed?
 --Prompt.InputType.YesNo[dataId=subjectMatterExpertNeeded|dependsOn=siteTourRequested]
---Prompt.OnScreen: 3
+--Prompt.OnScreen: 2
+
+--Prompt.Type.Standard
+--Prompt.Label: Special requests
+--Prompt.InputType.Custom[dataId=specialRequestData|ctrlId=specialRequestCtrl]
+--Prompt.OnScreen: 2

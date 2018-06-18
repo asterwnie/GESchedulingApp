@@ -110,6 +110,10 @@ const RequestPromptSchema = new Schema({
         required: [true, 'Input Type is required!']
     },
 
+    isRequired: {
+        type: Boolean
+    },
+
     screenNum: {
         type: Number,
         required: [true, 'Screen number is required!']

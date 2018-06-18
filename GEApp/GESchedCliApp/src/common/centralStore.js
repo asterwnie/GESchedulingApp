@@ -14,7 +14,9 @@ const store = new Vuex.Store({
             accessCode: null
         },
 
-        currentUser: null,  // Will be assigned after successful login
+        currentRequest: null,   // To be assigned a new or exiting request for editing.
+
+        currentUser: null,      // Will be assigned after successful login.
 
 
         // These reference data Will be assigned during login page startup
@@ -45,6 +47,8 @@ const store = new Vuex.Store({
             roomsUrlTmpl: 'http://{0}:{1}/api/rooms',
 
             requestPromptsUrlTmpl: 'http://{0}:{1}/api/requestPrompts',
+
+            requestsUrlTmpl: 'http://{0}:{1}/api/requests',
 
             // These are use during  development. Be sure the turn all of them off.
 

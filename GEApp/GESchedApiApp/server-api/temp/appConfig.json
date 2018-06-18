@@ -15,11 +15,15 @@
 
     "doFirstViewTitle": "Do First",
 
+    "doFirstViewDescription": "Complete these items before each new request.",
+    
     "requestViewTitle": "New Request",
 
     "submitRequestViewTitle": "Submit Request",
 
     "attentionNotesViewTitle": "Attention",
+
+    "attentionNotesViewDescription": "",
 
     "techSupportViewTitle": "IT Help",
 
