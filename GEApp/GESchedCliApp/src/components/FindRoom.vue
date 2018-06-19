@@ -94,7 +94,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios';
 import * as apiMgr from '@/common/apiMgr.js';
 
 export default {
