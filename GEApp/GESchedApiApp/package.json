@@ -16,6 +16,7 @@
     "express": "^4.16.3",
     "mongoose": "^5.1.1",
     "morgan": "^1.9.0",
+    "node-windows": "^0.1.14",
     "winston": "^2.4.2",
     "winston-daily-rotate-file": "^3.1.4"
   }
