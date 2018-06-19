@@ -167,9 +167,9 @@ export default {
         storeState.currentRequest[inputCtrl.id] = $(inputCtrl).val();
       });
  
-      var hasInvalidData = validateRequest(storeState.currentRequest, vm.currentScreenNum);
+      var allValid = validateRequest(storeState.currentRequest, vm.currentScreenNum);
       
-      if (!hasInvalidData) {
+      if (allValid) {
 
         storeState.currentUser.name = vm.$store.state.currentRequest["eventGEContactPersonName"];
         storeState.currentUser.email = vm.$store.state.currentRequest["eventGEContactPersonEmail"];

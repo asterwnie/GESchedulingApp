@@ -5,11 +5,115 @@
 import { centralStore } from '@/common/centralStore.js'
 
 
+export const validatePrompts = (prompts) => {
+
+    //debugger; // Uncomment to trigger breakpoint.
+
+    // Hide all existing errors since the fields will be re-validated.
+    $.each(prompts, function (index, prompt) {
+
+        var ctrlDataId = prompt.inputType.ctrlDataId;
+
+        var invalidMsg = $('#INVALID-MSG-FOR-' + ctrlDataId)
+        if (invalidMsg != null) {
+            invalidMsg.hide();
+        }
+
+        var requiredMsg = $('#REQUIRED-MSG-FOR-' + ctrlDataId)
+        if (requiredMsg != null) {
+            requiredMsg.hide();
+        }
+
+    });
+
+    var allValid = true;
+
+    $.each(prompts, function (index, prompt) {
+  
+        var currentFieldInvalid = false;
+        var isValid = true;
+
+        if (prompt.isRequired != undefined && prompt.isRequired == true) {
+            var ctrlDataId = prompt.inputType.ctrlDataId;
+            var inputVal = $("#" + ctrlDataId).val();
+            isValid = validateIsRequiredPrompt(ctrlDataId, inputVal);
+            if (!isValid) {
+                allValid = false;
+                currentFieldInvalid = true;
+            }
+            
+        }
+
+        if (!currentFieldInvalid && prompt.inputType.ctrlType == 'email') {
+            var ctrlDataId = prompt.inputType.ctrlDataId;
+            var inputVal = $("#" + ctrlDataId).val();
+            isValid = validateEmailPrompt(ctrlDataId, inputVal);
+            if (!isValid) {
+                allValid = false;
+                currentFieldInvalid = true;
+            }
+        }
+
+    });
+
+    return allValid;
+}
+
+
+export const validateIsRequiredPrompt = (ctrlDataId, inputVal) => {
+
+    let isValid = true;
+    let validInput = null;
+
+    try {
+        inputVal = inputVal.trim();
+        var atLeastOneCharRegEx = /.+/;
+        validInput = inputVal.match(atLeastOneCharRegEx);
+    } catch (err) {
+        console.warn("validateIsRequiredPrompt error: " + err);
+    }
+
+    if (validInput == null) {
+        isValid = false;
+        var requiredMsg = $('#REQUIRED-MSG-FOR-' + ctrlDataId)
+        if (requiredMsg != null) {
+            requiredMsg.show();
+        }
+    }
+
+    return isValid;
+}
+
+
+export const validateEmailPrompt = (ctrlDataId, inputVal) => {
+    
+    let isValid = true;
+    var email = null;
+
+    try {
+        var emailRegEx = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/i;
+        email = inputVal.match(emailRegEx);
+    } catch (err) {
+        console.warn("validateEmailPrompt error: " + err);
+    }
+
+    if (email == null) {
+        isValid = false;
+        var invalidMsg = $('#INVALID-MSG-FOR-' + ctrlDataId)
+        if (invalidMsg != null) {
+            invalidMsg.show();
+        }
+    }
+
+    return isValid;
+}
+
+
 export const validateRequest = (request, currentScreenNum) => {
 
     //debugger; // Uncomment to trigger breakpoint.
 
-    var hasInvalidData = false;
+    var allValid = true;
 
     // Hide all existing errors since the fields will be re-validated.
     $.each(centralStore.state.requestPrompts, function (index, requestPrompt) {
@@ -34,57 +138,34 @@ export const validateRequest = (request, currentScreenNum) => {
         if (requestPrompt.screenNum == currentScreenNum) {
 
             var currentFieldInvalid = false;
+            var isValid = true;
 
             if (requestPrompt.isRequired != undefined && requestPrompt.isRequired == true) {
                 var ctrlDataId = requestPrompt.inputType.ctrlDataId;
-                var validInput = null;
-
-                try {
-                    var inputVal = request[ctrlDataId]
-                    inputVal = inputVal.trim();
-                    var atLeastOneCharRegEx = /.+/;
-                    validInput = inputVal.match(atLeastOneCharRegEx);
-                } catch (err) {
-                    console.warn("validateRequest error: " + err);
-                }
-
-                if (validInput == null) {
+                var inputVal = request[ctrlDataId]
+                isValid = validateIsRequiredPrompt(ctrlDataId, inputVal);
+                if (!isValid) {
+                    allValid = false;
                     currentFieldInvalid = true;
-                    hasInvalidData = true;
-                    var requiredMsg = $('#REQUIRED-MSG-FOR-' + ctrlDataId)
-                    if (requiredMsg != null) {
-                        requiredMsg.show();
-                    }
                 }
             }
 
             if (!currentFieldInvalid && requestPrompt.inputType.ctrlType == 'email') {
                 var ctrlDataId = requestPrompt.inputType.ctrlDataId;
-                var email = null;
-
-                try {
-                    var inputVal = request[ctrlDataId]
-                    var emailRegEx = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/i;
-                    email = inputVal.match(emailRegEx);
-                } catch (err) {
-                    console.warn("validateRequest error: " + err);
-                }
-
-                if (email == null) {
+                var inputVal = $("#" + ctrlDataId).val();
+                isValid = validateEmailPrompt(ctrlDataId, inputVal);
+                if (!isValid) {
+                    allValid = false;
                     currentFieldInvalid = true;
-                    hasInvalidData = true;
-                    var invalidMsg = $('#INVALID-MSG-FOR-' + ctrlDataId)
-                    if (invalidMsg != null) {
-                        invalidMsg.show();
-                    }
                 }
             }
 
         }
     });
 
-    return hasInvalidData;
+    return allValid;
 }
+
 
 export const bindUiValuesFromRequest = (request, currentScreenNum) => {
 
