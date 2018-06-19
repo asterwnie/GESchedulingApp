@@ -3,12 +3,12 @@
 // Update the name, description and path accordingly. To run:
 // node runAsWinService.js
 // Use -u argument to uninstall:
-// node runAsWinService -u
+// node runAsWinService.js -u
 //
 // Prerequisite:
 // https://github.com/coreybutler/node-windows
 // The recommended way to install node-windows is with npm, using the global flag:
-// npm install -g node-windows
+// npm install node-windows
 // Then, in your project root, run:
 // npm link node-windows
 /////////////////////////////////////////////////////////////////////////////////////
@@ -26,8 +26,8 @@ if (scriptParam == "-u" || scriptParam == "--uninstall") {
 
 // Create a new service object
 const svc = new Service({
-  name:'SchedulingAppBeta1',
-  description: 'The GE Scheduling Web App.',
+  name:'GE-MeetingRequestApp',
+  description: 'The GE Meeting Request Web App.',
   script: 'C:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\server.js',
   nodeOptions: [
     '--harmony',

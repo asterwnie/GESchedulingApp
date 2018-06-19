@@ -28,19 +28,19 @@
                         <div class="mb-3">
                             <label for="requesterEmail">Email</label>
                             <input type="email" class="form-control form-control-sm" 
-                                    id="requesterEmail" 
-                                    v-model.lazy="requesterEmail"                    
-                                    placeholder="you@example.com">
-                            <p v-if="!$v.requesterEmail.email && canShowError" class="text-danger">Please enter a valid email address.</p>
-                            <p v-if="!$v.requesterEmail.required  && canShowError" class="text-danger">A email address is required.</p>
+                                   id="requesterEmail"       
+                                   v-model="requesterEmail"        
+                                   placeholder="you@example.com">
+                            <p class="text-danger" style="display:none;" id="INVALID-MSG-FOR-requesterEmail">Please enter a valid email address.</p>
+                            <p class="text-danger" style="display:none;" id="REQUIRED-MSG-FOR-requesterEmail">A email address is required.</p>
                         </div>
 
                         <div class="mb-3">
                             <label for="accessCode">Access Code</label>
                             <input type="password" class="form-control form-control-sm" 
-                                    id="accessCode" 
-                                    v-model.lazy="accessCode">                 
-                            <p v-if="!$v.accessCode.required && canShowError" class="text-danger">The access code is required.</p>
+                                   v-model="accessCode" 
+                                   id="accessCode">                 
+                            <p class="text-danger" style="display:none;" id="REQUIRED-MSG-FOR-accessCode">The access code is required.</p>
                         </div>
 
                         <div class="custom-control custom-checkbox">
@@ -77,10 +77,10 @@
 
 <script>
 import axios from 'axios'
-import * as localCacheMgr from '@/common/localCacheMgr.js';
 import * as apiMgr from '@/common/apiMgr.js';
+import * as localCacheMgr from '@/common/localCacheMgr.js';
 import * as textTranformer from '@/common/textTranformer.js';
-import { required, email }  from 'vuelidate/lib/validators';
+import { validatePrompts } from '@/common/requestMgr.js'
 
 export default {  
     data () {
@@ -104,10 +104,7 @@ export default {
         }
     },
 
-    validations: {
-        requesterEmail: { required, email },
-        accessCode: { required }
-    },
+
 
     activated() {
         console.log('Login.vue activated.');
@@ -262,13 +259,14 @@ export default {
 
             vm.canShowError = true;
 
-            this.$v.requesterEmail.$touch();
-            this.$v.accessCode.$touch();
+            var prompts = [];
 
-            var requesterEmailIsInvalid = this.$v.requesterEmail.$error;
-            var accessCodeIsInvalid = this.$v.accessCode.$error;
+            prompts.push({ isRequired: true, inputType: { ctrlType: "email", ctrlDataId: "requesterEmail" } });
+            prompts.push({ isRequired: true, inputType: { ctrlType: "text", ctrlDataId: "accessCode" } });
 
-            if (requesterEmailIsInvalid || accessCodeIsInvalid) {
+            var allValid = validatePrompts(prompts);
+
+            if (!allValid) {
                 vm.isSubmitting = false;
                 return;
             }

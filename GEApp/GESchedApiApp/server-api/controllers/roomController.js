@@ -20,10 +20,10 @@ exports.getRooms = async function (req, res) {
 
     await queryRooms(siteCode, req.query, (result) => {
         if (result.success) {
-            logger.info(`hotelController.getRooms - Hotel.find success. About to send back http response with ${result.rooms.length} rooms`);
+            logger.info(`roomController.getRooms - Room.find success. About to send back http response with ${result.rooms.length} rooms`);
             res.status(200).json(result.rooms);
         } else {
-            logger.error(`hotelController.getRooms failed. Error: ${result.errMsg}`);
+            logger.error(`roomController.getRooms failed. Error: ${result.errMsg}`);
             res.status(500).json({ error: result.errMsg });
         }
     });
@@ -31,6 +31,10 @@ exports.getRooms = async function (req, res) {
 };
 
 async function queryRooms (siteCode, query, callback) {
+
+    const queryAsJSON = JSON.stringify(query);
+    logger.info(`roomController.getRooms - passed in query:  ${queryAsJSON}`);
+
     let Room = getRoomType(siteCode);
 
     var sortDirective = { "name": 1}; //default, order by name, ascending
@@ -72,8 +76,7 @@ async function queryRooms (siteCode, query, callback) {
 
     if (query.seatingCapacityGreaterOrEqual != null) {    
         const strVal = query.seatingCapacityGreaterOrEqual;
-        let requestedSeatingCapacity = parseInt(strVal);
-        
+        let requestedSeatingCapacity = parseInt(strVal);        
         filterDirective.seatingCapacity = {$gte: requestedSeatingCapacity};        
     }
 

@@ -130,6 +130,7 @@ export default {
 
     this.$store.state.currentViewTitle = this.title;
     this.$store.state.enableNavBar = true;
+    
   },
 
   methods: {
@@ -193,9 +194,17 @@ export default {
             axios.get(url)
                 .then(res => {
                     console.log("getRoomsUrl return status: " + res.status);
-                    debugger;
-                    vm.$store.state.rooms = res.data;
+                    
+                    while(vm.$store.state.rooms.length > 0) {
+                      vm.$store.state.rooms.pop();
+                    }
+                    var foundRooms = res.data;
+                    $.each(foundRooms, function (index, room) {
+                      vm.$store.state.rooms.push(room);
+                    });
+                    
                     vm.isFetchingRooms = false;
+                    vm.$forceUpdate();
                 })
                 .catch((err) => {
                     vm.hasFailure = true;

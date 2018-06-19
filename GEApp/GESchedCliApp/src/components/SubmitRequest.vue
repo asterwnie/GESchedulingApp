@@ -25,6 +25,7 @@
 <script>
 import axios from 'axios'
 import * as apiMgr from '@/common/apiMgr.js';
+import * as localCacheMgr from '@/common/localCacheMgr.js';
 
 export default {
   data () {
@@ -75,7 +76,11 @@ export default {
           if (res.status == 201 && res.data != null) {
               var requestCreated = res.data;
 
+              localCacheMgr.uncacheItem("workingNewRequest");
+              vm.$store.state.currentRequest = null;
+
               vm.$router.push('home'); 
+
           } else {
                 vm.hasFailure = true;
                 vm.failureMessage = "Unable to create the meeting request. Please try again.";

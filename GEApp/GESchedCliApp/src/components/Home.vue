@@ -45,13 +45,6 @@ const existingRequestsData = [
           buttonLabel: 'View'
         },
         { 
-          statusBadge: 'badge badge-secondary',
-          requestStatus: 'Not Submited',  
-          meetingTitle: 'University Student Tour', 
-          lastModified: '5/22/2018 03:30 PM',
-          buttonLabel: 'Edit'
-        },
-        { 
           statusBadge: 'badge badge-danger',
           requestStatus: "Rejected",  
           meetingTitle: 'Big Boss Retirement Party', 
