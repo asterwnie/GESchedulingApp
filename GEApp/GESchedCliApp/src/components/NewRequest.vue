@@ -80,6 +80,7 @@
 <script>
 import axios from 'axios'
 import * as apiMgr from '@/common/apiMgr.js';
+import * as localCacheMgr from '@/common/localCacheMgr.js';
 
 import { validateRequest, bindUiValuesFromRequest } from '@/common/requestMgr.js'
 
@@ -138,7 +139,12 @@ export default {
     this.$store.state.enableNavBar = true;
 
     if (this.$store.state.currentRequest == null) {
-      this.$store.state.currentRequest = {}
+      var workingNewRequest = localCacheMgr.getCachedItem("workingNewRequest");
+      if (workingNewRequest != undefined && workingNewRequest != null) {
+        this.$store.state.currentRequest = workingNewRequest;
+      } else {
+        this.$store.state.currentRequest = {};
+      }
     }
 
     this.$store.state.currentRequest["eventGEContactPersonEmail"] = this.currentUserEmail;
@@ -174,6 +180,12 @@ export default {
         storeState.currentUser.name = vm.$store.state.currentRequest["eventGEContactPersonName"];
         storeState.currentUser.email = vm.$store.state.currentRequest["eventGEContactPersonEmail"];
         storeState.currentUser.phone = vm.$store.state.currentRequest["eventGEContactPersonPhone"];
+
+        try {
+          localCacheMgr.cacheItem("workingNewRequest", vm.$store.state.currentRequest);
+        } catch (err) {
+          console.log("Not able to locally cache the working new request");
+        }
 
         var usersUrl = apiMgr.getUsersUrl();
 
