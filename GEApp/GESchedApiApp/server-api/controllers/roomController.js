@@ -80,9 +80,6 @@ async function queryRooms (siteCode, query, callback) {
         filterDirective.seatingCapacity = {$gte: requestedSeatingCapacity};        
     }
 
-    const filterDirAsJSON = JSON.stringify(filterDirective);
-    logger.info(`roomController.getRooms - about to find rooms with these filters:  ${filterDirAsJSON}`);
-
     await Room.find(filterDirective).sort(sortDirective)
         .then((rooms) => {
             logger.info(`roomController.getRooms - Room.find success. About to send back http response with ${rooms.length} rooms`);
