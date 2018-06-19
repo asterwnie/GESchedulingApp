@@ -68,7 +68,7 @@ module.exports = function (siteCode) {
     let siteCodeUpper = siteCode.toUpperCase();
     if (requestModelBySite[siteCodeUpper] == null) {
         let dbConnection = getDbConnection(siteCodeUpper);       
-        // Mongoose automatically creates a hotel collection if one does not exist.
+        // Mongoose automatically creates a request collection if one does not exist.
         requestModelBySite[siteCodeUpper] = dbConnection.model(`request`, RequestSchema);
     }
     return requestModelBySite[siteCodeUpper];

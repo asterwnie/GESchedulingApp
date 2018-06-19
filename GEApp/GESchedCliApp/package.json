@@ -13,6 +13,7 @@
     "axios": "^0.18.0",
     "promise-polyfill": "^7.1.2",
     "vue": "^2.5.2",
+    "vue-md-date-picker": "^1.0.16",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },
