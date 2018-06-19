@@ -228,7 +228,6 @@ export default {
             axios.get(url)
                 .then(res => {
                     console.log("getRoomsUrl return status: " + res.status);
-                    debugger;
                     vm.$store.state.rooms = res.data;
                     vm.isFetchingRooms = false;
                 })
