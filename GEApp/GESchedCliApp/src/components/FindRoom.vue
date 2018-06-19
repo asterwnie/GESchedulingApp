@@ -11,9 +11,9 @@
     <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
   </div>
   <div class="row">
-    <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
+    <div class="col col-12 col-md-2 col-lg-2"></div>
 
-    <div id="searchUI" class="col col-12 col-sm-10 col-md-3 col-lg-3 col-xl-2" style="margin-bottom:20px">
+    <div id="searchUI" class="col col-12 col-md-3 col-lg-3 col-xl-2" style="margin-bottom:20px">
       <div class="card">
       <div class="card-header bg-info text-light" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
             Search Menu <i class="fa fa-search-plus" aria-hidden="true"></i>&nbsp;&nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i>
@@ -49,14 +49,14 @@
 
             
             <div id="inputCapabilities" class="card">
-              <div style="text-align:left" class="card-header btn btn-sm" id="headingTwo" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+              <div style="text-align:left" class="card-header input-group-text bg-light" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                     Capabilities&nbsp;&nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i>
               </div>
-              <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordion">
+              <div id="collapseTwo" class="collapse hide" aria-labelledby="headingTwo" data-parent="#accordion">
                 <div class="card-body">
                   <!--modify for modal?-->
                   <div v-for="(capabilityLabel, index) in capabilities" :key="index" width="100%">
-                    <input class="capabilityCheckbox" v-bind:id="capabilityLabel" type="checkbox">&nbsp;{{capabilityLabel}}
+                    <input class="capabilityCheckbox" v-bind:id="capabilityLabel" type="checkbox"/>&nbsp;{{capabilityLabel}}
                   </div>
                 </div>
               </div>
@@ -64,14 +64,14 @@
               
             
             <br>
-            <button type="button" class="btn btn-sm btn-info" v-on:click="filterView">Search</button>
+            <button type="button" class="btn btn-sm btn-info float-right" v-on:click="filterView">Search</button>
             <button type="button" class="btn btn-sm btn-secondary" v-on:click="resetFilterView">Reset</button>
           </div>
         </div>
       </div>
     </div>
 
-    <div id="roomUI" class="col col-12 col-sm-10 col-md-5 col-lg-5 col-xl-6">
+    <div id="roomUI" class="col col-12 col-md-5 col-lg-5 col-xl-6">
       <div class="card">
         <div class="card-body bg-secondary text-light">
           Rooms
@@ -88,7 +88,7 @@
       </div>
     </div>
 
-    <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
+    <div class="col col-12 col-md-2 col-lg-2"></div>
   </div>
   </div>
 </template>

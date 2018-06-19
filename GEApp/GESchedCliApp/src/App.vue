@@ -12,8 +12,8 @@
       <!--Menu dropdown-->
       <div class="p-2 align-self-center">        
         <div class="dropdown" :hidden="!$store.state.enableNavBar">
-              <span class="fas fa-align-justify fa-lg" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
+              <span id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fas fa-align-justify fa-lg"></i>
               </span>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                   <a class="dropdown-item" @click="$router.push('login')">Login</a>
