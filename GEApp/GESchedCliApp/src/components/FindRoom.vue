@@ -204,7 +204,7 @@ export default {
                     });
                     
                     vm.isFetchingRooms = false;
-                    vm.$forceUpdate();
+                    //vm.$forceUpdate();
                 })
                 .catch((err) => {
                     vm.hasFailure = true;
