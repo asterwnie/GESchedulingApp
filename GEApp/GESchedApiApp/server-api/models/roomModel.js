@@ -36,8 +36,7 @@ const RoomSchema = new Schema({
     },
 
     roomNumber: {
-        type: String, //in case of mixed numbers like 11B
-        required: [true, 'Room number is required!']
+        type: String //in case of mixed numbers like 11B
     },
 
     roomPhone: {
