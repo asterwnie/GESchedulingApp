@@ -12,9 +12,7 @@
       <!--Menu dropdown-->
       <div class="p-2 align-self-center">        
         <div class="dropdown" :hidden="!$store.state.enableNavBar">
-              <button type="button" class="btn btn-sm btn-dark" data-toggle="modal" data-target=".main-menu-modal"><span class="fas fa-align-justify fa-lg">
-              </span></button>
-
+              <button type="button" class="btn btn-sm btn-dark" data-toggle="modal" data-target=".main-menu-modal"><span class="fas fa-align-justify fa-lg"></span></button>
         </div>
       </div>
     </div>
