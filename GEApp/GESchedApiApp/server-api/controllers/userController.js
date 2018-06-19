@@ -37,6 +37,13 @@ exports.getUsers = function (req, res) {
 };
 
 
+async function queryUsers (siteCode, query, callback) {
+    
+}
+
+exports.queryUsers = queryUsers;
+
+
 async function createNewUser(siteCode, newUser, callback) {
     logger.verbose('userController.createNewUser begin');
 

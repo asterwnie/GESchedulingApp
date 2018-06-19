@@ -12,30 +12,64 @@
       <!--Menu dropdown-->
       <div class="p-2 align-self-center">        
         <div class="dropdown" :hidden="!$store.state.enableNavBar">
-              <span id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="fas fa-align-justify fa-lg"></i>
-              </span>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" @click="$router.push('login')">Login</a>
-                  <a class="dropdown-item" @click="$router.push('home')">Home</a>
-                  <a class="dropdown-item" @click="$router.push('findroom')">Find Room</a>
-                  <a class="dropdown-item" @click="$router.push('newrequest')">New Request</a>
-                  <a class="dropdown-item" @click="$router.push('guestwifi')">Guest WiFi</a>
-                  <a class="dropdown-item" @click="$router.push('localhotels')">Local Hotels</a>
-                  <a class="dropdown-item" @click="$router.push('localcaterers')">Local Caterers</a>
-                  <a class="dropdown-item" @click="$router.push('ithelp')">IT Help</a>
-                  <a class="dropdown-item" @click="$router.push('about')">About</a>
-              </div>
+              <button type="button" class="btn btn-sm btn-dark" data-toggle="modal" data-target=".main-menu-modal"><span class="fas fa-align-justify fa-lg"></span></button>
         </div>
       </div>
     </div>
-
     <transition name="slide" mode="out-in">
       <keep-alive>
         <!--Current Page-->
         <router-view></router-view>
       </keep-alive>
     </transition>
+
+    <!-- Modal -->
+    <div class="modal fade main-menu-modal" tabindex="-1" role="dialog" aria-labelledby="main-menu-modal-label" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="card text-center">
+
+          <div class="card-body">
+            <div class="btn-group-vertical">
+            <form>
+              <div class="form-group">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" @click="$router.push('login')">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+              </div>
+              <div class="form-group">
+                <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('home')">Home</button>
+              </div>
+              <div class="form-group">
+                <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('findroom')">Find Room</button>
+              </div>
+              <div class="form-group">
+                <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('newrequest')">New Request</button>
+              </div>
+              <div class="form-group">
+                <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('guestwifi')">Guest WiFi</button>
+              </div>
+              <div class="form-group">
+                <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('localhotels')">Local Hotels</button>
+              </div>
+              <div class="form-group">
+                <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('localcaterers')">Local Caterers</button>
+              </div>
+              <div class="form-group">
+                <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('ithelp')">IT Help</button>
+              </div>    
+              <div class="form-group">
+                <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('about')">About</button>
+              </div>             
+            </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    </div>
+
+
   </div>
 </template>
 
@@ -48,10 +82,22 @@ export default {
     console.log('App.vue created.');
 
   },
+
+  data () {
+    return {
+      modalShowMenu: false
+    }
+  },
+
   computed: {
     title() {
       return this.$store.state.currentViewTitle;
     }
+  },
+
+  created() {       
+
+
   }
 }
 </script>

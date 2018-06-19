@@ -6,14 +6,12 @@
 
 import Vue from 'vue'
 import router from './router' // The client-side routes are defined in the index.js file under the client-src/router folder.
-import Vuelidate from 'vuelidate'
 import Promise from 'promise-polyfill'
 
 import App from './App.vue'   // The main view for this SPA.
 import { centralStore } from '@/common/centralStore.js'
 import { prepareApiServerUrlSettings } from '@/common/apiMgr.js';
 
-Vue.use(Vuelidate);
 
 // debugger;
 if (!window.Promise) { 
