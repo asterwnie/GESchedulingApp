@@ -12,7 +12,7 @@ const getAppconfigType = require(`${appRoot}/server-api/models/appconfigModel`);
 mongoose.Promise = global.Promise;
 
 const args = process.argv; 
-var siteCode = appConfig.defaultSite; // The current default in HLS-MA in server.config.js
+var siteCode = AppConfig.defaultSite; // The current default in HLS-MA in server.config.js
 
 // if a site code is passed in on the command-line then use it. For example:
 // node ./server-api/dataImports/importAppconfigs.js HLS-MA
@@ -23,22 +23,22 @@ const fileName = `appconfigs-${siteCode}.txt`;
 
 let Appconfig = getAppConfigType(siteCode);
 
-var totalNumOfAppconfigs = 0;
-var totalNumOfAppconfigsCreated = 0;
+var totalNumOfAppConfigs = 0;
+var totalNumOfAppConfigsCreated = 0;
 
 const delyInSecs = 3;
-const timer = setInterval(() => doAppconfigsImport(), delyInSecs * 1000); // Ensures db connection is established in getAppconfigType since it's an async operation.
+const timer = setInterval(() => doAppConfigsImport(), delyInSecs * 1000); // Ensures db connection is established in getAppconfigType since it's an async operation.
 
 
 
-function doAppconfigsImport() {
+function doAppConfigsImport() {
 
     try {
         clearInterval(timer);
 
         var fileData = fs.readFileSync(`./server-api/dataImports/dataFiles/${fileName}`).toString()
         
-        var result = extractAppconfigItems(fileData);
+        var result = extractAppConfigItems(fileData);
         if (result.success) {
             logger.info(`Total number of appconfigs parsed: ${result.appconfigs.length}`);
 
@@ -48,13 +48,13 @@ function doAppconfigsImport() {
             }
             logger.info(result.appconfigs);
             
-            result.appconfigs.forEach((appconfig) => createAppconfigs(appconfig));
+            result.appconfigs.forEach((appconfig) => createAppConfigs(appconfig));
         } else {
             process.exit();
         }
 
     } catch (err) {
-        logger.error(`ADMIN: Error importing the Appconfigs collection into the database! Error: ${err}`);
+        logger.error(`ADMIN: Error importing the AppConfigs collection into the database! Error: ${err}`);
         mongoose.disconnect();
         process.exit();
     }
@@ -64,7 +64,7 @@ function doAppconfigsImport() {
 function extractAppconfigItems(fileData) {
     var result = null;
     var appconfigItems = [];
-    var newAppconfigs = null;
+    var newApponfigs = null;
     var errorEncountered = false;
     var currentItemSeq = 0;
 
@@ -170,11 +170,11 @@ function extractAppconfigItems(fileData) {
 }
 
 
-function validateAndCollectAppconfigs(newAppconfigs, appconfigItems) {
-    var valid = validateAppconfigs(newAppconfigs);
+function validateAndCollectAppConfigs(newAppConfigs, appconfigItems) {
+    var valid = validateAppConfigs(newAppConfigs);
     if (valid) {
-        appconfigItems.push(newAppconfigs);
-        totalNumOfAppconfigs += 1;
+        appconfigItems.push(newAppConfigs);
+        totalNumOfAppConfigs += 1;
         return true;
     } else {
         return false;
@@ -182,14 +182,14 @@ function validateAndCollectAppconfigs(newAppconfigs, appconfigItems) {
 }
 
 
-function validateAppconfigs(newAppconfigs) {
+function validateAppconfigs(newAppConfigs) {
 
-    var validationErr = newAppconfigs.validateSync();
+    var validationErr = newAppConfigs.validateSync();
     if (validationErr != null) {
         for (var prop in validationErr.errors) {
-            logger.error(`ADMIN: validateAppconfigs - create new newAppconfigs validation error: ${validationErr.errors[prop]}`);
+            logger.error(`ADMIN: validateAppConfigs - create new newAppConfigs validation error: ${validationErr.errors[prop]}`);
         }
-        var errMsg = `ADMIN: validateAppconfigs - create new newAppconfigs failed validation. ${validationErr}`;
+        var errMsg = `ADMIN: validateAppConfigs - create new newAppConfigs failed validation. ${validationErr}`;
         logger.error(errMsg);
         return false;
     }
@@ -197,22 +197,22 @@ function validateAppconfigs(newAppconfigs) {
 }
 
 
-function createAppconfigs(newAppconfigs) {
+function createAppConfigs(newAppConfigs) {
 
-    logger.info(`ADMIN: Adding appconfigs (${newAppconfigs.name}) to the database.`);
+    logger.info(`ADMIN: Adding appconfigs (${newAppConfigs.name}) to the database.`);
 
-    newAppconfigs.save()
+    newAppConfigs.save()
         .then((appconfigs) => {
-            logger.info(`ADMIN: createAppconfigs - Appconfigs.save success:\n${appconfigs}`);
-            totalNumOfAppconfigsCreated += 1;
+            logger.info(`ADMIN: createAppConfigs - AppConfigs.save success:\n${appconfigs}`);
+            totalNumOfAppConfigsCreated += 1;
 
-            if (totalNumOfAppconfigsCreated == totalNumOfAppconfigs) {
+            if (totalNumOfAppConfigsCreated == totalNumOfAppConfigs) {
                 // All accounted for therefore it can disconnect from the database.
-                logger.info(`ADMIN: All ${totalNumOfAppconfigsCreated} appconfigs are created for site: ${siteCode}.`);
+                logger.info(`ADMIN: All ${totalNumOfAppConfigsCreated} appconfigs are created for site: ${siteCode}.`);
 
                 mongoose.disconnect((err) => {
                     if (err) {
-                        logger.error(`ADMIN: Appconfigs.createAppconfigs failed for site: ${siteCode}! Error: ${err}`);
+                        logger.error(`ADMIN: AppConfigs.createAppConfigs failed for site: ${siteCode}! Error: ${err}`);
                     } else {
                         logger.info(`ADMIN: Disconnected from database for site: ${siteCode}.`);
                     }
@@ -221,7 +221,7 @@ function createAppconfigs(newAppconfigs) {
             }
         })
         .catch((err) => {
-            var errMsg = `ADMIN: createAppconfigs - Appconfigs.save failed. Error: ${err}`
+            var errMsg = `ADMIN: createAppConfigs - AppConfigs.save failed. Error: ${err}`
             logger.error(errMsg);
             mongoose.disconnect();
             return;

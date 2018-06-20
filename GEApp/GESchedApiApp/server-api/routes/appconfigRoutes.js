@@ -3,29 +3,29 @@
 var logger = require('../logger');
 
 // Use the callback functions defined in AppconfigController.js
-var AppconfigController = require('../controllers/AppconfigController');
+var AppConfigController = require('../controllers/AppConfigController');
 
 
 module.exports = function (app) {
 
-    logger.verbose('Setting up RESTful API routes for the Appconfig entity.');
+    logger.verbose('Setting up RESTful API routes for the AppConfig entity.');
 
     try {
-        // Appconfig: For POST, PUT & PATCH the client caller must set a http header with
+        // AppConfig: For POST, PUT & PATCH the client caller must set a http header with
         // Content-Type = application/json; charset=UTF-8
 
         app.route('/api/notes')
-            .get(AppconfigController.getAppconfigs)
-            .post(AppconfigController.createAppconfig)
-            .put(AppconfigController.updateAppconfig)
-            .patch(AppconfigController.updateAppconfig);
+            .get(AppConfigController.getAppConfigs)
+            .post(AppConfigController.createAppConfig)
+            .put(AppConfigController.updateAppConfig)
+            .patch(AppConfigController.updateAppConfig);
 
         app.route('/api/notes/:id')
-            .get(AppconfigController.getAppconfig)
-            .delete(AppconfigController.deleteAppconfig);
+            .get(AppConfigController.getAppConfig)
+            .delete(AppConfigController.deleteAppConfig);
             
     } catch (err) {
-        logger.error(`Set up API routes for the Appconfig entity failed. Error: ${err}`);
+        logger.error(`Set up API routes for the AppConfig entity failed. Error: ${err}`);
     }
 
 };
