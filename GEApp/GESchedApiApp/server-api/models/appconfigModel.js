@@ -94,6 +94,20 @@ const AppconfigSchema = new Schema({
         type: String,
         required: [true, 'Appconfig RequestStatusMessageRejected is required!']
     },
+    
+    type: {
+        type: String,
+        required: [true, 'Appconfig type is required!']
+    },
+
+    seqNum: { 
+        type: Number
+    },
+   
+    text: {
+        type: String,
+        required: [true, 'Appconfig text is required!']
+    },
 }, 
 {
     timestamps: true // auto-add createdAt and updatedAt
@@ -108,11 +122,11 @@ var noteModelBySite = {};
 module.exports = function (siteCode) {   
 
     let siteCodeUpper = siteCode.toUpperCase();
-    if (noteModelBySite[siteCodeUpper] == null) {
+    if (appconfigModelBySite[siteCodeUpper] == null) {
         let dbConnection = getDbConnection(siteCodeUpper);       
         // Mongoose automatically creates a notes collection if one does not exist.
-        noteModelBySite[siteCodeUpper] = dbConnection.model(`notes`, NoteSchema);
+        appconfigModelBySite[siteCodeUpper] = dbConnection.model(`notes`, AppconfigSchema);
     }
-    return noteModelBySite[siteCodeUpper];
+    return appconfigModelBySite[siteCodeUpper];
 
 }
