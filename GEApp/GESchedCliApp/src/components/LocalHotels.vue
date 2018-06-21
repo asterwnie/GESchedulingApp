@@ -57,7 +57,8 @@ export default {
     console.log('LocalHotels.vue activated.');
 
     if (this.$store.state.appConfig.hotelsViewTitle == null) {
-      this.$router.push('login'); // Config data lost, force back to login to refetch data.
+      this.$router.push('/login'); // Config data lost, force back to login to refetch data.
+      return;
     }
 
     this.$store.state.currentViewTitle = this.title;

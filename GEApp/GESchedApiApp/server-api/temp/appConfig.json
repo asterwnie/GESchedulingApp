@@ -17,9 +17,13 @@
 
     "doFirstViewDescription": "Complete these items before each new request.",
     
-    "requestViewTitle": "New Request",
+    "newRequestViewTitle": "New Request",
+
+    "editRequestViewTitle": "Edit Request",
 
     "submitRequestViewTitle": "Submit Request",
+
+    "numOfRequestScreens": 2,
 
     "attentionNotesViewTitle": "Attention",
 

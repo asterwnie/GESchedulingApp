@@ -305,7 +305,7 @@ export default {
                         storeState.currentUser.name != null) {
                         storeState.loginContext.requesterName = storeState.currentUser.name;
                     }
-                    vm.$router.push('home'); 
+                    vm.$router.push('/home'); 
                 } else {
                      vm.hasFailure = true;
                      vm.failureMessage = "Login failed. Please try again.";

@@ -12,6 +12,24 @@ Marlborough, MA 01752
 Meeting & Special Event 
 Request
 
+--doFirst.ViewTitle
+Do First
+
+--DoFirst.ViewDescription
+Complete these items before each new request.
+    
+--NewRequest.ViewTitle
+New Request
+
+--EditRequest.ViewTitle
+Edit Request
+
+--SubmitRequest.ViewTitle
+Submit Request
+
+--AttentionNotes.ViewTitle
+Attention
+
 --About.ViewTitle
 About
 

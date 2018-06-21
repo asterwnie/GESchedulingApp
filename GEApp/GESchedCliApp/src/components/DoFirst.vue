@@ -21,7 +21,7 @@
     </div>
 
     <div class="fixed-bottom d-flex justify-content-between" style="margin: 10px;">
-        <button type="button" class="btn btn-primary btn-sm" @click.prevent="$router.push('newrequest')">Begin New Request</button>
+        <button type="button" class="btn btn-primary btn-sm" @click.prevent="$router.push('newrequest/1')">Begin New Request</button>
     </div>
   </div>
 </template>

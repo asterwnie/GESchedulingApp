@@ -40,7 +40,7 @@ export default new Router({
       component: DoFirst
     },
     {
-      path: '/newrequest',
+      path: '/newrequest/:screenNum',
       name: 'NewRequest',
       component: NewRequest
     },

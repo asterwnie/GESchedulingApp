@@ -68,7 +68,6 @@
             <div class="mb-3">
               <button type="button" class="btn btn-primary btn-sm" @click.prevent="onContinue">Continue Request ></button>
             </div>
-
           </form>
         </div>
 
@@ -94,7 +93,8 @@ import eventDateTimeInputCtrl from '@/components/requestPrompts/EventDateTimeInp
 export default {
   data () {
     return {
-      currentScreenNum: 1
+      currentScreenNum: 1,
+      storedprompt: null
     }
   },
 
@@ -109,13 +109,13 @@ export default {
 
   computed: {
     title() {
-      return this.$store.state.appConfig.aboutViewTitle; 
+      return this.$store.state.appConfig.newRequestViewTitle; 
     },
     viewDescription() {
       return this.$store.state.appConfig.aboutViewDescription; 
     },
     requestPrompts() {
-        return this.$store.state.requestPrompts;
+        return this.$store.state.screenRequestPrompts;
     },
     currentUserEmail() {
       return this.$store.state.currentUser.email;
@@ -131,9 +131,12 @@ export default {
   activated() {
     console.log('NewRequest.vue activated.');
 
-    if (this.$store.state.appConfig.requestViewTitle == null) {
-      this.$router.push('login'); // Config data lost, force back to login to refetch data.
+    if (this.$store.state.appConfig.newRequestViewTitle == null) {
+      this.$router.push('/login'); // Config data lost, force back to login to refetch data.
+      return;
     }
+
+    this.currentScreenNum = parseInt(this.$route.params.screenNum);
 
     this.$store.state.currentViewTitle = this.title;
     this.$store.state.enableNavBar = true;
@@ -150,9 +153,8 @@ export default {
     this.$store.state.currentRequest["eventGEContactPersonEmail"] = this.currentUserEmail;
     this.$store.state.currentRequest["eventGEContactPersonName"] = this.currentUserName;
     this.$store.state.currentRequest["eventGEContactPersonPhone"] = this.currentUserPhone;
-
-    bindUiValuesFromRequest(this.$store.state.currentRequest, this.currentScreenNum);
-
+   
+    this.onViewInit(this.currentScreenNum);
   },
 
   created() {
@@ -160,6 +162,25 @@ export default {
   },
 
   methods: {
+
+    onViewInit(screenNum) {
+      var vm = this;
+
+      vm.currentScreenNum = screenNum;
+
+      while(this.$store.state.screenRequestPrompts.length > 0) {
+        vm.$store.state.screenRequestPrompts.pop();
+      }
+
+      $.each(this.$store.state.requestPrompts, function (index, prompt) {
+        if (prompt.screenNum == screenNum) {
+          vm.$store.state.screenRequestPrompts.push(prompt);
+        }
+      });
+
+      bindUiValuesFromRequest(vm.$store.state.currentRequest, screenNum);
+    },
+
 
     onContinue (evt) {
 
@@ -198,7 +219,14 @@ export default {
             }
             vm.isSubmitting = false;
             vm.hasFailure = false;
-            vm.$router.push('attentionNotes');
+
+            var nextScreenNum = vm.currentScreenNum + 1;
+            if (nextScreenNum <= vm.$store.state.appConfig.numOfRequestScreens) {
+              vm.$router.push('/newrequest/' + nextScreenNum);            
+              vm.onViewInit(nextScreenNum); // Reload current view
+            } else {
+              vm.$router.push('/attentionNotes');
+            }
         })
         .catch((err) => {
           
@@ -206,7 +234,7 @@ export default {
             // But should not stop the UI from going to the next screen.
             vm.isSubmitting = false;
             vm.hasFailure = false;
-            vm.$router.push('attentionNotes');
+            vm.$router.push('/attentionNotes');
         })
         
       }

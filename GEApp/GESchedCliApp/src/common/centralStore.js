@@ -25,6 +25,7 @@ const store = new Vuex.Store({
         hotels: null,         
         caterers: null,       
         requestPrompts: null,
+        screenRequestPrompts: [],
         rooms: [],
 
 

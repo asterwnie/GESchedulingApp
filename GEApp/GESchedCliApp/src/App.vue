@@ -37,22 +37,22 @@
                 <button type="button" class="btn btn-primary" data-dismiss="modal" @click="$router.push('login')">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
               </div>
               <div class="form-group">
-                <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('home')">Home</button>
+                <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('/home')">Home</button>
               </div>
               <div class="form-group">
-                <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('findroom')">Find Room</button>
+                <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('/findroom')">Find Room</button>
               </div>
               <div class="form-group">
-                <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('newrequest')">New Request</button>
+                <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('/dofirst')">New Request</button>
               </div>
               <div class="form-group">
-                <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('guestwifi')">Guest WiFi</button>
+                <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('/guestwifi')">Guest WiFi</button>
               </div>
               <div class="form-group">
-                <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('localhotels')">Local Hotels</button>
+                <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('/localhotels')">Local Hotels</button>
               </div>
               <div class="form-group">
-                <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('localcaterers')">Local Caterers</button>
+                <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('/localcaterers')">Local Caterers</button>
               </div>
               <div class="form-group">
                 <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('ithelp')">IT Help</button>
