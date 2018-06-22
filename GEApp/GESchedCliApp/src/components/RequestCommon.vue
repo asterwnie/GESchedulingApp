@@ -91,12 +91,8 @@ import eventLocInputCtrl from '@/components/requestPrompts/EventLocationInput.vu
 import eventDateTimeInputCtrl from '@/components/requestPrompts/EventDateTimeInput.vue'
 
 export default {
-  data () {
-    return {
-      currentScreenNum: 1,
-      storedprompt: null
-    }
-  },
+
+  props: ['currentScreenNum'],
 
   components: {
     textInput: textInputCtrl,
@@ -115,7 +111,7 @@ export default {
       return this.$store.state.appConfig.aboutViewDescription; 
     },
     requestPrompts() {
-        return this.$store.state.screenRequestPrompts;
+      return this.$store.state.requestPrompts;
     },
     currentUserEmail() {
       return this.$store.state.currentUser.email;
@@ -136,7 +132,6 @@ export default {
       return;
     }
 
-    this.currentScreenNum = parseInt(this.$route.params.screenNum);
 
     this.$store.state.currentViewTitle = this.title;
     this.$store.state.enableNavBar = true;
@@ -154,7 +149,7 @@ export default {
     this.$store.state.currentRequest["eventGEContactPersonName"] = this.currentUserName;
     this.$store.state.currentRequest["eventGEContactPersonPhone"] = this.currentUserPhone;
    
-    this.onViewInit(this.currentScreenNum);
+    bindUiValuesFromRequest(this.$store.state.currentRequest, this.currentScreenNum);
   },
 
   created() {
@@ -163,25 +158,6 @@ export default {
 
   methods: {
 
-    onViewInit(screenNum) {
-      var vm = this;
-
-      vm.currentScreenNum = screenNum;
-
-      while(this.$store.state.screenRequestPrompts.length > 0) {
-        vm.$store.state.screenRequestPrompts.pop();
-      }
-
-      $.each(this.$store.state.requestPrompts, function (index, prompt) {
-        if (prompt.screenNum == screenNum) {
-          vm.$store.state.screenRequestPrompts.push(prompt);
-        }
-      });
-
-      bindUiValuesFromRequest(vm.$store.state.currentRequest, screenNum);
-    },
-
-
     onContinue (evt) {
 
       var vm = this;
@@ -189,7 +165,7 @@ export default {
 
       var ctrls = $('.is-request-data');
       $.each(ctrls, function (index, inputCtrl) {
-        //index becomes a property (acts like currentRequest.------)
+        //index becomes a property (obj1['prop1'] acts like obj1.prop1)
         //this references the current request
         storeState.currentRequest[inputCtrl.id] = $(inputCtrl).val();
       });
@@ -219,11 +195,11 @@ export default {
             }
             vm.isSubmitting = false;
             vm.hasFailure = false;
-
+            
             var nextScreenNum = vm.currentScreenNum + 1;
-            if (nextScreenNum <= vm.$store.state.appConfig.numOfRequestScreens) {
-              vm.$router.push('/newrequest/' + nextScreenNum);            
-              vm.onViewInit(nextScreenNum); // Reload current view
+            if (nextScreenNum <= vm.$store.state.numOfRequestScreens) {
+              vm.$router.push('/request/' + nextScreenNum);            
+              
             } else {
               vm.$router.push('/attentionNotes');
             }

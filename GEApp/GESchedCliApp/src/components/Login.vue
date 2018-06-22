@@ -80,7 +80,7 @@ import axios from 'axios'
 import * as apiMgr from '@/common/apiMgr.js';
 import * as localCacheMgr from '@/common/localCacheMgr.js';
 import * as textTranformer from '@/common/textTranformer.js';
-import { validatePrompts } from '@/common/requestMgr.js'
+import { validatePrompts, inferNumOfRequestScreens } from '@/common/requestMgr.js'
 
 export default {  
     data () {
@@ -185,6 +185,7 @@ export default {
                     console.log("getRequestPrompt return status: " + res.status);
 
                     vm.$store.state.requestPrompts = res.data;
+                    inferNumOfRequestScreens(vm.$store.state.requestPrompts);
                     vm.isFetchingRequestPrompts = false;
                 })
                 .catch((err) => {

@@ -5,8 +5,21 @@
 import { centralStore } from '@/common/centralStore.js'
 
 
-export const validatePrompts = (prompts) => {
+export const inferNumOfRequestScreens = (prompts) => {
+    //debugger; // Uncomment to trigger breakpoint.
+    var highestScreenNum = 0;
 
+    $.each(prompts, function (index, prompt) {
+        if (prompt.screenNum > highestScreenNum) {
+            highestScreenNum = prompt.screenNum;
+        }
+    });
+
+    centralStore.state.numOfRequestScreens = highestScreenNum;
+}
+
+
+export const validatePrompts = (prompts) => {
     //debugger; // Uncomment to trigger breakpoint.
 
     // Hide all existing errors since the fields will be re-validated.

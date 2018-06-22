@@ -5,7 +5,9 @@ import Login from '@/components/Login.vue'
 import Home from '@/components/Home.vue'
 import FindRoom from '@/components/FindRoom.vue'
 import DoFirst from '@/components/DoFirst.vue'
-import NewRequest from '@/components/NewRequest.vue'
+import RequestScreen1 from '@/components/RequestScreen1.vue'
+import RequestScreen2 from '@/components/RequestScreen2.vue'
+import RequestScreen3 from '@/components/RequestScreen3.vue'
 import GuestWiFi from '@/components/GuestWiFi.vue'
 import LocalHotels from '@/components/LocalHotels.vue'
 import LocalCaterers from '@/components/LocalCaterers.vue'
@@ -40,9 +42,19 @@ export default new Router({
       component: DoFirst
     },
     {
-      path: '/newrequest/:screenNum',
-      name: 'NewRequest',
-      component: NewRequest
+      path: '/request/1',
+      name: 'RequestScreen1',
+      component: RequestScreen1
+    },
+    {
+      path: '/request/2',
+      name: 'RequestScreen2',
+      component: RequestScreen2
+    },
+    {
+      path: '/request/3',
+      name: 'RequestScreen3',
+      component: RequestScreen3
     },
     {
       path: '/guestwifi',

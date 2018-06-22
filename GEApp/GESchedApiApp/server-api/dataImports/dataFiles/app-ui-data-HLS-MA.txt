@@ -60,11 +60,20 @@ Guest WiFi Access
 --GuestWiFiAccess.ViewDescription
 Guest WiFi access instructions.
 
+--RequestStatusTag.UnderReview
+Under Review
+
 --RequestStatusMessage.UnderReview
 You request will be processed within 2 business days. 
 
+--RequestStatusTag.Approved
+Approved & Completed
+
 --RequestStatusMessage.Approved
-You request has been approved. 
+You request has been approved.
+
+--RequestStatusTag.Rejected
+More Information Required
 
 --RequestStatusMessage.Rejected
-You request has been rejected. Please review and update your request before resubmitting it. 
+Your request is not complete. More Information is required. Please review and update your request before resubmitting it. 

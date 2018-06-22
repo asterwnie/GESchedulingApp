@@ -23,10 +23,11 @@ const store = new Vuex.Store({
         appConfig: {},      
         notes: null,          
         hotels: null,         
-        caterers: null,       
-        requestPrompts: null,
-        screenRequestPrompts: [],
+        caterers: null, 
         rooms: [],
+
+        requestPrompts: null,
+        numOfRequestScreens: 0, // It will be inferred when the requestPrompts are retrieved.
 
 
         appDefConfig: {
