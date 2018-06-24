@@ -11,7 +11,8 @@ const Schema = mongoose.Schema;
 const RequestSchema = new Schema({
 
     processingStatus: {
-        type: String
+        type: String,
+        enum: ['underReview', 'approved', 'rejected']
     },
 
     eventTitle: {
