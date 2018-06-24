@@ -4,24 +4,35 @@
         <div class="col col-sm-1 col-md-2 col-lg-4"></div>
         <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%;">
 
-          <br>
-            <div class="alert alert-light" role="alert">
-            Request Summary Goes Here...
+          <div class="card">
+            <div class="card-header bg-info text-light">
+              Request Summary
             </div>
-            <br>
+            <div class="card-body">
 
-          <!--For each key in currentRequestKeys-->
-          <div style="padding:10px; width:100%" class="alert alert-info card" v-for="(currKey, index) in currentRequestKeys" :key="index">
-              <span>{{currKey}}</span>
+                <!--For each key in currentRequestKeys-->
+                <div class="input-group input-group-sm mb-3" style="width:100%" v-for="(currKey, index) in currentRequestKeys" :key="index">
+                  <div class="input-group-prepend"> <!--Convert to Sentence Case-->
+                    <span class="input-group-text" id="inputGroup-sizing-sm">
+                      {{(currKey.charAt(0).toUpperCase() + currKey.slice(1)).replace(/([A-Z]+)*([A-Z][a-z])/g, "$1 $2")}}
+                    </span>
+                  </div>
+                  <div class="bg-light text-info" style="width:100%; border: 1px solid #cfcfcf; padding:6px"> <!--class="container-fluid" or style="width:100%"-->
+                    <span>
+                      &nbsp;{{currentRequestData[currKey]}}
+                    </span>
+                  </div>
+                </div>
+
             </div>
+          </div>
 
-          <div class="fixed-bottom d-flex justify-content-between">
-                  
+         
+                  <br>
                   <button type="button" class="btn btn-primary btn-sm" 
                     :disabled="isSubmitting" 
                     @click.prevent="onSubmitRequest">Submit Request</button>
                     <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
-              </div>
 
           </div>
         </div>
@@ -52,10 +63,10 @@ export default {
       return this.$store.state.appConfig.hotelsViewDescription; 
     },*/
     currentRequestData(){  
-      this.$store.state.currentRequest;
+      return this.$store.state.currentRequest;
     },
     currentRequestKeys(){  
-      Object.keys(this.$store.state.currentRequest);
+      return Object.keys(this.$store.state.currentRequest);
     },
   },
 
@@ -129,9 +140,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-div {
+/*div {
   display: inline-block;
   margin: 16px;
   margin-right: 50px;
-}
+}*/
 </style>

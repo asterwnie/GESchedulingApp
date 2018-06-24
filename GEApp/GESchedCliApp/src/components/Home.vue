@@ -76,6 +76,9 @@ export default {
     viewDescription() {
       return this.$store.state.appConfig.homeViewDescription; 
     },
+    requestsData(){
+      return this.$store.state.requests;
+    }
   },
 
   activated() {
