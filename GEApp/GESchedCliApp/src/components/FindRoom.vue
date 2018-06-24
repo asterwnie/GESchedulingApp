@@ -115,7 +115,7 @@ export default {
 
   computed: {
     title() {
-      return this.$store.state.appConfig.roomsViewTitle; 
+      return this.$store.state.appConfig.findRoomViewTitle; 
     },
     viewDescription() {
       return this.$store.state.appConfig.roomsViewDescription; 
@@ -137,7 +137,7 @@ export default {
   activated() {
     console.log('FindRoom.vue activated.');
 
-    if (this.$store.state.appConfig.roomsViewTitle == null) {
+    if (this.$store.state.appConfig.findRoomViewTitle == null) {
       this.$router.push('/login'); // Config data lost, force back to login to refetch data.
       return;
     }

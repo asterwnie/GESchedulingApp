@@ -59,9 +59,7 @@ export default {
     title() {
       return this.$store.state.appConfig.submitRequestViewTitle; 
     },
-  /*  viewDescription() {
-      return this.$store.state.appConfig.hotelsViewDescription; 
-    },*/
+    
     currentRequestData(){  
       return this.$store.state.currentRequest;
     },
@@ -91,6 +89,8 @@ export default {
       var vm = this;
 
       var requestsUrl = apiMgr.getRequestsUrl();
+
+      vm.generateRandomStatusAndComments(vm.$store.state.currentRequest, vm.$store.state);
 
       axios.post(requestsUrl, vm.$store.state.currentRequest)
       .then(res => {
@@ -132,7 +132,52 @@ export default {
 
 
 
+    },
+
+    // Temporary function to generate a random admin comment and request status
+    generateRandomStatusAndComments(request, storeState) {
+
+
+      var statuses = ["Under Review", "Approved & Completed", "More Information Required"];
+      var statusCount = statuses.length;
+      var randonStatusIndex = Math.floor((Math.random() * statusCount) + 1);
+
+      var currentIndex = 0;
+      statuses.forEach(function(status) {
+          currentIndex += 1;
+          if (randonStatusIndex == currentIndex) {
+              request.processingStatus = status;
+
+              if (request.processingStatus == "Under Review") {
+                  request.canEdit = false;
+                  request.processingStatusMessage = storeState.appConfig.requestStatusMessageUnderReview;
+              } else if (request.processingStatus == "Approved & Completed") {
+                request.canEdit = false;
+                request.processingStatusMessage = storeState.appConfig.requestStatusMessageApproved;
+              } else {
+                request.canEdit = true;
+                request.processingStatusMessage = storeState.appConfig.requestStatusMessageRejected;
+              }
+          }
+      });
+
+      if (!request.canEdit) {
+        return;
+      }
+
+      var requestDataFields = ["eventDateTimeData", "locationOfEvent", "numOfGeEmpAttending"];
+      var fieldCount = requestDataFields.length;
+      var randonIndex = Math.floor((Math.random() * fieldCount) + 1);
+
+      var currentIndex = 0;
+      requestDataFields.forEach((dataField) => {
+          currentIndex += 1;
+          if (randonIndex == currentIndex) {
+              request[dataField + 'AdminComment'] = "Tempus congue dapibus lacinia nostra vitae tincidunt urna, lectus nec suspendisse tempus aenean habitasse, vulputate ullamcorper dictumst convallis at sollicitudin.";
+          }
+      });
     }
+
   }
 }
 </script>

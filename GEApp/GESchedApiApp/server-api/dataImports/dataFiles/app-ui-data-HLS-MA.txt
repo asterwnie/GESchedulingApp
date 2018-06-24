@@ -60,6 +60,9 @@ Guest WiFi Access
 --GuestWiFiAccess.ViewDescription
 Guest WiFi access instructions.
 
+--FindRoom.ViewTitle
+Find Room
+
 --RequestStatusTag.UnderReview
 Under Review
 
