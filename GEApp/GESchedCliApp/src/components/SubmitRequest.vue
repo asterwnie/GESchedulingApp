@@ -138,7 +138,7 @@ export default {
     generateRandomStatusAndComments(request, storeState) {
 
 
-      var statuses = ["Under Review", "Approved & Completed", "More Information Required"];
+      var statuses = ["underReview", "approved", "rejected"];
       var statusCount = statuses.length;
       var randonStatusIndex = Math.floor((Math.random() * statusCount) + 1);
 
@@ -148,14 +148,17 @@ export default {
           if (randonStatusIndex == currentIndex) {
               request.processingStatus = status;
 
-              if (request.processingStatus == "Under Review") {
+              if (request.processingStatus == "underReview") {
                   request.canEdit = false;
+                  request.processingStatusLabel = storeState.appConfig.requestStatusTagUnderReview;
                   request.processingStatusMessage = storeState.appConfig.requestStatusMessageUnderReview;
-              } else if (request.processingStatus == "Approved & Completed") {
+              } else if (request.processingStatus == "approved") {
                 request.canEdit = false;
+                request.processingStatusLabel = storeState.appConfig.requestStatusTagApproved;
                 request.processingStatusMessage = storeState.appConfig.requestStatusMessageApproved;
-              } else {
+              } else if (request.processingStatus == "rejected") {
                 request.canEdit = true;
+                request.processingStatusLabel = storeState.appConfig.requestStatusTagRejected;
                 request.processingStatusMessage = storeState.appConfig.requestStatusMessageRejected;
               }
           }
