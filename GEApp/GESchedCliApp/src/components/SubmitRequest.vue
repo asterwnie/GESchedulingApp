@@ -1,25 +1,33 @@
 <template>
-    <div class="container">
+  <div class="container-fluid" style="width:100%">
       <div class="row">
-        <div class="col-md-8 order-md-1">
+        <div class="col col-sm-1 col-md-2 col-lg-4"></div>
+        <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%;">
 
- 
-            <br>
+          <br>
             <div class="alert alert-light" role="alert">
             Request Summary Goes Here...
             </div>
             <br>
 
+          <!--For each key in currentRequestKeys-->
+          <div style="padding:10px; width:100%" class="alert alert-info card" v-for="(currKey, index) in currentRequestKeys" :key="index">
+              <span>{{currKey}}</span>
+            </div>
+
+          <div class="fixed-bottom d-flex justify-content-between">
+                  
+                  <button type="button" class="btn btn-primary btn-sm" 
+                    :disabled="isSubmitting" 
+                    @click.prevent="onSubmitRequest">Submit Request</button>
+                    <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
+              </div>
+
+          </div>
         </div>
+
       </div>
-      <div class="fixed-bottom d-flex justify-content-between">
-        
-        <button type="button" class="btn btn-primary btn-sm" 
-          :disabled="isSubmitting" 
-          @click.prevent="onSubmitRequest">Submit Request</button>
-          <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
-    </div>
-    </div>
+
 </template>
 
 <script>
@@ -39,7 +47,14 @@ export default {
   computed: {
     title() {
       return this.$store.state.appConfig.submitRequestViewTitle; 
-    }
+    },
+    
+    currentRequestData(){  
+      this.$store.state.currentRequest;
+    },
+    currentRequestKeys(){  
+      Object.keys(this.$store.state.currentRequest);
+    },
   },
 
   activated() {

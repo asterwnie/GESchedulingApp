@@ -15,7 +15,7 @@
 
     <div id="searchUI" class="col col-12 col-md-3 col-lg-3 col-xl-2" style="margin-bottom:20px">
       <div class="card">
-      <div class="card-header bg-info text-light" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+      <div class="card-header bg-info text-light" id="headingOne" style="cursor:pointer;" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
             Search Menu <i class="fa fa-search-plus" aria-hidden="true"></i>&nbsp;&nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i>
       </div>
       <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
@@ -27,12 +27,24 @@
               </div>
               <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
             </div>
+
+            <div id="inputBuilding" class="input-group input-group-sm mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm">Building</span>
+              </div>
+              <select class="custom-select" id="sizeTypeGroupSelect">
+                <option selected></option>
+                  <option v-bind:id="buildingLabel" v-bind:value='buildingLabel' v-for="(buildingLabel, index) in buildings" :key="index">
+                    {{buildingLabel}}
+                  </option>
+              </select>
+            </div>
             
             <div id="inputSeatingCapacity" class="input-group input-group-sm mb-3">
               <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Seating Capacity</span>
               </div>
-              <input type="text" placeholder="ex. 50" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+              <input type="number" placeholder="ex. 50" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
             </div>
     
             <div id="inputSizeType" class="input-group input-group-sm mb-3">
@@ -49,12 +61,11 @@
 
             
             <div id="inputCapabilities" class="card">
-              <div style="text-align:left" class="card-header input-group-text bg-light" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+              <div style="text-align:left; cursor:pointer;" class="card-header input-group-text bg-light" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                     Capabilities&nbsp;&nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i>
               </div>
               <div id="collapseTwo" class="collapse hide" aria-labelledby="headingTwo" data-parent="#accordion">
                 <div class="card-body">
-                  <!--modify for modal?-->
                   <div v-for="(capabilityLabel, index) in capabilities" :key="index" width="100%">
                     <input class="capabilityCheckbox" v-bind:id="capabilityLabel" type="checkbox"/>&nbsp;{{capabilityLabel}}
                   </div>
@@ -77,7 +88,6 @@
           Rooms
         </div>
       </div>
-      <!--This seems to only regenerate when the page is reactivated.-->
       <div v-for="(room, index) in rooms" :key="index">
         <div class="card">
           <div class="card-body">
@@ -119,6 +129,9 @@ export default {
     capabilities(){
       return this.$store.state.appConfig.roomCapabilities;
     },
+    buildings(){
+      return this.$store.state.appConfig.buildings;
+    },
   },
 
   activated() {
@@ -141,11 +154,31 @@ export default {
         var queryString = '';
         var vm = this;
 
+        //collapse search menu
+        $("#headingOne").click();
+
+
         //gather name to query
-        //......
+        var nameToQuery = '';
+        var nameInputLocation = $("#inputRoomName input");
+
+        nameToQuery = nameInputLocation.val();
+
+        //gather building to query
+        var buildingToQuery = '';
+        var buildingSet = $("#inputBuilding select option");
+
+        $.each(buildingSet, function( index, item ){
+          if (item.selected){
+            buildingToQuery = item.id;
+          }
+        });
 
         //gather seating capacity to query
-        //......
+        var seatingCapacityToQuery = '';
+        var seatingCapacityInputLocation = $("#inputSeatingCapacity input");
+
+        seatingCapacityToQuery = seatingCapacityInputLocation.val();
 
         //gather sizeType to query
         var sizeTypeToQuery = '';
@@ -172,20 +205,42 @@ export default {
         queryString += '&';
 
         if (sizeTypeToQuery!='') {
-          queryString += `sizeTypeContains=${sizeTypeToQuery}`;
+          queryString += `sizeTypeContains=${encodeURIComponent(sizeTypeToQuery)}`;
+          queryString += '&'
+        }
+
+        if (buildingToQuery!='') {
+          queryString += `buildingContains=${encodeURIComponent(buildingToQuery)}`;
           queryString += '&'
         }
 
         if (capabilitiesToQuery.length!=0) {
           var capabilityString = '';
           for(let capability in capabilitiesToQuery){
-            capabilityString += `hasTheseCapabilities=${capabilitiesToQuery[capability]}|`;
+            capabilityString += `hasTheseCapabilities=${encodeURIComponent(capabilitiesToQuery[capability])}|`;
           }
           //trim last |
           capabilityString = capabilityString.substring(0, capabilityString.length-1);
           queryString += capabilityString;
-          queryString.replace('|', '%7C');
+          queryString += '&'
         }
+
+        if (nameToQuery!=''){
+          queryString += `nameContains=${encodeURIComponent(nameToQuery)}`;
+          queryString += '&'
+        }
+
+        if (seatingCapacityToQuery!=''){
+          queryString += `seatingCapacityGreaterOrEqual=${encodeURIComponent(seatingCapacityToQuery)}`;
+          //queryString += '&'
+        }
+
+        //clean up last & if needed
+        var lastChar = queryString.charAt(queryString.length-1);
+        if (lastChar == '&'){
+          queryString = queryString.substring(0, queryString.length-1);
+        }
+
         console.log(`FindRoom.vue - Query string: ${queryString}`);
 
   
