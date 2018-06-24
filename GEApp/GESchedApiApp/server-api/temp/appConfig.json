@@ -43,6 +43,18 @@
 
     "guestWifiViewDescription": "Guest wifi for online access on-site.",
 
-    "roomsViewTitle": "Find Room"
+    "findRoomViewTitle": "Find Room",
+
+    "requestStatusTagUnderReview": "Under Review",
+
+    "requestStatusMessageUnderReview": "You request will be processed within 2 business days.",
+
+    "requestStatusTagApproved": "Approved & Completed",
+
+    "requestStatusMessageApproved": "You request has been approved.",
+
+    "requestStatusTagRejected": "More Information Required",
+
+    "requestStatusMessageRejected": "Your request is not complete. More Information is required. Please review and update your request before resubmitting it."
 
 }

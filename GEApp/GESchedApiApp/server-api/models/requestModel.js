@@ -46,10 +46,6 @@ const RequestSchema = new Schema({
     numOfGeEmpAttending: {
         type: Number,
         required: [true, 'Number of GE Employees attending is required!']
-    },
-
-    numOfNonGeAttending: {
-        type: Number
     }
 }, 
 {
