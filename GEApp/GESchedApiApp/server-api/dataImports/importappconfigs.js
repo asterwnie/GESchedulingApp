@@ -7,64 +7,64 @@ const appRoot = require('app-root-path');
 const mongoose = require('mongoose'); // Helper libray for MongoDB. http://mongoosejs.com/ 
 const appConfig = require(`${appRoot}/server.config`); // Load app configuration settings server.config.js
 const logger = require(`${appRoot}/server-api/logger`); // Create logging helper
-const getAppconfigType = require(`${appRoot}/server-api/models/appconfigModel`);
+const getappConfigType = require(`${appRoot}/server-api/models/appConfigModel`);
 
 mongoose.Promise = global.Promise;
 
 const args = process.argv; 
-var siteCode = AppConfig.defaultSite; // The current default in HLS-MA in server.config.js
+var siteCode = appConfig.defaultSite; // The current default in HLS-MA in server.config.js
 
 // if a site code is passed in on the command-line then use it. For example:
-// node ./server-api/dataImports/importAppconfigs.js HLS-MA
-// Appconfig: currently in VS Code debug mode you have to rely on using the appConfig.defaultSite setting.
+// node ./server-api/dataImports/importappConfigs.js HLS-MA
+// appConfig: currently in VS Code debug mode you have to rely on using the appConfig.defaultSite setting.
 if (args.length == 3 && args[2] != null) { siteCode = args[2]; }
 
-const fileName = `appconfigs-${siteCode}.txt`;
+const fileName = `appConfigs-${siteCode}.txt`;
 
-let Appconfig = getAppConfigType(siteCode);
+let appConfig = getappConfigType(siteCode);
 
-var totalNumOfAppConfigs = 0;
-var totalNumOfAppConfigsCreated = 0;
+var totalNumOfappConfigs = 0;
+var totalNumOfappConfigsCreated = 0;
 
 const delyInSecs = 3;
-const timer = setInterval(() => doAppConfigsImport(), delyInSecs * 1000); // Ensures db connection is established in getAppconfigType since it's an async operation.
+const timer = setInterval(() => doappConfigsImport(), delyInSecs * 1000); // Ensures db connection is established in getappConfigType since it's an async operation.
 
 
 
-function doAppConfigsImport() {
+function doappConfigsImport() {
 
     try {
         clearInterval(timer);
 
         var fileData = fs.readFileSync(`./server-api/dataImports/dataFiles/${fileName}`).toString()
         
-        var result = extractAppConfigItems(fileData);
+        var result = extractappConfigItems(fileData);
         if (result.success) {
-            logger.info(`Total number of appconfigs parsed: ${result.appconfigs.length}`);
+            logger.info(`Total number of appConfigs parsed: ${result.appConfigs.length}`);
 
-            if (result.appconfigs.length == 0) {
-                logger.info('No appconfigs got extracted from the data file!');
+            if (result.appConfigs.length == 0) {
+                logger.info('No appConfigs got extracted from the data file!');
                 process.exit();
             }
-            logger.info(result.appconfigs);
+            logger.info(result.appConfigs);
             
-            result.appconfigs.forEach((appconfig) => createAppConfigs(appconfig));
+            result.appConfigs.forEach((appConfig) => createappConfigs(appConfig));
         } else {
             process.exit();
         }
 
     } catch (err) {
-        logger.error(`ADMIN: Error importing the AppConfigs collection into the database! Error: ${err}`);
+        logger.error(`ADMIN: Error importing the appConfigs collection into the database! Error: ${err}`);
         mongoose.disconnect();
         process.exit();
     }
 }
 
 
-function extractAppconfigItems(fileData) {
+function extractappConfigItems(fileData) {
     var result = null;
-    var appconfigItems = [];
-    var newApponfigs = null;
+    var appConfigItems = [];
+    var newappConfigs = null;
     var errorEncountered = false;
     var currentItemSeq = 0;
 
@@ -107,10 +107,10 @@ function extractAppconfigItems(fileData) {
                 newAppTitle = AppTitle;
             }
         }
-        //test if the line is a new appconfig
+        //test if the line is a new appConfig
         directive = "--About.";
         if (line.search(directive) > -1) {            
-            // Complete and store the previous pending appconfigs object if exist.
+            // Complete and store the previous pending appConfigs object if exist.
             if (newAbout != null) {
                 var success = validateAndCollectAbout(newAbout, AboutItems);
                 if (!success) {
@@ -120,7 +120,7 @@ function extractAppconfigItems(fileData) {
             }
 
             var abouttype = line.replace(directive, "").trim();
-            // Start a new appconfig instance to gather its properties.
+            // Start a new appConfig instance to gather its properties.
             if (abouttype != "") {
 
                 currentItemSeq += 1;
@@ -137,11 +137,11 @@ function extractAppconfigItems(fileData) {
             }
 
             lineProcessed = true;
-        } else { // if the line is not a beginning to a new appconfig, add the line to the text property.
+        } else { // if the line is not a beginning to a new appConfig, add the line to the text property.
             if (newAbout.text == null){
                 newAbout.text = line;
             } else {
-                newAbout.text += ` ${line}`; //add a space to separate each appconfig
+                newAbout.text += ` ${line}`; //add a space to separate each appConfig
             }
             newAbout.text.trim(); //trim to remove extra whitespace
         }
@@ -150,8 +150,8 @@ function extractAppconfigItems(fileData) {
     })
 
     // Check to see if there's one last pending new one to be collected.
-    if (errorEncountered == false && newAppconfigs != null) {
-        var success = validateAndCollectAppconfigs(newAppconfigs, appconfigItems);
+    if (errorEncountered == false && newappConfigs != null) {
+        var success = validateAndCollectappConfigs(newappConfigs, appConfigItems);
         if (!success) {
             errorEncountered = true;
         }
@@ -159,7 +159,7 @@ function extractAppconfigItems(fileData) {
 
     result = {
         success: true,
-        appconfigs: appconfigItems
+        appConfigs: appConfigItems
     }
 
     if (errorEncountered == true) {
@@ -170,11 +170,11 @@ function extractAppconfigItems(fileData) {
 }
 
 
-function validateAndCollectAppConfigs(newAppConfigs, appconfigItems) {
-    var valid = validateAppConfigs(newAppConfigs);
+function validateAndCollectappConfigs(newappConfigs, appConfigItems) {
+    var valid = validateappConfigs(newappConfigs);
     if (valid) {
-        appconfigItems.push(newAppConfigs);
-        totalNumOfAppConfigs += 1;
+        appConfigItems.push(newappConfigs);
+        totalNumOfappConfigs += 1;
         return true;
     } else {
         return false;
@@ -182,14 +182,14 @@ function validateAndCollectAppConfigs(newAppConfigs, appconfigItems) {
 }
 
 
-function validateAppconfigs(newAppConfigs) {
+function validateappConfigs(newappConfigs) {
 
-    var validationErr = newAppConfigs.validateSync();
+    var validationErr = newappConfigs.validateSync();
     if (validationErr != null) {
         for (var prop in validationErr.errors) {
-            logger.error(`ADMIN: validateAppConfigs - create new newAppConfigs validation error: ${validationErr.errors[prop]}`);
+            logger.error(`ADMIN: validateappConfigs - create new newappConfigs validation error: ${validationErr.errors[prop]}`);
         }
-        var errMsg = `ADMIN: validateAppConfigs - create new newAppConfigs failed validation. ${validationErr}`;
+        var errMsg = `ADMIN: validateappConfigs - create new newappConfigs failed validation. ${validationErr}`;
         logger.error(errMsg);
         return false;
     }
@@ -197,22 +197,22 @@ function validateAppconfigs(newAppConfigs) {
 }
 
 
-function createAppConfigs(newAppConfigs) {
+function createappConfigs(newappConfigs) {
 
-    logger.info(`ADMIN: Adding appconfigs (${newAppConfigs.name}) to the database.`);
+    logger.info(`ADMIN: Adding appConfigs (${newappConfigs.name}) to the database.`);
 
-    newAppConfigs.save()
-        .then((appconfigs) => {
-            logger.info(`ADMIN: createAppConfigs - AppConfigs.save success:\n${appconfigs}`);
-            totalNumOfAppConfigsCreated += 1;
+    newappConfigs.save()
+        .then((appConfigs) => {
+            logger.info(`ADMIN: createappConfigs - appConfigs.save success:\n${appConfigs}`);
+            totalNumOfappConfigsCreated += 1;
 
-            if (totalNumOfAppConfigsCreated == totalNumOfAppConfigs) {
+            if (totalNumOfappConfigsCreated == totalNumOfappConfigs) {
                 // All accounted for therefore it can disconnect from the database.
-                logger.info(`ADMIN: All ${totalNumOfAppConfigsCreated} appconfigs are created for site: ${siteCode}.`);
+                logger.info(`ADMIN: All ${totalNumOfappConfigsCreated} appConfigs are created for site: ${siteCode}.`);
 
                 mongoose.disconnect((err) => {
                     if (err) {
-                        logger.error(`ADMIN: AppConfigs.createAppConfigs failed for site: ${siteCode}! Error: ${err}`);
+                        logger.error(`ADMIN: appConfigs.createappConfigs failed for site: ${siteCode}! Error: ${err}`);
                     } else {
                         logger.info(`ADMIN: Disconnected from database for site: ${siteCode}.`);
                     }
@@ -221,7 +221,7 @@ function createAppConfigs(newAppConfigs) {
             }
         })
         .catch((err) => {
-            var errMsg = `ADMIN: createAppConfigs - AppConfigs.save failed. Error: ${err}`
+            var errMsg = `ADMIN: createappConfigs - appConfigs.save failed. Error: ${err}`
             logger.error(errMsg);
             mongoose.disconnect();
             return;
