@@ -310,8 +310,6 @@ exports.getSizeTypes = async function (req, res) {
             res.status(500).json({ error: result.errMsg });
         }
         });
-            
-    
 };
 
 async function queryRoomSizeTypes(siteCode, callback) {
@@ -337,6 +335,40 @@ async function queryRoomSizeTypes(siteCode, callback) {
 }
 
 exports.queryRoomSizeTypes = queryRoomSizeTypes;
+
+
+async function queryMaxSeatingCapacityGrpBySizeType(siteCode, callback) {
+
+    let Room = getRoomType(siteCode);
+
+    var directive = [{
+        $group:
+        {
+          _id: "$sizeType",
+          maxSeatingCapacity: { $max: "$seatingCapacity" }
+        }
+    }];
+
+    await Room.aggregate(directive)
+    .then((maxSeatingCapacityItems) => {
+        if (maxSeatingCapacityItems == null) {
+            var errMsg = "roomController.queryMaxSeatingCapacityGrpBySizeType - did not find any maxSeatingCapacityItems.";
+            logger.error(errMsg);
+            callback({ success: false, errMsg: errMsg });
+        } else {
+            logger.info("roomController.queryMaxSeatingCapacityGrpBySizeType success.");
+            callback({ success: true, maxSeatingCapacityItems: maxSeatingCapacityItems });
+        }
+    })
+    .catch((err) => {
+        var errMsg = `roomController.queryMaxSeatingCapacityGrpBySizeType failed. Error: ${err}`;
+        logger.error(errMsg);
+        callback({ success: false, errMsg: errMsg });
+    });
+}
+
+exports.queryMaxSeatingCapacityGrpBySizeType = queryMaxSeatingCapacityGrpBySizeType;
+
 
 
 

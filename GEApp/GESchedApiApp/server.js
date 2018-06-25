@@ -137,6 +137,22 @@ app.get('/api/appconfigs', async (req, res) => {
         }
     });
 
+
+    // Getting all the max seating capacity per room size type:
+    // TODO: create the queryMinSeatingCapacityGrpBySizeType in roomController and call it to get the Mins.
+    // TODO: Aggregate the Min & Max into the sizeTypes before assign to appConfigForSite.sizeTypes
+    // More info: https://docs.mongodb.com/manual/reference/operator/aggregation/max/
+
+    await roomController.queryMaxSeatingCapacityGrpBySizeType(siteCode, (result) => {
+        if (result.success) {
+            logger.info(`roomController.queryMaxSeatingCapacityGrpBySizeType success. found ${result.maxSeatingCapacityItems.length} items.`);
+            var maxSeatingCapacityItems = result.maxSeatingCapacityItems;
+        } else {
+            logger.error(`roomController.queryMaxSeatingCapacityGrpBySizeType failed. Error: ${result.errMsg}`);
+            res.status(500).json({ error: result.errMsg });
+        }
+    });
+
     // get distinct buildings
     await roomController.queryBuildings(siteCode, (result) => {
         if (result.success) {
@@ -147,6 +163,7 @@ app.get('/api/appconfigs', async (req, res) => {
             res.status(500).json({ error: result.errMsg });
         }
      });
+   
 
     res.json(appConfigForSite);
 
