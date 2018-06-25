@@ -20,7 +20,7 @@
       <div class="card">
         <div class="card-body">
           <h6 class="card-title">{{requestItem.meetingTitle}}</h6>
-          <h8 class="card-title">Status:  <span :class="requestItem.statusBadge">{{requestItem.requestStatus}}</span></h8>
+          <h6 class="card-title">Status:  <span :class="requestItem.statusBadge">{{requestItem.requestStatus}}</span></h6>
           <p class="card-text">{{requestItem.meetingComment}}</p>
           <p class="card-text">Last updated:  {{requestItem.lastModified}}</p>
           <a href="#" class="btn btn-primary btn-sm">{{requestItem.buttonLabel}}</a>

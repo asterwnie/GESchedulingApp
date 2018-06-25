@@ -35,7 +35,6 @@
                   :dataInvalidMsgId="'INVALID-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"></email-input>
               </template>
 
-              <!--needs validation-->
               <template v-if="(requestPrompt.inputType.ctrlType == 'number' && requestPrompt.screenNum == currentScreenNum)"> 
                 <number-input 
                   :screenNum="currentScreenNum"

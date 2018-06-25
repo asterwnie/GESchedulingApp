@@ -11,15 +11,15 @@
             <div class="card-body">
 
                 <!--For each key in currentRequestKeys-->
-                <div class="input-group input-group-sm mb-3" style="width:100%" v-for="(currKey, index) in currentRequestKeys" :key="index">
-                  <div class="input-group-prepend"> <!--Convert to Sentence Case-->
-                    <span class="input-group-text" id="inputGroup-sizing-sm">
-                      {{(currKey.charAt(0).toUpperCase() + currKey.slice(1)).replace(/([A-Z]+)*([A-Z][a-z])/g, "$1 $2")}}
+                <div class="input-group input-group-sm mb-3" style="width:100%" v-for="(requestReadOnlyProperty, index) in requestReadOnlyProperties" :key="index">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">  <!--Convert to Sentence Case-->
+                      {{requestReadOnlyProperty.label}}
                     </span>
                   </div>
                   <div class="bg-light text-info" style="width:100%; border: 1px solid #cfcfcf; padding:6px"> <!--class="container-fluid" or style="width:100%"-->
                     <span>
-                      &nbsp;{{currentRequestData[currKey]}}
+                      &nbsp;{{requestReadOnlyProperty.value}}
                     </span>
                   </div>
                 </div>
@@ -28,16 +28,15 @@
           </div>
 
          
-                  <br>
-                  <button type="button" class="btn btn-primary btn-sm" 
-                    :disabled="isSubmitting" 
-                    @click.prevent="onSubmitRequest">Submit Request</button>
-                    <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
-
-          </div>
-        </div>
+          <br>
+          <button type="button" class="btn btn-primary btn-sm" 
+            :disabled="isSubmitting" 
+            @click.prevent="onSubmitRequest">Submit Request</button>
+            <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
 
       </div>
+    </div>
+  </div>
 
 </template>
 
@@ -51,17 +50,14 @@ export default {
     return {  
       isSubmitting: false,
       hasFailure: false,
-      failureMessage: ""
+      failureMessage: "",
+      requestReadOnlyProperties: [],
     }
   },
 
   computed: {
     title() {
       return this.$store.state.appConfig.submitRequestViewTitle; 
-    },
-    
-    currentRequestData(){  
-      return this.$store.state.currentRequest;
     },
     currentRequestKeys(){  
       return Object.keys(this.$store.state.currentRequest);
@@ -70,6 +66,7 @@ export default {
 
   activated() {
     console.log('SubmitRequest.vue activated.');
+    let vm = this;
 
     if (this.$store.state.appConfig.submitRequestViewTitle == null) {
       this.$router.push('/login'); // Config data lost, force back to login to refetch data.
@@ -78,6 +75,14 @@ export default {
 
     this.$store.state.currentViewTitle = this.title;
     this.$store.state.enableNavBar = true;
+
+    let requestPrompts = this.$store.state.requestPrompts;
+    let currentRequest = this.$store.state.currentRequest;
+
+    requestPrompts.forEach(function(requestPrompt) {
+      var reqProperty = {label: requestPrompt.label, value: currentRequest[requestPrompt.inputType.ctrlDataId]};
+      vm.requestReadOnlyProperties.push(reqProperty);
+    });
   },
 
   created() {
