@@ -95,7 +95,7 @@
 --Room.RoomPhone:508-683-2216
 --Room.AddressGAL: Health MBO Boardroom
 --Room.SpecialNote: 
---Room.Capability: Monitor|Speaker System|Phone|Speaker System|ClickShare
+--Room.Capability: Monitor|Speaker System|Phone|ClickShare
 --Room.Capability: Non-GE computers can present
 --Room.Configuration: U-Setup-20-People-max
 --Room.Configuration: Classroom-Setup-20-People-max

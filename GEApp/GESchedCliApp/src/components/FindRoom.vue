@@ -215,9 +215,9 @@ export default {
         }
 
         if (capabilitiesToQuery.length!=0) {
-          var capabilityString = '';
+          var capabilityString = 'hasTheseCapabilities=';
           for(let capability in capabilitiesToQuery){
-            capabilityString += `hasTheseCapabilities=${encodeURIComponent(capabilitiesToQuery[capability])}|`;
+            capabilityString += `${encodeURIComponent(capabilitiesToQuery[capability])}|`;
           }
           //trim last |
           capabilityString = capabilityString.substring(0, capabilityString.length-1);

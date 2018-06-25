@@ -68,10 +68,13 @@ async function queryRooms (siteCode, query, callback) {
         filterDirective.sizeType = regExpression;        
     }
 
-    //modify for "and" rather than "or" when doing a request (the |bar is or by default, but we need to change it to be and)
     if (query.hasTheseCapabilities != null) {    
-        const regExpression = new RegExp(`(${query.hasTheseCapabilities})`);
-        filterDirective.capabilities = regExpression;        
+        var capabilitiesToMatch = query.hasTheseCapabilities.split('|');
+        var matchTheseAnds = [];
+        capabilitiesToMatch.forEach((capability) => {           
+            matchTheseAnds.push(capability);
+        });
+        filterDirective.capabilities = { $all: matchTheseAnds }
     }
 
     if (query.seatingCapacityGreaterOrEqual != null) {    
