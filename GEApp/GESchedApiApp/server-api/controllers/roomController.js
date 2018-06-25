@@ -351,14 +351,14 @@ async function queryMinMaxSeatingCapacityGrpBySizeType(siteCode, callback) {
     }];
 
     await Room.aggregate(directive)
-    .then((maxSeatingCapacityItems) => {
-        if (maxSeatingCapacityItems == null) {
-            var errMsg = "roomController.queryMaxSeatingCapacityGrpBySizeType - did not find any maxSeatingCapacityItems.";
+    .then((minMaxSeatingCapacityItems) => {
+        if (minMaxSeatingCapacityItems == null) {
+            var errMsg = "roomController.queryMaxSeatingCapacityGrpBySizeType - did not find any minMaxSeatingCapacityItems.";
             logger.error(errMsg);
             callback({ success: false, errMsg: errMsg });
         } else {
             logger.info("roomController.queryMaxSeatingCapacityGrpBySizeType success.");
-            callback({ success: true, maxSeatingCapacityItems: maxSeatingCapacityItems });
+            callback({ success: true, minMaxSeatingCapacityItems: minMaxSeatingCapacityItems });
         }
     })
     .catch((err) => {

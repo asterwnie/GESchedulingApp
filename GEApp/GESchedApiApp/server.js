@@ -145,8 +145,8 @@ app.get('/api/appconfigs', async (req, res) => {
 
     await roomController.queryMinMaxSeatingCapacityGrpBySizeType(siteCode, (result) => {
         if (result.success) {
-            logger.info(`roomController.queryMaxSeatingCapacityGrpBySizeType success. found ${result.maxSeatingCapacityItems.length} items.`);
-            var maxSeatingCapacityItems = result.maxSeatingCapacityItems;
+            logger.info(`roomController.queryMaxSeatingCapacityGrpBySizeType success. found ${result.minMaxSeatingCapacityItems.length} items.`);
+            var minMaxSeatingCapacityItems = result.minMaxSeatingCapacityItems;
         } else {
             logger.error(`roomController.queryMaxSeatingCapacityGrpBySizeType failed. Error: ${result.errMsg}`);
             res.status(500).json({ error: result.errMsg });
