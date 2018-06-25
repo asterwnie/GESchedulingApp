@@ -337,7 +337,7 @@ async function queryRoomSizeTypes(siteCode, callback) {
 exports.queryRoomSizeTypes = queryRoomSizeTypes;
 
 
-async function queryMaxSeatingCapacityGrpBySizeType(siteCode, callback) {
+async function queryMinMaxSeatingCapacityGrpBySizeType(siteCode, callback) {
 
     let Room = getRoomType(siteCode);
 
@@ -345,7 +345,8 @@ async function queryMaxSeatingCapacityGrpBySizeType(siteCode, callback) {
         $group:
         {
           _id: "$sizeType",
-          maxSeatingCapacity: { $max: "$seatingCapacity" }
+          maxSeatingCapacity: { $max: "$seatingCapacity" },
+          minSeatingCapacity: { $min: "$seatingCapacity" }
         }
     }];
 
@@ -367,7 +368,7 @@ async function queryMaxSeatingCapacityGrpBySizeType(siteCode, callback) {
     });
 }
 
-exports.queryMaxSeatingCapacityGrpBySizeType = queryMaxSeatingCapacityGrpBySizeType;
+exports.queryMinMaxSeatingCapacityGrpBySizeType = queryMinMaxSeatingCapacityGrpBySizeType;
 
 
 
