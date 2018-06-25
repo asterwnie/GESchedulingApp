@@ -121,6 +121,28 @@ export const validateEmailPrompt = (ctrlDataId, inputVal) => {
     return isValid;
 }
 
+export const validateNumberPrompt = (ctrlDataId, inputVal) => {
+    
+    let isValid = true;
+    var inVal = 0;
+
+    try {
+        inVal = parseInt(inputVal);
+    } catch (err) {
+        console.warn("validateNumberPrompt error: " + err);
+        isValid = false;
+    }
+
+    if (!isValid) {
+        var invalidMsg = $('#INVALID-MSG-FOR-' + ctrlDataId)
+        if (invalidMsg != null) {
+            invalidMsg.show();
+        }
+    }
+
+    return isValid;
+}
+
 
 export const validateRequest = (request, currentScreenNum) => {
 
@@ -167,6 +189,16 @@ export const validateRequest = (request, currentScreenNum) => {
                 var ctrlDataId = requestPrompt.inputType.ctrlDataId;
                 var inputVal = $("#" + ctrlDataId).val();
                 isValid = validateEmailPrompt(ctrlDataId, inputVal);
+                if (!isValid) {
+                    allValid = false;
+                    currentFieldInvalid = true;
+                }
+            }
+
+            if (!currentFieldInvalid && requestPrompt.inputType.ctrlType == 'number') {
+                var ctrlDataId = requestPrompt.inputType.ctrlDataId;
+                var inputVal = $("#" + ctrlDataId).val();
+                isValid = validateNumberPrompt(ctrlDataId, inputVal);
                 if (!isValid) {
                     allValid = false;
                     currentFieldInvalid = true;

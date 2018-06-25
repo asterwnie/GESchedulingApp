@@ -79,6 +79,7 @@ export default {
     let requestPrompts = this.$store.state.requestPrompts;
     let currentRequest = this.$store.state.currentRequest;
 
+    this.requestReadOnlyProperties = [];
     requestPrompts.forEach(function(requestPrompt) {
       var reqProperty = {label: requestPrompt.label, value: currentRequest[requestPrompt.inputType.ctrlDataId]};
       vm.requestReadOnlyProperties.push(reqProperty);
