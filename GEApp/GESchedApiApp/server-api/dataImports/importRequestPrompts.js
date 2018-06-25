@@ -140,7 +140,8 @@ function extractRequestPromptItems(fileData) {
                 if (idParts[0] == "dataId") {
                     let inputType = new RequestPrompt.InputType({
                         ctrlDataId: idParts[1],
-                        ctrlType: "number"
+                        ctrlType: "number",
+                        isValueNumber: true
                     });
                     newRequestPrompt.inputType = inputType;
                 }
@@ -179,7 +180,8 @@ function extractRequestPromptItems(fileData) {
                 if (dataIdParts[0] == "dataId") {
                     let inputType = new RequestPrompt.InputType({
                         ctrlDataId: dataIdParts[1],
-                        ctrlType: "yesNo"
+                        ctrlType: "yesNo",
+                        isValueBoolean: true
                     });
                     newRequestPrompt.inputType = inputType;
                 }

@@ -44,6 +44,15 @@
                   :dataInvalidMsgId="'INVALID-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"></number-input>
               </template>
 
+              <template v-if="(requestPrompt.inputType.ctrlType == 'yesNo' && requestPrompt.screenNum == currentScreenNum)"> 
+                <yes-no-input 
+                  :screenNum="currentScreenNum"
+                  :ctrlId="requestPrompt.inputType.ctrlDataId" 
+                  :promptLabel="requestPrompt.label" 
+                  :dataRequiredMsgId="'REQUIRED-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"
+                  :dataInvalidMsgId="'INVALID-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"></yes-no-input>
+              </template>
+
               <template v-if="(requestPrompt.inputType.ctrlType == 'custom' && requestPrompt.inputType.customCtrlId == 'locationOfEventCtrl' && requestPrompt.screenNum == currentScreenNum)"> 
                 <event-location-input 
                   :screenNum="currentScreenNum"
@@ -86,6 +95,7 @@ import textInputCtrl from '@/components/requestPrompts/TextInput.vue'
 import textAreaInputCtrl from '@/components/requestPrompts/TextAreaInput.vue'
 import emailInputCtrl from '@/components/requestPrompts/EmailInput.vue'
 import numberInputCtrl from '@/components/requestPrompts/NumberInput.vue'
+import yesNoInputCtrl from '@/components/requestPrompts/YesNoInput.vue'
 import eventLocInputCtrl from '@/components/requestPrompts/EventLocationInput.vue'
 import eventDateTimeInputCtrl from '@/components/requestPrompts/EventDateTimeInput.vue'
 
@@ -98,6 +108,7 @@ export default {
     textAreaInput: textAreaInputCtrl,
     emailInput: emailInputCtrl,
     numberInput: numberInputCtrl,
+    yesNoInput: yesNoInputCtrl,
     eventLocationInput: eventLocInputCtrl,
     eventDateTimeInput: eventDateTimeInputCtrl
   },
@@ -173,17 +184,13 @@ export default {
 
   methods: {
 
+
     onContinue (evt) {
 
       var vm = this;
       var storeState = vm.$store.state;
 
-      var ctrls = $('.is-request-data');
-      $.each(ctrls, function (index, inputCtrl) {
-        //index becomes a property (obj1['prop1'] acts like obj1.prop1)
-        //this references the current request
-        storeState.currentRequest[inputCtrl.id] = $(inputCtrl).val();
-      });
+      this.bindCtrlValuesToRequestProperties();
  
       var allValid = validateRequest(storeState.currentRequest, vm.currentScreenNum);
       
@@ -229,7 +236,50 @@ export default {
         })
         
       }
+    },
+
+
+    bindCtrlValuesToRequestProperties() {
+
+      var storeState = this.$store.state; 
+
+      var ctrls = $('.is-request-data');
+      $.each(ctrls, function (index, inputCtrl) {
+
+        //index becomes a property (obj1['prop1'] acts like obj1.prop1)
+             
+        var ctrlVal = $(inputCtrl).val();
+        if (ctrlVal != null) {
+          ctrlVal = ctrlVal.trim();
+        }
+
+        if ($(inputCtrl).attr('isBoolean') == "true") {
+          let valLower = ctrlVal.toLowerCase();
+          if (valLower === 'yes' || valLower === 'true') {
+            storeState.currentRequest[inputCtrl.id] = true;
+          } else if (valLower === 'no' || valLower === 'false') {
+            storeState.currentRequest[inputCtrl.id] = false;
+          } else {
+            storeState.currentRequest[inputCtrl.id] = ctrlVal;
+          }
+        } else if ($(inputCtrl).attr('isNumeric') == "true") {
+          try {
+            if (ctrlVal == null || ctrlVal == "") {
+              storeState.currentRequest[inputCtrl.id] = null;
+            } else {
+              storeState.currentRequest[inputCtrl.id] = parseInt(ctrlVal);
+            }
+          } catch (err) {
+            storeState.currentRequest[inputCtrl.id] = ctrlVal;
+          }
+        } else {
+          storeState.currentRequest[inputCtrl.id] = ctrlVal;
+        }          
+
+
+      });
     }
+
   }
 }
 </script>

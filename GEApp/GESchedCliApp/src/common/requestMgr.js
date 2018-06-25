@@ -67,6 +67,26 @@ export const validatePrompts = (prompts) => {
             }
         }
 
+        if (!currentFieldInvalid && prompt.inputType.ctrlType == 'number') {
+            var ctrlDataId = prompt.inputType.ctrlDataId;
+            var inputVal = $("#" + ctrlDataId).val();
+            isValid = validateNumberPrompt(ctrlDataId, inputVal);
+            if (!isValid) {
+                allValid = false;
+                currentFieldInvalid = true;
+            }
+        }
+
+        if (!currentFieldInvalid && prompt.inputType.ctrlType == 'yesNo') {
+            var ctrlDataId = prompt.inputType.ctrlDataId;
+            var inputVal = $("#" + ctrlDataId).val();
+            isValid = validateYesNoPrompt(ctrlDataId, inputVal);
+            if (!isValid) {
+                allValid = false;
+                currentFieldInvalid = true;
+            }
+        }
+
     });
 
     return allValid;
@@ -78,12 +98,16 @@ export const validateIsRequiredPrompt = (ctrlDataId, inputVal) => {
     let isValid = true;
     let validInput = null;
 
-    try {
-        inputVal = inputVal.trim();
-        var atLeastOneCharRegEx = /.+/;
-        validInput = inputVal.match(atLeastOneCharRegEx);
-    } catch (err) {
-        console.warn("validateIsRequiredPrompt error: " + err);
+    if ((typeof inputVal) == "string") {
+        try {
+            inputVal = inputVal.trim();
+            var atLeastOneCharRegEx = /.+/;
+            validInput = inputVal.match(atLeastOneCharRegEx);
+        } catch (err) {
+            console.warn("validateIsRequiredPrompt error: " + err);
+        }
+    } else if (inputVal != null && inputVal != undefined) {
+        validInput = inputVal;
     }
 
     if (validInput == null) {
@@ -121,6 +145,7 @@ export const validateEmailPrompt = (ctrlDataId, inputVal) => {
     return isValid;
 }
 
+
 export const validateNumberPrompt = (ctrlDataId, inputVal) => {
     
     let isValid = true;
@@ -130,6 +155,31 @@ export const validateNumberPrompt = (ctrlDataId, inputVal) => {
         inVal = parseInt(inputVal);
     } catch (err) {
         console.warn("validateNumberPrompt error: " + err);
+        isValid = false;
+    }
+
+    if (!isValid) {
+        var invalidMsg = $('#INVALID-MSG-FOR-' + ctrlDataId)
+        if (invalidMsg != null) {
+            invalidMsg.show();
+        }
+    }
+
+    return isValid;
+}
+
+
+export const validateYesNoPrompt = (ctrlDataId, inputVal) => {
+    
+    let isValid = true;
+    var inVal = 0;
+
+    let valLower = inputVal.toLowerCase();
+    if (valLower === 'yes' || valLower === 'true') {
+        isValid = true;
+    } else if (valLower === 'no' || valLower === 'false') {
+        isValid = true;
+    } else {
         isValid = false;
     }
 
@@ -199,6 +249,16 @@ export const validateRequest = (request, currentScreenNum) => {
                 var ctrlDataId = requestPrompt.inputType.ctrlDataId;
                 var inputVal = $("#" + ctrlDataId).val();
                 isValid = validateNumberPrompt(ctrlDataId, inputVal);
+                if (!isValid) {
+                    allValid = false;
+                    currentFieldInvalid = true;
+                }
+            }
+
+            if (!currentFieldInvalid && requestPrompt.inputType.ctrlType == 'yesNo') {
+                var ctrlDataId = requestPrompt.inputType.ctrlDataId;
+                var inputVal = $("#" + ctrlDataId).val();
+                isValid = validateYesNoPrompt(ctrlDataId, inputVal);
                 if (!isValid) {
                     allValid = false;
                     currentFieldInvalid = true;
