@@ -201,7 +201,7 @@ export default {
         getNotes() {
 
             var vm = this;
-            var url = apiMgr.getNotesUrl() + '?orderBy=seqNum:1';
+            var url = apiMgr.getNotesUrl() + '&orderBy=seqNum:1';
 
             axios.get(url)
                 .then(res => {
@@ -329,7 +329,6 @@ export default {
                         storeState.loginContext.requesterName = storeState.currentUser.name;
                     }
 
-                    debugger;
                     if(res.data.isAdmin){
                         vm.$router.push('/admin/home');
                     } else {
