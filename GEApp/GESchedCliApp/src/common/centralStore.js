@@ -14,13 +14,13 @@ const store = new Vuex.Store({
             accessCode: null
         },
 
-        currentRequest: null,   // To be assigned a new or exiting request for editing.
+        currentRequest: null,       // To be assigned a new or exiting request for editing.
 
-        currentUser: null,      // Will be assigned after successful login.
+        currentUser: null,          // Will be assigned after successful login.
 
-        roomSearchResult: [], // Will be assigned when rooms are queried.
+        roomSearchResult: [],       // Will be assigned when rooms are queried.
 
-        requestsData: [],      // Will be assigned when requests are queried.
+        currentUserRequests: [],    // Will be assigned when requests are queried.
 
 
         // These reference data Will be assigned during login page startup

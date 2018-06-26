@@ -101,7 +101,7 @@ import eventDateTimeInputCtrl from '@/components/requestPrompts/EventDateTimeInp
 
 export default {
 
-  props: ['currentScreenNum'],
+  props: ['currentScreenNum', 'requestId'],
 
   components: {
     textInput: textInputCtrl,
@@ -114,53 +114,60 @@ export default {
   },
 
   computed: {
-    title() {
-      return this.$store.state.appConfig.newRequestViewTitle; 
-    },
-    viewDescription() {
-      return this.$store.state.appConfig.aboutViewDescription; 
-    },
     requestPrompts() {
       return this.$store.state.requestPrompts;
     },
     currentUserEmail() {
       return this.$store.state.currentUser.email;
     },
-    currentUserName(){
+    currentUserName() {
       return this.$store.state.currentUser.name;
     },
-    currentUserPhone(){
+    currentUserPhone() {
       return this.$store.state.currentUser.phone;
+    },
+    isNewRequest() {
+      var isNew = true;
+      var storeState = this.$store.state;
+      if (storeState.currentRequest != null && storeState.currentRequest._id != undefined && storeState.currentRequest._id != null) {
+        isNew = false;
+      }
+      return isNew;
     }
   },
 
   activated() {
     console.log('NewRequest.vue activated.');
 
-    if (this.$store.state.appConfig.newRequestViewTitle == null) {
+    var storeState = this.$store.state;
+
+    if (storeState.appConfig.newRequestViewTitle == null) {
       this.$router.push('/login'); // Config data lost, force back to login to refetch data.
       return;
     }
 
+    if (this.isNewRequest) {
+      storeState.currentViewTitle = storeState.appConfig.newRequestViewTitle;
+    } else {
+      storeState.currentViewTitle = storeState.appConfig.editRequestViewTitle;
+    }
+    storeState.enableNavBar = true;
 
-    this.$store.state.currentViewTitle = this.title;
-    this.$store.state.enableNavBar = true;
-
-    if (this.$store.state.currentRequest == null) {
+    if (storeState.currentRequest == null) {
       var workingNewRequest = localCacheMgr.getCachedItem("workingNewRequest");
       if (workingNewRequest != undefined && workingNewRequest != null) {
-        this.$store.state.currentRequest = workingNewRequest;
+
+        storeState.currentRequest = workingNewRequest;
       } else {
-        this.$store.state.currentRequest = {};
+        storeState.currentRequest = {};
       }
     }
 
-    this.$store.state.currentRequest["eventGEContactPersonEmail"] = this.currentUserEmail;
-    this.$store.state.currentRequest["eventGEContactPersonName"] = this.currentUserName;
-    this.$store.state.currentRequest["eventGEContactPersonPhone"] = this.currentUserPhone;
-        
+    storeState.currentRequest["eventGEContactPersonEmail"] = this.currentUserEmail;
+    storeState.currentRequest["eventGEContactPersonName"] = this.currentUserName;
+    storeState.currentRequest["eventGEContactPersonPhone"] = this.currentUserPhone;
    
-    bindUiValuesFromRequest(this.$store.state.currentRequest, this.currentScreenNum);
+    bindUiValuesFromRequest(storeState.currentRequest, this.currentScreenNum);
   },
 
   created() {
@@ -186,7 +193,11 @@ export default {
         storeState.currentUser.phone = vm.$store.state.currentRequest["eventGEContactPersonPhone"];
 
         try {
-          localCacheMgr.cacheItem("workingNewRequest", vm.$store.state.currentRequest);
+          if (this.isNewRequest) {
+            localCacheMgr.cacheItem("workingNewRequest", storeState.currentRequest);
+          } else {
+            localCacheMgr.cacheItem("revisingRequest-" + storeState.currentRequest._id, storeState.currentRequest);
+          }
         } catch (err) {
           console.log("Not able to locally cache the working new request");
         }
@@ -260,8 +271,6 @@ export default {
         } else {
           storeState.currentRequest[inputCtrl.id] = ctrlVal;
         }          
-
-
       });
     }
 

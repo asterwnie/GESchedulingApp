@@ -15,7 +15,7 @@
       </div>
     </div>
 
-    <div v-if="requestsData.length < 1">
+    <div v-if="currentUserRequests.length < 1">
       <div class="card">
         <br>
         <p style="text-align:center" class="font-italic text-muted">No requests yet! Hit "New Request" to create one.</p>
@@ -23,7 +23,7 @@
       </div>
     </div>
     <div v-else>
-      <div v-for="(requestItem, index) in requestsData" :key="index">
+      <div v-for="(requestItem, index) in currentUserRequests" :key="index">
         <div class="card">
           <div class="card-body">
             <h6 class="card-title">{{requestItem.eventTitle}}</h6>
@@ -60,15 +60,28 @@ export default {
   },
 
   computed: {
+
     title() {
       return this.$store.state.appConfig.homeViewTitle; 
     },
+    
     viewDescription() {
       return this.$store.state.appConfig.homeViewDescription; 
     },
-    requestsData(){
-      return this.$store.state.requestsData;
+
+    currentUserRequests() {
+      return this.$store.state.currentUserRequests;
+    },
+
+    isNewRequest() {
+      var isNew = true;
+      var storeState = this.$store.state;
+      if (storeState.currentRequest != null && storeState.currentRequest._id != undefined && storeState.currentRequest._id != null) {
+        isNew = false;
+      }
+      return isNew;
     }
+
   },
 
   activated() {
@@ -87,26 +100,25 @@ export default {
     let queryUser = `&requesterEmailContains=${this.$store.state.currentUser.email}`;
     var url = apiMgr.getRequestsUrl() + queryUser;
 
-            axios.get(url)
-                .then(res => {
-                    console.log("getRequestsUrl return status: " + res.status);
-                    
-                    while(vm.$store.state.requestsData.length > 0) {
-                      vm.$store.state.requestsData.pop();
-                    }
-                    var foundRequests = res.data;
+    axios.get(url)
+        .then(res => {
+            console.log("getRequestsUrl return status: " + res.status);
+            
+            while(vm.$store.state.currentUserRequests.length > 0) {
+              vm.$store.state.currentUserRequests.pop();
+            }
+            var foundRequests = res.data;
 
-                    $.each(foundRequests, function (index, request) {
-                      vm.$store.state.requestsData.push(request);
-                    });
-                    
-                    vm.isFetchingRequests = false;
-                    //vm.$forceUpdate();
-                })
-                .catch((err) => {
-                    vm.hasFailure = true;
-                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
-                })
+            $.each(foundRequests, function (index, request) {
+              vm.$store.state.currentUserRequests.push(request);
+            });
+            
+            vm.isFetchingRequests = false;
+        })
+        .catch((err) => {
+            vm.hasFailure = true;
+            vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+        })
 
   },
 
@@ -114,16 +126,49 @@ export default {
     console.log('Home.vue created.');
     
     //color badge based on status
-         $(function(){
-            $(".approved").addClass("badge badge-success");
-            $(".rejected").addClass("badge badge-danger");
-            $(".underReview").addClass("badge badge-info");
-            $(".completed").addClass("badge badge-secondary"); //not yet implemented
-        });
+    $(function() {
+      $(".approved").addClass("badge badge-success");
+      $(".rejected").addClass("badge badge-danger");
+      $(".underReview").addClass("badge badge-info");
+      $(".completed").addClass("badge badge-secondary"); //not yet implemented
+    });
   },
 
   methods:{
+
     onEditViewRequest: function(event){
+      console.log('Home.vue - onEditViewRequest activate');
+
+      let vm = this;
+      let selectedReqId = event.target.id;
+      let storeState = this.$store.state;
+
+      var selectedRequest = null;
+
+      var revisingRequest = localCacheMgr.getCachedItem("revisingRequest-" + selectedReqId);
+      if (revisingRequest != undefined && revisingRequest != null) {
+        selectedRequest = revisingRequest;
+      } else {
+        storeState.currentUserRequests.forEach(function(request) {
+          if (request._id == selectedReqId) {
+            selectedRequest = request;
+          }
+        });
+      }
+
+      storeState.currentRequest = selectedRequest;
+
+      //check if it is an edit or a view; if edit, go to request/1, if view, go to summary
+      if($(event.target).hasClass("enableEdit")){
+        vm.$router.push('/request/1');
+      } else if ($(event.target).hasClass("disableEdit")) {
+        vm.$router.push('/submitrequest'); //TODO: Go to the new wrapper vue (to be created) called viewRequest
+      }
+
+    },
+
+
+    onEditViewRequest_OLD: function(event){
         if(event){
           console.log('Home.vue - onEditViewRequest activate');
           let vm = this;

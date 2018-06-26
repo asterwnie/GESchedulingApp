@@ -9,7 +9,6 @@
               Request Summary
             </div>
             <div class="card-body">
-                <!--For each key in currentRequestKeys-->
                 <div style="width:100%" v-for="(requestReadOnlyProperty, index) in requestReadOnlyProperties" :key="index">
                   <div v-if="requestReadOnlyProperty.value != '' && requestReadOnlyProperty.value != null">
                     <span class="font-weight-light" style="">  <!--Convert to Sentence Case-->
@@ -53,28 +52,48 @@ export default {
   },
 
   computed: {
-    title() {
-      return this.$store.state.appConfig.submitRequestViewTitle; 
+
+    canEditRequest() {
+      var canEdit = true;
+      var storeState = this.$store.state;
+      if (storeState.currentRequest != null && storeState.currentRequest.canEdit != undefined && storeState.currentRequest.canEdit == false) {
+        canEdit = false;
+      }
+      return canEdit;
     },
-    currentRequestKeys(){  
-      return Object.keys(this.$store.state.currentRequest);
-    },
+
+    isNewRequest() {
+      var isNew = true;
+      var storeState = this.$store.state;
+      if (storeState.currentRequest != null && storeState.currentRequest._id != undefined && storeState.currentRequest._id != null) {
+        isNew = false;
+      }
+      return isNew;
+    }
+
   },
 
   activated() {
     console.log('SubmitRequest.vue activated.');
     let vm = this;
+    var storeState = this.$store.state;
 
-    if (this.$store.state.appConfig.submitRequestViewTitle == null) {
+    if (storeState.appConfig.submitRequestViewTitle == null) {
       this.$router.push('/login'); // Config data lost, force back to login to refetch data.
       return;
     }
 
-    this.$store.state.currentViewTitle = this.title;
-    this.$store.state.enableNavBar = true;
+    if (this.canEditRequest) {
+      storeState.currentViewTitle = storeState.appConfig.submitRequestViewTitle;
+    } else {
+      storeState.currentViewTitle = storeState.appConfig.viewRequestViewTitle;
+    }
 
-    let requestPrompts = this.$store.state.requestPrompts;
-    let currentRequest = this.$store.state.currentRequest;
+    storeState.currentViewTitle = this.title;
+    storeState.enableNavBar = true;
+
+    let requestPrompts = storeState.requestPrompts;
+    let currentRequest = storeState.currentRequest;
 
     this.requestReadOnlyProperties = [];
     requestPrompts.forEach(function(requestPrompt) {
@@ -88,33 +107,51 @@ export default {
   },
 
   methods: {
+
     onSubmitRequest (evt) {
+
       var vm = this;
+      var storeState = vm.$store.state;
 
       var requestsUrl = apiMgr.getRequestsUrl();
 
-      vm.generateRandomStatusAndComments(vm.$store.state.currentRequest, vm.$store.state);
+      vm.generateRandomStatusAndComments(storeState.currentRequest, vm.$store.state);
 
-      axios.post(requestsUrl, vm.$store.state.currentRequest)
+      if (this.isNewRequest) {
+        this.submitNewRequest(requestsUrl, storeState.currentRequest, '/home');   
+      } else {
+        this.submitUpdatedRequest(requestsUrl, storeState.currentRequest, '/home');
+      }
+
+    },
+
+
+    submitNewRequest(requestsUrl, request, goToThisRouteOnSucess) {
+
+      var vm = this;
+      axios.post(requestsUrl, request)
       .then(res => {
-          console.log("Login status: " + res.status);
+          console.log("submitNewRequest response status: " + res.status);
           vm.isSubmitting = false;
           vm.hasFailure = false;
-          const storeState = this.$store.state;
+          const storeState = vm.$store.state;
 
           if (res.status == 201 && res.data != null) {
               var requestCreated = res.data;
 
-              localCacheMgr.uncacheItem("workingNewRequest");
+              if (this.isNewRequest) {
+                localCacheMgr.uncacheItem("workingNewRequest");
+              } else {
+                localCacheMgr.uncacheItem("revisingRequest-" + storeState.currentRequest._id);
+              }
               vm.$store.state.currentRequest = null;
 
-              vm.$router.push('home'); 
+              vm.$router.push(goToThisRouteOnSucess); 
 
           } else {
                 vm.hasFailure = true;
                 vm.failureMessage = "Unable to create the meeting request. Please try again.";
-          }
-          
+          }       
       })
       .catch((err) => {
           console.log("Create request failed: " + err);
@@ -132,10 +169,54 @@ export default {
               vm.failureMessage = "The Meeting Request server is unavailable or not working at this time.";
           }
       })
-
-
-
     },
+
+
+    submitUpdatedRequest(requestsUrl, request, goToThisRouteOnSucess) {
+
+      var vm = this;
+      axios.put(requestsUrl, request)
+      .then(res => {
+          console.log("submitUpdatedRequest response status: " + res.status);
+          vm.isSubmitting = false;
+          vm.hasFailure = false;
+          const storeState = vm.$store.state;
+
+          if (res.status == 200 && res.data != null) {
+              var requestUdated = res.data;
+
+              if (this.isNewRequest) {
+                localCacheMgr.uncacheItem("workingNewRequest");
+              } else {
+                localCacheMgr.uncacheItem("revisingRequest-" + storeState.currentRequest._id);
+              }
+              vm.$store.state.currentRequest = null;
+
+              vm.$router.push(goToThisRouteOnSucess); 
+
+          } else {
+                vm.hasFailure = true;
+                vm.failureMessage = "Unable to create the meeting request. Please try again.";
+          }       
+      })
+      .catch((err) => {
+          console.log("Create request failed: " + err);
+          //prevent spam clicking
+          vm.isSubmitting = false;
+          vm.hasFailure = true;
+
+          if (err.response != null && err.response.status == 401) { //401 - Unauthorized.                  
+              vm.failureMessage = "You're not authorized to create a meeting request.";
+            
+          } else if (err.response != null && err.response.status == 400) { //400 - Bad Request.                  
+              vm.failureMessage = "The Meeting Request server received a bad request. Please contact your administrator if this problem persist.";
+
+          } else {
+              vm.failureMessage = "The Meeting Request server is unavailable or not working at this time.";
+          }
+      })
+    },
+
 
     // Temporary function to generate a random admin comment and request status
     generateRandomStatusAndComments(request, storeState) {
