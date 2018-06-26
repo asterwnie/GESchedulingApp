@@ -4,7 +4,7 @@
       <div class="col col-sm-1 col-md-2 col-lg-4"></div>
         <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%;">
         <form class="needs-validation" novalidate>
-          <button class="btn btn-primary btn-block" type="submit" @click.prevent="$router.push('dofirst')">New Request</button>
+          <button class="btn btn-primary btn-block" type="submit" v-on:click="onNewRequest">New Request</button>
         </form>
         <br/>
         <br/>
@@ -136,7 +136,13 @@ export default {
 
   methods:{
 
-    onEditViewRequest: function(event){
+    onNewRequest: function(event) {
+      console.log('Home.vue - onNewRequest activate');
+      this.$store.state.currentRequest = null;
+      this.$router.push('/doFirst');
+    },
+
+    onEditViewRequest: function(event) {
       console.log('Home.vue - onEditViewRequest activate');
 
       let vm = this;
