@@ -107,23 +107,19 @@ export default {
                     vm.hasFailure = true;
                     vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
                 })
-  },
 
-  beforeMount(){
-    console.log('Home.vue beforeMount activated.');
-
-    //color badge based on status
-    $(function(){
-            $(".approved").addClass("badge badge-success");
-            $(".rejected").addClass("badge badge-danger");
-            $(".underReview").addClass("badge badge-info");
-            $(".completed").addClass("badge badge-secondary"); //not yet implemented
-        });
   },
 
   created() {
     console.log('Home.vue created.');
     
+    //color badge based on status
+         $(function(){
+            $(".approved").addClass("badge badge-success");
+            $(".rejected").addClass("badge badge-danger");
+            $(".underReview").addClass("badge badge-info");
+            $(".completed").addClass("badge badge-secondary"); //not yet implemented
+        });
   },
 
   methods:{
