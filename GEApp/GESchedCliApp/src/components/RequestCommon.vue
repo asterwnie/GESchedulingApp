@@ -161,6 +161,11 @@ export default {
       } else {
         storeState.currentRequest = {};
       }
+    } else {
+      var revisingRequest = localCacheMgr.getCachedItem("revisingRequest-" + storeState.currentRequest._id);
+      if (revisingRequest != undefined && revisingRequest != null) {
+        storeState.currentRequest = revisingRequest;
+      }
     }
 
     storeState.currentRequest["eventGEContactPersonEmail"] = this.currentUserEmail;
@@ -190,6 +195,10 @@ export default {
 
       if (vm.currentScreenNum == 1) {
           var usersUrl = apiMgr.getUsersUrl();
+
+          storeState.currentUser.email = storeState.currentRequest.eventGEContactPersonEmail;
+          storeState.currentUser.name = storeState.currentRequest.eventGEContactPersonName;
+          storeState.currentUser.phone = storeState.currentRequest.eventGEContactPersonPhone;
 
           axios.put(usersUrl, storeState.currentUser)
             .then(res => {           

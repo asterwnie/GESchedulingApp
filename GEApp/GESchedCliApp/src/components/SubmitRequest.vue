@@ -129,13 +129,15 @@ export default {
     submitNewRequest(requestsUrl, request, goToThisRouteOnSucess) {
 
       var vm = this;
+      vm.isSubmitting = true;
+      const storeState = vm.$store.state;
+
       axios.post(requestsUrl, request)
       .then(res => {
           console.log("submitNewRequest response status: " + res.status);
           vm.isSubmitting = false;
           vm.hasFailure = false;
-          const storeState = vm.$store.state;
-
+          
           if (res.status == 201 && res.data != null) {
               var requestCreated = res.data;
 
@@ -144,7 +146,7 @@ export default {
               } else {
                 localCacheMgr.uncacheItem("revisingRequest-" + storeState.currentRequest._id);
               }
-              vm.$store.state.currentRequest = null;
+              storeState.currentRequest = null;
 
               vm.$router.push(goToThisRouteOnSucess); 
 
@@ -155,7 +157,6 @@ export default {
       })
       .catch((err) => {
           console.log("Create request failed: " + err);
-          //prevent spam clicking
           vm.isSubmitting = false;
           vm.hasFailure = true;
 
@@ -175,13 +176,15 @@ export default {
     submitUpdatedRequest(requestsUrl, request, goToThisRouteOnSucess) {
 
       var vm = this;
+      vm.isSubmitting = true;
+      const storeState = vm.$store.state;
+
       axios.put(requestsUrl, request)
       .then(res => {
           console.log("submitUpdatedRequest response status: " + res.status);
           vm.isSubmitting = false;
           vm.hasFailure = false;
-          const storeState = vm.$store.state;
-
+          
           if (res.status == 200 && res.data != null) {
               var requestUdated = res.data;
 
@@ -190,7 +193,7 @@ export default {
               } else {
                 localCacheMgr.uncacheItem("revisingRequest-" + storeState.currentRequest._id);
               }
-              vm.$store.state.currentRequest = null;
+              storeState.currentRequest = null;
 
               vm.$router.push(goToThisRouteOnSucess); 
 
