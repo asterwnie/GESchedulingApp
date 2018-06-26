@@ -134,6 +134,18 @@ export default {
     });
   },
 
+  updated(){
+    console.log('Home.vue updated.');
+
+    //color badge based on status
+    $(function() {
+      $(".approved").addClass("badge badge-success");
+      $(".rejected").addClass("badge badge-danger");
+      $(".underReview").addClass("badge badge-info");
+      $(".completed").addClass("badge badge-secondary"); //not yet implemented
+    });
+  },
+
   methods:{
 
     onNewRequest: function(event) {

@@ -57,6 +57,9 @@
 
     "requestStatusTagRejected": "More Information Required",
 
-    "requestStatusMessageRejected": "Your request is not complete. More Information is required. Please review and update your request before resubmitting it."
+    "requestStatusMessageRejected": "Your request is not complete. More Information is required. Please review and update your request before resubmitting it.",
 
+    "adminHomeViewTitle": "Admin Home",
+
+    "adminHomeViewDescription": ""
 }

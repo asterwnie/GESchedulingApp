@@ -64,7 +64,7 @@ function createUser(user) {
             email: user.email,
             name: user.name,  
             phone: user.phone,
-            isAdmin: user.isAdministrator
+            isAdmin: user.isAdmin
         };
 
         var newUser = new User(userInDBFormat);

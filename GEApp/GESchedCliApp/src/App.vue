@@ -2,18 +2,18 @@
 <template>
   <div id="app">
     <!--Top bar (header)-->
-    <div class="app-bar-style fixed-top d-flex justify-content-between bd-highlight mb-3">
+    <div id="headerBar" class="app-bar-style fixed-top d-flex justify-content-between bd-highlight mb-3">
       <!--Back button-->
       <div class="p-2 align-self-center" >
         <a @click="$router.go(-1)"><span class="fas fa-chevron-left fa-lg" :hidden="!$store.state.enableNavBar"></span></a>
       </div>
       <!--Title-->
       <div class="p-2 align-self-center">{{ title }}</div>
-      <!--Menu dropdown-->
-      <div class="p-2 align-self-center">        
-        <div class="dropdown" :hidden="!$store.state.enableNavBar">
-              <button type="button" class="btn btn-sm btn-dark" data-toggle="modal" data-target=".main-menu-modal"><span class="fas fa-align-justify fa-lg"></span></button>
-        </div>
+      <!--Menu button-->
+      <div class="p-2 align-self-center navbar navbar-default navbar-fixed-top">
+        <button id="menuButton" :hidden="!$store.state.enableNavBar" type="button" class="navbar-toggle" data-toggle="offcanvas" data-target="#myNavmenu" data-canvas="body">
+          <span class="fas fa-align-justify fa-lg"></span>
+        </button>
       </div>
     </div>
     <transition name="slide" mode="out-in">
@@ -23,51 +23,48 @@
       </keep-alive>
     </transition>
 
-    <!-- Modal -->
-    <div class="modal fade main-menu-modal" tabindex="-1" role="dialog" aria-labelledby="main-menu-modal-label" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <div class="card text-center">
-
-          <div class="card-body">
-            <div class="btn-group-vertical">
-            <form>
+    <!--Menu slidein-->
+    <nav id="myNavmenu" class="navmenu navmenu-default navmenu-fixed-right offcanvas bg-secondary" role="navigation">
+      <div style="width:100%;" class="text-light mx-auto">
+        <div style="width:100%; text-align:center; margin:20px; margin-left:0px; margin-bottom:30px">
+          <img style="height:100px; width:auto" src="http://2015nzusergroup.regstep.com/images/logos/ge-logo-white.png"/>
+        </div>
+        <hr>
+        <div class="nav">
+          <div style="width:100%;" class="btn-group-vertical">
+            <form style="width:100%">
               <div class="form-group">
-                <button type="button" class="btn btn-primary" data-dismiss="modal" @click="$router.push('/login')">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                <button type="button" width="100%" v-on:click="collapseMenu" class="btn btn-secondary" data-dismiss="modal" @click="$router.push('/login')">Login</button>
               </div>
               <div class="form-group">
-                <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('/home')">Home</button>
+                <button type="button" width="100%" v-on:click="collapseMenu" class="btn btn-secondary" data-dismiss="modal" @click="$router.push('/home')">Home</button>
               </div>
               <div class="form-group">
-                <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('/findroom')">Find Room</button>
+                <button type="button" width="100%" v-on:click="collapseMenu" class="btn btn-secondary" data-dismiss="modal" @click="$router.push('/findroom')">Find Room</button>
               </div>
               <div class="form-group">
-                <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('/dofirst')">New Request</button>
+                <button type="button" width="100%" v-on:click="collapseMenu" class="btn btn-secondary" data-dismiss="modal" @click="$router.push('/dofirst')">New Request</button>
               </div>
               <div class="form-group">
-                <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('/guestwifi')">Guest WiFi</button>
+                <button type="button" width="100%" v-on:click="collapseMenu" class="btn btn-secondary" data-dismiss="modal" @click="$router.push('/guestwifi')">Guest WiFi</button>
               </div>
               <div class="form-group">
-                <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('/localhotels')">Local Hotels</button>
+                <button type="button" width="100%" v-on:click="collapseMenu" class="btn btn-secondary" data-dismiss="modal" @click="$router.push('/localhotels')">Local Hotels</button>
               </div>
               <div class="form-group">
-                <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('/localcaterers')">Local Caterers</button>
+                <button type="button" width="100%" v-on:click="collapseMenu" class="btn btn-secondary" data-dismiss="modal" @click="$router.push('/localcaterers')">Local Caterers</button>
               </div>
               <div class="form-group">
-                <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('/ithelp')">IT Help</button>
+                <button type="button" width="100%" v-on:click="collapseMenu" class="btn btn-secondary" data-dismiss="modal" @click="$router.push('/ithelp')">IT Help</button>
               </div>    
               <div class="form-group">
-                <button type="button" width="100%" class="btn btn-primary" data-dismiss="modal" @click="$router.push('/about')">About</button>
+                <button type="button" width="100%" v-on:click="collapseMenu" class="btn btn-secondary" data-dismiss="modal" @click="$router.push('/about')">About</button>
               </div>             
             </form>
             </div>
-          </div>
         </div>
       </div>
-    </div>
-  </div>
-    </div>
+    </nav>
 
 
   </div>
@@ -99,7 +96,16 @@ export default {
     $route (to, from){
         window.scrollTo(0, 0);
     }
-  } 
+  },
+
+  methods: {
+    collapseMenu: function(event){
+      if(event){
+        //collapse menu
+        $("#menuButton").click();
+      }
+    }
+  }
   
 }
 </script>
@@ -152,5 +158,11 @@ body {
     }
 }
 
+.navmenu-fixed-right {
+   left: auto !important;
+   /*
+   The animation is still jerky for the right. We can move it to the left. (change the class to fixed-left)
+   */
+}
 
 </style>

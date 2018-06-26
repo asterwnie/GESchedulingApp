@@ -84,7 +84,7 @@
 
     <div id="roomUI" class="col col-12 col-md-5 col-lg-5 col-xl-6">
       <div class="card">
-        <div class="card-body bg-secondary text-light">
+        <div class="card-header bg-secondary text-light">
           Rooms
         </div>
       </div>
