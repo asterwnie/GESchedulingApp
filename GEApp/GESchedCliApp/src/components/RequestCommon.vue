@@ -158,21 +158,6 @@ export default {
     this.$store.state.currentRequest["eventGEContactPersonEmail"] = this.currentUserEmail;
     this.$store.state.currentRequest["eventGEContactPersonName"] = this.currentUserName;
     this.$store.state.currentRequest["eventGEContactPersonPhone"] = this.currentUserPhone;
-
-    //Reset rooms
-    var vm = this;
-    var url = apiMgr.getRoomsUrl(); 
-
-    axios.get(url)
-        .then(res => {
-            console.log("getRoomsUrl return status: " + res.status);
-            vm.$store.state.rooms = res.data;
-            vm.isFetchingRooms = false;
-        })
-        .catch((err) => {
-            vm.hasFailure = true;
-            vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
-        })
         
    
     bindUiValuesFromRequest(this.$store.state.currentRequest, this.currentScreenNum);

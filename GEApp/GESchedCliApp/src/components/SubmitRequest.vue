@@ -9,21 +9,18 @@
               Request Summary
             </div>
             <div class="card-body">
-
                 <!--For each key in currentRequestKeys-->
-                <div class="input-group input-group-sm mb-3" style="width:100%" v-for="(requestReadOnlyProperty, index) in requestReadOnlyProperties" :key="index">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">  <!--Convert to Sentence Case-->
-                      {{requestReadOnlyProperty.label}}
+                <div style="width:100%" v-for="(requestReadOnlyProperty, index) in requestReadOnlyProperties" :key="index">
+                  <div v-if="requestReadOnlyProperty.value != '' && requestReadOnlyProperty.value != null">
+                    <span class="font-weight-light" style="">  <!--Convert to Sentence Case-->
+                      {{requestReadOnlyProperty.label}}: 
                     </span>
-                  </div>
-                  <div class="bg-light text-info" style="width:100%; border: 1px solid #cfcfcf; padding:6px"> <!--class="container-fluid" or style="width:100%"-->
-                    <span>
-                      &nbsp;{{requestReadOnlyProperty.value}}
+                    <br>
+                    <span class="font-italic">
+                      {{requestReadOnlyProperty.value}}&nbsp;
                     </span>
                   </div>
                 </div>
-
             </div>
           </div>
 

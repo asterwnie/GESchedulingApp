@@ -10,22 +10,36 @@
         <br/>
 
     <div class="card">
-      <div class="card-header text-center">
-        <b>Status</b>
+      <div class="card-header text-center bg-secondary text-light">
+        <b>Requests</b>
       </div>
     </div>
 
-
-    <div v-for="(requestItem, index) in requestItems" :key="index">
+    <div v-if="requestsData.length < 1">
       <div class="card">
-        <div class="card-body">
-          <h6 class="card-title">{{requestItem.meetingTitle}}</h6>
-          <h6 class="card-title">Status:  <span :class="requestItem.statusBadge">{{requestItem.requestStatus}}</span></h6>
-          <p class="card-text">{{requestItem.meetingComment}}</p>
-          <p class="card-text">Last updated:  {{requestItem.lastModified}}</p>
-          <a href="#" class="btn btn-primary btn-sm">{{requestItem.buttonLabel}}</a>
-        </div>
+        <br>
+        <p style="text-align:center" class="font-italic text-muted">No requests yet! Hit "New Request" to create one.</p>
+        <br>
+      </div>
     </div>
+    <div v-else>
+      <div v-for="(requestItem, index) in requestsData" :key="index">
+        <div class="card">
+          <div class="card-body">
+            <h6 class="card-title">{{requestItem.eventTitle}}</h6>
+            <h6 class="card-title">Status:&nbsp;<span :class="requestItem.processingStatus">{{requestItem.processingStatusLabel}}</span></h6>
+            <p class="card-text font-italic">{{requestItem.processingStatusMessage}}</p>
+            <div class="card-text text-muted">Last updated:&nbsp;{{requestItem.updatedAt.substring(0, requestItem.updatedAt.indexOf("T"))}}</div>
+            <div v-if="requestItem.canEdit">
+              <button :id="requestItem._id" type="button" v-on:click="onEditViewRequest" class="enableEdit btn btn-warning btn-sm float-right">Edit</button>
+            </div>
+            <div v-else>
+              <button :id="requestItem._id" type="button" v-on:click="onEditViewRequest" class="disableEdit btn btn-secondary btn-sm float-right">View</button>
+            </div>
+            
+          </div>
+      </div>
+      </div>
     </div>
 
 
@@ -35,37 +49,13 @@
 </template>
 
 <script>
-const existingRequestsData = [
-        { 
-          statusBadge: 'badge badge-info',
-          requestStatus: "Under Review",  
-          meetingTitle: 'Special Project Kick-off Meeting', 
-          meetingComment: 'You request will be process within congue convallis, at magna senectus pellentesque quisque viverra, ligula etiam malesuada.', 
-          lastModified: '5/22/2018 03:30 PM',
-          buttonLabel: 'View'
-        },
-        { 
-          statusBadge: 'badge badge-danger',
-          requestStatus: "Rejected",  
-          meetingTitle: 'Big Boss Retirement Party', 
-          meetingComment: 'Congue convallis dictumst ad vulputate aliquet curae sit, at magna senectus pellentesque quisque integer luctus rutrum viverra, ligula etiam sagittis ullamcorper leo porta etiam tempor eu diam potenti rutrum sollicitudin laoreet elit malesuada.', 
-          lastModified: '5/19/18 8:10 PM',
-          buttonLabel: 'Edit'
-        },
-        { 
-          statusBadge: 'badge badge-success',
-          requestStatus: "Completed",  
-          meetingTitle: 'Quarterly Team Meeting', 
-          meetingComment: 'You request has been processed.', 
-          lastModified: '5/22/2018 03:30 PM',
-          buttonLabel: 'View'
-        }
-      ]
+import axios from 'axios';
+import * as apiMgr from '@/common/apiMgr.js';
+import * as localCacheMgr from '@/common/localCacheMgr.js';
 
 export default {
   data () {
     return {
-      requestItems: existingRequestsData
       }
   },
 
@@ -77,29 +67,126 @@ export default {
       return this.$store.state.appConfig.homeViewDescription; 
     },
     requestsData(){
-      return this.$store.state.requests;
+      return this.$store.state.requestsData;
     }
   },
 
   activated() {
     console.log('Home.vue activated.');
+    let vm = this;
 
-    if (this.$store.state.appConfig.homeViewTitle == null) {
-      this.$router.push('/login'); // Config data lost, force back to login to refetch data.
+    if (vm.$store.state.appConfig.homeViewTitle == null) {
+      vm.$router.push('/login'); // Config data lost, force back to login to refetch data.
       return;
     }
 
-    this.$store.state.currentViewTitle = this.title;
-    this.$store.state.enableNavBar = true;
+    vm.$store.state.currentViewTitle = this.title;
+    vm.$store.state.enableNavBar = true;
+
+    //get requests for current user
+    let queryUser = `&requesterEmailContains=${this.$store.state.currentUser.email}`;
+    var url = apiMgr.getRequestsUrl() + queryUser;
+
+            axios.get(url)
+                .then(res => {
+                    console.log("getRequestsUrl return status: " + res.status);
+                    
+                    while(vm.$store.state.requestsData.length > 0) {
+                      vm.$store.state.requestsData.pop();
+                    }
+                    var foundRequests = res.data;
+
+                    $.each(foundRequests, function (index, request) {
+                      vm.$store.state.requestsData.push(request);
+                    });
+                    
+                    vm.isFetchingRequests = false;
+                    //vm.$forceUpdate();
+                })
+                .catch((err) => {
+                    vm.hasFailure = true;
+                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                })
+  },
+
+  beforeMount(){
+    console.log('Home.vue beforeMount activated.');
+
+    //color badge based on status
+    $(function(){
+            $(".approved").addClass("badge badge-success");
+            $(".rejected").addClass("badge badge-danger");
+            $(".underReview").addClass("badge badge-info");
+            $(".completed").addClass("badge badge-secondary"); //not yet implemented
+        });
   },
 
   created() {
     console.log('Home.vue created.');
-  }
+    
+  },
+
+  methods:{
+    onEditViewRequest: function(event){
+        if(event){
+          console.log('Home.vue - onEditViewRequest activate');
+          let vm = this;
+
+          
+          this.$store.state.currentRequest = {};
+            
+          //get request for edit/view
+          let currId = event.target.id;
+
+          let queryId = `&requestIdContains=${currId}`;
+          var url = apiMgr.getRequestsUrl() + queryId;
+          console.log(`Home.vue - Query url: ${url}`);
+
+            axios.get(url)
+                .then(res => {
+                    console.log("getRequestsUrl return status: " + res.status);
+
+                    while(vm.$store.state.currentRequest.length > 0) {
+                        vm.$store.state.currentRequest.pop();
+                      }
+                    var foundRequests = res.data;
+                    $.each(Object.keys(foundRequests[0]), function(index, key){
+                      vm.$store.state.currentRequest[key] = foundRequests[0][key];
+                    });
+
+                   // vm.isFetchingRequests = false;
+                    
+                    try {
+                      localCacheMgr.cacheItem("workingNewRequest", vm.$store.state.currentRequest);
+                      console.log("onEditViewRequest - Successfully injected view request into cache.");
+                    } catch (err) {
+                      console.log("onEditViewRequest - Not able to locally cache the working new request.");
+                    }
+
+                    
+                    //check if it is an edit or a view; if edit, go to request/1, if view, go to summary
+                    if($(event.target).hasClass("enableEdit")){
+                      vm.$router.push('/request/1');
+                    } else if ($(event.target).hasClass("disableEdit")) {
+                      vm.$router.push('/submitrequest');
+                    }
+                    
+                })
+                .catch((err) => {
+                    console.log(err);
+                    vm.hasFailure = true;
+                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                })
+
+          
+        }
+      },
+    },
 }
 </script>
 
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 </style>

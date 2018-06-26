@@ -95,10 +95,12 @@ export default {
     }
   },
 
-  created() {       
-
-
-  }
+  watch:{
+    $route (to, from){
+        window.scrollTo(0, 0);
+    }
+  } 
+  
 }
 </script>
 

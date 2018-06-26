@@ -6,7 +6,7 @@
         <div class="col col-sm-1 col-md-2 col-lg-4"></div>
         <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%;">
           
-            <p>{{ description }}</p>
+            <p>{{ viewDescription }}</p>
 
           <br/>
           <div v-for="(hotel, index) in hotelItems" :key="index" width="100%">

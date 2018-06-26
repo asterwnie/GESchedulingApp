@@ -9,31 +9,50 @@ const getRequestType = require(`${appRoot}/server-api/models/requestModel`);
 
 
 
-exports.getRequests = function (req, res) {
+exports.getRequests = async function (req, res) {
     logger.verbose('requestController.getRequests begin');
 
     let siteCode = httpRequestHelper.getSite(req);
+
+    await queryRequests(siteCode, req, (result) => {
+        if (result.success) {
+            logger.info(`requestController.getRequests - Request.find success. About to send back http response with ${result.requests.length} requests`);
+            res.status(200).json(result.requests);
+        } else {
+            logger.error(`requestController.getRequests failed. Error: ${result.errMsg}`);
+            res.status(500).json({ error: result.errMsg });
+        }
+    });
+
+    logger.verbose('requestController.getRequests ends.');    
+
+};
+
+async function queryRequests (siteCode, req, callback) {
+
     let Request = getRequestType(siteCode);
 
     var sortDirective = { "createdAt": -1}; //default, order by createdAt, ascending
 
     var filterDirective = {}; //default, no filering
-    if (req.query.requestEmailContains != null) {    
-        filterDirective = { "requestEmail": req.query.requesterEmailContains};        
+    if (req.query.requesterEmailContains != null) {    
+        filterDirective = { "eventGEContactPersonEmail": req.query.requesterEmailContains};        
+    }
+    if (req.query.requestIdContains != null) {    
+        filterDirective = { "_id": req.query.requestIdContains};        
     }
 
-    Request.find(filterDirective).sort(sortDirective)
+    await Request.find(filterDirective).sort(sortDirective)
         .then((requests) => {
             logger.info(`requestController.getRequests - Request.find success. About to send back http response with ${requests.length} requests`);
-            res.status(200).json(requests);  // 200 - OK
+            callback({ success: true, requests: requests });
         })
         .catch((err) => {
             var errMsg = `requestController.getRequests - Request.find failed. Error: ${err}`;
             logger.error(errMsg);
-            res.status(500).json({ error: errMsg }); // 500 - INTERNAL SERVER ERROR
+            callback({ success: false, errMsg: errMsg });
         });
-};
-
+}
 
 
 exports.createRequest = function (req, res) {

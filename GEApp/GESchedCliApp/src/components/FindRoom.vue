@@ -15,7 +15,7 @@
 
     <div id="searchUI" class="col col-12 col-md-3 col-lg-3 col-xl-2" style="margin-bottom:20px">
       <div class="card">
-      <div class="card-header bg-info text-light" id="headingOne" style="cursor:pointer;" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+      <div class="card-header bg-primary text-light" id="headingOne" style="cursor:pointer;" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
             Search Menu <i class="fa fa-search-plus" aria-hidden="true"></i>&nbsp;&nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i>
       </div>
       <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
@@ -75,7 +75,7 @@
               
             
             <br>
-            <button type="button" class="btn btn-sm btn-info float-right" v-on:click="filterView">Search</button>
+            <button type="button" class="btn btn-sm btn-primary float-right" v-on:click="filterView">Search</button>
             <button type="button" class="btn btn-sm btn-secondary" v-on:click="resetFilterView">Reset</button>
           </div>
         </div>
@@ -92,7 +92,15 @@
         <div class="card">
           <div class="card-body">
             <h6 class="card-title">{{room.name}}</h6>
-            <p class="card-text" :hidden="room.sizeType == null || room.sizeType == ''">Size Type: {{room.sizeType}}</p>
+            <div class="card-text" :hidden="room.building == null || room.building == ''">Building: {{room.building}}</div>
+            <div class="card-text" :hidden="room.sizeType == null || room.sizeType == ''">Size Type: {{room.sizeType}}</div>
+            <div class="card-text" :hidden="room.seatingCapacity == null || room.seatingCapacity == ''">Seating Capacity: {{room.seatingCapacity}}</div>
+            <div class="card-text" :hidden="room.capabilities == null || room.capabilities.length == 0">
+              <hr>
+              <span class="badge badge-info" v-for="(capability, index) in room.capabilities" :key="index">
+                {{capability}}
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -121,7 +129,7 @@ export default {
       return this.$store.state.appConfig.roomsViewDescription; 
     },
     rooms() {
-      return this.$store.state.rooms;
+      return this.$store.state.roomSearchResult;
     },
     sizeTypes(){
       return this.$store.state.appConfig.sizeTypes;
@@ -136,6 +144,7 @@ export default {
 
   activated() {
     console.log('FindRoom.vue activated.');
+    let vm = this;
 
     if (this.$store.state.appConfig.findRoomViewTitle == null) {
       this.$router.push('/login'); // Config data lost, force back to login to refetch data.
@@ -145,6 +154,15 @@ export default {
     this.$store.state.currentViewTitle = this.title;
     this.$store.state.enableNavBar = true;
     
+    // empty roomSearchResult, then re-add all rooms
+    if(vm.$store.state.roomSearchResult != null){
+      while(vm.$store.state.roomSearchResult.length > 0) {
+        vm.$store.state.roomSearchResult.pop();
+      }
+    }
+    $.each(this.$store.state.rooms, function (index, room) {
+      vm.$store.state.roomSearchResult.push(room);
+    });
   },
 
   methods: {
@@ -251,12 +269,12 @@ export default {
                 .then(res => {
                     console.log("getRoomsUrl return status: " + res.status);
                     
-                    while(vm.$store.state.rooms.length > 0) {
-                      vm.$store.state.rooms.pop();
+                    while(vm.$store.state.roomSearchResult.length > 0) {
+                      vm.$store.state.roomSearchResult.pop();
                     }
                     var foundRooms = res.data;
                     $.each(foundRooms, function (index, room) {
-                      vm.$store.state.rooms.push(room);
+                      vm.$store.state.roomSearchResult.push(room);
                     });
                     
                     vm.isFetchingRooms = false;
@@ -273,6 +291,9 @@ export default {
 
     resetFilterView: function(event){
        if(event){
+        //collapse search menu
+        $("#headingOne").click();
+
         //reset all input boxes and checkboxes
         ///.....
 
@@ -284,7 +305,7 @@ export default {
             axios.get(url)
                 .then(res => {
                     console.log("getRoomsUrl return status: " + res.status);
-                    vm.$store.state.rooms = res.data;
+                    vm.$store.state.roomSearchResult = res.data;
                     vm.isFetchingRooms = false;
                 })
                 .catch((err) => {
