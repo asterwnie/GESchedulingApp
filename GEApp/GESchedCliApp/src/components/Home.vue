@@ -4,7 +4,7 @@
       <div class="col col-sm-1 col-md-2 col-lg-4"></div>
         <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%;">
         <form class="needs-validation" novalidate>
-          <button class="btn btn-primary btn-block" type="submit" v-on:click="onNewRequest">New Request</button>
+          <button class="btn btn-primary btn-block" type="submit" @click.prevent="onNewRequest">New Request</button>
         </form>
         <br/>
         <br/>
@@ -31,10 +31,10 @@
             <p class="card-text font-italic">{{requestItem.processingStatusMessage}}</p>
             <div class="card-text text-muted">Last updated:&nbsp;{{requestItem.updatedAt.substring(0, requestItem.updatedAt.indexOf("T"))}}</div>
             <div v-if="requestItem.canEdit">
-              <button :id="requestItem._id" type="button" v-on:click="onEditViewRequest" class="enableEdit btn btn-warning btn-sm float-right">Edit</button>
+              <button :id="requestItem._id" type="button" @click.prevent="onEditViewRequest" class="enableEdit btn btn-warning btn-sm float-right">Edit</button>
             </div>
             <div v-else>
-              <button :id="requestItem._id" type="button" v-on:click="onEditViewRequest" class="disableEdit btn btn-secondary btn-sm float-right">View</button>
+              <button :id="requestItem._id" type="button" @click.prevent="onEditViewRequest" class="disableEdit btn btn-secondary btn-sm float-right">View</button>
             </div>
             
           </div>
@@ -151,7 +151,7 @@ export default {
     onNewRequest: function(event) {
       console.log('Home.vue - onNewRequest activate');
       this.$store.state.currentRequest = null;
-      this.$router.push('/doFirst');
+      this.$router.push('/dofirst');
     },
 
     onEditViewRequest: function(event) {

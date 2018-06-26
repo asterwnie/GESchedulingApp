@@ -137,7 +137,7 @@ export default {
   },
 
   activated() {
-    console.log('NewRequest.vue activated.');
+    console.log('RequestCommon.vue activated.');
 
     var storeState = this.$store.state;
 
@@ -161,6 +161,11 @@ export default {
       } else {
         storeState.currentRequest = {};
       }
+    } else {
+      var revisingRequest = localCacheMgr.getCachedItem("revisingRequest-" + storeState.currentRequest._id);
+      if (revisingRequest != undefined && revisingRequest != null) {
+        storeState.currentRequest = revisingRequest;
+      }
     }
 
     storeState.currentRequest["eventGEContactPersonEmail"] = this.currentUserEmail;
@@ -170,12 +175,49 @@ export default {
     bindUiValuesFromRequest(storeState.currentRequest, this.currentScreenNum);
   },
 
-  created() {
-      console.log('NewRequest.vue created.');
+  deactivated() {
+      console.log('RequestCommon.vue created.');
+
+      var vm = this;
+      var storeState = vm.$store.state;
+
+       this.bindCtrlValuesToRequestProperties();
+      
+      try {
+        if (this.isNewRequest) {
+          localCacheMgr.cacheItem("workingNewRequest", storeState.currentRequest);
+        } else {
+          localCacheMgr.cacheItem("revisingRequest-" + storeState.currentRequest._id, storeState.currentRequest);
+        }
+      } catch (err) {
+        console.log("Not able to locally cache the working request");
+      }
+
+      if (vm.currentScreenNum == 1) {
+          var usersUrl = apiMgr.getUsersUrl();
+
+          storeState.currentUser.email = storeState.currentRequest.eventGEContactPersonEmail;
+          storeState.currentUser.name = storeState.currentRequest.eventGEContactPersonName;
+          storeState.currentUser.phone = storeState.currentRequest.eventGEContactPersonPhone;
+
+          axios.put(usersUrl, storeState.currentUser)
+            .then(res => {           
+                console.log("Successfully saved the user's profile: " + res.status);
+                if (res.data != null) {
+                  storeState.currentUser = res.data;
+                }               
+            })
+            .catch((err) => {             
+                console.log("Not able to save user profile: " + err);
+                // But should not stop the UI from going to the next screen.
+                vm.isSubmitting = false;
+                vm.hasFailure = false;
+                vm.$router.push('/attentionNotes');
+            })
+        }
   },
 
   methods: {
-
 
     onContinue (evt) {
 
@@ -192,44 +234,12 @@ export default {
         storeState.currentUser.email = vm.$store.state.currentRequest["eventGEContactPersonEmail"];
         storeState.currentUser.phone = vm.$store.state.currentRequest["eventGEContactPersonPhone"];
 
-        try {
-          if (this.isNewRequest) {
-            localCacheMgr.cacheItem("workingNewRequest", storeState.currentRequest);
-          } else {
-            localCacheMgr.cacheItem("revisingRequest-" + storeState.currentRequest._id, storeState.currentRequest);
-          }
-        } catch (err) {
-          console.log("Not able to locally cache the working new request");
+        var nextScreenNum = vm.currentScreenNum + 1;
+        if (nextScreenNum <= vm.$store.state.numOfRequestScreens) {
+          vm.$router.push('/request/' + nextScreenNum);          
+        } else {
+          vm.$router.push('/attentionNotes');
         }
-
-        var usersUrl = apiMgr.getUsersUrl();
-
-        axios.put(usersUrl, vm.$store.state.currentUser)
-        .then(res => {
-        
-            console.log("Successfully saved the user's profile: " + res.status);
-            if (res.data != null) {
-              storeState.currentUser = res.data;
-            }
-            vm.isSubmitting = false;
-            vm.hasFailure = false;
-            
-            var nextScreenNum = vm.currentScreenNum + 1;
-            if (nextScreenNum <= vm.$store.state.numOfRequestScreens) {
-              vm.$router.push('/request/' + nextScreenNum);            
-              
-            } else {
-              vm.$router.push('/attentionNotes');
-            }
-        })
-        .catch((err) => {
-          
-            console.log("Not able to save user profile: " + err);
-            // But should not stop the UI from going to the next screen.
-            vm.isSubmitting = false;
-            vm.hasFailure = false;
-            vm.$router.push('/attentionNotes');
-        })
         
       }
     },
