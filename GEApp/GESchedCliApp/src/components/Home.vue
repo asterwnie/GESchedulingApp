@@ -198,8 +198,62 @@ export default {
         vm.$router.push('/requestsummary'); 
       }
 
-    }
+    },
 
+    onDeleteRequest: function (event){
+        console.log('Home.vue - onDeleteRequest activate');
+        let vm = this;
+
+        //get request for deletion
+        let currId = event.target.id;
+
+        let queryId = `/${currId}`;
+        var url = apiMgr.getRequestsUrl().substring(0, apiMgr.getRequestsUrl().indexOf("?")) + queryId + apiMgr.getRequestsUrl().substring(apiMgr.getRequestsUrl().indexOf("?"), apiMgr.getRequestsUrl().length);
+        console.log(`Home.vue - Query url: ${url}`);
+
+        //delete request
+        axios.delete(url)
+            .then(res => {
+                console.log("getRequestsUrl return status: " + res.status);
+
+                //refresh requests in UI
+                vm.$nextTick(function () {
+                  console.log(`onDeleteRequest - Delete request id: ${currId} success. Refreshing data.`) // => 'updated'
+
+                  //get requests for current user
+                  let queryUser = `&requesterEmailContains=${vm.$store.state.currentUser.email}`;
+                  var url = apiMgr.getRequestsUrl() + queryUser;
+
+                  axios.get(url)
+                      .then(res => {
+                          console.log("getRequestsUrl return status: " + res.status);
+                          
+                          while(vm.$store.state.currentUserRequests.length > 0) {
+                            vm.$store.state.currentUserRequests.pop();
+                          }
+                          var foundRequests = res.data;
+
+                          $.each(foundRequests, function (index, request) {
+                            vm.$store.state.currentUserRequests.push(request);
+                          });
+                          
+                          vm.isFetchingRequests = false;
+                      })
+                      .catch((err) => {
+                          vm.hasFailure = true;
+                          vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                      })
+                })
+            })
+            .catch((err) => {
+                console.log(err);
+                vm.hasFailure = true;
+                vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+            })
+      
+      
+    }
+  },
 }
 </script>
 
