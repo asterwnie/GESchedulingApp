@@ -19,7 +19,7 @@
     </div>
     
     <div class="fixed-bottom d-flex justify-content-between" style="margin: 10px;">
-      <button type="button" class="btn btn-primary btn-sm" @click.prevent="$router.push('submitrequest')">Continue Request ></button>
+      <button type="button" class="btn btn-primary btn-sm" @click.prevent="$router.push('requestsummary')">Continue Request ></button>
     </div>
   </div>
 </template>

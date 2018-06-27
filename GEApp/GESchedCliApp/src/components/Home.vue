@@ -195,7 +195,7 @@ export default {
       if($(event.target).hasClass("enableEdit")){
         vm.$router.push('/request/1');
       } else if ($(event.target).hasClass("disableEdit")) {
-        vm.$router.push('/submitrequest'); //TODO: Go to the new wrapper vue (to be created) called viewRequest
+        vm.$router.push('/requestsummary'); 
       }
 
     },
