@@ -201,7 +201,7 @@ export default {
         getNotes() {
 
             var vm = this;
-            var url = apiMgr.getNotesUrl() + '?orderBy=seqNum:1';
+            var url = apiMgr.getNotesUrl() + '&orderBy=seqNum:1';
 
             axios.get(url)
                 .then(res => {
