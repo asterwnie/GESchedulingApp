@@ -79,7 +79,8 @@ export const validatePrompts = (prompts) => {
 
         if (!currentFieldInvalid && prompt.inputType.ctrlType == 'yesNo') {
             var ctrlDataId = prompt.inputType.ctrlDataId;
-            var inputVal = $("#" + ctrlDataId).val();
+            var currObject = $("#" + ctrlDataId);
+            inputVal = currObject[0].checked;
             isValid = validateYesNoPrompt(ctrlDataId, inputVal);
             if (!isValid) {
                 allValid = false;
@@ -172,14 +173,7 @@ export const validateNumberPrompt = (ctrlDataId, inputVal) => {
 export const validateYesNoPrompt = (ctrlDataId, inputVal) => {
     
     let isValid = true;
-    var inVal = 0;
-
-    let valLower = inputVal.toLowerCase();
-    if (valLower === 'yes' || valLower === 'true') {
-        isValid = true;
-    } else if (valLower === 'no' || valLower === 'false') {
-        isValid = true;
-    } else {
+    if(!(inputVal === true | inputVal === false)){
         isValid = false;
     }
 
@@ -257,7 +251,8 @@ export const validateRequest = (request, currentScreenNum) => {
 
             if (!currentFieldInvalid && requestPrompt.inputType.ctrlType == 'yesNo') {
                 var ctrlDataId = requestPrompt.inputType.ctrlDataId;
-                var inputVal = $("#" + ctrlDataId).val();
+                var currObject = $("#" + ctrlDataId);
+                inputVal = currObject[0].checked;
                 isValid = validateYesNoPrompt(ctrlDataId, inputVal);
                 if (!isValid) {
                     allValid = false;

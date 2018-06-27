@@ -10,25 +10,41 @@
             </div>
             <div class="card-body">
                 <div style="width:100%" v-for="(requestReadOnlyProperty, index) in requestReadOnlyProperties" :key="index">
-                  <div v-if="requestReadOnlyProperty.value != '' && requestReadOnlyProperty.value != null">
+                  <div v-if="(requestReadOnlyProperty.value != '' && requestReadOnlyProperty.value != null) || requestReadOnlyProperty.value === false">
                     <span class="font-weight-light" style="">  <!--Convert to Sentence Case-->
                       {{requestReadOnlyProperty.label}}: 
                     </span>
                     <br>
                     <span class="font-italic">
-                      {{requestReadOnlyProperty.value}}&nbsp;
+                      <div v-if="requestReadOnlyProperty.value === true">
+                        Yes
+                      </div>
+                      <div v-else-if="requestReadOnlyProperty.value === false">
+                        No
+                      </div>
+                      <div v-else>
+                        {{requestReadOnlyProperty.value}}
+                      </div>
                     </span>
                   </div>
+                  <div style="height:10px"></div>
                 </div>
             </div>
           </div>
 
          
           <br>
-          <button type="button" class="btn btn-primary btn-sm" 
-            :disabled="isSubmitting" 
-            @click.prevent="onSubmitRequest">Submit Request</button>
-            <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
+          <div v-if="isNewRequest">
+            <button type="button" class="btn btn-primary btn-sm" 
+              :disabled="isSubmitting" 
+              @click.prevent="onSubmitRequest">Submit Request</button>
+              <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
+          </div>
+          <div v-else>
+            <button type="button" class="btn btn-primary btn-sm" 
+              @click.prevent="onReturnHome">Return Home</button>
+              <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
+          </div>
 
       </div>
     </div>
@@ -109,7 +125,7 @@ export default {
   methods: {
 
     onSubmitRequest (evt) {
-
+      
       var vm = this;
       var storeState = vm.$store.state;
 
@@ -117,11 +133,30 @@ export default {
 
       vm.generateRandomStatusAndComments(storeState.currentRequest, vm.$store.state);
 
-      if (this.isNewRequest) {
-        this.submitNewRequest(requestsUrl, storeState.currentRequest, '/home');   
-      } else {
-        this.submitUpdatedRequest(requestsUrl, storeState.currentRequest, '/home');
-      }
+      //Check if item with that id exists
+      let queryId= `${storeState.currentRequest._id}`;
+      var url = apiMgr.getRequestsUrl().substring(0, apiMgr.getRequestsUrl().indexOf("?")) + queryId + apiMgr.getRequestsUrl().substring(apiMgr.getRequestsUrl().indexOf("?"), apiMgr.getRequestsUrl().length);
+
+      axios.get(url)
+          .then(res => { //If existing id is found
+              debugger;
+              console.log("getRequestsUrl return status: " + res.status);
+              console.log("onSubmitRequest - Existing request found. Updating request.");
+              
+              this.submitUpdatedRequest(requestsUrl, storeState.currentRequest, '/home');
+              
+              vm.isFetchingRequests = false;
+          })
+          .catch((err) => {
+              if(err.message.indexOf("404") > -1){ //If that id is not found
+                console.log("onSubmitRequest - No existing request found with id. Creating new request.");
+                this.submitNewRequest(requestsUrl, storeState.currentRequest, '/home');
+              } else {
+                vm.hasFailure = true;
+                vm.failureMessage = "Server unavailable or not working at this time. Please try later.";        
+              }
+                                    
+          })
 
     },
 
@@ -220,6 +255,11 @@ export default {
       })
     },
 
+    onReturnHome(){
+      this.$store.state.currentRequest = null;
+      localCacheMgr.uncacheItem("workingNewRequest");
+      this.$router.push("/home");
+    },
 
     // Temporary function to generate a random admin comment and request status
     generateRandomStatusAndComments(request, storeState) {

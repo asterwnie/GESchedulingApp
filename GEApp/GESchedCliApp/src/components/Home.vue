@@ -6,8 +6,13 @@
         <form class="needs-validation" novalidate>
           <button class="btn btn-primary btn-block" type="submit" @click.prevent="onNewRequest">New Request</button>
         </form>
-        <br/>
-        <br/>
+        <div v-if="currentRequestData != null">
+          <br>
+          <form class="needs-validation" novalidate>
+            <button class="btn btn-primary btn-block" type="submit" @click.prevent="onContinueRequest">Continue Request</button>
+          </form>
+        </div>
+        <hr>
 
     <div class="card">
       <div class="card-header text-center bg-secondary text-light">
@@ -18,7 +23,7 @@
     <div v-if="currentUserRequests.length < 1">
       <div class="card">
         <br>
-        <p style="text-align:center" class="font-italic text-muted">No requests yet! Hit "New Request" to create one.</p>
+        <p style="text-align:center" class="font-italic text-muted">No current requests! Hit "New Request" to create one.</p>
         <br>
       </div>
     </div>
@@ -36,7 +41,7 @@
             <div v-else>
               <button :id="requestItem._id" type="button" @click.prevent="onEditViewRequest" class="disableEdit btn btn-secondary btn-sm float-right">View</button>
             </div>
-            
+            <button :id="requestItem._id" type="button" @click.prevent="onDeleteRequest" class="enableEdit btn btn-danger btn-sm float-left">Delete</button>
           </div>
       </div>
       </div>
@@ -80,6 +85,10 @@ export default {
         isNew = false;
       }
       return isNew;
+    },
+
+    currentRequestData() {
+      return this.$store.state.currentRequest;
     }
 
   },
@@ -151,6 +160,12 @@ export default {
     onNewRequest: function(event) {
       console.log('Home.vue - onNewRequest activate');
       this.$store.state.currentRequest = null;
+      localCacheMgr.uncacheItem("workingNewRequest");
+      this.$router.push('/dofirst');
+    },
+
+    onContinueRequest: function(event) {
+      console.log('Home.vue - onNewRequest activate');
       this.$router.push('/dofirst');
     },
 
@@ -239,6 +254,60 @@ export default {
 
           
         }
+      },
+
+      onDeleteRequest: function (event){
+          console.log('Home.vue - onDeleteRequest activate');
+          let vm = this;
+
+          //get request for deletion
+          let currId = event.target.id;
+
+          let queryId = `/${currId}`;
+          var url = apiMgr.getRequestsUrl().substring(0, apiMgr.getRequestsUrl().indexOf("?")) + queryId + apiMgr.getRequestsUrl().substring(apiMgr.getRequestsUrl().indexOf("?"), apiMgr.getRequestsUrl().length);
+          console.log(`Home.vue - Query url: ${url}`);
+
+          //delete request
+          axios.delete(url)
+              .then(res => {
+                  console.log("getRequestsUrl return status: " + res.status);
+
+                  //refresh requests in UI
+                  vm.$nextTick(function () {
+                    console.log(`onDeleteRequest - Delete request id: ${currId} success. Refreshing data.`) // => 'updated'
+
+                    //get requests for current user
+                    let queryUser = `&requesterEmailContains=${vm.$store.state.currentUser.email}`;
+                    var url = apiMgr.getRequestsUrl() + queryUser;
+
+                    axios.get(url)
+                        .then(res => {
+                            console.log("getRequestsUrl return status: " + res.status);
+                            
+                            while(vm.$store.state.currentUserRequests.length > 0) {
+                              vm.$store.state.currentUserRequests.pop();
+                            }
+                            var foundRequests = res.data;
+
+                            $.each(foundRequests, function (index, request) {
+                              vm.$store.state.currentUserRequests.push(request);
+                            });
+                            
+                            vm.isFetchingRequests = false;
+                        })
+                        .catch((err) => {
+                            vm.hasFailure = true;
+                            vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                        })
+                  })
+              })
+              .catch((err) => {
+                  console.log(err);
+                  vm.hasFailure = true;
+                  vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+              })
+        
+        
       },
     },
 }

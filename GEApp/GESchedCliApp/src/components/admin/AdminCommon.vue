@@ -1,5 +1,7 @@
 <!--Admin "header" (appears on every admin page.)-->
 <template>
+<div>
+  <div style="width:100%; height:3px" class="fixed-top bg-danger z-index:-100"></div>
   <div class="container-fluid">
     <div class="row">
         <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
@@ -26,7 +28,7 @@
 
     <div id="adminUI" class="col col-12 col-md-5 col-lg-5 col-xl-6">
         <div id="newRequests" class="pad-bottom">
-            <div class="card">
+            <div class="card pad-bottom">
                 <div class="card-header bg-secondary text-light">
                 New Requests
                 </div>
@@ -72,7 +74,7 @@
                 </div>
         </div>
         <div id="upcomingRequests" class="pad-bottom">
-            <div class="card">
+            <div class="card pad-bottom">
                 <div class="card-header bg-secondary text-light">
                 Upcoming Requests
                 </div>
@@ -95,6 +97,7 @@
 
     <div class="col col-12 col-md-2 col-lg-2"></div>
   </div>
+</div>
 </div>
 </template>
 

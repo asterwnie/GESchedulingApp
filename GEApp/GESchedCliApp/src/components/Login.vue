@@ -329,7 +329,6 @@ export default {
                         storeState.loginContext.requesterName = storeState.currentUser.name;
                     }
 
-                    debugger;
                     if(res.data.isAdmin){
                         vm.$router.push('/admin/home');
                     } else {

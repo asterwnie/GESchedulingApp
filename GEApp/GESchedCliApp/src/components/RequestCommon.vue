@@ -260,14 +260,9 @@ export default {
         }
 
         if ($(inputCtrl).attr('isBoolean') == "true") {
-          let valLower = ctrlVal.toLowerCase();
-          if (valLower === 'yes' || valLower === 'true') {
-            storeState.currentRequest[inputCtrl.id] = true;
-          } else if (valLower === 'no' || valLower === 'false') {
-            storeState.currentRequest[inputCtrl.id] = false;
-          } else {
-            storeState.currentRequest[inputCtrl.id] = ctrlVal;
-          }
+            let tempVal = $(inputCtrl);
+            storeState.currentRequest[inputCtrl.id] = tempVal[0].checked;  
+            console.log(storeState.currentRequest[inputCtrl.id]);
         } else if ($(inputCtrl).attr('isNumeric') == "true") {
           try {
             if (ctrlVal == null || ctrlVal == "") {

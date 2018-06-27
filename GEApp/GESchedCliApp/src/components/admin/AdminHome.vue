@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import adminView from '@/components/AdminCommon.vue'
+import adminView from '@/components/admin/AdminCommon.vue'
 
 export default {
     data () {
