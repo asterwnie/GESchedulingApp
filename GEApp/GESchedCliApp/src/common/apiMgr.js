@@ -103,6 +103,15 @@ export const getRequestsUrl = () => {
     url = url + "?site=" + appDefConfig.site;
     return url;
 }
+export const getRequestByIdUrl = (id) => {
+    //debugger; // Uncomment to trigger breakpoint.
+
+    const appDefConfig = centralStore.state.appDefConfig;
+    var url = appDefConfig.requestsUrlTmpl.replace('{0}', appDefConfig.apiHost);
+    url = url.replace('{1}', appDefConfig.apiPort);
+    url = url + `/${id}?site=` + appDefConfig.site;
+    return url;
+}
 
 export const getUsersUrl = () => {
     //debugger; // Uncomment to trigger breakpoint.

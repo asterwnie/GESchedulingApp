@@ -209,7 +209,7 @@ exports.getRoom = function (req, res) {
             if (room == null) {
                 var errMsg = `roomController.getRoom - Room.findById did not find a room with id ${req.params.id}.`;
                 logger.error(errMsg);
-                res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
+                res.status(404).json({ error: errMsg }); // 404 - Not Found
             } else {
                 logger.info(`roomController.getRoom - Room.findById success. About to to send back http response with room:\n ${room}`);
                 res.status(200).json(room);  // 200 - OK

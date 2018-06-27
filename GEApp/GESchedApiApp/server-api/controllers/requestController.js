@@ -167,7 +167,7 @@ exports.getRequest = function (req, res) {
             if (request == null) {
                 var errMsg = `requestController.getRequest - Request.findById did not find a request with id ${req.params.id}.`;
                 logger.error(errMsg);
-                res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
+                res.status(404).json({ error: errMsg }); // 404 - Not found 
             } else {
                 logger.info(`requestController.getRequest - Request.findById success. About to to send back http response with request:\n ${request}`);
                 res.status(200).json(request);  // 200 - OK

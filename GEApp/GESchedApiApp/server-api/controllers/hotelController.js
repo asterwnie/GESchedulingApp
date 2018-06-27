@@ -178,7 +178,7 @@ exports.getHotel = function (req, res) {
             if (hotel == null) {
                 var errMsg = `hotelController.getHotel - Hotel.findById did not find a hotel with id ${req.params.id}.`;
                 logger.error(errMsg);
-                res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
+                res.status(404).json({ error: errMsg }); // 404 - Not FOund 
             } else {
                 logger.info(`hotelController.getHotel - Hotel.findById success. About to to send back http response with hotel:\n ${hotel}`);
                 res.status(200).json(hotel);  // 200 - OK

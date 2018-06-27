@@ -169,7 +169,7 @@ exports.getUser = function (req, res) {
             if (user == null) {
                 var errMsg = `userController.getUser - User.findById did not find a user with id ${req.params.id}.`;
                 logger.error(errMsg);
-                res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
+                res.status(404).json({ error: errMsg }); // 404 - Not Found 
             } else {
                 logger.info(`userController.getUser - User.findById success. About to to send back http response with user:\n ${user}`);
                 res.status(200).json(user);  // 200 - OK

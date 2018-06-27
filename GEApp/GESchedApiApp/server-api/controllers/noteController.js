@@ -178,7 +178,7 @@ exports.getNote = function (req, res) {
             if (note == null) {
                 var errMsg = `noteController.getNote - Note.findById did not find a note with id ${req.params.id}.`;
                 logger.error(errMsg);
-                res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
+                res.status(404).json({ error: errMsg }); // 404 - Not Found
             } else {
                 logger.info(`noteController.getNote - Note.findById success. About to to send back http response with note:\n ${note}`);
                 res.status(200).json(note);  // 200 - OK

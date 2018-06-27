@@ -149,7 +149,7 @@ exports.getRequestPrompt = function (req, res) {
             if (requestPrompt == null) {
                 var errMsg = `requestPromptController.getRequestPrompt - RequestPrompt.findById did not find a requestPrompt with id ${req.params.id}.`;
                 logger.error(errMsg);
-                res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
+                res.status(404).json({ error: errMsg }); // 404 - Not Found 
             } else {
                 logger.info(`requestPromptController.getRequestPrompt - RequestPrompt.findById success. About to to send back http response with requestPrompt:\n ${requestPrompt}`);
                 res.status(200).json(requestPrompt);  // 200 - OK

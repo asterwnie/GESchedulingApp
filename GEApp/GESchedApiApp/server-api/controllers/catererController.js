@@ -180,7 +180,7 @@ exports.getCaterer  = function (req, res) {
             if (caterer == null) {
                 var errMsg = `catererController.getCaterer  - Caterer .findById did not find a caterer with id ${req.params.id}.`;
                 logger.error(errMsg);
-                res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
+                res.status(404).json({ error: errMsg }); // 404 - Not found 
             } else {
                 logger.info(`catererController.getCaterer  - Caterer .findById success. About to to send back http response with caterer:\n ${caterer}`);
                 res.status(200).json(caterer);  // 200 - OK

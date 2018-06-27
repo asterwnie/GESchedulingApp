@@ -34,7 +34,7 @@
 
          
           <br>
-          <div v-if="isNewRequest">
+          <div v-if="canEditRequest">
             <button type="button" class="btn btn-primary btn-sm" 
               :disabled="isSubmitting" 
               @click.prevent="onSubmitRequest">Submit Request</button>
@@ -105,7 +105,6 @@ export default {
       storeState.currentViewTitle = storeState.appConfig.viewRequestViewTitle;
     }
 
-    storeState.currentViewTitle = this.title;
     storeState.enableNavBar = true;
 
     let requestPrompts = storeState.requestPrompts;
@@ -133,31 +132,40 @@ export default {
 
       vm.generateRandomStatusAndComments(storeState.currentRequest, vm.$store.state);
 
-      //Check if item with that id exists
-      let queryId= `${storeState.currentRequest._id}`;
-      var url = apiMgr.getRequestsUrl().substring(0, apiMgr.getRequestsUrl().indexOf("?")) + queryId + apiMgr.getRequestsUrl().substring(apiMgr.getRequestsUrl().indexOf("?"), apiMgr.getRequestsUrl().length);
+      if (this.isNewRequest) {
 
-      axios.get(url)
-          .then(res => { //If existing id is found
-              debugger;
+        this.submitNewRequest(requestsUrl, storeState.currentRequest, '/home');
+
+      } else {
+       
+        //Check if item with that id exists
+        vm.isSubmitting = true;
+        var url = apiMgr.getRequestByIdUrl(storeState.currentRequest._id);
+
+        axios.get(url)
+          .then(res => {
+
               console.log("getRequestsUrl return status: " + res.status);
-              console.log("onSubmitRequest - Existing request found. Updating request.");
-              
-              this.submitUpdatedRequest(requestsUrl, storeState.currentRequest, '/home');
-              
-              vm.isFetchingRequests = false;
+
+              if (res.status == 200) {
+                console.log("onSubmitRequest - Existing request found. Updating request.");             
+                this.submitUpdatedRequest(requestsUrl, storeState.currentRequest, '/home');
+              } else {
+                console.log("onSubmitRequest - status code is not 200, assume request not found. Creating new request.");
+                this.submitNewRequest(requestsUrl, storeState.currentRequest, '/home');
+              }          
           })
           .catch((err) => {
-              if(err.message.indexOf("404") > -1){ //If that id is not found
+              if(err.response != null && err.response.status == 404) { //If that id is not found
                 console.log("onSubmitRequest - No existing request found with id. Creating new request.");
                 this.submitNewRequest(requestsUrl, storeState.currentRequest, '/home');
               } else {
                 vm.hasFailure = true;
                 vm.failureMessage = "Server unavailable or not working at this time. Please try later.";        
               }
-                                    
+              vm.isSubmitting = false;                   
           })
-
+      }
     },
 
 
@@ -257,7 +265,6 @@ export default {
 
     onReturnHome(){
       this.$store.state.currentRequest = null;
-      localCacheMgr.uncacheItem("workingNewRequest");
       this.$router.push("/home");
     },
 
