@@ -1,6 +1,10 @@
 <!--Outer "wrapper" of the app, appears on every screen-->
 <template>
   <div id="app">
+    <!--Admin Red Bar-->
+    <div v-if="isAdmin">
+      <div style="width:100%; height:3px" class="fixed-top bg-danger z-index:100"></div>
+    </div>
     <!--Top bar (header)-->
     <div id="headerBar" class="app-bar-style fixed-top d-flex justify-content-between bd-highlight mb-3">
       <!--Back button-->
@@ -11,9 +15,9 @@
       <div class="p-2 align-self-center">{{ title }}</div>
       <!--Menu button-->
       <div class="p-2 align-self-center navbar navbar-default navbar-fixed-top">
-        <button id="menuButton" :hidden="!$store.state.enableNavBar" type="button" class="navbar-toggle" data-toggle="offcanvas" data-target="#myNavmenu" data-canvas="body">
-          <span class="fas fa-align-justify fa-lg"></span>
-        </button>
+        <div id="menuButton" :hidden="!$store.state.enableNavBar" class="navbar-toggle" data-toggle="offcanvas" data-target="#myNavmenu" data-canvas="body">
+          <span class="fas fa-align-justify fa-lg text-white"></span>
+        </div>
       </div>
     </div>
     <transition><!--<transition name="slide" mode="out-in">-->
@@ -82,7 +86,8 @@ export default {
 
   data () {
     return {
-      modalShowMenu: false
+      modalShowMenu: false,
+      isAdmin: this.$store.state.inAdminMode
     }
   },
 

@@ -1,7 +1,12 @@
-<!--Admin "header" (appears on every admin page.)-->
+<!--Admin "header" (appears on every admin page.)
+***NOTE: This will be moved to App.vue once it is fleshed out.
+This is NOT the final location of the admin "header" items.
+
+-->
 <template>
 <div>
-  <div style="width:100%; height:3px" class="fixed-top bg-danger z-index:-100"></div>
+
+    <div style="width:100%; height:3px" class="fixed-top bg-danger z-index:100"></div>
   <div class="container-fluid">
     <div class="row">
         <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
