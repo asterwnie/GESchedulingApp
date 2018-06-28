@@ -110,6 +110,8 @@ export default {
         console.log('Login.vue activated.');
         var vm = this; 
         var storeState = this.$store.state;
+
+        storeState.inAdminMode = false;
     
         storeState.currentViewTitle = this.title;
         storeState.enableNavBar = false;
