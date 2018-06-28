@@ -131,6 +131,7 @@ export default {
         this.isFetchingDefAppConfig = true;
         this.isFetchingNotes = true;
         this.isFetchingHotels = true;
+        this.isFetchingCaterers = true;
         this.isFetchingRequestPrompts = true;
         this.isFetchingRooms = true;
         
@@ -140,6 +141,7 @@ export default {
         this.getRequestPrompts();
         this.getRooms();
         this.getRequests();
+        this.getCaterers();
 
     },
 
@@ -149,6 +151,7 @@ export default {
                 this.isFetchingDefAppConfig || 
                 this.isFetchingNotes || 
                 this.isFetchingHotels ||
+                this.isFetchingCaterers ||
                 this.isFetchingRequestPrompts ||
                 this.isFetchingRooms ||
                 this.isFetchingRequests
@@ -220,7 +223,7 @@ export default {
         getHotels() {
 
             var vm = this;
-            var url = apiMgr.getHotelsUrl() + '?orderBy=seqNum:1'; 
+            var url = apiMgr.getHotelsUrl() + '&orderBy=seqNum:1'; 
 
             axios.get(url)
                 .then(res => {
@@ -228,6 +231,25 @@ export default {
 
                     vm.$store.state.hotels = res.data;
                     vm.isFetchingHotels = false;
+                })
+                .catch((err) => {
+                    vm.hasFailure = true;
+                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                })
+
+        },
+
+        getCaterers() {
+
+            var vm = this;
+            var url = apiMgr.getCaterersUrl() + '&orderBy=seqNum:1'; 
+
+            axios.get(url)
+                .then(res => {
+                    console.log("getCaterersUrl return status: " + res.status);
+
+                    vm.$store.state.caterers = res.data;
+                    vm.isFetchingCaterers = false;
                 })
                 .catch((err) => {
                     vm.hasFailure = true;

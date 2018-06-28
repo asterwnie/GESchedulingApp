@@ -73,6 +73,16 @@ export const getHotelsUrl = () => {
     return url;
 }
 
+export const getCaterersUrl = () => {
+    //debugger; // Uncomment to trigger breakpoint.
+
+    const appDefConfig = centralStore.state.appDefConfig;
+    var url = appDefConfig.caterersUrlTmpl.replace('{0}', appDefConfig.apiHost);
+    url = url.replace('{1}', appDefConfig.apiPort);
+    url = url + "?site=" + appDefConfig.site;
+    return url;
+}
+
 
 export const getRoomsUrl = () => {
     //debugger; // Uncomment to trigger breakpoint.

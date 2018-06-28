@@ -20,9 +20,17 @@
             </div>
           </div>
           <div v-else>
-            <div class="LocalCaterers bg-success">
-              <div v-for="(caterer, index) in catererItems" :key="index">
-                  <p>{{ caterer }}</p>
+            <div class="LocalCaterers text-white">
+              <div class="card bg-success" style="margin-bottom:7px" v-for="(caterer, index) in catererItems" :key="index">
+                  <div class="card-header">{{ caterer.name }}</div>
+                  <div class="card-body">
+                    <div class="card-text" v-for="(line, index) in caterer.address" :key="index">
+                      {{line}}
+                    </div>
+                    <br>
+                    <div></div>
+                    <div></div>
+                  </div>
               </div>
             </div>
           </div>
@@ -63,6 +71,10 @@ export default {
 
     this.$store.state.currentViewTitle = this.title;
    this.$store.state.enableNavBar = true;
+  },
+
+  created(){
+    console.log(this.catererItems);
   }
 }
 
