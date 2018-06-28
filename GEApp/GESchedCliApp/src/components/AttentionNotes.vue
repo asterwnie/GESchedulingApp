@@ -19,7 +19,7 @@
     </div>
     
     <div class="fixed-bottom d-flex justify-content-between" style="margin: 10px;">
-      <button type="button" class="btn btn-primary btn-sm" @click.prevent="$router.push('requestsummary')">Continue Request ></button>
+      <button type="button" class="btn btn-primary btn-sm" @click.prevent="$router.push('/requestsummary')">Continue Request ></button>
     </div>
   </div>
 </template>
@@ -39,12 +39,19 @@ export default {
       return this.$store.state.appConfig.attentionNotesDescription; 
     },
     noteItems() {
-            return this.$store.state.notes;
+      return this.$store.state.notes;
+    },
+    inAdminMode() {
+      return this.$store.state.inAdminMode;
     }
   },
 
   activated() {
     console.log('AttentionNotes.vue activated.');
+
+    if (this.inAdminMode) {
+       this.$router.push('/requestsummary'); // In Admin mode, no need to show these notes.
+    }
 
     if (this.$store.state.appConfig.attentionNotesViewTitle == null) {
       this.$router.push('/login'); // Config data lost, force back to login to refetch data.

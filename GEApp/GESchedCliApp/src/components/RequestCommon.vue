@@ -222,7 +222,11 @@ export default {
                 // But should not stop the UI from going to the next screen.
                 vm.isSubmitting = false;
                 vm.hasFailure = false;
-                vm.$router.push('/attentionNotes');
+                if (vm.inAdminMode) {
+                  vm.$router.push('/requestsummary');
+                } else {
+                  vm.$router.push('/attentionNotes');
+                }
             })
         }
   },
@@ -248,7 +252,12 @@ export default {
         if (nextScreenNum <= vm.$store.state.numOfRequestScreens) {
           vm.$router.push('/request/' + nextScreenNum);          
         } else {
-          vm.$router.push('/attentionNotes');
+
+          if (vm.inAdminMode) {
+            vm.$router.push('/requestsummary');
+          } else {
+            vm.$router.push('/attentionNotes');
+          }
         }
         
       }

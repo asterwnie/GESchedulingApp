@@ -42,11 +42,18 @@ export default {
     },
     noteItems() {
       return this.$store.state.notes;
+    },
+    inAdminMode() {
+      return this.$store.state.inAdminMode;
     }
   },
 
   activated() {
     console.log('DoFirst.vue activated.');
+
+    if (this.inAdminMode) {
+       this.$router.push('/request/1'); // In Admin mode, no need to show these notes.
+    }
 
     if (this.$store.state.appConfig.doFirstViewTitle == null) {
       this.$router.push('/login'); // Config data lost, force back to login to refetch data.

@@ -6,8 +6,14 @@
 
           <div class="card">
             <div class="card-header bg-info text-light">
-              Request Summary
+              Request Summary &nbsp;&nbsp;<span class="badge badge-warning" v-if="inAdminMode" :adminCommentCtrlId="adminCommentCtrlId" @click.prevent="onAddAdminComment"><span class="far fa-comment-dots"></span></span>
             </div>
+
+            <div v-if="inAdminMode">  
+              <label id="generalAdminCommentLabel" for="generalAdminComment" style="display:none;">&nbsp;&nbsp;General Comment</label>
+              <textarea id="generalAdminComment" :screenNum="screenNum" style="display:none; border: 2px solid orange;" placeholder="Add General Comment" class="is-request-data is-admin-comment form-control form-control-sm"></textarea>
+            </div>
+
             <div class="card-body">
                 <div style="width:100%" v-for="(requestReadOnlyProperty, index) in requestReadOnlyProperties" :key="index">
                   <div v-if="(requestReadOnlyProperty.value != '' && requestReadOnlyProperty.value != null) || requestReadOnlyProperty.value === false">
@@ -85,6 +91,14 @@ export default {
         isNew = false;
       }
       return isNew;
+    },
+
+    adminCommentCtrlId() {
+      return this.ctrlId + "AdminComment";
+    },
+
+    inAdminMode() {
+      return this.$store.state.inAdminMode;
     }
 
   },
@@ -122,6 +136,18 @@ export default {
   },
 
   methods: {
+
+    onAddAdminComment(evt) {  
+      var adminCtrlLabel = $("#generalAdminCommentLabel");
+      var adminCtrl = $("#generalAdminComment");
+      if (!adminCtrl.is(':visible')) {
+        adminCtrlLabel.show();
+        adminCtrl.show();
+      } else {
+        adminCtrlLabel.hide();
+        adminCtrl.hide();
+      }
+    },
 
     onSubmitRequest (evt) {
       
