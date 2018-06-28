@@ -156,6 +156,8 @@ export default {
       return;
     }
 
+    $('.is-admin-comment').hide();
+
     if (this.isNewRequest) {
       storeState.currentViewTitle = storeState.appConfig.newRequestViewTitle;
     } else {

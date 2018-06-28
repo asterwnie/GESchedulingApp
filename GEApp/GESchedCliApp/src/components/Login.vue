@@ -96,7 +96,9 @@ export default {
             isFetchingDefAppConfig: true,
             isFetchingNotes: true,
             isFetchingHotels: true,
+            isFetchingCaterers: true,
             isFetchingRequestPrompts: true,
+            isFetchingRequests: true,
 
             canShowError: false,
             hasFailure: false,
@@ -136,14 +138,15 @@ export default {
         this.isFetchingCaterers = true;
         this.isFetchingRequestPrompts = true;
         this.isFetchingRooms = true;
+        this.isFetchingRequests = true;
         
         this.getDefAppConfig(); 
         this.getNotes();
         this.getHotels();
+        this.getCaterers();
         this.getRequestPrompts();
         this.getRooms();
         this.getRequests();
-        this.getCaterers();
 
     },
 
