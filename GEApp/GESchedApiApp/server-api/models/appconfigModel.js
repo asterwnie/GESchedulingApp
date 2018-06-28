@@ -8,125 +8,110 @@ const Schema = mongoose.Schema;
 
 // The schema definition for a note entity
 
-const AppconfigSchema = new Schema({
+const appConfigSchema = new Schema({
 
     siteCode: {
         type: String,
-        required: [true, 'Appconfig siteCode is required!']
+        required: [true, 'appConfig siteCode is required!']
     },
 
     siteName: {
         type: String,
-        required: [true, 'Appconfig siteName is required!']
+        required: [true, 'appConfig siteName is required!']
     },
     
     siteAddress: {
         type: String,
-        required: [true, 'Appconfig siteAddress is required!']
+        required: [true, 'appConfig siteAddress is required!']
     },
     
     appTitle: {
         type: String,
-        required: [true, 'Appconfig siteTitle is required!']
+        required: [true, 'appConfig siteTitle is required!']
     }, 
   
     aboutViewTitle: {
         type: String,
-        required: [true, 'Appconfig aboutViewTitle is required!']
+        required: [true, 'appConfig aboutViewTitle is required!']
     }, 
     
     aboutViewDescription: {
         type: String,
-        required: [true, 'Appconfig aboutViewDescription is required!']
+        required: [true, 'appConfig aboutViewDescription is required!']
     }, 
    
     techSupportViewTitle: {
         type: String,
-        required: [true, 'Appconfig techSupportViewTitle is required!']
+        required: [true, 'appConfig techSupportViewTitle is required!']
     }, 
    
     techSupportViewDescription: {
         type: String,
-        required: [true, 'Appconfig techSupportViewDescription is required!']
+        required: [true, 'appConfig techSupportViewDescription is required!']
     },
    
-    CaterersViewTitle: { 
+    caterersViewTitle: { 
         type: String,
-        required: [true, 'Appconfig  CaterersViewTitle is required!']
+        required: [true, 'appConfig  caterersViewTitle is required!']
     }, 
    
-    CaterersViewDescription: {  
+    caterersViewDescription: {  
         type: String,
-        required: [true, 'Appconfig CaterersViewDescription is required!']
+        required: [true, 'appConfig caterersViewDescription is required!']
     }, 
     
-    HotelsViewTitle: {  
+    hotelsViewTitle: {  
         type: String,
-        required: [true, 'Appconfig HotelsViewTitle is required!']
+        required: [true, 'appConfig hotelsViewTitle is required!']
     },
 
-    HotelsViewDescription: { 
+    hotelsViewDescription: { 
         type: String,
-        required: [true, 'Appconfig HotelsViewDescription is required!']
+        required: [true, 'Appconfig hotelsViewDescription is required!']
     },
 
-    GuestWiFiAccessViewTitle: {
+    guestWiFiAccessViewTitle: {
         type: String,
-        required: [true, 'Appconfig GuestWiFiAccessViewTitle is required!']
+        required: [true, 'appConfig guestWiFiAccessViewTitle is required!']
     },
 
-    GuestWiFiAccessViewDescription: {  
+    guestWiFiAccessViewDescription: {  
         type: String,
-        required: [true, 'Appconfig GuestWiFiAccessViewDescription is required!']
+        required: [true, 'appConfig guestWiFiAccessViewDescription is required!']
     },
 
-    RequestStatusMessageUnderReview: {  
+    requestStatusMessageUnderReview: {  
         type: String,
-        required: [true, 'Appconfig RequestStatusMessageUnderReview is required!']
+        required: [true, 'appConfig requestStatusMessageUnderReview is required!']
     },
 
-    RequestStatusMessageApproved: {  
+    requestStatusMessageApproved: {  
         type: String,
-        required: [true, 'Appconfig RequestStatusMessageApproved is required!']
+        required: [true, 'appConfig requestStatusMessageApproved is required!']
     },
 
-    RequestStatusMessageRejected: { 
+    requestStatusMessageRejected: { 
         type: String,
-        required: [true, 'Appconfig RequestStatusMessageRejected is required!']
-    },
-    
-    type: {
-        type: String,
-        required: [true, 'Appconfig type is required!']
+        required: [true, 'appConfig requestStatusMessageRejected is required!']
     },
 
-    seqNum: { 
-        type: Number
-    },
-   
-    text: {
-        type: String,
-        required: [true, 'Appconfig text is required!']
-    },
-}, 
-{
     timestamps: true // auto-add createdAt and updatedAt
 });
 
 
 // Object to hold a notes model per site.
-var noteModelBySite = {};
+var appConfigModelBySite = {};
 
 
 // Return a notes model using the corresponding site database connection.
 module.exports = function (siteCode) {   
 
     let siteCodeUpper = siteCode.toUpperCase();
-    if (appconfigModelBySite[siteCodeUpper] == null) {
+    if (appConfigModelBySite[siteCodeUpper] == null) {
         let dbConnection = getDbConnection(siteCodeUpper);       
         // Mongoose automatically creates a notes collection if one does not exist.
-        appconfigModelBySite[siteCodeUpper] = dbConnection.model(`notes`, AppconfigSchema);
+        appConfigModelBySite[siteCodeUpper] = dbConnection.model(`appConfigs`, appConfigSchema);
     }
-    return appconfigModelBySite[siteCodeUpper];
+    return appConfigModelBySite[siteCodeUpper];
 
 }

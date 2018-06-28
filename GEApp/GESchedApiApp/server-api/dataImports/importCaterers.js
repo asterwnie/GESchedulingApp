@@ -128,7 +128,7 @@ function extractCatererItems(fileData) {
         if (!blockProcessed && block.search(directive) > -1) {
             var CatererWebsite = block.replace(directive, "").trim();
             if (CatererWebsite != "") {
-                newCaterer.Website = CatererWebsite;
+                newCaterer.website = CatererWebsite;
             }
         }
 
