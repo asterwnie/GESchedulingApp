@@ -329,7 +329,8 @@ export default {
                         storeState.loginContext.requesterName = storeState.currentUser.name;
                     }
 
-                    if(res.data.isAdmin){
+                    if(storeState.currentUser.isAdmin){
+                        storeState.inAdminMode = true;
                         vm.$router.push('/admin/home');
                     } else {
                         vm.$router.push('/home');

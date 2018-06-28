@@ -22,6 +22,7 @@ const store = new Vuex.Store({
 
         currentUserRequests: [],    // Will be assigned when requests are queried.
 
+        inAdminMode: false,
 
         // These reference data Will be assigned during login page startup
         appConfig: {},      

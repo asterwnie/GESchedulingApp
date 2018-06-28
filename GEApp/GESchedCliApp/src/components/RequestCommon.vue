@@ -10,6 +10,7 @@
 
               <template v-if="(requestPrompt.inputType.ctrlType == 'text' && requestPrompt.screenNum == currentScreenNum)"> 
                 <text-input 
+                  :inAdminMode="inAdminMode"
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
                   :promptLabel="requestPrompt.label"
@@ -114,6 +115,9 @@ export default {
   },
 
   computed: {
+    inAdminMode() {
+      return this.$store.state.inAdminMode;
+    },
     requestPrompts() {
       return this.$store.state.requestPrompts;
     },
