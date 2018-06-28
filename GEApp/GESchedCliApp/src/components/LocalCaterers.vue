@@ -4,11 +4,26 @@
     <div class="row">
       <div class="col col-sm-1 col-md-2 col-lg-4"></div>
       <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%;">
-          <p>{{ viewDescription }}</p>
+          <div class="alert alert-info">{{ viewDescription }}</div>
+          <h4>Location:</h4>
+          <div class="font-weight-light">
+            <div class="text-left" v-html="$store.state.appConfig.siteName"></div>
+            <div class="text-left" v-html="$store.state.appConfig.siteAddress"></div>
+          </div>
+          <hr>
           <br/>
-          <div class="LocalCaterers">
-            <div v-for="(caterer, index) in catererItems" :key="index">
-                <p>{{ caterer }}</p> <!--style this so it has less spacing later-->
+          <div v-if="catererItems == null">
+            <div class="card font-italic">
+              <div class="card-body">
+                No local caterers provided.
+              </div>
+            </div>
+          </div>
+          <div v-else>
+            <div class="LocalCaterers bg-success">
+              <div v-for="(caterer, index) in catererItems" :key="index">
+                  <p>{{ caterer }}</p>
+              </div>
             </div>
           </div>
 
