@@ -68,6 +68,8 @@
                         <h6 class="text-center" v-html="$store.state.appConfig.siteAddress"></h6>
                         <br>
                     </div>
+                    <br><button class="btn btn-primary btn-sm btn-block" :hidden="!inDebugMode" @click.prevent="onDebug">Debug Info ></button><br><div id="debugOutput"></div>
+                      
 
             </div>
             <div class="col col-sm-1 col-md-2 col-lg-4"></div>
@@ -85,6 +87,8 @@ import { validatePrompts, inferNumOfRequestScreens } from '@/common/requestMgr.j
 export default {  
     data () {
         return {
+            inDebugMode: true,
+
             title: "Login",
 
             requesterEmail: '',
@@ -95,9 +99,10 @@ export default {
 
             isFetchingDefAppConfig: true,
             isFetchingNotes: true,
-            isFetchingHotels: true,
+            isFetchingHotels: true,      
             isFetchingCaterers: true,
             isFetchingRequestPrompts: true,
+            isFetchingRooms: true,
             isFetchingRequests: true,
 
             canShowError: false,
@@ -180,7 +185,8 @@ export default {
                 })
                 .catch((err) => {
                     vm.hasFailure = true;
-                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                    vm.failureMessage = "Server unavailable or not working at this time. Please try later. [error code: 1]";   
+                     vm.isFetchingDefAppConfig = false;                            
                 })
 
                 
@@ -201,7 +207,8 @@ export default {
                 })
                 .catch((err) => {
                     vm.hasFailure = true;
-                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                    vm.failureMessage = "Server unavailable or not working at this time. Please try later. [error code: 2]"; 
+                    vm.isFetchingRequestPrompts = false;                              
                 })
 
         },
@@ -220,7 +227,8 @@ export default {
                 })
                 .catch((err) => {
                     vm.hasFailure = true;
-                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.  [error code: 3]";
+                    vm.isFetchingNotes = false;                               
                 })
 
         },
@@ -235,11 +243,12 @@ export default {
                     console.log("getHotelsUrl return status: " + res.status);
 
                     vm.$store.state.hotels = res.data;
-                    vm.isFetchingHotels = false;
+                    vm.isFetchingHotels = false;                  
                 })
                 .catch((err) => {
                     vm.hasFailure = true;
-                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.  [error code: 4]";   
+                    vm.isFetchingHotels = false;                            
                 })
 
         },
@@ -258,7 +267,8 @@ export default {
                 })
                 .catch((err) => {
                     vm.hasFailure = true;
-                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                    vm.failureMessage = "Server unavailable or not working at this time. Please try later. [error code: 5]";  
+                    vm.isFetchingCaterers = false;                             
                 })
 
         },
@@ -277,7 +287,8 @@ export default {
                 })
                 .catch((err) => {
                     vm.hasFailure = true;
-                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                    vm.failureMessage = "Server unavailable or not working at this time. Please try later. [error code: 6]";  
+                     vm.isFetchingRooms = false;                             
                 })
 
         },
@@ -296,7 +307,8 @@ export default {
                 })
                 .catch((err) => {
                     vm.hasFailure = true;
-                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                    vm.failureMessage = "Server unavailable or not working at this time. Please try later. [error code: 7]";  
+                    vm.isFetchingRequests = false;                             
                 })
 
         },
@@ -382,6 +394,19 @@ export default {
                 }
 
             })
+        },
+
+        onDebug() {
+            var output = "";
+            output += ("[isFetchingDefAppConfig: " + this.isFetchingDefAppConfig + "]");
+            output += ("[isFetchingNotes: " + this.isFetchingNotes + "]");
+            output += ("[isFetchingHotels: " + this.isFetchingHotels + "]");
+            output += ("[isFetchingCaterers: " + this.isFetchingCaterers + "]");
+            output += ("[isFetchingRequestPrompts: " + this.isFetchingRequestPrompts + "]");
+            output += ("[isFetchingRequests: " + this.isFetchingRequests + "]");
+            output += ("[isFetchingRooms: " + this.isFetchingRooms + "]");
+
+            $('#debugOutput').text(output);
         }
 
     }
