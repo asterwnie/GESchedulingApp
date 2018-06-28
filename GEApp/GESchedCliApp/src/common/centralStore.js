@@ -54,6 +54,8 @@ const store = new Vuex.Store({
 
             hotelsUrlTmpl: 'http://{0}:{1}/api/hotels',
 
+            caterersUrlTmpl: 'http://{0}:{1}/api/caterers',
+
             roomsUrlTmpl: 'http://{0}:{1}/api/rooms',
 
             requestPromptsUrlTmpl: 'http://{0}:{1}/api/requestPrompts',

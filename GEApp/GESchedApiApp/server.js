@@ -83,6 +83,10 @@ userRoutes(app);
 var hotelRoutes = require('./server-api/routes/hotelRoutes');
 hotelRoutes(app);
 
+// Set up API routes for the caterer entity:
+var catererRoutes = require('./server-api/routes/catererRoutes');
+catererRoutes(app);
+
 // Set up API routes for the RequestPrompt entity:
 var requestPromptRoutes = require('./server-api/routes/requestPromptRoutes');
 requestPromptRoutes(app);
