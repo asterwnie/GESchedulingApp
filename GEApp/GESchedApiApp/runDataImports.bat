@@ -12,6 +12,3 @@ node .\server-api\dataImports\importRequestPrompts.js
 
 node .\server-api\dataImports\deleteCaterers.js
 node .\server-api\dataImports\importCaterers.js
-
-node .\server-api\dataImports\deleteUsers.js
-node .\server-api\dataImports\importUsers.js

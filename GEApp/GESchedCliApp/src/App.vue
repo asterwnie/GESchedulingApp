@@ -11,9 +11,9 @@
       <div class="p-2 align-self-center">{{ title }}</div>
       <!--Menu button-->
       <div class="p-2 align-self-center navbar navbar-default navbar-fixed-top">
-        <div id="menuButton" :hidden="!$store.state.enableNavBar" class="navbar-toggle" data-toggle="offcanvas" data-target="#myNavmenu" data-canvas="body">
-          <span class="fas fa-align-justify fa-lg text-white"></span>
-        </div>
+        <button id="menuButton" :hidden="!$store.state.enableNavBar" type="button" class="navbar-toggle" data-toggle="offcanvas" data-target="#myNavmenu" data-canvas="body">
+          <span class="fas fa-align-justify fa-lg"></span>
+        </button>
       </div>
     </div>
     <transition><!--<transition name="slide" mode="out-in">-->
