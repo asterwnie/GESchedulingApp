@@ -20,6 +20,7 @@
 
               <template v-if="(requestPrompt.inputType.ctrlType == 'textArea' && requestPrompt.screenNum == currentScreenNum)"> 
                 <text-area-input 
+                  :inAdminMode="inAdminMode"
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
                   :promptLabel="requestPrompt.label"
@@ -29,6 +30,7 @@
 
               <template v-if="(requestPrompt.inputType.ctrlType == 'email' && requestPrompt.screenNum == currentScreenNum)"> 
                 <email-input 
+                  :inAdminMode="inAdminMode"
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
                   :promptLabel="requestPrompt.label" 
@@ -38,6 +40,7 @@
 
               <template v-if="(requestPrompt.inputType.ctrlType == 'number' && requestPrompt.screenNum == currentScreenNum)"> 
                 <number-input 
+                  :inAdminMode="inAdminMode"
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
                   :promptLabel="requestPrompt.label" 
@@ -47,6 +50,7 @@
 
               <template v-if="(requestPrompt.inputType.ctrlType == 'yesNo' && requestPrompt.screenNum == currentScreenNum)"> 
                 <yes-no-input 
+                  :inAdminMode="inAdminMode"
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
                   :promptLabel="requestPrompt.label" 
@@ -55,7 +59,8 @@
               </template>
 
               <template v-if="(requestPrompt.inputType.ctrlType == 'custom' && requestPrompt.inputType.customCtrlId == 'locationOfEventCtrl' && requestPrompt.screenNum == currentScreenNum)"> 
-                <event-location-input 
+                <event-location-input
+                  :inAdminMode="inAdminMode" 
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
                   :promptLabel="requestPrompt.label" 
@@ -65,6 +70,7 @@
 
               <template v-if="(requestPrompt.inputType.ctrlType == 'custom' && requestPrompt.inputType.customCtrlId == 'eventDateTimeCtrl' && requestPrompt.screenNum == currentScreenNum)"> 
                 <event-date-time-input 
+                  :inAdminMode="inAdminMode"
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
                   :promptLabel="requestPrompt.label" 
@@ -277,6 +283,10 @@ export default {
           } catch (err) {
             storeState.currentRequest[inputCtrl.id] = ctrlVal;
           }
+        } else if ($(inputCtrl).attr('isRoom') == "true") {
+            // ToDo: Need to track and store the select room from Find Room
+            storeState.currentRequest[inputCtrl.id] = ctrlVal; //ToDo: need to assign the selected room
+
         } else {
           storeState.currentRequest[inputCtrl.id] = ctrlVal;
         }          

@@ -1,7 +1,7 @@
 <template>
 
   <div>  
-    <label :for="ctrlId">{{ promptLabel }}</label>&nbsp;&nbsp;<span v-if="inAdminMode" class="badge badge-warning" :adminCommentCtrlId="adminCommentCtrlId" @click.prevent="addAdminComment"><span class="far fa-comment-dots"></span></span>
+    <label :for="ctrlId">{{ promptLabel }}</label>&nbsp;&nbsp;<span v-if="inAdminMode" class="badge badge-warning" :adminCommentCtrlId="adminCommentCtrlId" @click.prevent="onAddAdminComment"><span class="far fa-comment-dots"></span></span>
     <input type="text" :id="ctrlId" :screenNum="screenNum" class="is-request-data form-control form-control-sm">
     <p :id="dataInvalidMsgId" style="display:none;" class="text-danger">Invalid input.</p>
     <p :id="dataRequiredMsgId" style="display:none;" class="text-danger">This field is required.</p>
@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import { addAdminComment } from '@/common/requestMgr.js'
+
 export default {
   props: ['screenNum', 'ctrlId', 'promptLabel', 'dataInvalidMsgId', 'dataRequiredMsgId', 'inAdminMode'],
 
@@ -21,15 +23,13 @@ export default {
   },
 
   methods: {
-
-    addAdminComment(evt) {     
-      var adminCommentCtrlSelector = "#" + $(this).attr('adminCommentCtrlId');
-      if (!$(adminCommentCtrlSelector).is(':visible')) {
-        $(adminCommentCtrlSelector).show();
+    onAddAdminComment(evt) {  
+      var adminCtrl = $("#" +$(this).attr('adminCommentCtrlId'));
+      if (!adminCtrl.is(':visible')) {
+          adminCtrl.show();
       } else {
-        $(adminCommentCtrlSelector).hide();
+          adminCtrl.hide();
       }
-
     }
   }
 }
