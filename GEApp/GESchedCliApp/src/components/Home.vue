@@ -165,6 +165,7 @@ export default {
     },
 
     onContinueRequest: function(event) {
+      this.$store.state.currentRequest = null;
       console.log('Home.vue - onNewRequest activate');
       this.$router.push('/dofirst');
     },
