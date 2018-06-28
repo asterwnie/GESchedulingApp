@@ -87,7 +87,7 @@ import { validatePrompts, inferNumOfRequestScreens } from '@/common/requestMgr.j
 export default {  
     data () {
         return {
-            inDebugMode: true,
+            inDebugMode: false,
 
             title: "Login",
 
