@@ -4,7 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
+
         {
             "type": "node",
             "request": "launch",
@@ -82,6 +82,18 @@
             "request": "launch",
             "name": "ADMIN: Delete Caterers",
             "program": "${workspaceFolder}/server-api/dataImports/deleteCaterers.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "ADMIN: Import appConfigs",
+            "program": "${workspaceFolder}/server-api/dataImports/importAppConfigs.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "ADMIN: Delete appConfigs",
+            "program": "${workspaceFolder}/server-api/dataImports/deleteAppConfigs.js"
         }
     ]
 }

@@ -7,7 +7,7 @@ const appRoot = require('app-root-path');
 const mongoose = require('mongoose'); // Helper libray for MongoDB. http://mongoosejs.com/ 
 const appConfig = require(`${appRoot}/server.config`); // Load app configuration settings server.config.js
 const logger = require(`${appRoot}/server-api/logger`); // Create logging helper
-const getappConfigType = require(`${appRoot}/server-api/models/appConfigModel`);
+const getAppConfigType = require(`${appRoot}/server-api/models/appConfigModel`);
 
 mongoose.Promise = global.Promise;
 
@@ -21,24 +21,24 @@ if (args.length == 3 && args[2] != null) { siteCode = args[2]; }
 
 const fileName = `appConfigs-${siteCode}.txt`;
 
-let appConfig = getappConfigType(siteCode);
+let appConfig = getAppConfigType(siteCode);
 
-var totalNumOfappConfigs = 0;
-var totalNumOfappConfigsCreated = 0;
+var totalNumOfAppConfigs = 0;
+var totalNumOfAppConfigsCreated = 0;
 
 const delyInSecs = 3;
-const timer = setInterval(() => doappConfigsImport(), delyInSecs * 1000); // Ensures db connection is established in getappConfigType since it's an async operation.
+const timer = setInterval(() => doAppConfigsImport(), delyInSecs * 1000); // Ensures db connection is established in getappConfigType since it's an async operation.
 
 
 
-function doappConfigsImport() {
+function doAppConfigsImport() {
 
     try {
         clearInterval(timer);
 
         var fileData = fs.readFileSync(`./server-api/dataImports/dataFiles/${fileName}`).toString()
         
-        var result = extractappConfigItems(fileData);
+        var result = extractAppConfigItems(fileData);
         if (result.success) {
             logger.info(`Total number of appConfigs parsed: ${result.appConfigs.length}`);
 
@@ -48,7 +48,7 @@ function doappConfigsImport() {
             }
             logger.info(result.appConfigs);
             
-            result.appConfigs.forEach((appConfig) => createappConfigs(appConfig));
+            result.appConfigs.forEach((appConfig) => createAppConfigs(appConfig));
         } else {
             process.exit();
         }
@@ -61,12 +61,16 @@ function doappConfigsImport() {
 }
 
 
-function extractappConfigItems(fileData) {
+function extractAppConfigItems(fileData) {
     var result = null;
     var appConfigItems = [];
-    var newappConfigs = null;
+    var newAppConfigs = null;
     var errorEncountered = false;
     var currentItemSeq = 0;
+    var currentItem = null;
+
+    //Create singular appconfig
+    newAppConfig = new AppConfig({});
 
     //split by each line
     fileData.split(/\r?\n/).every((line) => {
@@ -75,106 +79,172 @@ function extractappConfigItems(fileData) {
         var lineProcessed = false;
 
         logger.info(`Processing line: ${line}`);
-
-        directive = "--SiteCode:";
-        if (!blockProcessed && block.search(directive) > -1) {
-            var SiteCode = block.replace(directive, "").trim();
-            if (SiteCode != "") {
-                newSiteCode = SiteCode;
+        
+        //Find current item
+        directive = "--SiteCode";
+        if (line.search(directive) > -1) {            
+            currentItem = 'siteCode';
             }
-        }
 
-        directive = "--SiteName:";
-        if (!blockProcessed && block.search(directive) > -1) {
-            varSiteName = block.replace(directive, "").trim();
-            if (SiteName != "") {
-                newSiteName = SiteName;
-            }
-        }
-
-        directive = "--SiteAddress:";
-        if (!blockProcessed && block.search(directive) > -1) {
-            var SiteAddress = block.replace(directive, "").trim();
-            if (SiteAddress != "") {
-                newSiteAddress = SiteAddress;
+        directive="--DoFirst.";
+        if (line.search(directive) > -1) {            
+            var doFirst= line.replace(directive,"").trim();
+            if (doFirst=="ViewTitle"){
+                currentItem = 'doFirstViewTitle';
+            } else if (doFirst=="ViewDescription"){
+                currentItem= 'doFirstViewDescription';
             }
         }
         
-        directive = "--AppTitle:";
-        if (!blockProcessed && block.search(directive) > -1) {
-            var AppTitle = block.replace(directive, "").trim();
-            if (AppTitle != "") {
-                newAppTitle = AppTitle;
+        directive= "--NewRequest";
+        if (line.search(directive)>-1){
+            var newRequest= line.replace (directive,"").trim();
+            if (newRequest="ViewTitle"){
+                currentItem='newRequestViewTitle';
             }
         }
-        //test if the line is a new appConfig
-        directive = "--About.";
-        if (line.search(directive) > -1) {            
-            // Complete and store the previous pending appConfigs object if exist.
-            if (newAbout != null) {
-                var success = validateAndCollectAbout(newAbout, AboutItems);
-                if (!success) {
-                    errorEncountered = true;
-                    return false; // Return false to stop additional line processing.
-                }
+       
+        directive= "--EditRequest";
+        if (line.search(directive)>-1){
+            var editRequest= line.replace (directive,"").trim();
+            if (editRequest="ViewTitle"){
+                currentItem='editRequestViewTitle';
             }
-
-            var abouttype = line.replace(directive, "").trim();
-            // Start a new appConfig instance to gather its properties.
-            if (abouttype != "") {
-
-                currentItemSeq += 1;
-
-                newAbout = new About({ 
-                    seqNum: currentItemSeq,
-                    type: abouttype, 
-                });
-                
-            } else {
-                logger.error("ERROR: The about type is required!");
-                errorEncountered = true;
-                return false; // Return false to stop additional line processing.
-            }
-
-            lineProcessed = true;
-        } else { // if the line is not a beginning to a new appConfig, add the line to the text property.
-            if (newAbout.text == null){
-                newAbout.text = line;
-            } else {
-                newAbout.text += ` ${line}`; //add a space to separate each appConfig
-            }
-            newAbout.text.trim(); //trim to remove extra whitespace
         }
 
+        directive= "--SubmitRequest";
+        if (line.search(directive)>-1){
+            var submitRequest= line.replace (directive,"").trim();
+            if (submitRequest="ViewTitle"){
+                currentItem='submitRequestViewTitle';
+            }
+        }
+
+        directive= "--AttentionNotes";
+        if (line.search(directive)>-1){
+            var attentionNotes= line.replace (directive,"").trim();
+            if (attentionNotes="ViewTitle"){
+                currentItem='attentionNotesViewTitle';
+            }
+        }
+
+        directive= "--About";
+        if (line.search(directive)>-1){
+            var about= line.replace (directive,"").trim();
+            if (about="ViewTitle"){
+                currentItem='aboutViewTitle';
+            } else if (about="ViewDescription"){
+                currentItem='aboutViewDescription';
+            }
+        }
+
+        directive= "--TechSupport";
+        if (line.search(directive)>-1){
+            var techSupport= line.replace (directive,"").trim();
+            if (techSupport="ViewTitle"){
+                currentItem='techSupportViewTitle';
+            } else if (techSupport="ViewDescription"){
+                currentItem='techSupportViewDescription';
+            }
+        }
+
+        directive= "--Caterers";
+        if (line.search(directive)>-1){
+            var caterers= line.replace (directive,"").trim();
+            if (caterers="ViewTitle"){
+                currentItem='caterersViewTitle';
+            } else if (caterers="ViewDescription"){
+                currentItem='caterersViewDescription';
+            }
+        }
+
+        directive= "--Hotels";
+        if (line.search(directive)>-1){
+            var hotels= line.replace (directive,"").trim();
+            if (hotels="ViewTitle"){
+                currentItem='HotelsViewTitle';
+            } else if (hotels="ViewDescription"){
+                currentItem='HotelsViewDescription';
+            }
+        }
+
+        directive= "--GuestWiFiAccess";
+        if (line.search(directive)>-1){
+            var guestWiFiAccess= line.replace (directive,"").trim();
+            if (guestWiFiAccess="ViewTitle"){
+                currentItem='guestWiFiAccessViewTitle';
+            } else if (guestWiFiAccess="ViewDescription"){
+                currentItem='guestWiFiAccessViewDescription';
+            }
+        }
+
+        directive= "--FindRoom";
+        if (line.search(directive)>-1){
+            var findRoom= line.replace (directive,"").trim();
+            if (findRoom="ViewTitle"){
+                currentItem='FindRoomViewTitle';
+            }
+        }
+
+        directive= "--RequestStatusTag";
+        if (line.search(directive)>-1){
+            var requestStatusTag= line.replace (directive,"").trim();
+            if (requestStatusTag="UnderReview"){
+                currentItem='requestStatusTagUnderReview';
+            } else if (requestStatusTag="Approved"){
+                currentItem='requestStatusTagApproved';
+            }
+        }
+
+        directive= "--RequestStatusTag";
+        if (line.search(directive)>-1){
+            var requestStatusTag= line.replace (directive,"").trim();
+            if (requestStatusTag="UnderReview"){
+                currentItem='requestStatusTagUnderReview';
+            } else if (requestStatusTag="Approved"){
+                currentItem='requestStatusTagApproved';
+            } else if (requestStatusTag="Rejected"){
+                currentItem='requestStatusTagRejected';
+            }
+        }
+
+        directive= "--RequestStatusMessageTag";
+        if (line.search(directive)>-1){
+            var requestStatusMessageTag= line.replace (directive,"").trim();
+            if (requestStatusMessageTag="UnderReview"){
+                currentItem='requestStatusMessageTagUnderReview';
+            } else if (requestStatusMessageTag="Approved"){
+                currentItem='requestStatusMessageTagApproved';
+            } else if (requestStatusMessageTag="Rejected"){
+                currentItem='requestStatusMessageTagRejected'
+            }
+        }
+        //keep searching...
+
+        //After current item is found, set the current item's value to the next line
+        if (currentItem!=null){
+            newAppConfig.currentItem=line;
+            currentItem=null;
+        }
+        
         return true; // Return true to continue processing for the next line item.
+         
     })
 
-    // Check to see if there's one last pending new one to be collected.
-    if (errorEncountered == false && newappConfigs != null) {
-        var success = validateAndCollectappConfigs(newappConfigs, appConfigItems);
-        if (!success) {
-            errorEncountered = true;
-        }
-    }
-
+    //save notes....
     result = {
         success: true,
-        appConfigs: appConfigItems
+        appConfig: newAppConfig
     }
-
-    if (errorEncountered == true) {
-        result.success = false;
-    } 
 
     return result;
 }
 
-
-function validateAndCollectappConfigs(newappConfigs, appConfigItems) {
-    var valid = validateappConfigs(newappConfigs);
+function validateAndCollectAppConfigs(newAppConfigs, appConfigItems) {
+    var valid = validateAppConfigs(newAppConfigs);
     if (valid) {
-        appConfigItems.push(newappConfigs);
-        totalNumOfappConfigs += 1;
+        appConfigItems.push(newAppConfigs);
+        totalNumOfAppConfigs += 1;
         return true;
     } else {
         return false;
@@ -182,7 +252,7 @@ function validateAndCollectappConfigs(newappConfigs, appConfigItems) {
 }
 
 
-function validateappConfigs(newappConfigs) {
+function validateAppConfigs(newappConfigs) {
 
     var validationErr = newappConfigs.validateSync();
     if (validationErr != null) {
@@ -221,10 +291,9 @@ function createappConfigs(newappConfigs) {
             }
         })
         .catch((err) => {
-            var errMsg = `ADMIN: createappConfigs - appConfigs.save failed. Error: ${err}`
+            var errMsg = `ADMIN: createAppConfigs - appConfigs.save failed. Error: ${err}`
             logger.error(errMsg);
             mongoose.disconnect();
             return;
         });
-
-};
+}
