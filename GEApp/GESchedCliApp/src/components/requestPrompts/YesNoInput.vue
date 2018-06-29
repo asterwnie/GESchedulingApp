@@ -1,6 +1,6 @@
 <template>
 
-  <div>  
+  <div :id="ctrlContainerId">  
     <label :for="ctrlId">{{ promptLabel }}</label>&nbsp;&nbsp;<span v-if="inAdminMode" class="badge badge-warning" :adminCommentCtrlId="adminCommentCtrlId" @click.prevent="onAddAdminComment"><span class="far fa-comment-dots"></span></span><br>
     <label class="switch">
     <input type="checkbox" isBoolean="true" :id="ctrlId" :screenNum="screenNum" class="is-request-data form-control form-control-sm">
@@ -20,6 +20,9 @@ export default {
   computed: {
     adminCommentCtrlId() {
       return this.ctrlId + "AdminComment";
+    },
+    ctrlContainerId() {
+      return this.ctrlId + "Container";
     }
   },
 

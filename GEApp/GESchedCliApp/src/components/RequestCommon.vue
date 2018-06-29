@@ -161,6 +161,8 @@ export default {
       $('.is-admin-comment').val("");
     }
 
+    this.InitDependsOnControls();
+
     if (this.isNewRequest) {
       storeState.currentViewTitle = storeState.appConfig.newRequestViewTitle;
       storeState.currentRequest = null;
@@ -192,7 +194,7 @@ export default {
   },
 
   deactivated() {
-      console.log('RequestCommon.vue created.');
+      console.log('RequestCommon.vue deactivated.');
 
       var vm = this;
       var storeState = vm.$store.state;
@@ -334,6 +336,46 @@ export default {
 
         });
       }
+    },
+
+
+    InitDependsOnControls() {
+
+      var vm = this;
+      var storeState = this.$store.state; 
+
+      $.each(this.requestPrompts, function (index, prompt) {
+        var dependsOn = prompt.inputType.dependsOn;
+        if (prompt.screenNum == vm.currentScreenNum && dependsOn != undefined && dependsOn != null) {
+          if (storeState.currentRequest[dependsOn] == true) {
+            $("#"+prompt.inputType.ctrlDataId+"Container").show();
+          } else {
+            $("#"+prompt.inputType.ctrlDataId+"Container").hide();
+            if (storeState.currentRequest[prompt.inputType.ctrlDataId] != undefined) {
+              delete storeState.currentRequest[prompt.inputType.ctrlDataId];
+            }
+          }
+          $("#"+dependsOn).attr("dependentCtrlId", prompt.inputType.ctrlDataId);
+        }
+      });
+
+      var ctrls = $('[dependentCtrlId]');
+      $.each(ctrls, function (index, ctrl) {
+        $(ctrl).change(function() { 
+            var isChecked = $(this).is(':checked')
+            var dependentCtrlId = $(this).attr("dependentCtrlId");
+            var ctrlContainer = $("#"+dependentCtrlId+"Container");
+            if (isChecked) {          
+              ctrlContainer.show();
+            } else {
+              ctrlContainer.hide();
+              $("#"+dependentCtrlId).prop('checked', false);
+              if (storeState.currentRequest[dependentCtrlId] != undefined) {
+                delete storeState.currentRequest[dependentCtrlId];
+              }
+            }
+        });
+      });
     }
 
   }
