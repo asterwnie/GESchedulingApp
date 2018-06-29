@@ -11,7 +11,7 @@
 
             <div v-if="inAdminMode">  
               <label id="generalAdminCommentLabel" for="generalAdminComment" style="display:none;">&nbsp;&nbsp;General Comment</label>
-              <textarea id="generalAdminComment" :screenNum="screenNum" style="display:none; border: 2px solid orange;" placeholder="Add General Comment" class="is-request-data is-admin-comment form-control form-control-sm"></textarea>
+              <textarea id="generalAdminComment" :screenNum="screenNum" style="display:none; border: 2px solid orange;" placeholder="Add General Comment" class="is-admin-comment form-control form-control-sm"></textarea>
             </div>
 
             <div class="card-body">
@@ -113,6 +113,14 @@ export default {
       return;
     }
 
+    if (this.inAdminMode) {
+      var commentCtrl = $("#generalAdminComment");
+      var comment = commentCtrl.val("");
+      if (storeState.currentRequest.generalAdminComment != undefined) {
+        commentCtrl.val(storeState.currentRequest.generalAdminComment);
+      }
+    }
+
     if (this.canEditRequest) {
       storeState.currentViewTitle = storeState.appConfig.submitRequestViewTitle;
     } else {
@@ -153,6 +161,20 @@ export default {
       
       var vm = this;
       var storeState = vm.$store.state;
+      var currRequest = storeState.currentRequest;
+
+      if (this.inAdminMode) {
+        var comment = $("#generalAdminComment").val();
+        comment = comment.trim();
+        if (comment != null && comment != "") {
+          currRequest.generalAdminComment = comment;
+        } else if (currRequest.generalAdminComment != undefined) {
+          try {
+            delete currRequest.generalAdminComment;
+          } catch (err) {}
+        }
+      }
+
 
       var requestsUrl = apiMgr.getRequestsUrl();
 

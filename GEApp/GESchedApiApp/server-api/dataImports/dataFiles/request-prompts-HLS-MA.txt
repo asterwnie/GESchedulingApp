@@ -35,13 +35,13 @@
 
 --Prompt.Type.Standard
 --Prompt.Label: Number of GE employee attending
---Prompt.InputType.number[dataId=numOfGeEmpAttending]
+--Prompt.InputType.Number[dataId=numOfGeEmpAttending]
 --Prompt.Required
 --Prompt.OnScreen: 1
 
 --Prompt.Type.Standard
 --Prompt.Label: Number of non-GE attending
---Prompt.InputType.number[dataId=numOfNonGeAttending]
+--Prompt.InputType.Number[dataId=numOfNonGeAttending]
 --Prompt.OnScreen: 1
 
 --Prompt.Type.Standard

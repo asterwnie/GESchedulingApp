@@ -157,9 +157,15 @@ export default {
     }
 
     $('.is-admin-comment').hide();
+    if (this.isNewRequest) {
+      $('.is-admin-comment').val("");
+    }
+
+    this.InitDependsOnControls();
 
     if (this.isNewRequest) {
       storeState.currentViewTitle = storeState.appConfig.newRequestViewTitle;
+      storeState.currentRequest = null;
     } else {
       storeState.currentViewTitle = storeState.appConfig.editRequestViewTitle;
     }
@@ -188,7 +194,7 @@ export default {
   },
 
   deactivated() {
-      console.log('RequestCommon.vue created.');
+      console.log('RequestCommon.vue deactivated.');
 
       var vm = this;
       var storeState = vm.$store.state;
@@ -269,38 +275,112 @@ export default {
     bindCtrlValuesToRequestProperties() {
 
       var storeState = this.$store.state; 
+      var vm = this;
 
       var ctrls = $('.is-request-data');
       $.each(ctrls, function (index, inputCtrl) {
 
         //index becomes a property (obj1['prop1'] acts like obj1.prop1)
-             
-        var ctrlVal = $(inputCtrl).val();
-        if (ctrlVal != null) {
-          ctrlVal = ctrlVal.trim();
-        }
+        
+        if ($(inputCtrl).attr('screenNum') == vm.currentScreenNum) {
 
-        if ($(inputCtrl).attr('isBoolean') == "true") {
-            let tempVal = $(inputCtrl);
-            storeState.currentRequest[inputCtrl.id] = tempVal[0].checked;  
-            console.log(storeState.currentRequest[inputCtrl.id]);
-        } else if ($(inputCtrl).attr('isNumeric') == "true") {
-          try {
-            if (ctrlVal == null || ctrlVal == "") {
-              storeState.currentRequest[inputCtrl.id] = null;
-            } else {
-              storeState.currentRequest[inputCtrl.id] = parseInt(ctrlVal);
-            }
-          } catch (err) {
-            storeState.currentRequest[inputCtrl.id] = ctrlVal;
+          var ctrlVal = $(inputCtrl).val();
+          if (ctrlVal != null) {
+            ctrlVal = ctrlVal.trim();
           }
-        } else if ($(inputCtrl).attr('isRoom') == "true") {
-            // ToDo: Need to track and store the select room from Find Room
-            storeState.currentRequest[inputCtrl.id] = ctrlVal; //ToDo: need to assign the selected room
 
-        } else {
-          storeState.currentRequest[inputCtrl.id] = ctrlVal;
-        }          
+          if ($(inputCtrl).attr('isBoolean') == "true") {
+              let tempVal = $(inputCtrl);
+              storeState.currentRequest[inputCtrl.id] = tempVal[0].checked;  
+              console.log(storeState.currentRequest[inputCtrl.id]);
+          } else if ($(inputCtrl).attr('isNumeric') == "true") {
+            try {
+              if (ctrlVal == null || ctrlVal == "") {
+                try {
+                  delete storeState.currentRequest[inputCtrl.id];
+                } catch (err) {}
+              } else {
+                storeState.currentRequest[inputCtrl.id] = parseInt(ctrlVal);               
+              }
+            } catch (err) {
+              console.log(`Unable to assign ${ctrlVal} to ${inputCtrl.id}`);
+            }
+          } else if ($(inputCtrl).attr('isRoom') == "true") {
+              // ToDo: Need to track and store the select room from Find Room
+              storeState.currentRequest[inputCtrl.id] = ctrlVal; //ToDo: need to assign the selected room
+
+          } else {
+            storeState.currentRequest[inputCtrl.id] = ctrlVal;
+          } 
+
+        }        
+      });
+
+      if (this.inAdminMode) {
+        var adminCommentctrls = $('.is-admin-comment');
+        $.each(adminCommentctrls, function (index, inputCtrl) {
+
+          if ($(inputCtrl).attr('screenNum') == vm.currentScreenNum) {
+            var ctrlVal = $(inputCtrl).val();
+            if (ctrlVal != null) {
+              ctrlVal = ctrlVal.trim();
+            }
+            if (ctrlVal == null || ctrlVal == "") {
+              try {
+                delete storeState.currentRequest[inputCtrl.id];
+              } catch (err) {}
+            } else {
+              storeState.currentRequest[inputCtrl.id] = ctrlVal;
+            }
+          }
+
+        });
+      }
+    },
+
+
+    InitDependsOnControls() {
+
+      var vm = this;
+      var storeState = this.$store.state; 
+
+      $.each(this.requestPrompts, function (index, prompt) {
+        var dependsOn = prompt.inputType.dependsOn;
+        if (prompt.screenNum == vm.currentScreenNum && dependsOn != undefined && dependsOn != null) {
+          if (storeState.currentRequest[dependsOn] == true) {
+            $("#"+prompt.inputType.ctrlDataId+"Container").show();
+          } else {
+            $("#"+prompt.inputType.ctrlDataId+"Container").hide();
+            if (storeState.currentRequest[prompt.inputType.ctrlDataId] != undefined) {
+              delete storeState.currentRequest[prompt.inputType.ctrlDataId];
+            }
+          }
+          $("#"+dependsOn).attr("dependentCtrlId", prompt.inputType.ctrlDataId);
+        }
+      });
+
+      var ctrls = $('[dependentCtrlId]');
+      $.each(ctrls, function (index, ctrl) {
+        $(ctrl).change(function() { 
+            var isChecked = $(this).is(':checked')
+            var dependentCtrlId = $(this).attr("dependentCtrlId");
+            var ctrl = $("#"+dependentCtrlId);
+            var ctrlContainer = $("#"+dependentCtrlId+"Container");
+            if (isChecked) {          
+              ctrlContainer.show();
+            } else {
+              ctrlContainer.hide();
+              var checkedAttr = ctrl.prop('checked');
+              if (checkedAttr != undefined && checkedAttr != "") {
+                ctrl.prop('checked', false);
+              } else {
+                ctrl.val("");
+              }
+              if (storeState.currentRequest[dependentCtrlId] != undefined) {
+                delete storeState.currentRequest[dependentCtrlId];
+              }
+            }
+        });
       });
     }
 

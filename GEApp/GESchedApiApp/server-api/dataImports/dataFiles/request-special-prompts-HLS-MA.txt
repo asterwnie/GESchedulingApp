@@ -1,24 +1,17 @@
 --Prompt.Type.Special
 --Prompt.Label: Need monitor(s)?
---Prompt.InputType.Checkbox[dataId=needMonitors]
---Prompt.subInputType.textarea[dataId=needMonitorsDescription]
+--Prompt.InputType.YesNo[dataId=needMonitors]
+--Prompt.AdditionalDetail[dataId=needMonitorsAdditionalDetail]
+--Prompt.OnScreen: 2
 
 --Prompt.Type.Special
 --Prompt.Label: Need speaker(s)?
---Prompt.InputType.Checkbox[dataId=needSpeakers]
---Prompt.subInputType.textarea[dataId=needSpeakersDescription]
+--Prompt.InputType.YesNo[dataId=needSpeakers]
+--Prompt.AdditionalDetail[dataId=needSpeakersAdditionalDetail]
+--Prompt.OnScreen: 2
 
 --Prompt.Type.Special
 --Prompt.Label: Other special request?
---Prompt.InputType.Checkbox[dataId=otherSpecialRequest]
---Prompt.subInputType.textarea[dataId=otherSpecialRequestDescription]
-
---Prompt.Type.Special
---Prompt.Label: Sample text field question Q1?
---Prompt.InputType.Checkbox[dataId=anotherQ1]
---Prompt.subInputType.text[dataId=anotherQ1Description]
-
---Prompt.Type.Special
---Prompt.Label: Sample choice question Q2?
---Prompt.InputType.Checkbox[dataId=anotherQ2]
---Prompt.subInputType.choices(Apple|Orange|Grapes)[dataId=anotherQ1Description]
+--Prompt.InputType.YesNo[dataId=otherSpecialRequest]
+--Prompt.AdditionalDetail[dataId=otherSpecialRequestAdditionalDetail]
+--Prompt.OnScreen: 2

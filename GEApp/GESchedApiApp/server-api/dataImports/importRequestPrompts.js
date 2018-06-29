@@ -132,7 +132,7 @@ function extractRequestPromptItems(fileData) {
             }
         }
 
-        directive = "--Prompt.InputType.number";
+        directive = "--Prompt.InputType.Number";
         if (!lineProcessed && line.search(directive) > -1) {
             var inputDataId = line.replace(directive, "").replace("[", "").replace("]", "");
             if (inputDataId != "") {
