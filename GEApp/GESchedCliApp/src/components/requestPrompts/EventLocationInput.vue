@@ -1,6 +1,6 @@
 <template>
 
-  <div>
+  <div :id="ctrlContainerId">
     <button type="button" class="btn btn-secondary btn-sm" v-if="!inAdminMode" @click.prevent="$router.push('/findroom')">Find</button>&nbsp;<label :for="ctrlId">{{ promptLabel }}</label>&nbsp;&nbsp;<span v-if="inAdminMode" class="badge badge-warning" :adminCommentCtrlId="adminCommentCtrlId" @click.prevent="onAddAdminComment"><span class="far fa-comment-dots"></span></span>
     <textarea :id="ctrlId" :screenNum="screenNum" isRoom="true" class="is-request-data form-control form-control-sm"></textarea>
     <p :id="dataInvalidMsgId" style="display:none;" class="input-required-msg text-danger">Invalid input.</p>
@@ -19,6 +19,9 @@ export default {
     computed: {
       adminCommentCtrlId() {
         return this.ctrlId + "AdminComment";
+      },
+      ctrlContainerId() {
+        return this.ctrlId + "Container";
       }
     },
 

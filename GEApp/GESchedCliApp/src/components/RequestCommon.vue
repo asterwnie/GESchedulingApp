@@ -364,12 +364,18 @@ export default {
         $(ctrl).change(function() { 
             var isChecked = $(this).is(':checked')
             var dependentCtrlId = $(this).attr("dependentCtrlId");
+            var ctrl = $("#"+dependentCtrlId);
             var ctrlContainer = $("#"+dependentCtrlId+"Container");
             if (isChecked) {          
               ctrlContainer.show();
             } else {
               ctrlContainer.hide();
-              $("#"+dependentCtrlId).prop('checked', false);
+              var checkedAttr = ctrl.prop('checked');
+              if (checkedAttr != undefined && checkedAttr != "") {
+                ctrl.prop('checked', false);
+              } else {
+                ctrl.val("");
+              }
               if (storeState.currentRequest[dependentCtrlId] != undefined) {
                 delete storeState.currentRequest[dependentCtrlId];
               }
