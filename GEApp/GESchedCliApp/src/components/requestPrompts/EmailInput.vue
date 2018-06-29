@@ -4,7 +4,7 @@
     <input type="text" :id="ctrlId" :screenNum="screenNum" class="is-request-data form-control form-control-sm">
     <p :id="dataInvalidMsgId" style="display:none;" class="text-danger">Please enter a valid email address.</p>
     <p :id="dataRequiredMsgId" style="display:none;" class="text-danger">Please enter an email address.</p>
-    <textarea :id="adminCommentCtrlId" :screenNum="screenNum" style="display:none; border: 2px solid orange;" placeholder="Add Comment" class="is-request-data is-admin-comment form-control form-control-sm"></textarea>
+    <textarea :id="adminCommentCtrlId" :screenNum="screenNum" style="display:none; border: 2px solid orange;" placeholder="Add Comment" class="is-admin-comment form-control form-control-sm"></textarea>
   </div>
 </template>
 

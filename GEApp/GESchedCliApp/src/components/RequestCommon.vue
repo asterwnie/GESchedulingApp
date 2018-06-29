@@ -157,9 +157,13 @@ export default {
     }
 
     $('.is-admin-comment').hide();
+    if (this.isNewRequest) {
+      $('.is-admin-comment').val("");
+    }
 
     if (this.isNewRequest) {
       storeState.currentViewTitle = storeState.appConfig.newRequestViewTitle;
+      storeState.currentRequest = null;
     } else {
       storeState.currentViewTitle = storeState.appConfig.editRequestViewTitle;
     }
@@ -269,39 +273,67 @@ export default {
     bindCtrlValuesToRequestProperties() {
 
       var storeState = this.$store.state; 
+      var vm = this;
 
       var ctrls = $('.is-request-data');
       $.each(ctrls, function (index, inputCtrl) {
 
         //index becomes a property (obj1['prop1'] acts like obj1.prop1)
-             
-        var ctrlVal = $(inputCtrl).val();
-        if (ctrlVal != null) {
-          ctrlVal = ctrlVal.trim();
-        }
+        
+        if ($(inputCtrl).attr('screenNum') == vm.currentScreenNum) {
 
-        if ($(inputCtrl).attr('isBoolean') == "true") {
-            let tempVal = $(inputCtrl);
-            storeState.currentRequest[inputCtrl.id] = tempVal[0].checked;  
-            console.log(storeState.currentRequest[inputCtrl.id]);
-        } else if ($(inputCtrl).attr('isNumeric') == "true") {
-          try {
-            if (ctrlVal == null || ctrlVal == "") {
-              storeState.currentRequest[inputCtrl.id] = null;
-            } else {
-              storeState.currentRequest[inputCtrl.id] = parseInt(ctrlVal);
-            }
-          } catch (err) {
-            storeState.currentRequest[inputCtrl.id] = ctrlVal;
+          var ctrlVal = $(inputCtrl).val();
+          if (ctrlVal != null) {
+            ctrlVal = ctrlVal.trim();
           }
-        } else if ($(inputCtrl).attr('isRoom') == "true") {
-            // ToDo: Need to track and store the select room from Find Room
-            storeState.currentRequest[inputCtrl.id] = ctrlVal; //ToDo: need to assign the selected room
 
-        } else {
-          storeState.currentRequest[inputCtrl.id] = ctrlVal;
-        }          
+          if ($(inputCtrl).attr('isBoolean') == "true") {
+              let tempVal = $(inputCtrl);
+              storeState.currentRequest[inputCtrl.id] = tempVal[0].checked;  
+              console.log(storeState.currentRequest[inputCtrl.id]);
+          } else if ($(inputCtrl).attr('isNumeric') == "true") {
+            try {
+              if (ctrlVal == null || ctrlVal == "") {
+                try {
+                  delete storeState.currentRequest[inputCtrl.id];
+                } catch (err) {}
+              } else {
+                storeState.currentRequest[inputCtrl.id] = parseInt(ctrlVal);               
+              }
+            } catch (err) {
+              console.log(`Unable to assign ${ctrlVal} to ${inputCtrl.id}`);
+            }
+          } else if ($(inputCtrl).attr('isRoom') == "true") {
+              // ToDo: Need to track and store the select room from Find Room
+              storeState.currentRequest[inputCtrl.id] = ctrlVal; //ToDo: need to assign the selected room
+
+          } else {
+            storeState.currentRequest[inputCtrl.id] = ctrlVal;
+          } 
+
+        }        
       });
+
+      if (this.inAdminMode) {
+        var adminCommentctrls = $('.is-admin-comment');
+        $.each(adminCommentctrls, function (index, inputCtrl) {
+
+          if ($(inputCtrl).attr('screenNum') == vm.currentScreenNum) {
+            var ctrlVal = $(inputCtrl).val();
+            if (ctrlVal != null) {
+              ctrlVal = ctrlVal.trim();
+            }
+            if (ctrlVal == null || ctrlVal == "") {
+              try {
+                delete storeState.currentRequest[inputCtrl.id];
+              } catch (err) {}
+            } else {
+              storeState.currentRequest[inputCtrl.id] = ctrlVal;
+            }
+          }
+
+        });
+      }
     }
 
   }

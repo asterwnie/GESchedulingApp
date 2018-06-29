@@ -8,7 +8,7 @@
     </label>
     <p :id="dataInvalidMsgId" style="display:none;" class="text-danger">Invalid input.</p>
     <p :id="dataRequiredMsgId" style="display:none;" class="text-danger">This field is required.</p>
-    <textarea :id="adminCommentCtrlId" :screenNum="screenNum" style="display:none; border: 2px solid orange;" placeholder="Add Comment" class="is-request-data is-admin-comment form-control form-control-sm"></textarea>
+    <textarea :id="adminCommentCtrlId" :screenNum="screenNum" style="display:none; border: 2px solid orange;" placeholder="Add Comment" class="is-admin-comment form-control form-control-sm"></textarea>
   </div>
 
 </template>

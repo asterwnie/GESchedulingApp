@@ -5,7 +5,7 @@
     <textarea :id="ctrlId" :screenNum="screenNum" isRoom="true" class="is-request-data form-control form-control-sm"></textarea>
     <p :id="dataInvalidMsgId" style="display:none;" class="input-required-msg text-danger">Invalid input.</p>
     <p :id="dataRequiredMsgId" style="display:none;" class="input-invalid-msg text-danger">This field is required.</p>
-    <textarea :id="adminCommentCtrlId" :screenNum="screenNum" style="display:none; border: 2px solid orange;" placeholder="Add Comment" class="is-request-data is-admin-comment form-control form-control-sm"></textarea>
+    <textarea :id="adminCommentCtrlId" :screenNum="screenNum" style="display:none; border: 2px solid orange;" placeholder="Add Comment" class="is-admin-comment form-control form-control-sm"></textarea>
   </div>
 
 </template>
