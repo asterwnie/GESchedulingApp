@@ -38,11 +38,30 @@ async function queryRequests (siteCode, req, callback) {
     if (req.query.requesterEmailContains != null) {    
         filterDirective = { "eventGEContactPersonEmail": req.query.requesterEmailContains};        
     }
+    if (req.query.processingStatusContains != null) {    
+        filterDirective = { "processingStatus": req.query.processingStatusContains};        
+    }
     if (req.query.requestIdContains != null) {    
         filterDirective = { "_id": req.query.requestIdContains};        
     }
 
-    await Request.find(filterDirective).sort(sortDirective)
+    var selectedFields = {};
+    if (req.query.summaryFieldsOnly != null && req.query.summaryFieldsOnly == "true") {
+        selectedFields = { 
+            processingStatus: 1,
+            processingStatusLabel: 1,
+            processingStatusMessage: 1,
+            eventTitle: 1,
+            eventGEContactPersonName: 1,
+            eventGEContactPersonEmail: 1,
+            eventDateTimeData: 1,
+            locationOfEvent: 1,
+            updatedAt: 1,
+            canEdit: 1
+        };
+    }
+
+    await Request.find(filterDirective).sort(sortDirective).select(selectedFields)
         .then((requests) => {
             logger.info(`requestController.getRequests - Request.find success. About to send back http response with ${requests.length} requests`);
             callback({ success: true, requests: requests });
