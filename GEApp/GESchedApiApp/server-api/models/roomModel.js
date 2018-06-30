@@ -36,17 +36,15 @@ const RoomSchema = new Schema({
     },
 
     roomNumber: {
-        type: String //in case of mixed numbers like 11B
+        type: String //Use string in case of mixed numbers like 11B
     },
 
     roomPhone: {
-        type: String,
-        required: [true, 'Room phone is required!']
+        type: String
     },
 
     addressGAL: {
-        type: String,
-        required: [true, 'Room address in GAL is required!']
+        type: String
     },
 
     specialNote: {
@@ -70,13 +68,15 @@ const RoomSchema = new Schema({
     timestamps: true // auto-add createdAt and updatedAt
 });
 
+module.exports.RoomSchema = RoomSchema;
+
 
 // Object to hold a room model per site.
 var roomModelBySite = {};
 
 
 // Return a room model using the corresponding site database connection.
-module.exports = function (siteCode) {   
+module.exports.getRoomType = function (siteCode) {   
 
     let siteCodeUpper = siteCode.toUpperCase();
     if (roomModelBySite[siteCodeUpper] == null) {

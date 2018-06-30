@@ -3,6 +3,9 @@
 const appRoot = require('app-root-path');
 const getDbConnection = require(`${appRoot}/server-api/databaseManager`);
 
+const roomModel = require(`${appRoot}/server-api/models/roomModel`);
+let RoomSchema = roomModel.RoomSchema;
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -26,7 +29,7 @@ const RequestSchema = new Schema({
     },
 
     locationOfEvent: {
-        type: String,
+        type: RoomSchema,
         required: [true, 'The location of the event is required!']
     },
 

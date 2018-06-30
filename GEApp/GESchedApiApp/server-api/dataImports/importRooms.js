@@ -9,7 +9,7 @@ const appRoot = require('app-root-path');
 const mongoose = require('mongoose'); // Helper libray for MongoDB. http://mongoosejs.com/ 
 const appConfig = require(`${appRoot}/server.config`); // Load app configuration settings server.config.js
 const logger = require(`${appRoot}/server-api/logger`); // Create logging helper
-const getRoomType = require(`${appRoot}/server-api/models/roomModel`);
+const roomModel = require(`${appRoot}/server-api/models/roomModel`);
 
 mongoose.Promise = global.Promise;
 
@@ -23,7 +23,7 @@ if (args.length == 3 && args[2] != null) { siteCode = args[2]; }
 
 const fileName = `rooms-${siteCode}.txt`;
 
-let Room = getRoomType(siteCode);
+let Room = roomModel.getRoomType(siteCode);
 
 var totalNumOfRooms = 0;
 var totalNumOfRoomsCreated = 0;

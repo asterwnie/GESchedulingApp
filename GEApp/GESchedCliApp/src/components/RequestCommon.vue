@@ -307,7 +307,15 @@ export default {
             }
           } else if ($(inputCtrl).attr('isRoom') == "true") {
               // ToDo: Need to track and store the select room from Find Room
-              storeState.currentRequest[inputCtrl.id] = ctrlVal; //ToDo: need to assign the selected room
+              // ToDo: need to assign the selected room
+              // Assign dummy object for now:
+              storeState.currentRequest[inputCtrl.id] = {
+                name: ctrlVal,
+                sizeType: "Large Conference",
+                seatingCapacity: 10,
+                floor: 1,
+                building: "HLS"
+              };
 
           } else {
             storeState.currentRequest[inputCtrl.id] = ctrlVal;
