@@ -23,9 +23,9 @@ const RequestSchema = new Schema({
         required: [true, 'Title is required!']
     },
 
-    eventDateTimeData: {
+    eventSchedule: {
         type: String,
-        required: [true, 'The location of the event is required!']
+        required: [true, 'The event schedule is required!']
     },
 
     locationOfEvent: {

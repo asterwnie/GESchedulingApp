@@ -48,6 +48,16 @@
                   :dataInvalidMsgId="'INVALID-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"></number-input>
               </template>
 
+              <template v-if="(requestPrompt.inputType.ctrlType == 'yesNoWithComment' && requestPrompt.screenNum == currentScreenNum)"> 
+                <yes-no-with-comment-input 
+                  :inAdminMode="inAdminMode"
+                  :screenNum="currentScreenNum"
+                  :ctrlId="requestPrompt.inputType.ctrlDataId" 
+                  :promptLabel="requestPrompt.label" 
+                  :dataRequiredMsgId="'REQUIRED-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"
+                  :dataInvalidMsgId="'INVALID-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"></yes-no-with-comment-input>
+              </template>
+
               <template v-if="(requestPrompt.inputType.ctrlType == 'yesNo' && requestPrompt.screenNum == currentScreenNum)"> 
                 <yes-no-input 
                   :inAdminMode="inAdminMode"
@@ -58,7 +68,7 @@
                   :dataInvalidMsgId="'INVALID-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"></yes-no-input>
               </template>
 
-              <template v-if="(requestPrompt.inputType.ctrlType == 'custom' && requestPrompt.inputType.customCtrlId == 'locationOfEventCtrl' && requestPrompt.screenNum == currentScreenNum)"> 
+              <template v-if="(requestPrompt.inputType.ctrlType == 'selectRoom' && requestPrompt.screenNum == currentScreenNum)"> 
                 <event-location-input
                   :inAdminMode="inAdminMode" 
                   :screenNum="currentScreenNum"
@@ -68,7 +78,7 @@
                   :dataInvalidMsgId="'INVALID-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"></event-location-input>
               </template>
 
-              <template v-if="(requestPrompt.inputType.ctrlType == 'custom' && requestPrompt.inputType.customCtrlId == 'eventDateTimeCtrl' && requestPrompt.screenNum == currentScreenNum)"> 
+              <template v-if="(requestPrompt.inputType.ctrlType == 'eventSchedule' && requestPrompt.screenNum == currentScreenNum)"> 
                 <event-date-time-input 
                   :inAdminMode="inAdminMode"
                   :screenNum="currentScreenNum"
@@ -103,6 +113,7 @@ import textAreaInputCtrl from '@/components/requestPrompts/TextAreaInput.vue'
 import emailInputCtrl from '@/components/requestPrompts/EmailInput.vue'
 import numberInputCtrl from '@/components/requestPrompts/NumberInput.vue'
 import yesNoInputCtrl from '@/components/requestPrompts/YesNoInput.vue'
+import yesNoWithCommentInputCtrl from '@/components/requestPrompts/YesNoWithCommentInput.vue'
 import eventLocInputCtrl from '@/components/requestPrompts/EventLocationInput.vue'
 import eventDateTimeInputCtrl from '@/components/requestPrompts/EventDateTimeInput.vue'
 
@@ -116,6 +127,7 @@ export default {
     emailInput: emailInputCtrl,
     numberInput: numberInputCtrl,
     yesNoInput: yesNoInputCtrl,
+    yesNoWithCommentInput: yesNoWithCommentInputCtrl,
     eventLocationInput: eventLocInputCtrl,
     eventDateTimeInput: eventDateTimeInputCtrl
   },
@@ -161,8 +173,6 @@ export default {
       $('.is-admin-comment').val("");
     }
 
-    this.InitDependsOnControls();
-
     if (this.isNewRequest) {
       storeState.currentViewTitle = storeState.appConfig.newRequestViewTitle;
       storeState.currentRequest = null;
@@ -185,6 +195,8 @@ export default {
         storeState.currentRequest = revisingRequest;
       }
     }
+
+    this.InitDependsOnControls();
 
     storeState.currentRequest["eventGEContactPersonEmail"] = this.currentUserEmail;
     storeState.currentRequest["eventGEContactPersonName"] = this.currentUserName;
