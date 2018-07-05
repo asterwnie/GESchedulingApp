@@ -22,15 +22,7 @@
                     </span>
                     <br>
                     <span class="font-italic">
-                      <div v-if="requestReadOnlyProperty.value === true">
-                        Yes
-                      </div>
-                      <div v-else-if="requestReadOnlyProperty.value === false">
-                        No
-                      </div>
-                      <div v-else>
-                        {{requestReadOnlyProperty.value}}
-                      </div>
+                      {{requestReadOnlyProperty.value}}
                     </span>
                   </div>
                   <div style="height:10px"></div>
@@ -135,6 +127,20 @@ export default {
     this.requestReadOnlyProperties = [];
     requestPrompts.forEach(function(requestPrompt) {
       var reqProperty = {label: requestPrompt.label, value: currentRequest[requestPrompt.inputType.ctrlDataId]};
+      
+      if (requestPrompt.inputType.isValueBoolean) {
+        
+        if (currentRequest[requestPrompt.inputType.ctrlDataId] == true) {
+          reqProperty.value = "Yes";
+        } else {
+          reqProperty.value = "No";
+        }
+      }
+
+      var additionalComment = currentRequest[requestPrompt.inputType.ctrlDataId + "AdditionalComment"]; 
+      if (additionalComment != undefined && additionalComment != null && additionalComment != "") {
+        reqProperty.value += (": " + additionalComment);
+      }
       vm.requestReadOnlyProperties.push(reqProperty);
     });
   },
@@ -350,7 +356,7 @@ export default {
         return;
       }
 
-      var requestDataFields = ["eventDateTimeData", "locationOfEvent", "numOfGeEmpAttending"];
+      var requestDataFields = ["eventSchedule", "locationOfEvent", "numOfGeEmpAttending"];
       var fieldCount = requestDataFields.length;
       var randonIndex = Math.floor((Math.random() * fieldCount) + 1);
 

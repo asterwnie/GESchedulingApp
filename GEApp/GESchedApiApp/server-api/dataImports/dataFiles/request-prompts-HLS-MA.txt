@@ -1,70 +1,61 @@
---Prompt.Type.Standard
 --Prompt.Label: Event title
 --Prompt.InputType.Text[dataId=eventTitle]
 --Prompt.Required
 --Prompt.OnScreen: 1
 
---Prompt.Type.Standard
 --Prompt.Label: Event Date(s) / Time(s)
---Prompt.InputType.Custom[dataId=eventDateTimeData|ctrlId=eventDateTimeCtrl]
+--Prompt.InputType.EventSchedule[dataId=eventSchedule]
 --Prompt.Required
 --Prompt.OnScreen: 1
 
---Prompt.Type.Standard
 --Prompt.Label: Location of event
---Prompt.InputType.Custom[dataId=locationOfEvent|ctrlId=locationOfEventCtrl]
+--Prompt.InputType.SelectRoom[dataId=locationOfEvent]
 --Prompt.Required
 --Prompt.OnScreen: 1
 
---Prompt.Type.Standard
 --Prompt.Label: Onsite GE contact person for the event
 --Prompt.InputType.Text[dataId=eventGEContactPersonName]
 --Prompt.Required
 --Prompt.OnScreen: 1
 
---Prompt.Type.Standard
 --Prompt.Label: Contact Person's Email
 --Prompt.InputType.Email[dataId=eventGEContactPersonEmail]
 --Prompt.Required
 --Prompt.OnScreen: 1
 
---Prompt.Type.Standard
 --Prompt.Label: Contact Person's Phone
 --Prompt.InputType.Text[dataId=eventGEContactPersonPhone]
 --Prompt.OnScreen: 1
 
---Prompt.Type.Standard
 --Prompt.Label: Number of GE employee attending
 --Prompt.InputType.Number[dataId=numOfGeEmpAttending]
 --Prompt.Required
 --Prompt.OnScreen: 1
 
---Prompt.Type.Standard
 --Prompt.Label: Number of non-GE attending
 --Prompt.InputType.Number[dataId=numOfNonGeAttending]
 --Prompt.OnScreen: 1
 
---Prompt.Type.Standard
---Prompt.Label: AV Requirements
+--Prompt.Label: Specify AV Requirements
 --Prompt.InputType.TextArea[dataId=avRequirements]
 --Prompt.OnScreen: 2
 
---Prompt.Type.Standard
---Prompt.Label: Room setup
---Prompt.InputType.Custom[dataId=roomSetup|ctrlId=roomSetupPickerCtrl]
---Prompt.OnScreen: 2
-
---Prompt.Type.Standard
 --Prompt.Label: Site tour requested?
 --Prompt.InputType.YesNo[dataId=siteTourRequested]
 --Prompt.OnScreen: 2
 
---Prompt.Type.Standard
 --Prompt.Label: If Yes, Subject Matter Expert needed?
 --Prompt.InputType.YesNo[dataId=subjectMatterExpertNeeded|dependsOn=siteTourRequested]
 --Prompt.OnScreen: 2
 
---Prompt.Type.Standard
---Prompt.Label: Special requests
---Prompt.InputType.Custom[dataId=specialRequestData|ctrlId=specialRequestCtrl]
+--Prompt.Label: Need monitor(s)?
+--Prompt.InputType.YesNoWithComment[dataId=needMonitors]
+--Prompt.OnScreen: 2
+
+--Prompt.Label: Need speaker(s)?
+--Prompt.InputType.YesNoWithComment[dataId=needSpeakers]
+--Prompt.OnScreen: 2
+
+--Prompt.Label: Other Special Request?
+--Prompt.InputType.YesNoWithComment[dataId=otherSpecialRequest]
 --Prompt.OnScreen: 2

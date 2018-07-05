@@ -67,16 +67,32 @@ function extractRequestPromptItems(fileData) {
     var newRequestPrompt = null;
     var errorEncountered = false;
     var currentItemSeq = 0;
+    var needYesNoWithCommentCtrlFor = null;
+
 
     fileData.split(/\r?\n/).every((line) => {
 
         var directive = null;
         var lineProcessed = false;
+        var promptType = null;
+        var isBeginingOfNewPrompt = false;
+        var newPromptLabel = null;
+        var currentCtrlType = null;
+        var inputTypeParsed = false;
 
         logger.info(`Processing line: ${line}`);
 
-        directive = "--Prompt.Type.Standard";
-        if (line.search(directive) > -1) {            
+        directive = "--Prompt.Label:";
+        if (!lineProcessed && line.search(directive) > -1) {
+            var requestPromptLabel = line.replace(directive, "").trim();
+            if (requestPromptLabel != "") {
+                newPromptLabel = requestPromptLabel;
+            }
+            isBeginingOfNewPrompt = true;
+            lineProcessed = true;
+        }
+
+        if (isBeginingOfNewPrompt) {
             // Complete and store the previous pending requestPrompt object if exist.
             if (newRequestPrompt != null) {
                 var success = validateAndCollectRequestPrompt(newRequestPrompt, requestPromptItems);
@@ -88,68 +104,79 @@ function extractRequestPromptItems(fileData) {
             currentItemSeq += 1;
 
             newRequestPrompt = new RequestPrompt({ 
-                type: "standard",
+                label: newPromptLabel,
                 seqNum: currentItemSeq
             });
+
+            isBeginingOfNewPrompt = false;
             lineProcessed = true;
         }
 
-        directive = "--Prompt.Label:";
-        if (!lineProcessed && line.search(directive) > -1) {
-            var requestPromptLabel = line.replace(directive, "").trim();
-            if (requestPromptLabel != "") {
-                newRequestPrompt.label = requestPromptLabel;
-            }
+        if (!lineProcessed && !inputTypeParsed) {
+            directive = "--Prompt.InputType.TextArea";
+            if (!lineProcessed && line.search(directive) > -1) {
+                currentCtrlType = "textArea";
+                inputTypeParsed = true;
+            } 
         }
 
-        directive = "--Prompt.InputType.Text";
-        if (!lineProcessed && line.search(directive) > -1) {
-            var inputDataId = line.replace(directive, "").replace("[", "").replace("]", "");
-            if (inputDataId != "") {
-                var idParts = inputDataId.split("=");
-                if (idParts[0] == "dataId") {
-                    let inputType = new RequestPrompt.InputType({
-                        ctrlDataId: idParts[1],
-                        ctrlType: "text"
-                    });
-                    newRequestPrompt.inputType = inputType;
-                }
-            }
+        if (!lineProcessed && !inputTypeParsed) {
+            directive = "--Prompt.InputType.Text";
+            if (!lineProcessed && line.search(directive) > -1) {
+                currentCtrlType = "text";
+                inputTypeParsed = true;
+            } 
         }
 
-        directive = "--Prompt.InputType.TextArea";
-        if (!lineProcessed && line.search(directive) > -1) {
-            var inputDataId = line.replace(directive, "").replace("[", "").replace("]", "");
-            if (inputDataId != "") {
-                var idParts = inputDataId.split("=");
-                if (idParts[0] == "dataId") {
-                    let inputType = new RequestPrompt.InputType({
-                        ctrlDataId: idParts[1],
-                        ctrlType: "textArea"
-                    });
-                    newRequestPrompt.inputType = inputType;
-                }
-            }
+        if (!lineProcessed && !inputTypeParsed) {
+            directive = "--Prompt.InputType.Email";
+            if (!lineProcessed && line.search(directive) > -1) {
+                currentCtrlType = "email";
+                inputTypeParsed = true;
+            } 
         }
 
-        directive = "--Prompt.InputType.Number";
-        if (!lineProcessed && line.search(directive) > -1) {
-            var inputDataId = line.replace(directive, "").replace("[", "").replace("]", "");
-            if (inputDataId != "") {
-                var idParts = inputDataId.split("=");
-                if (idParts[0] == "dataId") {
-                    let inputType = new RequestPrompt.InputType({
-                        ctrlDataId: idParts[1],
-                        ctrlType: "number",
-                        isValueNumber: true
-                    });
-                    newRequestPrompt.inputType = inputType;
-                }
-            }
+        if (!lineProcessed && !inputTypeParsed) {
+            directive = "--Prompt.InputType.Number";
+            if (!lineProcessed && line.search(directive) > -1) {
+                currentCtrlType = "number";
+                inputTypeParsed = true;
+            } 
+        }        
+
+        if (!lineProcessed && !inputTypeParsed) {
+            directive = "--Prompt.InputType.YesNoWithComment";
+            if (!lineProcessed && line.search(directive) > -1) {
+                currentCtrlType = "yesNoWithComment";
+                inputTypeParsed = true;
+            } 
         }
-        
-        directive = "--Prompt.InputType.Custom";
-        if (!lineProcessed && line.search(directive) > -1) {
+
+        if (!lineProcessed && !inputTypeParsed) {
+            directive = "--Prompt.InputType.EventSchedule";
+            if (!lineProcessed && line.search(directive) > -1) {
+                currentCtrlType = "eventSchedule";
+                inputTypeParsed = true;
+            } 
+        }
+
+        if (!lineProcessed && !inputTypeParsed) {
+            directive = "--Prompt.InputType.SelectRoom";
+            if (!lineProcessed && line.search(directive) > -1) {
+                currentCtrlType = "selectRoom";
+                inputTypeParsed = true;
+            } 
+        }
+
+        if (!lineProcessed && !inputTypeParsed) {
+            directive = "--Prompt.InputType.YesNo";
+            if (!lineProcessed && line.search(directive) > -1) {
+                currentCtrlType = "yesNo";
+                inputTypeParsed = true;
+            } 
+        }
+               
+        if (!lineProcessed && inputTypeParsed) {
             var inputData = line.replace(directive, "").replace("[", "").replace("]", "");
             if (inputData != "") {
                 var nameValPairs = inputData.split("|");
@@ -158,30 +185,7 @@ function extractRequestPromptItems(fileData) {
                 if (dataIdParts[0] == "dataId") {
                     let inputType = new RequestPrompt.InputType({
                         ctrlDataId: dataIdParts[1],
-                        ctrlType: "custom"
-                    });
-                    newRequestPrompt.inputType = inputType;
-                }
-
-                var ctrlIdParts = nameValPairs[1].split("=");
-                if (ctrlIdParts[0] == "ctrlId") {
-                    newRequestPrompt.inputType.customCtrlId = ctrlIdParts[1];
-                }
-            }
-        }
-
-        directive = "--Prompt.InputType.YesNo";
-        if (!lineProcessed && line.search(directive) > -1) {
-            var inputData = line.replace(directive, "").replace("[", "").replace("]", "");
-            if (inputData != "") {
-                var nameValPairs = inputData.split("|");
-
-                var dataIdParts = nameValPairs[0].split("=");
-                if (dataIdParts[0] == "dataId") {
-                    let inputType = new RequestPrompt.InputType({
-                        ctrlDataId: dataIdParts[1],
-                        ctrlType: "yesNo",
-                        isValueBoolean: true
+                        ctrlType: currentCtrlType
                     });
                     newRequestPrompt.inputType = inputType;
                 }
@@ -195,24 +199,11 @@ function extractRequestPromptItems(fileData) {
             }
         }
 
-        directive = "--Prompt.InputType.Email";
-        if (!lineProcessed && line.search(directive) > -1) {
-            var inputDataId = line.replace(directive, "").replace("[", "").replace("]", "");
-            if (inputDataId != "") {
-                var idParts = inputDataId.split("=");
-                if (idParts[0] == "dataId") {
-                    let inputType = new RequestPrompt.InputType({
-                        ctrlDataId: idParts[1],
-                        ctrlType: "email"
-                    });
-                    newRequestPrompt.inputType = inputType;
-                }
-            }
-        }
 
         directive = "--Prompt.Required";
         if (!lineProcessed && line.search(directive) > -1) {
             newRequestPrompt.isRequired = true;
+            lineProcessed = true;
         }
 
         directive = "--Prompt.OnScreen:";
@@ -227,6 +218,7 @@ function extractRequestPromptItems(fileData) {
                     return false; // Return false to stop additional line processing.
                 }
             }
+            lineProcessed = true;
         }
 
         return true; // Return true to continue processing for the next line item.
@@ -280,9 +272,9 @@ function validateRequestPrompt(newRequestPrompt) {
     validationErr = newRequestPrompt.inputType.validateSync();
     if (validationErr != null) {
         for (var prop in validationErr.errors) {
-            logger.error(`ADMIN: validateRequestPrompt - create new RequestPrompt validation error: ${validationErr.errors[prop]}`);
+            logger.error(`ADMIN: validateRequestPrompt - create new RequestPrompt inputType validation error: ${validationErr.errors[prop]}`);
         }
-        var errMsg = `ADMIN: validateRequestPrompt - create new RequestPrompt failed validation. ${validationErr}`;
+        var errMsg = `ADMIN: validateRequestPrompt - create new RequestPrompt failed inputType validation. ${validationErr}`;
         logger.error(errMsg);
         return false;
     }

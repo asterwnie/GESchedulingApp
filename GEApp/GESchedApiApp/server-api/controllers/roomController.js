@@ -5,7 +5,7 @@ const appConfig = require(`${appRoot}/server.config`); // Load app configuration
 
 const httpRequestHelper = require(`${appRoot}/server-api/httpRequestHelper`);
 const logger = require(`${appRoot}/server-api/logger`);
-const getRoomType = require(`${appRoot}/server-api/models/roomModel`);
+const roomModel = require(`${appRoot}/server-api/models/roomModel`);
 
 
 // GET Rooms
@@ -35,7 +35,7 @@ async function queryRooms (siteCode, query, callback) {
     const queryAsJSON = JSON.stringify(query);
     logger.info(`roomController.getRooms - passed in query:  ${queryAsJSON}`);
 
-    let Room = getRoomType(siteCode);
+    let Room = roomModel.getRoomType(siteCode);
 
     var sortDirective = { "name": 1}; //default, order by name, ascending
     if (query.orderBy != null) {
@@ -104,7 +104,7 @@ exports.createRoom = function (req, res) {
 
     try {
         let siteCode = httpRequestHelper.getSite(req); 
-        let Room = getRoomType(siteCode);
+        let Room = roomModel.getRoomType(siteCode);
         var newRoom = new Room(req.body);
 
         var validationErr = newRoom.validateSync();
@@ -144,7 +144,7 @@ exports.updateRoom = function (req, res) {
 
     try {
         let siteCode = httpRequestHelper.getSite(req);
-        var Room = getRoomType(siteCode);
+        var Room = roomModel.getRoomType(siteCode);
 
         var toUpdateRoom = new Room(req.body);
 
@@ -202,7 +202,7 @@ exports.getRoom = function (req, res) {
     logger.verbose('roomController.getRoom begin');
 
     let siteCode = httpRequestHelper.getSite(req);
-    let Room = getRoomType(siteCode);
+    let Room = roomModel.getRoomType(siteCode);
 
     Room.findById(req.params.id)
         .then((room) => {
@@ -229,7 +229,7 @@ exports.deleteRoom = function (req, res) {
     logger.verbose('roomController.deleteRoom begin');
 
     let siteCode = httpRequestHelper.getSite(req);
-    let Room = getRoomType(siteCode);
+    let Room = roomModel.getRoomType(siteCode);
 
     Room.findByIdAndRemove(req.params.id)
     .then((room) => {
@@ -271,7 +271,7 @@ exports.getCapabilities = async function (req, res) {
 
 async function queryRoomCapabilities(siteCode, callback) {
 
-    let Room = getRoomType(siteCode);
+    let Room = roomModel.getRoomType(siteCode);
 
     await Room.distinct("capabilities")
     .then((capabilities) => {
@@ -314,7 +314,7 @@ exports.getSizeTypes = async function (req, res) {
 
 async function queryRoomSizeTypes(siteCode, callback) {
 
-    let Room = getRoomType(siteCode);
+    let Room = roomModel.getRoomType(siteCode);
 
     await Room.distinct("sizeType")
     .then((sizeTypes) => {
@@ -339,7 +339,7 @@ exports.queryRoomSizeTypes = queryRoomSizeTypes;
 
 async function queryMinMaxSeatingCapacityGrpBySizeType(siteCode, callback) {
 
-    let Room = getRoomType(siteCode);
+    let Room = roomModel.getRoomType(siteCode);
 
     var directive = [{
         $group:
@@ -394,7 +394,7 @@ exports.getBuildings = async function (req, res) {
 
 async function queryBuildings(siteCode, callback) {
 
-    let Room = getRoomType(siteCode);
+    let Room = roomModel.getRoomType(siteCode);
 
     await Room.distinct("building")
     .then((buildings) => {

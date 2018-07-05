@@ -33,7 +33,7 @@ function deleteRequestPrompts() {
     clearInterval(timer);
     
     // Match any name therefore, deleting all.
-    RequestPrompt.deleteMany({ type: /(.*?)/ }) 
+    RequestPrompt.deleteMany({ label: /(.*?)/ }) 
         .then(function () {
             logger.info(`ADMIN: All requestPrompts deleted for site: ${siteCode}`);
 

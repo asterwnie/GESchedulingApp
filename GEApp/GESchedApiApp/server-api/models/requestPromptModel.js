@@ -22,9 +22,9 @@ const InputTypeSchema = new Schema({
             'number',   // A single-line text control for entering a number only.
             'textArea', // A multi-line text box.
             'yesNo',    // Two toggle radio buttons. One for Yes another for No. Maps to a boolean value.
-            'checkbox', // A checkbox control. Maps to a boolean value.
-            'choices',  // A dropdown choice control to pick a single option
-            'custom'    // A custom UI for more advanced UI
+            'eventSchedule', // A custom control for entering a date and time of the event.
+            'selectRoom',    // A custom control for room selection.
+            'yesNoWithComment' // An Yes/No control with an optional comment textbox should on Yes.
         ],
         required: [true, 'ctrlType is required!']
     },
@@ -92,12 +92,6 @@ const RequestPromptSchema = new Schema({
     seqNum: {
         type: Number,
         required: [true, 'Sequence Number is required!']
-    },
-
-    type: {
-        type: String,
-        enum: ['standard', 'special'],
-        required: [true, 'Type is required!']
     },
 
     label: {
