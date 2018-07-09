@@ -78,6 +78,7 @@
                   :dataInvalidMsgId="'INVALID-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"></event-location-input>
               </template>
 
+              <!--WORK NEEDED-->
               <template v-if="(requestPrompt.inputType.ctrlType == 'eventSchedule' && requestPrompt.screenNum == currentScreenNum)"> 
                 <event-date-time-input 
                   :inAdminMode="inAdminMode"
@@ -105,6 +106,8 @@
 import axios from 'axios'
 import * as apiMgr from '@/common/apiMgr.js';
 import * as localCacheMgr from '@/common/localCacheMgr.js';
+
+//import Room from '@/../GESchedApiApp/server-api/models/roomModel.js'
 
 import { validateRequest, bindUiValuesFromRequest } from '@/common/requestMgr.js'
 
@@ -160,7 +163,6 @@ export default {
 
   activated() {
     console.log('RequestCommon.vue activated.');
-
     var storeState = this.$store.state;
 
     if (storeState.appConfig.newRequestViewTitle == null) {
@@ -297,7 +299,7 @@ export default {
         if ($(inputCtrl).attr('screenNum') == vm.currentScreenNum) {
 
           var ctrlVal = $(inputCtrl).val();
-          if (ctrlVal != null) {
+          if (ctrlVal != null && ctrlVal.name == null) {
             ctrlVal = ctrlVal.trim();
           }
 
@@ -320,14 +322,9 @@ export default {
           } else if ($(inputCtrl).attr('isRoom') == "true") {
               // ToDo: Need to track and store the select room from Find Room
               // ToDo: need to assign the selected room
-              // Assign dummy object for now:
-              storeState.currentRequest[inputCtrl.id] = {
-                name: ctrlVal,
-                sizeType: "Large Conference",
-                seatingCapacity: 10,
-                floor: 1,
-                building: "HLS"
-              };
+              if(storeState.selectedRoom != null && storeState.selectedRoom != undefined){
+                storeState.currentRequest[inputCtrl.id] = storeState.selectedRoom;
+              }
 
           } else {
             storeState.currentRequest[inputCtrl.id] = ctrlVal;
@@ -342,7 +339,7 @@ export default {
 
           if ($(inputCtrl).attr('screenNum') == vm.currentScreenNum) {
             var ctrlVal = $(inputCtrl).val();
-            if (ctrlVal != null) {
+            if (ctrlVal != null && ctrlVal.toString()) {
               ctrlVal = ctrlVal.trim();
             }
             if (ctrlVal == null || ctrlVal == "") {

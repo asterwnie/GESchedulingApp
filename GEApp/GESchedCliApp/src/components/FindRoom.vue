@@ -1,14 +1,51 @@
 <template>
-
+<div>
+<!-- Modal -->
+<div class="modal" id="findRoomModal" tabindex="-1" role="dialog" aria-labelledby="findRoomModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="findRoomModalLabel">Choose Room</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Would you like to select this room?</p>
+        <div id="selectedRoomUI">
+          <!--Room card will be injected here-->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" @click.prevent="onRoomDeselect">Close</button>
+        <button type="button" class="btn btn-primary" @click.prevent="onRoomSelect">Confirm Select</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Page Contents-->
 <div class="containerDiv container-fluid" style="width:100%">
   <div class="row">
     <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
     <div class="col col-12 col-auto" style="color:gray">
-      <h4 class="text-center" v-html="$store.state.appConfig.siteName"></h4>
+      <h5 class="text-center" v-html="$store.state.appConfig.siteName"></h5>
       <h6 class="text-center" v-html="$store.state.appConfig.siteAddress"></h6>
       <br>
     </div>
     <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
+  </div>
+  <div v-if="isSelectingRoom">
+    <div class="row">
+      <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
+      <div class="col col-12 col-auto" style="color:gray">
+        <div class="alert alert-warning" role="alert">
+          <h4 class="alert-heading">Select Room</h4>
+          <hr>
+          <p>Select a location below by clicking or tapping. Return to the request page by hitting the back button.</p>
+        </div>
+      </div>
+      <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
+    </div>
   </div>
   <div class="row">
     <div class="col col-12 col-md-2 col-lg-2"></div>
@@ -89,7 +126,7 @@
         </div>
       </div>
       <div v-for="(room, index) in rooms" :key="index">
-        <div class="card">
+        <div class="card" v-bind:class="room._id">
           <div class="card-body">
             <h6 class="card-title">{{room.name}}</h6>
             <div class="card-text" :hidden="room.building == null || room.building == ''">Building: {{room.building}}</div>
@@ -100,6 +137,10 @@
               <span class="badge badge-info" v-for="(capability, index) in room.capabilities" :key="index">
                 {{capability}}
               </span>
+              <div v-if="isSelectingRoom">
+                <br>
+                <button v-bind:id="room._id" type="button" class="btn btn-sm btn-warning float-right" @click.prevent="onRoomSelectModal">Select</button>
+              </div>
             </div>
           </div>
         </div>
@@ -107,6 +148,7 @@
     </div>
 
     <div class="col col-12 col-md-2 col-lg-2"></div>
+  </div>
   </div>
   </div>
 </template>
@@ -118,6 +160,7 @@ import * as apiMgr from '@/common/apiMgr.js';
 export default {
   data () {
     return {
+      isSelectingRoom: false,
     }
   },
 
@@ -163,6 +206,17 @@ export default {
     $.each(this.$store.state.rooms, function (index, room) {
       vm.$store.state.roomSearchResult.push(room);
     });
+
+
+    //check if previous screen was a request screen
+    if(vm.$store.state.previousPage.indexOf("RequestScreen") > -1){
+      console.log(`Previous screen is request: ${vm.$store.state.previousPage}. Select Room Activated.`);
+      vm.isSelectingRoom = true;
+      vm.$store.state.currentViewTitle = "Select Room";
+
+    }
+
+
   },
 
   methods: {
@@ -314,8 +368,54 @@ export default {
                 })
       }
       
-    }
+    },
 
+    onRoomSelectModal: function(event){
+      if(event){
+        if(this.isSelectingRoom){
+          let vm = this;
+          console.log("onRoomSelectModal activate.");
+          $('#findRoomModal').modal('show');
+          let currId = event.target.id;
+
+          let currCard = document.getElementsByClassName(currId)[0].innerHTML;
+          currCard = currCard.replace(event.target.outerHTML, ""); //get rid of the button in modal
+          document.getElementById("selectedRoomUI").innerHTML = currCard;
+
+          //set selectedRoom
+          let siteCode = apiMgr.getRoomsUrl().substring(apiMgr.getRoomsUrl().indexOf('?'), apiMgr.getRoomsUrl().length);
+          var url = apiMgr.getRoomsUrl().substring(0, apiMgr.getRoomsUrl().indexOf('?')) + `/${currId}${siteCode}`;
+
+            axios.get(url)
+                .then(res => {
+                    console.log("getRoomsUrl return status: " + res.status);
+                    
+                    console.log('onRoomSelectModal - selectedRoom set.');
+                    vm.$store.state.selectedRoom = res.data;
+                })
+                .catch((err) => {
+                    vm.hasFailure = true;
+                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                })
+        }
+      }
+    },
+
+    onRoomSelect() {
+      console.log('onRoomSelect activated.');
+      let vm = this;
+      let pageNum = vm.$store.state.previousPage.substring(vm.$store.state.previousPage.length-1, vm.$store.state.previousPage.length);
+      
+      $('#findRoomModal').modal('hide');
+      vm.$router.push(`/request/${pageNum}`);
+         
+    },
+
+    onRoomDeselect(){
+      console.log('onRoomDeselect activated. selectedRoom unset.');
+      this.$store.state.selectedRoom = null;
+      $('#findRoomModal').modal('hide');
+    }
 
   }
 }

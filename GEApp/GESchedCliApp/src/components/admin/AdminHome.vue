@@ -23,6 +23,9 @@
               <div class="card bg-info text-white" @click.prevent="$router.push('/admin/requests')">All Requests</div>
               menu items...
           </div>
+          <div class="card-header bg-danger text-light">
+              Admin Menu
+          </div>
         </div>
       </div>
 
@@ -38,8 +41,8 @@
                     <div class="card-body">
                         <h5 class="card-title">{{request.eventTitle}}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">{{request.eventGEContactPersonName}}</h6>
-                        <p class="card-text">{{request.locationOfEvent}}</p>
-                        <a href="#" class="card-link">{{eventDateTimeData}}</a>
+                        <p class="card-text">{{request.locationOfEvent.name}}</p>
+                        <a href="#" class="card-link">{{request.eventDateTimeData}}</a>
                     </div>
                   </div>
               </div>
@@ -55,8 +58,8 @@
                       <div class="card-body">
                           <h5 class="card-title">{{request.eventTitle}}</h5>
                           <h6 class="card-subtitle mb-2 text-muted">{{request.eventGEContactPersonName}}</h6>
-                          <p class="card-text">{{request.locationOfEvent}}</p>
-                          <a href="#" class="card-link">{{eventDateTimeData}}</a>
+                          <p class="card-text">{{request.locationOfEvent.name}}</p>
+                          <a href="#" class="card-link">{{request.eventDateTimeData}}</a>
                       </div>
                   </div>
               </div>

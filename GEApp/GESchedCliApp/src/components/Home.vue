@@ -191,6 +191,7 @@ export default {
       }
 
       storeState.currentRequest = selectedRequest;
+      storeState.selectedRoom = selectedRequest.locationOfEvent;
 
       //check if it is an edit or a view; if edit, go to request/1, if view, go to summary
       if($(event.target).hasClass("enableEdit")){

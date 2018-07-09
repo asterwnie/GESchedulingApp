@@ -224,6 +224,7 @@ export const validateRequest = (request, currentScreenNum) => {
                 var inputVal = request[ctrlDataId]
                 isValid = validateIsRequiredPrompt(ctrlDataId, inputVal);
                 if (!isValid) {
+                    debugger;
                     allValid = false;
                     currentFieldInvalid = true;
                 }
@@ -234,6 +235,7 @@ export const validateRequest = (request, currentScreenNum) => {
                 var inputVal = $("#" + ctrlDataId).val();
                 isValid = validateEmailPrompt(ctrlDataId, inputVal);
                 if (!isValid) {
+                    debugger;
                     allValid = false;
                     currentFieldInvalid = true;
                 }
@@ -244,6 +246,7 @@ export const validateRequest = (request, currentScreenNum) => {
                 var inputVal = $("#" + ctrlDataId).val();
                 isValid = validateNumberPrompt(ctrlDataId, inputVal);
                 if (!isValid) {
+                    debugger;
                     allValid = false;
                     currentFieldInvalid = true;
                 }
@@ -255,6 +258,7 @@ export const validateRequest = (request, currentScreenNum) => {
                 inputVal = currObject[0].checked;
                 isValid = validateYesNoPrompt(ctrlDataId, inputVal);
                 if (!isValid) {
+                    debugger;
                     allValid = false;
                     currentFieldInvalid = true;
                 }

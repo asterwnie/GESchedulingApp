@@ -21,9 +21,15 @@
                       {{requestReadOnlyProperty.label}}: 
                     </span>
                     <br>
-                    <span class="font-italic">
-                      {{requestReadOnlyProperty.value}}
-                    </span>
+                    <div v-if="requestReadOnlyProperty.value.name == null">
+                      <span class="font-italic">
+                        {{requestReadOnlyProperty.value}}
+                      </span>
+                    </div>
+                    <div v-else>
+                      {{requestReadOnlyProperty.value.name}}
+                    </div>
+                    
                   </div>
                   <div style="height:10px"></div>
                 </div>
@@ -149,6 +155,10 @@ export default {
       console.log('SubmitRequest.vue created.');
   },
 
+  deactivated(){
+      this.$store.state.currentRequest = null;
+  },
+
   methods: {
 
     onAddAdminComment(evt) {  
@@ -261,7 +271,7 @@ export default {
               vm.failureMessage = "You're not authorized to create a meeting request.";
             
           } else if (err.response != null && err.response.status == 400) { //400 - Bad Request.                  
-              vm.failureMessage = "The Meeting Request server received a bad request. Please contact your administrator if this problem persist.";
+              vm.failureMessage = "The Meeting Request server received a bad request. Please contact your administrator if this problem persists.";
 
           } else {
               vm.failureMessage = "The Meeting Request server is unavailable or not working at this time.";
@@ -319,6 +329,7 @@ export default {
 
     onReturnHome(){
       this.$store.state.currentRequest = null;
+      this.$store.state.selectedRoom = null;
       this.$router.push("/home");
     },
 
