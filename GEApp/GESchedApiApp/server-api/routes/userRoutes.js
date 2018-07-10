@@ -24,7 +24,7 @@ module.exports = function (app) {
             .get(userController.getUser)
             .delete(userController.deleteUser);
 
-            app.route('/api/users/login')
+        app.route('/api/users/login')
             .post(userController.loginUser)
 
             

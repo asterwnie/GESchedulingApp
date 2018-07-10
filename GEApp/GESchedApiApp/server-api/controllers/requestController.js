@@ -61,7 +61,17 @@ async function queryRequests (siteCode, req, callback) {
         };
     }
 
-    await Request.find(filterDirective).sort(sortDirective).select(selectedFields)
+    var numOfItemsToSkip = 0;
+    var numOfItemsPerPage = 100000;
+
+    if (req.query.numOfItemsToSkip != null) {    
+        numOfItemsToSkip = parseInt(req.query.numOfItemsToSkip);      
+    }
+    if (req.query.numOfItemsPerPage != null) {    
+        numOfItemsPerPage = parseInt(req.query.numOfItemsPerPage);         
+    }
+
+    await Request.find(filterDirective).sort(sortDirective).select(selectedFields).limit(numOfItemsPerPage).skip(numOfItemsToSkip)
         .then((requests) => {
             logger.info(`requestController.getRequests - Request.find success. About to send back http response with ${requests.length} requests`);
             callback({ success: true, requests: requests });
@@ -73,6 +83,52 @@ async function queryRequests (siteCode, req, callback) {
         });
 }
 
+
+exports.getRequestsCount = function (req, res) {
+    logger.verbose('requestController.getRequestsCount begin');
+
+    let siteCode = httpRequestHelper.getSite(req); 
+    let Request = getRequestType(siteCode);
+
+    var filterDirective = {}; //default, no filering
+    if (req.query.processingStatusContains != null) {    
+        filterDirective = { "processingStatus": req.query.processingStatusContains};        
+    }
+
+    var numOfPages = 0;
+    var numOfItemsPerPage = 0;
+    if (req.query.numOfItemsPerPage != null) {    
+        numOfItemsPerPage = parseInt(req.query.numOfItemsPerPage);         
+    }  
+
+    Request.count(filterDirective)
+    .then((count) => {
+        logger.info(`requestController.getRequestsCount success. About to send back http response with count ${count}`);
+ 
+        if (numOfItemsPerPage > 0 && count > 0) {
+            numOfPages = count / numOfItemsPerPage; 
+            // Drop decimal - Use bitwise OR with int 0 in front, which drops all the values after the decimal.
+            var droppedDecimal = 0 | numOfPages; 
+            if (numOfPages > droppedDecimal) {
+                numOfPages = droppedDecimal + 1; // Round up            
+            } else {
+                numOfPages = droppedDecimal;
+            }
+        }
+ 
+        if (numOfPages > 0) {
+            res.status(200).json({ count: count, numOfPages: numOfPages }); // 200 - Sucess
+        } else {
+            res.status(200).json({ count: count }); // 200 - Sucess
+        }
+    })
+    .catch((err) => {
+        var errMsg = `requestController.getRequestsCount failed. Error: ${err}`
+        logger.error(errMsg);
+        res.status(500).json({ error: errMsg }); // 500 - INTERNAL SERVER ERROR
+    });
+
+}
 
 exports.createRequest = function (req, res) {
     logger.verbose('requestController.createRequest begin');

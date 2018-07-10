@@ -23,7 +23,10 @@ module.exports = function (app) {
         app.route('/api/requests/:id')
             .get(requestController.getRequest)
             .delete(requestController.deleteRequest);
-            
+     
+        app.route('/api/requestscount')
+            .get(requestController.getRequestsCount)           
+
     } catch (err) {
         logger.error(`Set up API routes for the Request entity failed. Error: ${err}`);
     }
