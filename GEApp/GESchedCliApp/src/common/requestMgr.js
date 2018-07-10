@@ -224,7 +224,7 @@ export const validateRequest = (request, currentScreenNum) => {
                 var inputVal = request[ctrlDataId]
                 isValid = validateIsRequiredPrompt(ctrlDataId, inputVal);
                 if (!isValid) {
-                    debugger;
+                    //debugger;
                     allValid = false;
                     currentFieldInvalid = true;
                 }
@@ -235,7 +235,7 @@ export const validateRequest = (request, currentScreenNum) => {
                 var inputVal = $("#" + ctrlDataId).val();
                 isValid = validateEmailPrompt(ctrlDataId, inputVal);
                 if (!isValid) {
-                    debugger;
+                    //debugger;
                     allValid = false;
                     currentFieldInvalid = true;
                 }
@@ -246,7 +246,7 @@ export const validateRequest = (request, currentScreenNum) => {
                 var inputVal = $("#" + ctrlDataId).val();
                 isValid = validateNumberPrompt(ctrlDataId, inputVal);
                 if (!isValid) {
-                    debugger;
+                    //debugger;
                     allValid = false;
                     currentFieldInvalid = true;
                 }
@@ -258,7 +258,7 @@ export const validateRequest = (request, currentScreenNum) => {
                 inputVal = currObject[0].checked;
                 isValid = validateYesNoPrompt(ctrlDataId, inputVal);
                 if (!isValid) {
-                    debugger;
+                    //debugger;
                     allValid = false;
                     currentFieldInvalid = true;
                 }
@@ -271,7 +271,7 @@ export const validateRequest = (request, currentScreenNum) => {
 }
 
 
-export const bindUiValuesFromRequest = (request, currentScreenNum) => {
+export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) => {
 
     //debugger; // Uncomment to trigger breakpoint.
 
@@ -281,7 +281,28 @@ export const bindUiValuesFromRequest = (request, currentScreenNum) => {
     $.each(ctrls, function (index, inputCtrl) {
         var ctrl = $(inputCtrl);
         if (ctrl != null && ctrl.attr('screenNum') == currentScreenNum) {
-            ctrl.val(request[inputCtrl.id]); //TODO: boolean value - checkbox or radio button is assign differently
+            var val = request[inputCtrl.id];
+            if (val != undefined && val != null && val != "") {
+                ctrl.val(val);
+                assignmentCount += 1;
+            }
+        }
+    });
+
+    ctrls = $('.is-admin-comment');
+    $.each(ctrls, function (index, inputCtrl) {
+        var ctrl = $(inputCtrl);
+        if (ctrl != null && ctrl.attr('screenNum') == currentScreenNum) {
+            var val = request[inputCtrl.id];
+            if (val != undefined && val != null && val != "") {
+                ctrl.val(val);
+
+                if (!inAdminMode) {
+                    ctrl.prop('readonly', true);
+                } 
+                ctrl.show();
+            }
+
             assignmentCount += 1;
         }
     });

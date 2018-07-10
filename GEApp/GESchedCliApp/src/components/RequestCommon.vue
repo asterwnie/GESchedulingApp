@@ -204,7 +204,7 @@ export default {
     storeState.currentRequest["eventGEContactPersonName"] = this.currentUserName;
     storeState.currentRequest["eventGEContactPersonPhone"] = this.currentUserPhone;
    
-    bindUiValuesFromRequest(storeState.currentRequest, this.currentScreenNum);
+    bindUiValuesFromRequest(storeState.currentRequest, this.currentScreenNum, this.inAdminMode);
   },
 
   deactivated() {
