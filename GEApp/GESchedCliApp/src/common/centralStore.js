@@ -10,6 +10,7 @@ const store = new Vuex.Store({
         previousPage: null,
 
         selectedRoom: null,
+        currentRequestsPreview: [],
 
         loginContext: {
             requesterEmail: null,

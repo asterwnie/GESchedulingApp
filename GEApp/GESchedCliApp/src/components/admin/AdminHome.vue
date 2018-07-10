@@ -14,16 +14,22 @@
       <div class="col col-12 col-md-2 col-lg-2"></div>
 
       <div id="adminBar" class="col col-12 col-md-3 col-lg-3 col-xl-2" style="padding-bottom:10px">
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Admin mode activated.</strong> As long as you are in admin mode, the red admin indicator show be above the navigation bar.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
         <div class="card">
           <div class="card-header bg-danger text-light">
               Admin Menu
           </div>
-          <div class="card-header bg-secondary text-light">
-              Admin Menu Item
-          </div>
-          <div class="card-header bg-secondary text-light">
-              Admin Menu Item
-          </div>
+          <a @click.prevent="$router.push('/admin/requests')" style="cursor:pointer;" class="adminMenuItem card-header bg-secondary text-light">
+              All Requests
+          </a>
+          <a style="cursor:pointer;" class="adminMenuItem card-header bg-secondary text-light">
+              Create Request
+          </a>
         </div>
       </div>
 
@@ -31,10 +37,10 @@
           <div id="newRequests">
             <div class="card">
                 <div class="card-header bg-info text-light">
-                New Requests
+                New Requests&nbsp;<button type="button" @click.prevent="$router.push('/admin/requests')" style="cursor:pointer;" class="btn btn-outline-light btn-sm float-right">View All Requests&nbsp;<span class="fas fa-chevron-right"></span></button>
                 </div>
             </div>
-            <div v-if="requests == null || requests == undefined">
+            <div v-if="requestsPreview == null || requestsPreview == undefined">
                 <div class="card">
                     <br>
                     <p style="text-align:center" class="font-italic text-muted">No current requests.</p>
@@ -43,7 +49,7 @@
             </div>
             <div v-else>
                 <div class="container" style="display:flex; flex-wrap:wrap;">
-                    <div class="request-item card col-12 col-lg-6 col-xl-4" v-for="(requestItem, index) in requests" :key="index">
+                    <div class="request-item card col-12 col-lg-6 col-xl-4" v-for="(requestItem, index) in requestsPreview" :key="index">
                         <div class="card-body">
                             <h6 class="card-title">{{requestItem.eventTitle}}</h6>
                             <h6 class="card-title">Status:&nbsp;<span :class="requestItem.processingStatus">{{requestItem.processingStatusLabel}}</span></h6>
@@ -64,14 +70,14 @@
                 </div>
             </div>
           </div>
-          <div style="height:10px"></div>
-          <div id="upcomingRequests" class="pad-bottom">
+          <div style="height:10px;"></div>
+          <div id="upcomingRequests">
             <div class="card">
                 <div class="card-header bg-secondary text-light">
                 Upcoming Requests
                 </div>
             </div>
-            <div v-if="requests.length < 1">
+            <div v-if="requestsPreview.length < 1">
                 <div class="card">
                     <br>
                     <p style="text-align:center" class="font-italic text-muted">No current requests.</p>
@@ -80,7 +86,7 @@
             </div>
             <div v-else>
                 <div class="container" style="display:flex; flex-wrap:wrap;">
-                    <div class="request-item card col-12 col-lg-6 col-xl-4" v-for="(requestItem, index) in requests" :key="index">
+                    <div class="request-item card col-12 col-lg-6 col-xl-4" v-for="(requestItem, index) in requestsPreview" :key="index">
                         <div class="card-body">
                             <h6 class="card-title">{{requestItem.eventTitle}}</h6>
                             <h6 class="card-title">Status:&nbsp;<span :class="requestItem.processingStatus">{{requestItem.processingStatusLabel}}</span></h6>
@@ -118,6 +124,7 @@ import * as localCacheMgr from '@/common/localCacheMgr.js';
 export default {
     data () {
     return {
+        previewRequestNum: 3,
     }
   },
 
@@ -128,8 +135,8 @@ export default {
         viewDescription() {
         return this.$store.state.appConfig.adminHomeViewDescription; 
         },
-        requests() {
-          return this.$store.state.requests;
+        requestsPreview() {
+          return this.$store.state.currentRequestsPreview;
         }
     },
 
@@ -145,20 +152,22 @@ export default {
         this.$store.state.currentViewTitle = this.title;
         this.$store.state.enableNavBar = true;
 
-        //get requests
-        var url = apiMgr.getRequestsUrl();
+        //get requests preview to show
+        var url = apiMgr.getRequestsUrl() + `&numOfItemsPerPage=${this.previewRequestNum}`;
 
         axios.get(url)
             .then(res => {
                 console.log("getRequestsUrl return status: " + res.status);
                 
-                while(vm.$store.state.requests.length > 0) {
-                vm.$store.state.requests.pop();
+                if(vm.$store.state.currentRequestsPreview != null){
+                    while(vm.$store.state.currentRequestsPreview.length > 0) {
+                    vm.$store.state.currentRequestsPreview.pop();
+                    }
                 }
                 var foundRequests = res.data;
 
                 $.each(foundRequests, function (index, foundRequest) {
-                    vm.$store.state.requests.push(foundRequest);
+                    vm.$store.state.currentRequestsPreview.push(foundRequest);
                 });
                 
                 vm.$forceUpdate();
@@ -251,24 +260,24 @@ export default {
                 .then(res => {
                     console.log("getRequestsUrl return status: " + res.status);
 
-                    //refresh requests in UI
+                    //refresh requestsPreview in UI
                     vm.$nextTick(function () {
                     console.log(`onDeleteRequest - Delete request id: ${currId} success. Refreshing data.`) // => 'updated'
 
-                    //get requests
+                    //get requestsPreview
                     var url = apiMgr.getRequestsUrl()
 
                     axios.get(url)
                         .then(res => {
                             console.log("getRequestsUrl return status: " + res.status);
                             
-                            while(vm.$store.state.requests.length > 0) {
-                                vm.$store.state.requests.pop();
+                            while(vm.$store.state.currentRequestsPreview.length > 0) {
+                                vm.$store.state.currentRequestsPreview.pop();
                             }
                             var foundRequests = res.data;
 
                             $.each(foundRequests, function (index, foundRequest) {
-                                vm.$store.state.requests.push(foundRequest);
+                                vm.$store.state.currentRequestsPreview.push(foundRequest);
                             });
                             
                             vm.$forceUpdate();

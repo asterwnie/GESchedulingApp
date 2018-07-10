@@ -3,7 +3,7 @@
 var logger = require('../logger');
 
 // Use the callback functions defined in AppconfigController.js
-var AppConfigController = require('../controllers/AppConfigController');
+var appConfigController = require('../controllers/appConfigController');
 
 
 module.exports = function (app) {
@@ -15,14 +15,14 @@ module.exports = function (app) {
         // Content-Type = application/json; charset=UTF-8
 
         app.route('/api/notes')
-            .get(AppConfigController.getAppConfigs)
-            .post(AppConfigController.createAppConfig)
-            .put(AppConfigController.updateAppConfig)
-            .patch(AppConfigController.updateAppConfig);
+            .get(appConfigController.getAppConfigs)
+            .post(appConfigController.createAppConfig)
+            .put(appConfigController.updateAppConfig)
+            .patch(appConfigController.updateAppConfig);
 
         app.route('/api/notes/:id')
-            .get(AppConfigController.getAppConfig)
-            .delete(AppConfigController.deleteAppConfig);
+            .get(appConfigController.getAppConfig)
+            .delete(appConfigController.deleteAppConfig);
             
     } catch (err) {
         logger.error(`Set up API routes for the AppConfig entity failed. Error: ${err}`);

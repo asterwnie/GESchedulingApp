@@ -43,11 +43,20 @@
               <div class="form-group">
                 <button type="button" width="100%" v-on:click="collapseMenu" class="btn btn-secondary" data-dismiss="modal" @click="$router.push('/login')">Login</button>
               </div>
-              <div class="form-group">
-                <div v-if="$store.state.inAdminMode">
+              <hr>
+              <div v-if="$store.state.inAdminMode">
+                <h4 width="100%" style="text-align:center">Admin Menu</h4><br>
+                <div class="form-group">
                   <button type="button" width="100%" v-on:click="collapseMenu" class="btn btn-secondary" data-dismiss="modal" @click="$router.push('/admin/home')">Admin Home</button>
                 </div>
-                <div v-else>
+                <div class="form-group">
+                  <button type="button" width="100%" v-on:click="collapseMenu" class="btn btn-secondary" data-dismiss="modal" @click="$router.push('/admin/requests')">Admin Requests</button>
+                </div>
+                <hr>
+                <h4 width="100%" style="text-align:center">User Menu</h4><br>
+              </div>
+              <div v-else>
+                <div class="form-group">
                   <button type="button" width="100%" v-on:click="collapseMenu" class="btn btn-secondary" data-dismiss="modal" @click="$router.push('/home')">Home</button>
                 </div>
               </div>
