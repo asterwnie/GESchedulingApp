@@ -20,16 +20,22 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
+
         <div class="card">
-          <div class="card-header bg-danger text-light">
-              Admin Menu
-          </div>
-          <a @click.prevent="$router.push('/admin/requests')" style="cursor:pointer;" class="adminMenuItem card-header bg-secondary text-light">
-              All Requests
-          </a>
-          <a style="cursor:pointer;" class="adminMenuItem card-header bg-secondary text-light">
-              Create Request
-          </a>
+            <div class="card-header bg-danger text-light" id="adminMenu" style="cursor:pointer;" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                Admin Menu &nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i>
+            </div>
+            <div id="collapseTwo" class="collapse show" aria-labelledby="adminMenu" data-parent="#accordion">
+                <div @click.prevent="$router.push('/admin/requests')" style="cursor:pointer;" class="adminMenuItem card-header bg-secondary text-light">
+                    All Requests
+                </div>
+                <div style="cursor:pointer;" class="adminMenuItem card-header bg-secondary text-light">
+                    Create Request
+                </div>
+                <div style="cursor:pointer;" class="adminMenuItem card-header bg-secondary text-light">
+                    Print Request
+                </div>
+            </div>
         </div>
       </div>
 
@@ -52,11 +58,7 @@
                     <div class="request-item card col-12 col-lg-6 col-xl-4" v-for="(requestItem, index) in requestsPreview" :key="index">
                         <div class="card-body">
                             <h6 class="card-title">{{requestItem.eventTitle}}</h6>
-                            <h6 class="card-title">Status:&nbsp;<span :class="requestItem.processingStatus">{{requestItem.processingStatusLabel}}</span></h6>
                             <div class="card-text">{{requestItem.eventGEContactPersonName}}</div>
-                            <div class="card-text">{{requestItem.locationOfEvent.name}}</div>
-                            <div class="card-text">{{requestItem.eventSchedule}}</div>
-                            <br>
                             <div class="card-text text-muted">Last updated:&nbsp;{{requestItem.updatedAt.substring(0, requestItem.updatedAt.indexOf("T"))}}</div>
                             <div v-if="requestItem.canEdit">
                                 <button :id="requestItem._id" type="button" @click.prevent="onEditViewRequest" class="enableEdit btn btn-warning btn-sm float-right">Edit</button>
@@ -64,7 +66,6 @@
                             <div v-else>
                                 <button :id="requestItem._id" type="button" @click.prevent="onEditViewRequest" class="disableEdit btn btn-secondary btn-sm float-right">View</button>
                             </div>
-                            <button :id="requestItem._id" type="button" @click.prevent="onDeleteRequest" class="btn btn-danger btn-sm float-left">Delete</button>
                         </div>
                     </div>
                 </div>
@@ -72,41 +73,17 @@
           </div>
           <div style="height:10px;"></div>
           <div id="upcomingRequests">
-            <div class="card">
-                <div class="card-header bg-secondary text-light">
-                Upcoming Requests
-                </div>
-            </div>
-            <div v-if="requestsPreview.length < 1">
                 <div class="card">
-                    <br>
-                    <p style="text-align:center" class="font-italic text-muted">No current requests.</p>
-                    <br>
-                </div>
-            </div>
-            <div v-else>
-                <div class="container" style="display:flex; flex-wrap:wrap;">
-                    <div class="request-item card col-12 col-lg-6 col-xl-4" v-for="(requestItem, index) in requestsPreview" :key="index">
-                        <div class="card-body">
-                            <h6 class="card-title">{{requestItem.eventTitle}}</h6>
-                            <h6 class="card-title">Status:&nbsp;<span :class="requestItem.processingStatus">{{requestItem.processingStatusLabel}}</span></h6>
-                            <div class="card-text">{{requestItem.eventGEContactPersonName}}</div>
-                            <div class="card-text">{{requestItem.locationOfEvent.name}}</div>
-                            <div class="card-text">{{requestItem.eventSchedule}}</div>
-                            <br>
-                            <div class="card-text text-muted">Last updated:&nbsp;{{requestItem.updatedAt.substring(0, requestItem.updatedAt.indexOf("T"))}}</div>
-                            <div v-if="requestItem.canEdit">
-                                <button :id="requestItem._id" type="button" @click.prevent="onEditViewRequest" class="enableEdit btn btn-warning btn-sm float-right">Edit</button>
-                            </div>
-                            <div v-else>
-                                <button :id="requestItem._id" type="button" @click.prevent="onEditViewRequest" class="disableEdit btn btn-secondary btn-sm float-right">View</button>
-                            </div>
-                            <button :id="requestItem._id" type="button" @click.prevent="onDeleteRequest" class="enableEdit btn btn-danger btn-sm float-left">Delete</button>
+                    <div class="card-header bg-secondary text-light">
+                    Other Admin UI Items
+                    </div>
+                    <div class="card-body">
+                        <div class="card-text">
+                            placeholder...
                         </div>
                     </div>
                 </div>
             </div>
-                </div>
           </div>
       </div>
 

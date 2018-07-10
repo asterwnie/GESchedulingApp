@@ -1,46 +1,119 @@
 <template>  
 <div class="container-fluid">
     <div class="row">
-    <div class="col col-12 col-md-2 col-lg-2"></div>
-
-    <div id="searchUI" class="col col-12 col-md-3 col-lg-3 col-xl-2" style="margin-bottom:20px">
-      <div class="card">
-      <div class="card-header bg-primary text-light" id="headingOne" style="cursor:pointer;" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-            Search Menu <i class="fa fa-search-plus" aria-hidden="true"></i>&nbsp;&nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i>
-      </div>
-      <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-          <div id="filterMenu" class="card-body" style="padding:10px; width:100%;">
-
-            <!--filter items-->
-              filter items...
-            
-            <br>
-            <!--<button type="button" class="btn btn-sm btn-primary float-right" v-on:click="filterView">Search</button>
-            <button type="button" class="btn btn-sm btn-secondary" v-on:click="resetFilterView">Reset</button>-->
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="roomUI" class="col col-12 col-md-5 col-lg-5 col-xl-6">
-      <!--header-->
-      <!--cards-->
-      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
+        <div class="col col-12 col-sm-10 col-md-8 col-lg-8" style="color:gray">
+        
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
                 <strong>Alert</strong> some alert here.
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="bg-info" v-if="requestsPreview.length < 1">
+
+            <div class="card">
+                <div class="card-header bg-secondary text-light">
+                    Quick Filter Menu
+                </div>
+                <div class="card-body">
+                    placeholder...
+                    <div class="container text-light" style="width:100%; display:flex; flex-wrap:wrap;">
+                        <a style="cursor:pointer;">
+                            <div class="card bg-secondary" style="height:100%; width:100px; text-align:center; vertical-align:middle; padding:5px">
+                                <i class="fa fa-user-circle fa-2x" aria-hidden="true"></i>
+                                All Requests
+                            </div>
+                        </a>
+                        <a style="cursor:pointer;">
+                            <div class="card bg-danger" style="height:100%; width:100px; text-align:center; vertical-align:middle; padding:5px">
+                                <i class="fa fa-exclamation-circle fa-2x" aria-hidden="true"></i>
+                                More Information Required
+                            </div>
+                        </a>
+                        <a style="cursor:pointer;">
+                            <div class="card bg-info" style="height:100%; width:100px; text-align:center; vertical-align:middle; padding:5px">
+                                <i class="fa fa-exclamation-circle fa-2x" aria-hidden="true"></i>
+                                Under Review
+                            </div>
+                        </a>
+                        <a style="cursor:pointer;">
+                            <div class="card bg-success" style="height:100%; width:100px; text-align:center; vertical-align:middle; padding:5px">
+                                <i class="fa fa-exclamation-circle fa-2x" aria-hidden="true"></i>
+                                Approved & Completed
+                            </div>
+                        </a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
+    </div>
+    <div style="height:10px"></div>
+    <div class="row">
+    <div class="col col-12 col-md-2 col-lg-2"></div>
+
+    <div id="searchUI" class="col col-12 col-md-3 col-lg-3 col-xl-2" style="margin-bottom:20px">
+      <div class="card">
+      <div class="card-header bg-primary text-light" id="filterMenu" style="cursor:pointer;" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Filter By <i class="fa fa-search-plus" aria-hidden="true"></i>&nbsp;&nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i>
+      </div>
+      <div id="collapseOne" class="collapse show" aria-labelledby="filterMenu" data-parent="#accordion">
+          <div id="filterMenu" class="card-body" style="padding:10px; width:100%;">
+
+            <div id="inputEventName" class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm">Event Name</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+            </div>
+
+            <div id="inputRequesterName" class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm">Requester Name</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+            </div>
+
+            <div id="inputLocation" class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm">Location</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+            </div>
+
+            <div id="inputStatus" class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">Status</span>
+                </div>
+                <select class="custom-select" id="sizeTypeGroupSelect">
+                    <option selected></option>
+                    <option v-bind:id="statusLabel" v-bind:value='statusLabel' v-for="(statusLabel, index) in statusLabels" :key="index">
+                        {{ statusLabel }}
+                    </option>
+                </select>
+            </div>
+
+            
+            <br>
+            <button type="button" class="btn btn-sm btn-primary float-right" @click.prevent="filterView">Search</button>
+            <button type="button" class="btn btn-sm btn-secondary" @click.prevent="resetFilterView">Reset</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="requestUI" class="col col-12 col-md-5 col-lg-5 col-xl-6">
+            <div v-if="requestsPreview.length < 1">
                 <div class="card">
                     <br>
-                    <p style="text-align:center" class="font-italic text-muted">No current requests.</p>
+                    <p style="text-align:center" class="font-italic text-muted">No requests found.</p>
                     <br>
                 </div>
             </div>
             <div v-else>
                 <div class="card" style="width:100%">
-                    <div class="card-header bg-info text-light" style="text-align:center">
+                    <div class="card-header bg-info text-light">
                         Requests
                     </div>
                 </div>
@@ -71,7 +144,12 @@
                     <span class="input-group-text bg-secondary text-light">Page</span>
                 </div>&nbsp;
                 <div v-if="currentPageNumber > 1">
-                    <button style="height:100%" type="button" class="btn btn-secondary btn-sm">
+                    <button @click.prevent="onPageDecrement" style="height:100%" type="button" class="btn btn-secondary btn-sm">
+                        <span class="fas fa-chevron-left"></span>
+                    </button>
+                </div>
+                <div v-else>
+                    <button style="height:100%" type="button" class="btn btn-secondary btn-sm" disabled>
                         <span class="fas fa-chevron-left"></span>
                     </button>
                 </div>
@@ -79,7 +157,12 @@
                     <button @click.prevent="onPagePick" v-bind:id="`page${number}Button`" style="height:100%;" type="button" class="pageNumberButton btn btn-sm">{{ number }}</button>
                 </div>
                 <div v-if="currentPageNumber != numPages">
-                    <button style="height:100%" type="button" class="btn btn-secondary btn-sm">
+                    <button @click.prevent="onPageIncrement" style="height:100%" type="button" class="btn btn-secondary btn-sm">
+                        <span class="fas fa-chevron-right"></span>
+                    </button>
+                </div>
+                <div v-else>
+                    <button style="height:100%" type="button" class="btn btn-secondary btn-sm" disabled>
                         <span class="fas fa-chevron-right"></span>
                     </button>
                 </div>
@@ -99,22 +182,29 @@ import * as localCacheMgr from '@/common/localCacheMgr.js';
 export default {
     data () {
     return {
-        previewPerPage: 3,
-        numPages: 4, //hardcoded for now
-        currentPageNumber: 4,
+        previewPerPage: 6, //hardcoded for now
+        numPages: 0,
+        numRequests: 0,
+        currentPageNumber: 1,
+        statusLabels: [
+            "underReview",
+            "rejected",
+            "approved",
+        ],
+        requestStatusToQuery: null,
     }
   },
   
   computed: {
         title() {
-        return this.$store.state.appConfig.adminHomeViewTitle; 
+            return this.$store.state.appConfig.adminHomeViewTitle; 
         },
         viewDescription() {
-        return this.$store.state.appConfig.adminHomeViewDescription; 
+            return this.$store.state.appConfig.adminHomeViewDescription; 
         },
         requestsPreview() {
-          return this.$store.state.currentRequestsPreview;
-        }
+            return this.$store.state.currentRequestsPreview;
+        },
     },
 
     activated() {
@@ -129,61 +219,15 @@ export default {
         this.$store.state.currentViewTitle = this.title;
         this.$store.state.enableNavBar = true;
 
-        //get requests preview to show
-        var url = apiMgr.getRequestsUrl() + `&numOfItemsPerPage=${this.previewRequestNum}`;
-
-        axios.get(url)
-            .then(res => {
-                console.log("getRequestsUrl return status: " + res.status);
-                
-                if(vm.$store.state.currentRequestsPreview != null){
-                    while(vm.$store.state.currentRequestsPreview.length > 0) {
-                    vm.$store.state.currentRequestsPreview.pop();
-                    }
-                }
-                var foundRequests = res.data;
-
-                $.each(foundRequests, function (index, foundRequest) {
-                    vm.$store.state.currentRequestsPreview.push(foundRequest);
-                });
-                
-                vm.$forceUpdate();
-                //vm.isFetchingRequests = false;
-            })
-            .catch((err) => {
-                vm.hasFailure = true;
-                vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
-            })
-
+        vm.getNumPages();
+        vm.updateRequests();
         vm.$forceUpdate();
         
         
     },
 
-    created() {
-        console.log('AdminRequest.vue created.');
-        let vm = this;
-
-        //color badge based on status
-        $(function() {
-        $(".approved").addClass("badge badge-success");
-        $(".rejected").addClass("badge badge-danger");
-        $(".underReview").addClass("badge badge-info");
-        $(".completed").addClass("badge badge-secondary"); //not yet implemented
-        });
-
-        //highlight current page num
-        $('.pageNumberButton').each(function(index){
-            if($(this).attr('id') == `page${vm.currentPageNumber}Button`){
-                $(this).addClass('btn-info');
-            } else {
-                $(this).addClass('btn-secondary');
-            }
-        });
-    },
-
     updated(){
-        console.log('AdminRequest.vue updated.');
+        //console.log('AdminRequest.vue updated.');
         let vm = this;
 
         //color badge based on status
@@ -197,9 +241,11 @@ export default {
         //highlight current page num
         $('.pageNumberButton').each(function(index){
             if($(this).attr('id') == `page${vm.currentPageNumber}Button`){
-                $(this).addClass('btn-info');
+                $(this).removeClass();
+                $(this).addClass('pageNumberButton btn btn-info btn-sm');
             } else {
-                $(this).addClass('btn-secondary');
+                $(this).removeClass();
+                $(this).addClass('pageNumberButton btn btn-secondary btn-sm');
             }
         });
     },
@@ -208,10 +254,137 @@ export default {
         onPagePick: function(event){
             if (event){
                 console.log("onPagePick activate.");
+                let vm = this;
                 
-                let pageNumber = event.target.id.replace("page", "").replace("Button", "");
-                console.log(`Page number: ${pageNumber}`);
+                vm.currentPageNumber = event.target.id.replace("page", "").replace("Button", "");
+                vm.updateRequests();
             }
+        },
+
+        onPageIncrement: function(event){
+            if(event){
+                console.log("onPageIncrement activate.")
+                let vm = this;
+
+                vm.currentPageNumber++;
+                vm.updateRequests();
+            }
+        },
+
+        onPageDecrement: function(event){
+            if(event){
+                console.log("onPageDecrement activate.")
+                let vm = this;
+
+                vm.currentPageNumber--;
+                vm.updateRequests();
+            }
+        },
+
+        updateRequests(){
+            console.log("updateRequests activate.");
+            let vm = this;
+
+            let pageNumber = vm.currentPageNumber;
+            console.log(`Page number: ${pageNumber}`);
+
+            //&summaryFieldsOnly=true
+            //&processingStatusContains=underReview
+            //&numOfItemsToSkip=20
+            //&numOfItemsPerPage=10
+
+            //gather query string
+            var url = apiMgr.getRequestsUrl() + `&numOfItemsToSkip=${vm.previewPerPage * (vm.currentPageNumber-1)}&summaryFieldsOnly=true&numOfItemsPerPage=${vm.previewPerPage}`;
+            
+            if(vm.requestStatusToQuery != null && vm.requestStatusToQuery != ""){
+                url += `&processingStatusContains=${vm.requestStatusToQuery}`;
+            }
+            console.log(url);
+
+
+            //get requests
+            axios.get(url)
+                .then(res => {
+                    console.log("getRequestsUrl return status: " + res.status);
+                    
+                    if(vm.$store.state.currentRequestsPreview != null){
+                        while(vm.$store.state.currentRequestsPreview.length > 0) {
+                        vm.$store.state.currentRequestsPreview.pop();
+                        }
+                    }
+                    var foundRequests = res.data;
+
+                    $.each(foundRequests, function (index, foundRequest) {
+                        vm.$store.state.currentRequestsPreview.push(foundRequest);
+                    });
+                    
+                    vm.getNumPages();
+                    //vm.$forceUpdate();
+                    //vm.isFetchingRequests = false;
+                })
+                .catch((err) => {
+                    vm.hasFailure = true;
+                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                })
+        },
+
+        filterView: function(event){
+            console.log("filterView activated.");
+            var queryString = '';
+            var vm = this;
+
+            vm.currentPageNumber = 1;
+            //collapse search menu
+            $("#filterMenu").click();
+
+            //gather status to query
+            var statusToQuery = '';
+            var statusSet = $("#inputStatus select option");
+
+            $.each(statusSet, function( index, item ){
+            if (item.selected){
+                statusToQuery = item.id;
+            }
+            });
+
+            vm.requestStatusToQuery = statusToQuery;
+
+            vm.updateRequests();
+        },
+
+        resetFilterView: function(event){
+            console.log("resetFilterView activated.");
+            let vm = this;
+
+            vm.requestStatusToQuery = null;
+
+            vm.updateRequests();
+        },
+
+        getNumPages(){
+            console.log("getNumPages activated.");
+            let vm = this;
+
+            //get requests and pages count
+            var url = apiMgr.getRequestsUrl().replace("requests", "requestscount") + `&numOfItemsPerPage=${vm.previewPerPage}`;
+            if(vm.requestStatusToQuery != null && vm.requestStatusToQuery != ""){
+                url += `&processingStatusContains=${vm.requestStatusToQuery}`;
+            }
+
+            axios.get(url)
+                .then(res => {
+                    console.log("getRequestsUrl return status: " + res.status);
+                    
+                    vm.numPages = res.data.numOfPages;
+                    vm.numRequests = res.data.count;
+
+                    vm.$forceUpdate();
+                    //vm.isFetchingRequests = false;
+                })
+                .catch((err) => {
+                    vm.hasFailure = true;
+                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                })
         }
     }
 }
@@ -221,5 +394,8 @@ export default {
 <style scoped>
 .pad-bottom{
   padding-bottom:5px
+}
+a {
+    margin:2px
 }
 </style>
