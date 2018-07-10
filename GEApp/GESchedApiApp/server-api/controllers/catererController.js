@@ -95,7 +95,7 @@ exports.createCaterer = function (req, res) {
         return;
     }
 
-    newCaterer .save()
+    newCaterer.save()
         .then((caterer) => {
             logger.info(`catererController.createCaterer  - Caterer .save success. About to send back http response with caterer called ${caterer}`);
             res.status(201).json(caterer); // 201 - CREATED
@@ -136,16 +136,16 @@ exports.updateCaterer  = function (req, res) {
         return;
     };
 
-    toUpdateCaterer .updatedAt = Date.now();
+    toUpdateCaterer.updatedAt = Date.now();
 
-    Caterer .update({"_id": toUpdateCaterer ._id }, { $set: toUpdateCaterer  }, function (err) {
+    Caterer.update({"_id": toUpdateCaterer ._id }, { $set: toUpdateCaterer  }, function (err) {
         if (err) {
             var errMsg = `catererController.updateCaterer  - Caterer .find failed. Error: ${err}`
             logger.error(errMsg);
             res.status(500).json({ error: errMsg }); // 500 - INTERNAL SERVER ERROR
         } else {
 
-            Caterer .findById(toUpdateCaterer ._id)
+            Caterer.findById(toUpdateCaterer ._id)
             .then((caterer) => {
                 if (caterer == null) {
                     var errMsg = `catererController.updateCaterer  - unable to find the updated Caterer  by id ${toUpdateCaterer ._id}. Error: ${err}`;
@@ -175,19 +175,19 @@ exports.getCaterer  = function (req, res) {
     let siteCode = httpRequestHelper.getSite(req);
     let Caterer  = getCatererType(siteCode);
 
-    Caterer .findById(req.params.id)
+    Caterer.findById(req.params.id)
         .then((caterer) => {
             if (caterer == null) {
-                var errMsg = `catererController.getCaterer  - Caterer .findById did not find a caterer with id ${req.params.id}.`;
+                var errMsg = `catererController.getCaterer  - Caterer.findById did not find a caterer with id ${req.params.id}.`;
                 logger.error(errMsg);
                 res.status(404).json({ error: errMsg }); // 404 - Not found 
             } else {
-                logger.info(`catererController.getCaterer  - Caterer .findById success. About to to send back http response with caterer:\n ${caterer}`);
+                logger.info(`catererController.getCaterer  - Caterer.findById success. About to to send back http response with caterer:\n ${caterer}`);
                 res.status(200).json(caterer);  // 200 - OK
             }
         })
         .catch((err) => {
-            var errMsg = `catererController.getCaterer  - Caterer .findById failed. Error: ${err}`;
+            var errMsg = `catererController.getCaterer  - Caterer.findById failed. Error: ${err}`;
             logger.error(errMsg);
             res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
         });
@@ -202,19 +202,19 @@ exports.deleteCaterer  = function (req, res) {
     let siteCode = httpRequestHelper.getSite(req);
     let Caterer  = getCatererType(siteCode);
 
-    Caterer .findByIdAndRemove(req.params.id)
+    Caterer.findByIdAndRemove(req.params.id)
     .then((caterer) => {
         if (caterer == null) {
             var errMsg = `catererController.deleteCaterer  - Did not find the caterer to be deleted by id ${req.params.id}.`;
             logger.error(errMsg);
             res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
         } else {
-            logger.info(`catererController.deleteCaterer  - Caterer .findByIdAndRemove ${req.params.id} success. Deleted caterer called ${caterer.name}`);
+            logger.info(`catererController.deleteCaterer  - Caterer.findByIdAndRemove ${req.params.id} success. Deleted caterer called ${caterer.name}`);
             res.status(204).send();  // 204 - NO CONTENT 
         }
     })
     .catch((err) => {
-        var errMsg = `catererController.deleteCaterer  - Caterer .findByIdAndRemove ${req.params.id} failed. Error: ${err}`;
+        var errMsg = `catererController.deleteCaterer  - Caterer.findByIdAndRemove ${req.params.id} failed. Error: ${err}`;
         logger.error(errMsg);
         res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
     });
