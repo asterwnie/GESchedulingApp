@@ -80,147 +80,159 @@ function extractAppConfigItems(fileData) {
         var lineProcessed = false;
 
         logger.info(`Processing line: ${line}`);
-        
+    
         //Find current item
+       
         directive = "--SiteCode";
-        if (line.search(directive) > -1) {            
-            currentItem = 'siteCode';
-            }
-
-
-         directive="--DoFirst.";
-        if (line.search(directive) > -1) {            
-            var doFirst= line.replace(directive,"").trim();
-            if (doFirst == "ViewTitle"){
-                currentItem = 'doFirstViewTitle';
-            } else if (doFirst == "ViewDescription"){
-                currentItem = 'doFirstViewDescription';
-            }
+        if (line.search(directive) > -1) {           
+           currentItem = 'siteCode';
         }
         
-        directive= "--NewRequest.";
-        if (line.search(directive)>-1){
-            var newRequest= line.replace (directive,"").trim();
-            if (newRequest == "ViewTitle"){
-                currentItem = 'newRequestViewTitle';
-            }
-        }
-       
-        directive= "--EditRequest.";
-        if (line.search(directive)>-1){
-            var editRequest= line.replace (directive,"").trim();
-            if (editRequest == "ViewTitle"){
-                currentItem = 'editRequestViewTitle';
-            }
+        directive = "--SiteName";
+        if (line.search(directive)>-1) {
+            currentItem = 'siteName';
         }
 
-        directive= "--SubmitRequest.";
-        if (line.search(directive)>-1){
-            var submitRequest= line.replace (directive,"").trim();
-            if (submitRequest == "ViewTitle"){
-                currentItem = 'submitRequestViewTitle';
-            }
+        directive = "--SiteAddress";
+        if (line.search(directive)>-1) {
+            currentItem = 'siteaddress';
         }
+        
+        
+        directive="--DoFirst.";
+       if (line.search(directive) > -1) {           
+           var doFirst= line.replace(directive,"").trim();
+           if (doFirst == "ViewTitle"){
+               currentItem = 'doFirstViewTitle';
+           } else if (doFirst == "ViewDescription"){
+               currentItem = 'doFirstViewDescription';
+           }
+       }
+      
+       directive= "--NewRequest.";
+       if (line.search(directive)>-1){
+           var newRequest= line.replace (directive,"").trim();
+           if (newRequest == "ViewTitle"){
+               currentItem = 'newRequestViewTitle';
+           }
+       }
+     
+       directive= "--EditRequest.";
+       if (line.search(directive)>-1){
+           var editRequest= line.replace (directive,"").trim();
+           if (editRequest == "ViewTitle"){
+               currentItem = 'editRequestViewTitle';
+           }
+       }
 
-        directive= "--AttentionNotes.";
-        if (line.search(directive)>-1){
-            var attentionNotes= line.replace (directive,"").trim();
-            if (attentionNotes == "ViewTitle"){
-                currentItem = 'attentionNotesViewTitle';
-            }
-        }
+       directive= "--SubmitRequest.";
+       if (line.search(directive)>-1){
+           var submitRequest= line.replace (directive,"").trim();
+           if (submitRequest == "ViewTitle"){
+               currentItem = 'submitRequestViewTitle';
+           }
+       }
 
-        directive= "--About.";
-        if (line.search(directive)>-1){
-            var about= line.replace (directive,"").trim();
-            if (about == "ViewTitle"){
-                currentItem = 'aboutViewTitle';
-            } else if (about == "ViewDescription"){
-                currentItem = 'aboutViewDescription';
-            }
-        }
+       directive= "--AttentionNotes.";
+       if (line.search(directive)>-1){
+           var attentionNotes= line.replace (directive,"").trim();
+           if (attentionNotes == "ViewTitle"){
+               currentItem = 'attentionNotesViewTitle';
+           }
+       }
 
-        directive= "--TechSupport.";
-        if (line.search(directive)>-1){
-            var techSupport= line.replace (directive,"").trim();
-            if (techSupport == "ViewTitle"){
-                currentItem = 'techSupportViewTitle';
-            } else if (techSupport == "ViewDescription"){
-                currentItem = 'techSupportViewDescription';
-            }
-        }
+       directive= "--About.";
+       if (line.search(directive)>-1){
+           var about= line.replace (directive,"").trim();
+           if (about == "ViewTitle"){
+               currentItem = 'aboutViewTitle';
+           } else if (about == "ViewDescription"){
+               currentItem = 'aboutViewDescription';
+           }
+       }
 
-        directive= "--Caterers.";
-        if (line.search(directive)>-1){
-            var caterers= line.replace (directive,"").trim();
-            if (caterers == "ViewTitle"){
-                currentItem = 'caterersViewTitle';
-            } else if (caterers == "ViewDescription"){
-                currentItem = 'caterersViewDescription';
-            }
-        }
+       directive= "--TechSupport.";
+       if (line.search(directive)>-1){
+           var techSupport= line.replace (directive,"").trim();
+           if (techSupport == "ViewTitle"){
+               currentItem = 'techSupportViewTitle';
+           } else if (techSupport == "ViewDescription"){
+               currentItem = 'techSupportViewDescription';
+           }
+       }
 
-        directive= "--Hotels.";
-        if (line.search(directive)>-1){
-            var hotels= line.replace (directive,"").trim();
-            if (hotels == "ViewTitle"){
-                currentItem = 'HotelsViewTitle';
-            } else if (hotels == "ViewDescription"){
-                currentItem = 'HotelsViewDescription';
-            }
-        }
+       directive= "--Caterers.";
+       if (line.search(directive)>-1){
+           var caterers= line.replace (directive,"").trim();
+           if (caterers == "ViewTitle"){
+               currentItem = 'caterersViewTitle';
+           } else if (caterers == "ViewDescription"){
+               currentItem = 'caterersViewDescription';
+           }
+       }
 
-        directive= "--GuestWiFiAccess.";
-        if (line.search(directive)>-1){
-            var guestWiFiAccess= line.replace (directive,"").trim();
-            if (guestWiFiAccess == "ViewTitle"){
-                currentItem = 'guestWiFiAccessViewTitle';
-            } else if (guestWiFiAccess == "ViewDescription"){
-                currentItem = 'guestWiFiAccessViewDescription';
-            }
-        }
+       directive= "--Hotels.";
+       if (line.search(directive)>-1){
+           var hotels= line.replace (directive,"").trim();
+           if (hotels == "ViewTitle"){
+               currentItem = 'HotelsViewTitle';
+           } else if (hotels == "ViewDescription"){
+               currentItem = 'HotelsViewDescription';
+           }
+       }
 
-        directive= "--FindRoom.";
-        if (line.search(directive)>-1){
-            var findRoom= line.replace (directive,"").trim();
-            if (findRoom == "ViewTitle"){
-                currentItem = 'findRoomViewTitle';
-            }
-        }
+       directive= "--GuestWiFiAccess.";
+       if (line.search(directive)>-1){
+           var guestWiFiAccess= line.replace (directive,"").trim();
+           if (guestWiFiAccess == "ViewTitle"){
+               currentItem = 'guestWiFiAccessViewTitle';
+           } else if (guestWiFiAccess == "ViewDescription"){
+               currentItem = 'guestWiFiAccessViewDescription';
+           }
+       }
 
-        directive= "--RequestStatusTag";
-        if (line.search(directive)>-1){
-            var requestStatusTag= line.replace (directive,"").trim();
-            if (requestStatusTag == "UnderReview"){
-                currentItem = 'requestStatusTagUnderReview';
-            } else if (requestStatusTag == "Approved"){
-                currentItem = 'requestStatusTagApproved';
-            }
-        }
+       directive= "--FindRoom.";
+       if (line.search(directive)>-1){
+           var findRoom= line.replace (directive,"").trim();
+           if (findRoom == "ViewTitle"){
+               currentItem = 'findRoomViewTitle';
+           }
+       }
 
-        directive= "--RequestStatusTag";
-        if (line.search(directive)>-1){
-            var requestStatusTag= line.replace (directive,"").trim();
-            if (requestStatusTag == "UnderReview"){
-                currentItem = 'requestStatusTagUnderReview';
-            } else if (requestStatusTag == "Approved"){
-                currentItem = 'requestStatusTagApproved';
-            } else if (requestStatusTag == "Rejected"){
-                currentItem = 'requestStatusTagRejected';
-            }
-        }
+       directive= "--RequestStatusTag";
+       if (line.search(directive)>-1){
+           var requestStatusTag= line.replace (directive,"").trim();
+           if (requestStatusTag == "UnderReview"){
+               currentItem = 'requestStatusTagUnderReview';
+           } else if (requestStatusTag == "Approved"){
+               currentItem = 'requestStatusTagApproved';
+           }
+       }
 
-        directive= "--RequestStatusMessageTag";
-        if (line.search(directive)>-1){
-            var requestStatusMessageTag= line.replace (directive,"").trim();
-            if (requestStatusMessageTag == "UnderReview"){
-                currentItem = 'requestStatusMessageTagUnderReview';
-            } else if (requestStatusMessageTag == "Approved"){
-                currentItem = 'requestStatusMessageTagApproved';
-            } else if (requestStatusMessageTag == "Rejected"){
-                currentItem = 'requestStatusMessageTagRejected'
-            }
-        }
+       directive= "--RequestStatusTag";
+       if (line.search(directive)>-1){
+           var requestStatusTag= line.replace (directive,"").trim();
+           if (requestStatusTag == "UnderReview"){
+               currentItem = 'requestStatusTagUnderReview';
+           } else if (requestStatusTag == "Approved"){
+               currentItem = 'requestStatusTagApproved';
+           } else if (requestStatusTag == "Rejected"){
+               currentItem = 'requestStatusTagRejected';
+           }
+       }
+
+       directive= "--RequestStatusMessageTag";
+       if (line.search(directive)>-1){
+           var requestStatusMessageTag= line.replace (directive,"").trim();
+           if (requestStatusMessageTag == "UnderReview"){
+               currentItem = 'requestStatusMessageTagUnderReview';
+           } else if (requestStatusMessageTag == "Approved"){
+               currentItem = 'requestStatusMessageTagApproved';
+           } else if (requestStatusMessageTag == "Rejected"){
+               currentItem = 'requestStatusMessageTagRejected'
+           }
+       }
+
         //keep searching...
 
         //After current item is found, set the current item's value to the next line
@@ -231,8 +243,8 @@ function extractAppConfigItems(fileData) {
         
         return true; // Return true to continue processing for the next line item.
          
-        }
-    )
+        }})
+    
 
 
     // Check to see if there's one last pending new one to be collected.
