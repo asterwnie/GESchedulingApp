@@ -77,7 +77,7 @@ export const validatePrompts = (prompts) => {
             }
         }
 
-        if (!currentFieldInvalid && prompt.inputType.ctrlType == 'yesNo') {
+        if (!currentFieldInvalid && (prompt.inputType.ctrlType == 'yesNo' || prompt.inputType.ctrlType == 'yesNoWithComment')) {
             var ctrlDataId = prompt.inputType.ctrlDataId;
             var currObject = $("#" + ctrlDataId);
             inputVal = currObject[0].checked;
@@ -252,7 +252,7 @@ export const validateRequest = (request, currentScreenNum) => {
                 }
             }
 
-            if (!currentFieldInvalid && requestPrompt.inputType.ctrlType == 'yesNo') {
+            if (!currentFieldInvalid && (requestPrompt.inputType.ctrlType == 'yesNo' || requestPrompt.inputType.ctrlType == 'yesNoWithComment')) {
                 var ctrlDataId = requestPrompt.inputType.ctrlDataId;
                 var currObject = $("#" + ctrlDataId);
                 inputVal = currObject[0].checked;
@@ -281,6 +281,7 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
     $.each(ctrls, function (index, inputCtrl) {
         var ctrl = $(inputCtrl);
         if (ctrl != null && ctrl.attr('screenNum') == currentScreenNum) {
+            ctrl.val(null);
             var val = request[inputCtrl.id];
             if (val != undefined && val != null && val != "") {
                 ctrl.val(val);
@@ -293,6 +294,7 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
     $.each(ctrls, function (index, inputCtrl) {
         var ctrl = $(inputCtrl);
         if (ctrl != null && ctrl.attr('screenNum') == currentScreenNum) {
+            ctrl.val(null);
             var val = request[inputCtrl.id];
             if (val != undefined && val != null && val != "") {
                 ctrl.val(val);

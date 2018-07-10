@@ -29,7 +29,11 @@
                     <div v-else>
                       {{requestReadOnlyProperty.value.name}}
                     </div>
-                    
+                    <div v-if="requestReadOnlyProperty.adminComment != null">
+                      <span class="font-italic">
+                      Comment:  {{requestReadOnlyProperty.adminComment}}
+                      </span>
+                    </div>
                   </div>
                   <div style="height:10px"></div>
                 </div>
@@ -132,22 +136,35 @@ export default {
 
     this.requestReadOnlyProperties = [];
     requestPrompts.forEach(function(requestPrompt) {
-      var reqProperty = {label: requestPrompt.label, value: currentRequest[requestPrompt.inputType.ctrlDataId]};
-      
-      if (requestPrompt.inputType.isValueBoolean) {
+
+      var val = currentRequest[requestPrompt.inputType.ctrlDataId];
+
+      if (val != undefined && val != null && val != "") {
+        var reqProperty = { label: requestPrompt.label, value: val, adminComment: null };
         
-        if (currentRequest[requestPrompt.inputType.ctrlDataId] == true) {
-          reqProperty.value = "Yes";
-        } else {
-          reqProperty.value = "No";
+        if (requestPrompt.inputType.isValueBoolean) {
+          
+          if (currentRequest[requestPrompt.inputType.ctrlDataId] == true) {
+            reqProperty.value = "Yes";
+          } else {
+            reqProperty.value = "No";
+          }
         }
+
+        var additionalComment = currentRequest[requestPrompt.inputType.ctrlDataId + "AdditionalComment"]; 
+        if (additionalComment != undefined && additionalComment != null && additionalComment != "") {
+          reqProperty.value += (": " + additionalComment);
+        }
+
+        var adminComment = currentRequest[requestPrompt.inputType.ctrlDataId + 'AdminComment'];
+        if (adminComment != undefined && adminComment != null && adminComment != "") {
+          reqProperty.adminComment = adminComment;
+        }
+
+        vm.requestReadOnlyProperties.push(reqProperty);
       }
 
-      var additionalComment = currentRequest[requestPrompt.inputType.ctrlDataId + "AdditionalComment"]; 
-      if (additionalComment != undefined && additionalComment != null && additionalComment != "") {
-        reqProperty.value += (": " + additionalComment);
-      }
-      vm.requestReadOnlyProperties.push(reqProperty);
+
     });
   },
 
@@ -248,12 +265,9 @@ export default {
           if (res.status == 201 && res.data != null) {
               var requestCreated = res.data;
 
-              if (this.isNewRequest) {
-                localCacheMgr.uncacheItem("workingNewRequest");
-              } else {
-                localCacheMgr.uncacheItem("revisingRequest-" + storeState.currentRequest._id);
-              }
+              localCacheMgr.uncacheItem("workingNewRequest");
               storeState.currentRequest = null;
+              storeState.selectedRoom = null;
 
               vm.$router.push(goToThisRouteOnSucess); 
 
@@ -295,12 +309,9 @@ export default {
           if (res.status == 200 && res.data != null) {
               var requestUdated = res.data;
 
-              if (this.isNewRequest) {
-                localCacheMgr.uncacheItem("workingNewRequest");
-              } else {
-                localCacheMgr.uncacheItem("revisingRequest-" + storeState.currentRequest._id);
-              }
+              localCacheMgr.uncacheItem("revisingRequest-" + storeState.currentRequest._id);          
               storeState.currentRequest = null;
+              storeState.selectedRoom = null;
 
               vm.$router.push(goToThisRouteOnSucess); 
 

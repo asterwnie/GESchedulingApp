@@ -299,7 +299,7 @@ export default {
         if ($(inputCtrl).attr('screenNum') == vm.currentScreenNum) {
 
           var ctrlVal = $(inputCtrl).val();
-          if (ctrlVal != null && ctrlVal.name == null) {
+          if (ctrlVal != null && typeof ctrlVal == "string") {
             ctrlVal = ctrlVal.trim();
           }
 
@@ -339,7 +339,7 @@ export default {
 
           if ($(inputCtrl).attr('screenNum') == vm.currentScreenNum) {
             var ctrlVal = $(inputCtrl).val();
-            if (ctrlVal != null && ctrlVal.toString()) {
+            if (ctrlVal != null && typeof ctrlVal == "string") {
               ctrlVal = ctrlVal.trim();
             }
             if (ctrlVal == null || ctrlVal == "") {
