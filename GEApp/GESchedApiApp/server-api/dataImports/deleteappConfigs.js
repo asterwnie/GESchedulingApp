@@ -7,7 +7,7 @@ const appRoot = require('app-root-path');
 const mongoose = require('mongoose'); // Helper libray for MongoDB. http://mongoosejs.com/ 
 const appConfig = require(`${appRoot}/server.config`); // Load app configuration settings server.config.js
 const logger = require(`${appRoot}/server-api/logger`); // Create logging helper
-const getAppConfigType = require(`${appRoot}/server-api/models/appConfigsModel`);
+const getAppConfigSiteCode = require(`${appRoot}/server-api/models/appConfigsModel`);
 
 mongoose.Promise = global.Promise;
 
@@ -20,7 +20,7 @@ var siteCode = appConfig.defaultSite; // The current default in HLS-MA in server
 if (args.length == 3 && args[2] != null) { siteCode = args[2]; }
 
 
-let appConfig = getAppConfigType(siteCode);
+let appConfig = getAppConfigSiteCode(siteCode);
 
 const delyInSecs = 3;
 const timer = setInterval(() => deleteAppConfigs(), delyInSecs * 1000); // Ensures db connection is established in getappConfigType since it's an async operation.
@@ -32,7 +32,7 @@ function deleteAppConfigs() {
     clearInterval(timer);
     
     // Match any name therefore, deleting all.
-    appConfig.deleteMany({ type: /(.*?)/ }) 
+    appConfig.deleteMany({ siteCode: /(.*?)/ }) 
         .then(function () {
             logger.info(`ADMIN: All appConfigs deleted for site: ${siteCode}`);
 

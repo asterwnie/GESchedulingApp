@@ -28,7 +28,17 @@ const appConfigSchema = new Schema({
     appTitle: {
         type: String,
         required: [true, 'appConfig siteTitle is required!']
-    }, 
+    },
+    
+    doFirstViewTitle: {
+        type:String,
+        required:[true, 'appConfig doFirstViewTitle is required!']
+    },
+
+    doFirstViewTitleDescription: {
+        type:String,
+        required:[true, 'appConfig doFirstViewTitleDescription is required!']
+    },
   
     aboutViewTitle: {
         type: String,
@@ -67,7 +77,7 @@ const appConfigSchema = new Schema({
 
     hotelsViewDescription: { 
         type: String,
-        required: [true, 'Appconfig hotelsViewDescription is required!']
+        required: [true, 'appconfig hotelsViewDescription is required!']
     },
 
     guestWiFiAccessViewTitle: {
@@ -93,10 +103,12 @@ const appConfigSchema = new Schema({
     requestStatusMessageRejected: { 
         type: String,
         required: [true, 'appConfig requestStatusMessageRejected is required!']
-    },
-
+    }
+},
+    
+    { 
     timestamps: true // auto-add createdAt and updatedAt
-});
+    });
 
 
 // Object to hold a notes model per site.
