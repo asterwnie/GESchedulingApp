@@ -1,7 +1,15 @@
 <template>
 
 <div class="container-fluid" style="width:100%;">
-    <div class="row">
+    <div>
+       <div id="loading" class="pagination-centered" :hidden="!isLoading||hasFailure">
+        <br>
+        <br>
+        <i class="fas fa-circle-notch fa-spin fa-lg"></i>
+      </div>
+    </div>
+    <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
+    <div class="row" :hidden="isLoading">
       <div class="col col-sm-1 col-md-2 col-lg-4"></div>
       <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%;">
           <div class="alert alert-info">{{ viewDescription }}</div>
@@ -44,9 +52,15 @@
 </template>
 
 <script>
+import axios from 'axios'
+import * as apiMgr from '@/common/apiMgr.js';
+
 export default {
   data () {
     return {
+      isFetchingCaterers: true,
+      hasFailure: false,
+      failureMessage: ""
     }
   },
 
@@ -59,6 +73,11 @@ export default {
     },
     catererItems() {
       return this.$store.state.caterers;
+    },
+    isLoading() {
+      return (
+          this.isFetchingCaterers
+          ); 
     }
   },
 
@@ -70,11 +89,32 @@ export default {
     }
 
     this.$store.state.currentViewTitle = this.title;
-   this.$store.state.enableNavBar = true;
+    this.$store.state.enableNavBar = true;
+
+    this.isFetchingCaterers = true;
+    this.getCaterers();
   },
 
-  created(){
-    console.log(this.catererItems);
+  methods: {
+      getCaterers() {
+
+      var vm = this;
+      var url = apiMgr.getCaterersUrl() + '&orderBy=seqNum:1'; 
+
+      axios.get(url)
+          .then(res => {
+              console.log("getCaterersUrl return status: " + res.status);
+
+              vm.$store.state.caterers = res.data;
+              vm.isFetchingCaterers = false;
+          })
+          .catch((err) => {
+              vm.hasFailure = true;
+              vm.failureMessage = "Server unavailable or not working at this time. Please try later. [error code: 5]";  
+              vm.isFetchingCaterers = false;                             
+          })
+
+  },
   }
 }
 

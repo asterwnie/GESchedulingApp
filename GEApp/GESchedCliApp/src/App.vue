@@ -1,22 +1,25 @@
 <!--Outer "wrapper" of the app, appears on every screen-->
 <template>
   <div id="app">
-    <!--Admin Red Bar-->
-    <div v-if="isAdmin">
-      <div style="width:100%; height:3px" class="fixed-top bg-danger z-index:100"></div>
-    </div>
+
     <!--Top bar (header)-->
-    <div id="headerBar" class="app-bar-style fixed-top d-flex justify-content-between bd-highlight mb-3">
-      <!--Back button-->
-      <div class="p-2 align-self-center" >
-        <a @click="$router.go(-1)"><span class="fas fa-chevron-left fa-lg" :hidden="!$store.state.enableNavBar"></span></a>
+    <div id="headerBar" class="app-bar-style fixed-top bd-highlight mb-3">
+      <!--Admin Red Bar-->
+      <div v-if="$store.state.inAdminMode">
+        <div style="width:100%; height:3px; z-index:100" class="fixed-top bg-danger"></div>
       </div>
-      <!--Title-->
-      <div class="p-2 align-self-center">{{ title }}</div>
-      <!--Menu button-->
-      <div class="p-2 align-self-center navbar navbar-default navbar-fixed-top">
-        <div id="menuButton" :hidden="!$store.state.enableNavBar" class="navbar-toggle" data-toggle="offcanvas" data-target="#myNavmenu" data-canvas="body">
-          <span class="fas fa-align-justify fa-lg text-white"></span>
+      <div class="d-flex justify-content-between">
+        <!--Back button-->
+        <div class="p-2 align-self-center">
+          <a @click="$router.go(-1)"><span class="fas fa-chevron-left fa-lg" :hidden="!$store.state.enableNavBar"></span></a>
+        </div>
+        <!--Title-->
+        <div class="p-2 align-self-center">{{ title }}</div>
+        <!--Menu button-->
+        <div class="p-2 align-self-center">
+          <div id="menuButton" :hidden="!$store.state.enableNavBar" class="navbar-toggle" data-toggle="offcanvas" data-target="#myNavmenu" data-canvas="body">
+            <span class="fas fa-align-justify fa-lg text-white"></span>
+          </div>
         </div>
       </div>
     </div>
@@ -41,7 +44,12 @@
                 <button type="button" width="100%" v-on:click="collapseMenu" class="btn btn-secondary" data-dismiss="modal" @click="$router.push('/login')">Login</button>
               </div>
               <div class="form-group">
-                <button type="button" width="100%" v-on:click="collapseMenu" class="btn btn-secondary" data-dismiss="modal" @click="$router.push('/home')">Home</button>
+                <div v-if="$store.state.inAdminMode">
+                  <button type="button" width="100%" v-on:click="collapseMenu" class="btn btn-secondary" data-dismiss="modal" @click="$router.push('/admin/home')">Admin Home</button>
+                </div>
+                <div v-else>
+                  <button type="button" width="100%" v-on:click="collapseMenu" class="btn btn-secondary" data-dismiss="modal" @click="$router.push('/home')">Home</button>
+                </div>
               </div>
               <div class="form-group">
                 <button type="button" width="100%" v-on:click="collapseMenu" class="btn btn-secondary" data-dismiss="modal" @click="$router.push('/findroom')">Find Room</button>
@@ -87,13 +95,15 @@ export default {
   data () {
     return {
       modalShowMenu: false,
-      isAdmin: this.$store.state.inAdminMode
     }
   },
 
   computed: {
     title() {
       return this.$store.state.currentViewTitle;
+    },
+    isAdmin(){
+      this.$store.state.inAdminMode;
     }
   },
 

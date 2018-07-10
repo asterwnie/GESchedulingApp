@@ -2,6 +2,14 @@
     
 
     <div class="container-fluid" style="width:100%;">
+      <div>
+        <div id="loading" class="pagination-centered" :hidden="!isLoading||hasFailure">
+          <br>
+          <br>
+          <i class="fas fa-circle-notch fa-spin fa-lg"></i>
+        </div>
+      </div>
+      <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
       <div class="row">
         <div class="col col-sm-1 col-md-2 col-lg-4"></div>
         <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%;">
@@ -50,9 +58,15 @@
 </template>
 
 <script>
+import axios from 'axios'
+import * as apiMgr from '@/common/apiMgr.js';
+
 export default {
   data () {
     return {
+      isFetchingHotels: true, 
+      hasFailure: false,
+      failureMessage: ""
     }
   },
 
@@ -65,6 +79,11 @@ export default {
     },
     hotelItems() {
       return this.$store.state.hotels;
+    },
+    isLoading() {
+      return (
+          this.isFetchingHotels
+          ); 
     }
   },
 
@@ -78,6 +97,31 @@ export default {
 
     this.$store.state.currentViewTitle = this.title;
     this.$store.state.enableNavBar = true;
+
+    this.isFetchingHotels = true;
+    this.getHotels();
+  },
+
+  methods: {
+    getHotels() {
+
+        var vm = this;
+        var url = apiMgr.getHotelsUrl() + '&orderBy=seqNum:1'; 
+
+        axios.get(url)
+            .then(res => {
+                console.log("getHotelsUrl return status: " + res.status);
+
+                vm.$store.state.hotels = res.data;
+                vm.isFetchingHotels = false;                  
+            })
+            .catch((err) => {
+                vm.hasFailure = true;
+                vm.failureMessage = "Server unavailable or not working at this time. Please try later.  [error code: 4]";   
+                vm.isFetchingHotels = false;                            
+            })
+
+    },
   }
 }
 </script>

@@ -103,6 +103,10 @@ roomRoutes(app);
 var noteRoutes = require('./server-api/routes/noteRoutes');
 noteRoutes(app);
 
+// Set up API routes for the AppConfig entity:
+var appConfigRoutes = require('./server-api/routes/appConfigRoutes');
+appConfigRoutes(app);
+
 
 
 

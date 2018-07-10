@@ -208,6 +208,7 @@ export default {
     });
 
 
+    vm.isSelectingRoom = false;
     //check if previous screen was a request screen
     if(vm.$store.state.previousPage.indexOf("RequestScreen") > -1){
       console.log(`Previous screen is request: ${vm.$store.state.previousPage}. Select Room Activated.`);

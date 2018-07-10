@@ -99,8 +99,6 @@ export default {
 
             isFetchingDefAppConfig: true,
             isFetchingNotes: true,
-            isFetchingHotels: true,      
-            isFetchingCaterers: true,
             isFetchingRequestPrompts: true,
             isFetchingRooms: true,
             isFetchingRequests: true,
@@ -139,16 +137,12 @@ export default {
 
         this.isFetchingDefAppConfig = true;
         this.isFetchingNotes = true;
-        this.isFetchingHotels = true;
-        this.isFetchingCaterers = true;
         this.isFetchingRequestPrompts = true;
         this.isFetchingRooms = true;
         this.isFetchingRequests = true;
         
         this.getDefAppConfig(); 
         this.getNotes();
-        this.getHotels();
-        this.getCaterers();
         this.getRequestPrompts();
         this.getRooms();
         this.getRequests();
@@ -160,8 +154,6 @@ export default {
             return (
                 this.isFetchingDefAppConfig || 
                 this.isFetchingNotes || 
-                this.isFetchingHotels ||
-                this.isFetchingCaterers ||
                 this.isFetchingRequestPrompts ||
                 this.isFetchingRooms ||
                 this.isFetchingRequests
@@ -229,46 +221,6 @@ export default {
                     vm.hasFailure = true;
                     vm.failureMessage = "Server unavailable or not working at this time. Please try later.  [error code: 3]";
                     vm.isFetchingNotes = false;                               
-                })
-
-        },
-
-        getHotels() {
-
-            var vm = this;
-            var url = apiMgr.getHotelsUrl() + '&orderBy=seqNum:1'; 
-
-            axios.get(url)
-                .then(res => {
-                    console.log("getHotelsUrl return status: " + res.status);
-
-                    vm.$store.state.hotels = res.data;
-                    vm.isFetchingHotels = false;                  
-                })
-                .catch((err) => {
-                    vm.hasFailure = true;
-                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.  [error code: 4]";   
-                    vm.isFetchingHotels = false;                            
-                })
-
-        },
-
-        getCaterers() {
-
-            var vm = this;
-            var url = apiMgr.getCaterersUrl() + '&orderBy=seqNum:1'; 
-
-            axios.get(url)
-                .then(res => {
-                    console.log("getCaterersUrl return status: " + res.status);
-
-                    vm.$store.state.caterers = res.data;
-                    vm.isFetchingCaterers = false;
-                })
-                .catch((err) => {
-                    vm.hasFailure = true;
-                    vm.failureMessage = "Server unavailable or not working at this time. Please try later. [error code: 5]";  
-                    vm.isFetchingCaterers = false;                             
                 })
 
         },

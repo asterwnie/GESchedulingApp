@@ -41,15 +41,15 @@ function doAppConfigsImport() {
         
         var result = extractAppConfigItems(fileData);
         if (result.success) {
-            logger.info(`Total number of appConfigs parsed: ${result.appConfigs.length}`);
+            //logger.info(`Total number of appConfigs parsed: ${result.appConfigs.length}`);
 
-            if (result.appConfigs.length == 0) {
-                logger.info('No appConfigs got extracted from the data file!');
+            if (result.appConfig == null || result.appConfig == undefined) {
+                logger.info('No appConfig got extracted from the data file!');
                 process.exit();
             }
-            logger.info(result.appConfigs);
+            logger.info(result.appConfig);
             
-            result.appConfigs.forEach((appConfig) => createAppConfigs(appConfig));
+            createAppConfig(result.appConfig);
         } else {
             process.exit();
         }
@@ -95,7 +95,12 @@ function extractAppConfigItems(fileData) {
 
         directive = "--SiteAddress";
         if (line.search(directive)>-1) {
-            currentItem = 'siteaddress';
+            currentItem = 'siteAddress';
+        }
+
+        directive = "--AppTitle";
+        if (line.search(directive)>-1) {
+            currentItem = 'appTitle';
         }
         
         
@@ -106,38 +111,6 @@ function extractAppConfigItems(fileData) {
                currentItem = 'doFirstViewTitle';
            } else if (doFirst == "ViewDescription"){
                currentItem = 'doFirstViewDescription';
-           }
-       }
-      
-       directive= "--NewRequest.";
-       if (line.search(directive)>-1){
-           var newRequest= line.replace (directive,"").trim();
-           if (newRequest == "ViewTitle"){
-               currentItem = 'newRequestViewTitle';
-           }
-       }
-     
-       directive= "--EditRequest.";
-       if (line.search(directive)>-1){
-           var editRequest= line.replace (directive,"").trim();
-           if (editRequest == "ViewTitle"){
-               currentItem = 'editRequestViewTitle';
-           }
-       }
-
-       directive= "--SubmitRequest.";
-       if (line.search(directive)>-1){
-           var submitRequest= line.replace (directive,"").trim();
-           if (submitRequest == "ViewTitle"){
-               currentItem = 'submitRequestViewTitle';
-           }
-       }
-
-       directive= "--AttentionNotes.";
-       if (line.search(directive)>-1){
-           var attentionNotes= line.replace (directive,"").trim();
-           if (attentionNotes == "ViewTitle"){
-               currentItem = 'attentionNotesViewTitle';
            }
        }
 
@@ -175,9 +148,9 @@ function extractAppConfigItems(fileData) {
        if (line.search(directive)>-1){
            var hotels= line.replace (directive,"").trim();
            if (hotels == "ViewTitle"){
-               currentItem = 'HotelsViewTitle';
+               currentItem = 'hotelsViewTitle';
            } else if (hotels == "ViewDescription"){
-               currentItem = 'HotelsViewDescription';
+               currentItem = 'hotelsViewDescription';
            }
        }
 
@@ -190,6 +163,38 @@ function extractAppConfigItems(fileData) {
                currentItem = 'guestWiFiAccessViewDescription';
            }
        }
+      
+       directive= "--NewRequest.";
+       if (line.search(directive)>-1){
+           var newRequest= line.replace (directive,"").trim();
+           if (newRequest == "ViewTitle"){
+               currentItem = 'newRequestViewTitle';
+           }
+       }
+     
+       directive= "--EditRequest.";
+       if (line.search(directive)>-1){
+           var editRequest= line.replace (directive,"").trim();
+           if (editRequest == "ViewTitle"){
+               currentItem = 'editRequestViewTitle';
+           }
+       }
+
+       directive= "--SubmitRequest.";
+       if (line.search(directive)>-1){
+           var submitRequest= line.replace (directive,"").trim();
+           if (submitRequest == "ViewTitle"){
+               currentItem = 'submitRequestViewTitle';
+           }
+       }
+
+       directive= "--AttentionNotes.";
+       if (line.search(directive)>-1){
+           var attentionNotes= line.replace (directive,"").trim();
+           if (attentionNotes == "ViewTitle"){
+               currentItem = 'attentionNotesViewTitle';
+           }
+       }
 
        directive= "--FindRoom.";
        if (line.search(directive)>-1){
@@ -199,17 +204,7 @@ function extractAppConfigItems(fileData) {
            }
        }
 
-       directive= "--RequestStatusTag";
-       if (line.search(directive)>-1){
-           var requestStatusTag= line.replace (directive,"").trim();
-           if (requestStatusTag == "UnderReview"){
-               currentItem = 'requestStatusTagUnderReview';
-           } else if (requestStatusTag == "Approved"){
-               currentItem = 'requestStatusTagApproved';
-           }
-       }
-
-       directive= "--RequestStatusTag";
+       directive= "--RequestStatusTag.";
        if (line.search(directive)>-1){
            var requestStatusTag= line.replace (directive,"").trim();
            if (requestStatusTag == "UnderReview"){
@@ -217,34 +212,35 @@ function extractAppConfigItems(fileData) {
            } else if (requestStatusTag == "Approved"){
                currentItem = 'requestStatusTagApproved';
            } else if (requestStatusTag == "Rejected"){
-               currentItem = 'requestStatusTagRejected';
-           }
+                currentItem = 'requestStatusTagRejected';
+            }
        }
 
-       directive= "--RequestStatusMessageTag";
+       directive= "--RequestStatusMessage.";
        if (line.search(directive)>-1){
-           var requestStatusMessageTag= line.replace (directive,"").trim();
-           if (requestStatusMessageTag == "UnderReview"){
-               currentItem = 'requestStatusMessageTagUnderReview';
-           } else if (requestStatusMessageTag == "Approved"){
-               currentItem = 'requestStatusMessageTagApproved';
-           } else if (requestStatusMessageTag == "Rejected"){
-               currentItem = 'requestStatusMessageTagRejected'
+           var requestStatusTag= line.replace (directive,"").trim();
+           if (requestStatusTag == "UnderReview"){
+               currentItem = 'requestStatusMessageUnderReview';
+           } else if (requestStatusTag == "Approved"){
+               currentItem = 'requestStatusMessageApproved';
+           } else if (requestStatusTag == "Rejected"){
+               currentItem = 'requestStatusMessageRejected';
            }
        }
 
-        //keep searching...
 
         //After current item is found, set the current item's value to the next line
-        if (currentItem!=null){
-            newAppConfig[currentItem]=line;
-            currentItem=null;
-        
-        
-        return true; // Return true to continue processing for the next line item.
+        if (currentItem != null){
+            if(line.indexOf("--") == -1){
+                newAppConfig[currentItem] = line;
+                currentItem = null;
+            }
          
-        }})
-    
+        }
+
+        return true; // Return true to continue processing for the next line item.
+    });
+
 
 
     // Check to see if there's one last pending new one to be collected.
@@ -286,6 +282,7 @@ function validateAppConfig(newAppConfig) {
     if (validationErr != null) {
         for (var prop in validationErr.errors) {
             logger.error(`ADMIN: validateAppConfig - create new newAppConfig validation error: ${validationErr.errors[prop]}`);
+            console.log(`ADMIN: validateAppConfig - create new newAppConfig validation error: ${validationErr.errors[prop]}`)
         }
         var errMsg = `ADMIN: validateAppConfig - create new newAppConfig failed validation. ${validationErr}`;
         logger.error(errMsg);
@@ -297,11 +294,11 @@ function validateAppConfig(newAppConfig) {
 
 function createAppConfig(newAppConfig) {
 
-    logger.info(`ADMIN: Adding appConfig (${newappConfig.name}) to the database.`);
+    logger.info(`ADMIN: Adding appConfig (${newAppConfig}) to the database.`);
 
     newAppConfig.save()
         .then((appConfig) => {
-            logger.info(`ADMIN: createAppConfig - appConfig.save success:\n${appConfigs}`);
+            logger.info(`ADMIN: createAppConfig - appConfig.save success:\n${appConfig}`);
             totalNumOfAppConfigsCreated += 1;
 
             if (totalNumOfAppConfigsCreated == totalNumOfAppConfigs) {
@@ -310,7 +307,7 @@ function createAppConfig(newAppConfig) {
 
                 mongoose.disconnect((err) => {
                     if (err) {
-                        logger.error(`ADMIN: appConfigs.createAppConfigs failed for site: ${siteCode}! Error: ${err}`);
+                        logger.error(`ADMIN: appConfigs.createAppConfig failed for site: ${siteCode}! Error: ${err}`);
                     } else {
                         logger.info(`ADMIN: Disconnected from database for site: ${siteCode}.`);
                     }
@@ -319,7 +316,7 @@ function createAppConfig(newAppConfig) {
             }
         })
         .catch((err) => {
-            var errMsg = `ADMIN: createAppConfigs - appConfigs.save failed. Error: ${err}`
+            var errMsg = `ADMIN: createAppConfig - appConfigs.save failed. Error: ${err}`
             logger.error(errMsg);
             mongoose.disconnect();
             return;

@@ -35,7 +35,7 @@ const appConfigSchema = new Schema({
         required:[true, 'appConfig doFirstViewTitle is required!']
     },
 
-    doFirstViewTitleDescription: {
+    doFirstViewDescription: {
         type:String,
         required:[true, 'appConfig doFirstViewTitleDescription is required!']
     },
@@ -103,7 +103,22 @@ const appConfigSchema = new Schema({
     requestStatusMessageRejected: { 
         type: String,
         required: [true, 'appConfig requestStatusMessageRejected is required!']
-    }
+    },
+
+    requestStatusTagUnderReview: {  
+        type: String,
+        required: [true, 'appConfig requestStatusTagUnderReview is required!']
+    },
+
+    requestStatusTagApproved: {  
+        type: String,
+        required: [true, 'appConfig requestStatusTagApproved is required!']
+    },
+
+    requestStatusTagRejected: { 
+        type: String,
+        required: [true, 'appConfig requestStatusTagRejected is required!']
+    },
 },
     
     { 

@@ -1,21 +1,15 @@
 <template>  
 <div>
-    <admin-view></admin-view>
     <div>All requests go here...</div>
 </div> 
 </template>
 
 <script>
-import adminView from '@/components/admin/AdminCommon.vue'
 
 export default {
     data () {
     return {
     }
-  },
-
-  components: {
-    adminView: adminView
   },
   
   computed: {
