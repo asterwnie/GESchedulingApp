@@ -100,6 +100,7 @@ export default {
   watch:{
     $route (to, from){
         window.scrollTo(0, 0);
+        this.$store.state.previousPage = from.name;
     }
   },
 

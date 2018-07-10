@@ -74,11 +74,14 @@ function extractRequestPromptItems(fileData) {
 
         var directive = null;
         var lineProcessed = false;
-        var promptType = null;
+
         var isBeginingOfNewPrompt = false;
         var newPromptLabel = null;
         var currentCtrlType = null;
         var inputTypeParsed = false;
+
+        var valueIsNumeric = false;
+        var valueIsBoolean = false;
 
         logger.info(`Processing line: ${line}`);
 
@@ -141,6 +144,7 @@ function extractRequestPromptItems(fileData) {
             if (!lineProcessed && line.search(directive) > -1) {
                 currentCtrlType = "number";
                 inputTypeParsed = true;
+                valueIsNumeric = true;
             } 
         }        
 
@@ -149,6 +153,7 @@ function extractRequestPromptItems(fileData) {
             if (!lineProcessed && line.search(directive) > -1) {
                 currentCtrlType = "yesNoWithComment";
                 inputTypeParsed = true;
+                valueIsBoolean = true;
             } 
         }
 
@@ -173,6 +178,7 @@ function extractRequestPromptItems(fileData) {
             if (!lineProcessed && line.search(directive) > -1) {
                 currentCtrlType = "yesNo";
                 inputTypeParsed = true;
+                valueIsBoolean = true;
             } 
         }
                
@@ -187,6 +193,15 @@ function extractRequestPromptItems(fileData) {
                         ctrlDataId: dataIdParts[1],
                         ctrlType: currentCtrlType
                     });
+                    
+                    if (valueIsNumeric) {
+                        inputType.isValueNumber = valueIsNumeric;
+                    }
+
+                    if (valueIsBoolean) {
+                        inputType.isValueBoolean = valueIsBoolean;
+                    }
+                    
                     newRequestPrompt.inputType = inputType;
                 }
 

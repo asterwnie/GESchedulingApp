@@ -7,6 +7,9 @@ const store = new Vuex.Store({
     state: {
         currentViewTitle: "...",
         enableNavBar: false,
+        previousPage: null,
+
+        selectedRoom: null,
 
         loginContext: {
             requesterEmail: null,

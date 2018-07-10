@@ -18,6 +18,7 @@ import About from '@/components/About.vue'
 
 //import AdminCommon from '@/components/AdminCommon.vue'
 import AdminHome from '@/components/admin/AdminHome.vue'
+import AdminRequests from '@/components/admin/AdminRequests.vue'
 
 Vue.use(Router)
 
@@ -98,6 +99,11 @@ export default new Router({
       path: '/admin/home',
       name: 'AdminHome',
       component: AdminHome
-    }
+    },
+    {
+      path: '/admin/requests',
+      name: 'AdminRequests',
+      component: AdminRequests
+    },
   ]
 })

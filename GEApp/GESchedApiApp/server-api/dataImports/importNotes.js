@@ -196,4 +196,4 @@ function createNotes(newNotes) {
             return;
         });
 
-};
+}

@@ -46,7 +46,7 @@ const RequestSchema = new Schema({
     eventGEContactPersonPhone: {
         type: String
     },
-
+    
     numOfGeEmpAttending: {
         type: Number,
         required: [true, 'Number of GE Employees attending is required!']
