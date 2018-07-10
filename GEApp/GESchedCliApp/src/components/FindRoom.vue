@@ -112,8 +112,8 @@
               
             
             <br>
-            <button type="button" class="btn btn-sm btn-primary float-right" v-on:click="filterView">Search</button>
-            <button type="button" class="btn btn-sm btn-secondary" v-on:click="resetFilterView">Reset</button>
+            <button type="button" class="btn btn-sm btn-primary float-right" @click.prevent="filterView">Search</button>
+            <button type="button" class="btn btn-sm btn-secondary" @click.prevent="resetFilterView">Reset</button>
           </div>
         </div>
       </div>
