@@ -99,7 +99,7 @@ requestRoutes(app);
 var roomRoutes = require('./server-api/routes/roomRoutes');
 roomRoutes(app);
 
-// Set up API routes for the Note  entity:
+// Set up API routes for the Note entity:
 var noteRoutes = require('./server-api/routes/noteRoutes');
 noteRoutes(app);
 
