@@ -382,6 +382,10 @@ export default {
         request.processingStatus = "underReview";
       }
 
+      if (request.processingStatus == "rejected" && !this.inAdminMode) {
+        request.processingStatus = "underReview";
+      }
+
       if (request.processingStatus == "underReview") {
         request.userCanEdit = false;
         request.adminCanEdit = true;
