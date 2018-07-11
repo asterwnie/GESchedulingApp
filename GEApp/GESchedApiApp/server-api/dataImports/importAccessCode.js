@@ -27,7 +27,7 @@ var totalNumOfAccessCode = 0;
 var totalNumOfAccessCodesCreated = 0;
 
 const delyInSecs = 3;
-const timer = setInterval(() => doCatererImport(), delyInSecs * 1000); // Ensures db connection is established in getCatererType since it's an async operation.
+const timer = setInterval(() => doAccessCodeImport(), delyInSecs * 1000); // Ensures db connection is established in getCatererType since it's an async operation.
 
 
 
@@ -38,7 +38,7 @@ function doAccessCodeImport() {
 
         var fileData = fs.readFileSync(`./server-api/dataImports/dataFiles/${fileName}`).toString()
         
-        var result = extractCatererItems(fileData);
+        var result = extractAccessCodeItems(fileData);
         if (result.success) {
             logger.info(`Total number of caterers parsed: ${result.caterers.length}`);
 
@@ -46,25 +46,25 @@ function doAccessCodeImport() {
                 logger.info('No caterer got extracted from the data file!');
                 process.exit();
             }
-            logger.info(result.caterers);
+            logger.info(result.accesscodes);
             
-            result.caterers.forEach((caterer) => createCaterer(caterer));
+            result.caterers.forEach((accessCode) => createAccessCode(accesscode));
         } else {
             process.exit();
         }
 
     } catch (err) {
-        logger.error(`ADMIN: Error importing the Caterer collection into the database! Error: ${err}`);
+        logger.error(`ADMIN: Error importing the accessCode collection into the database! Error: ${err}`);
         mongoose.disconnect();
         process.exit();
     }
 }
 
 
-function extractCatererItems(fileData) {
+function extractAccessCodeItems(fileData) {
     var result = null;
-    var CatererItems = [];
-    var newCaterer = null;
+    var accessCodeItems = [];
+    var newAccessCode = null;
     var errorEncountered = false;
     var currentItemSeq = 0;
 
