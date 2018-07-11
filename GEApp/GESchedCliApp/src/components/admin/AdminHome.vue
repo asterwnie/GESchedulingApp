@@ -1,12 +1,17 @@
 <template>  
 <div>
     <div class="container-fluid">
-      <div class="row">
+        <div class="row">
           <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
-          <div class="col col-12 col-auto" style="color:gray">
-          <h4 class="text-center" v-html="$store.state.appConfig.siteName"></h4>
-          <h6 class="text-center" v-html="$store.state.appConfig.siteAddress"></h6>
-          <br>
+          <div class="col col-12 col-sm-10 col-md-8 col-lg-8" style="color:gray">
+              <nav class="navbar navbar-light bg-light">
+                <a class="navbar-brand text-dark">
+                    <img src="@/assets/ge-monogram.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+                    Admin Home
+                </a>
+                </nav>
+            <p class="text-right font-italic">Welcome back, {{$store.state.currentUser.name}}</p>
+            <hr>
           </div>
           <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
       </div>
@@ -67,17 +72,59 @@
             </div>
           </div>
           <div style="height:10px;"></div>
-          <div id="upcomingRequests">
-                <div class="card">
-                    <div class="card-header bg-secondary text-light">
-                    Other Admin UI Items
-                    </div>
-                    <div class="card-body">
-                        <div class="card-text">
-                            placeholder...
-                        </div>
-                    </div>
+          <div id="utilityMenu">
+                
+                <div class="card-header bg-danger text-light">
+                    Utilities
                 </div>
+                <div style="height:10px;"></div>
+                <div class="card-group">
+                        <div class="card" style="background-color:#ffb0b0; cursor:pointer; text-align:center;">
+                            <div class="card-body">
+                                <h6 class="card-title">
+                                    Update Data&nbsp;&nbsp;<span class="fas fa-chevron-right"></span>
+                                </h6>
+                                <hr>
+                                <div class="card-text">
+                                    Add or revise Room, Hotel, and Catering data.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card" style="background-color:#ffb0b0; cursor:pointer; text-align:center;">
+                            <div class="card-body">
+                                <h6 class="card-title">
+                                    Send Invite&nbsp;&nbsp;<span class="fas fa-chevron-right"></span>
+                                </h6>
+                                <hr>
+                                <div class="card-text">
+                                    Email an access code to a requester.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card" style="background-color:#ffb0b0; cursor:pointer; text-align:center;">
+                            <div class="card-body">
+                                <h6 class="card-title">
+                                    Maintenance&nbsp;&nbsp;<span class="fas fa-chevron-right"></span>
+                                </h6>
+                                <hr>
+                                <div class="card-text">
+                                    Flush and archive old, cancelled, and completed requests.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card" style="background-color:#ffb0b0; cursor:pointer; text-align:center;">
+                            <div class="card-body">
+                                <h6 class="card-title">
+                                    Add Admin&nbsp;&nbsp;<span class="fas fa-chevron-right"></span>
+                                </h6>
+                                <hr>
+                                <div class="card-text">
+                                    Create a new Admin profile.
+                                </div>
+                            </div>
+                        </div>
+                </div>
+
             </div>
           </div>
       </div>
@@ -85,6 +132,16 @@
 
       <div class="col col-12 col-md-2 col-lg-2"></div>
     </div>
+    <div style="height:30px"></div>
+    <div class="row">
+          <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
+          <div class="col col-12 col-auto" style="color:gray">
+          <h4 class="text-center" v-html="$store.state.appConfig.siteName"></h4>
+          <h6 class="text-center" v-html="$store.state.appConfig.siteAddress"></h6>
+          <br>
+          </div>
+          <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
+      </div>
   </div>
 </template>
 

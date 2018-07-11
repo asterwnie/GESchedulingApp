@@ -61,5 +61,7 @@
 
     "adminHomeViewTitle": "Admin Home",
 
-    "adminHomeViewDescription": ""
+    "adminHomeViewDescription": "",
+
+    "adminRequestViewTitle": "Admin Requests"
 }

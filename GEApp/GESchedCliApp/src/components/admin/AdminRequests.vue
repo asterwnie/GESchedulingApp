@@ -11,41 +11,37 @@
                 </button>
             </div>
 
-            <div class="card">
-                <div class="card-header bg-secondary text-light">
-                    Quick Filter Menu
-                </div>
-                <div class="card-body">
-                    placeholder...
-                    <div class="container text-light" style="width:100%; display:flex; flex-wrap:wrap;">
-                        <a style="cursor:pointer;">
-                            <div class="card bg-secondary" style="height:100%; width:100px; text-align:center; vertical-align:middle; padding:5px">
-                                <i class="fa fa-user-circle fa-2x" aria-hidden="true"></i>
-                                All Requests
-                            </div>
-                        </a>
-                        <a style="cursor:pointer;">
-                            <div class="card bg-danger" style="height:100%; width:100px; text-align:center; vertical-align:middle; padding:5px">
-                                <i class="fa fa-exclamation-circle fa-2x" aria-hidden="true"></i>
-                                More Information Required
-                            </div>
-                        </a>
-                        <a style="cursor:pointer;">
-                            <div class="card bg-info" style="height:100%; width:100px; text-align:center; vertical-align:middle; padding:5px">
-                                <i class="fa fa-exclamation-circle fa-2x" aria-hidden="true"></i>
-                                Under Review
-                            </div>
-                        </a>
-                        <a style="cursor:pointer;">
-                            <div class="card bg-success" style="height:100%; width:100px; text-align:center; vertical-align:middle; padding:5px">
-                                <i class="fa fa-exclamation-circle fa-2x" aria-hidden="true"></i>
-                                Approved & Completed
-                            </div>
-                        </a>
-                        
-                    </div>
-                </div>
+            <div class="card-header bg-primary text-light">
+                Quick Filter
             </div>
+            <div class="card-group text-light" >
+                    <div class="card bg-secondary" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
+                        <i class="fa fa-user-circle fa-2x" aria-hidden="true"></i>
+                        All Requests
+                    </div>
+                    <div class="card bg-danger" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
+                        <i class="fa fa-exclamation-circle fa-2x" aria-hidden="true"></i>
+                        More Information Required
+                    </div>
+
+                    <div class="card bg-warning" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
+                        <i class="fa fa-exclamation-circle fa-2x" aria-hidden="true"></i>
+                        Under Review
+                    </div>
+                    <div class="card bg-success" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
+                        <i class="fa fa-exclamation-circle fa-2x" aria-hidden="true"></i>
+                        Approved & Completed
+                    </div>
+                    <div class="card bg-info" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
+                        <i class="fa fa-exclamation-circle fa-2x" aria-hidden="true"></i>
+                        Other Status
+                    </div>
+                    <div class="card bg-white text-dark" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
+                        <i class="fa fa-exclamation-circle fa-2x" aria-hidden="true"></i>
+                        Other Status
+                    </div>
+            </div>
+
         </div>
         <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
     </div>
@@ -173,7 +169,17 @@
     </div>
 
     <div class="col col-12 col-md-2 col-lg-2"></div>
-  </div>
+    </div>
+    <div style="height:30px"></div>
+        <div class="row">
+            <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
+            <div class="col col-12 col-auto" style="color:gray">
+            <h4 class="text-center" v-html="$store.state.appConfig.siteName"></h4>
+            <h6 class="text-center" v-html="$store.state.appConfig.siteAddress"></h6>
+            <br>
+            </div>
+            <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
+        </div>
 </div> 
 </template>
 
@@ -200,7 +206,7 @@ export default {
   
   computed: {
         title() {
-            return this.$store.state.appConfig.adminHomeViewTitle; 
+            return this.$store.state.appConfig.adminRequestViewTitle; 
         },
         viewDescription() {
             return this.$store.state.appConfig.adminHomeViewDescription; 
@@ -214,7 +220,7 @@ export default {
         console.log('AdminRequest.vue activated.');
         let vm = this;
 
-        if (this.$store.state.appConfig.adminHomeViewTitle == null) {
+        if (this.$store.state.appConfig.adminRequestViewTitle == null) {
         this.$router.push('/login'); // Config data lost, force back to login to refetch data.
         return;
         }
