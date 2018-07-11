@@ -35,7 +35,7 @@
             <h6 class="card-title">Status:&nbsp;<span :class="requestItem.processingStatus">{{requestItem.processingStatusLabel}}</span></h6>
             <p class="card-text font-italic">{{requestItem.processingStatusMessage}}</p>
             <div class="card-text text-muted">Last updated:&nbsp;{{requestItem.updatedAt.substring(0, requestItem.updatedAt.indexOf("T"))}}</div>
-            <div v-if="requestItem.canEdit">
+            <div v-if="requestItem.userCanEdit">
               <button :id="requestItem._id" type="button" @click.prevent="onEditViewRequest" class="enableEdit btn btn-warning btn-sm float-right">Edit</button>
             </div>
             <div v-else>

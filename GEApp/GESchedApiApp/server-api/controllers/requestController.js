@@ -57,7 +57,8 @@ async function queryRequests (siteCode, req, callback) {
             eventDateTimeData: 1,
             locationOfEvent: 1,
             updatedAt: 1,
-            canEdit: 1
+            userCanEdit: 1,
+            adminCanEdit: 1
         };
     }
 

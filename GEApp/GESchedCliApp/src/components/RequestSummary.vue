@@ -43,17 +43,26 @@
          
           <br>
           <div v-if="canEditRequest">
-            <button type="button" class="btn btn-primary btn-sm" 
-              :disabled="isSubmitting" 
-              @click.prevent="onSubmitRequest">Submit Request</button>
-              <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
+            <div v-if="inAdminMode">
+              <button type="button" class="btn btn-primary btn-sm" 
+                :disabled="isSubmitting" 
+                @click.prevent="onApproveRequest">Approve Request</button>
+              <button type="button" class="btn btn-primary btn-sm" 
+                :disabled="isSubmitting" 
+                @click.prevent="onRejectRequest">Need More Information</button>
+            </div>
+            <div v-else>
+              <button type="button" class="btn btn-primary btn-sm" 
+                :disabled="isSubmitting" 
+                @click.prevent="onSubmitRequest">Submit Request</button>
+            </div>
           </div>
           <div v-else>
             <button type="button" class="btn btn-primary btn-sm" 
               @click.prevent="onReturnHome">Return Home</button>
-              <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
+              
           </div>
-
+          <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
       </div>
     </div>
   </div>
@@ -77,11 +86,18 @@ export default {
 
   computed: {
 
+    inAdminMode() {
+      return this.$store.state.inAdminMode;
+    },
+
     canEditRequest() {
-      var canEdit = true;
+      var canEdit = false;
       var storeState = this.$store.state;
-      if (storeState.currentRequest != null && storeState.currentRequest.canEdit != undefined && storeState.currentRequest.canEdit == false) {
-        canEdit = false;
+      if (!this.inAdminMode && storeState.currentRequest != null && storeState.currentRequest.userCanEdit != undefined && storeState.currentRequest.userCanEdit == true) {
+        canEdit = true;
+      }
+      if (this.inAdminMode &&storeState.currentRequest != null && storeState.currentRequest.adminCanEdit != undefined && storeState.currentRequest.adminCanEdit == true) {
+        canEdit = true;
       }
       return canEdit;
     },
@@ -97,10 +113,6 @@ export default {
 
     adminCommentCtrlId() {
       return this.ctrlId + "AdminComment";
-    },
-
-    inAdminMode() {
-      return this.$store.state.inAdminMode;
     }
 
   },
@@ -186,7 +198,27 @@ export default {
       }
     },
 
-    onSubmitRequest (evt) {
+    onApproveRequest(evt) {
+
+      var storeState = this.$store.state;
+      var currRequest = storeState.currentRequest;
+      if (currRequest != null) {
+        currRequest.processingStatus = "approved";
+      }
+      this.onSubmitRequest(evt);
+    },
+
+    onRejectRequest(evt) {
+
+      var storeState = this.$store.state;
+      var currRequest = storeState.currentRequest;
+      if (currRequest != null) {
+        currRequest.processingStatus = "rejected";
+      }
+      this.onSubmitRequest(evt);
+    },
+
+    onSubmitRequest(evt) {
       
       var vm = this;
       var storeState = vm.$store.state;
@@ -204,10 +236,9 @@ export default {
         }
       }
 
-
       var requestsUrl = apiMgr.getRequestsUrl();
 
-      vm.generateRandomStatusAndComments(storeState.currentRequest, vm.$store.state);
+      vm.manageProcessingStatus(storeState.currentRequest, vm.$store.state);
 
       if (this.isNewRequest) {
 
@@ -345,52 +376,36 @@ export default {
       }
     },
 
-    // Temporary function to generate a random admin comment and request status
-    generateRandomStatusAndComments(request, storeState) {
+    manageProcessingStatus(request, storeState) {request
 
-
-      var statuses = ["underReview", "approved", "rejected"];
-      var statusCount = statuses.length;
-      var randonStatusIndex = Math.floor((Math.random() * statusCount) + 1);
-
-      var currentIndex = 0;
-      statuses.forEach(function(status) {
-          currentIndex += 1;
-          if (randonStatusIndex == currentIndex) {
-              request.processingStatus = status;
-
-              if (request.processingStatus == "underReview") {
-                  request.canEdit = false;
-                  request.processingStatusLabel = storeState.appConfig.requestStatusTagUnderReview;
-                  request.processingStatusMessage = storeState.appConfig.requestStatusMessageUnderReview;
-              } else if (request.processingStatus == "approved") {
-                request.canEdit = false;
-                request.processingStatusLabel = storeState.appConfig.requestStatusTagApproved;
-                request.processingStatusMessage = storeState.appConfig.requestStatusMessageApproved;
-              } else if (request.processingStatus == "rejected") {
-                request.canEdit = true;
-                request.processingStatusLabel = storeState.appConfig.requestStatusTagRejected;
-                request.processingStatusMessage = storeState.appConfig.requestStatusMessageRejected;
-              }
-          }
-      });
-
-      if (!request.canEdit) {
-        return;
+      if (request.processingStatus == undefined || request.processingStatus == null) {
+        request.processingStatus = "underReview";
       }
 
-      var requestDataFields = ["eventSchedule", "locationOfEvent", "numOfGeEmpAttending"];
-      var fieldCount = requestDataFields.length;
-      var randonIndex = Math.floor((Math.random() * fieldCount) + 1);
+      if (request.processingStatus == "rejected" && !this.inAdminMode) {
+        request.processingStatus = "underReview";
+      }
 
-      var currentIndex = 0;
-      requestDataFields.forEach((dataField) => {
-          currentIndex += 1;
-          if (randonIndex == currentIndex) {
-              request[dataField + 'AdminComment'] = "Tempus congue dapibus lacinia nostra vitae tincidunt urna, lectus nec suspendisse tempus aenean habitasse, vulputate ullamcorper dictumst convallis at sollicitudin.";
-          }
-      });
-    }
+      if (request.processingStatus == "underReview") {
+        request.userCanEdit = false;
+        request.adminCanEdit = true;
+        request.processingStatusLabel = storeState.appConfig.requestStatusTagUnderReview;
+        request.processingStatusMessage = storeState.appConfig.requestStatusMessageUnderReview;
+      } else if (request.processingStatus == "approved") {
+        request.userCanEdit = false;
+        request.adminCanEdit = true;
+        request.processingStatusLabel = storeState.appConfig.requestStatusTagApproved;
+        request.processingStatusMessage = storeState.appConfig.requestStatusMessageApproved;
+      } else if (request.processingStatus == "rejected") {
+        request.userCanEdit = true;
+        request.adminCanEdit = false;
+        request.processingStatusLabel = storeState.appConfig.requestStatusTagRejected;
+        request.processingStatusMessage = storeState.appConfig.requestStatusMessageRejected;
+      }
+    },
+
+
+
 
   }
 }

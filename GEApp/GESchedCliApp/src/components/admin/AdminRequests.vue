@@ -126,7 +126,7 @@
                             <div class="card-text">{{requestItem.eventSchedule}}</div>
                             <br>
                             <div class="card-text text-muted">Last updated:&nbsp;{{requestItem.updatedAt.substring(0, requestItem.updatedAt.indexOf("T"))}}</div>
-                            <div v-if="requestItem.canEdit">
+                            <div v-if="requestItem.adminCanEdit">
                                 <button :id="requestItem._id" type="button" @click.prevent="onEditViewRequest" class="enableEdit btn btn-warning btn-sm float-right">Edit</button>
                             </div>
                             <div v-else>
@@ -414,11 +414,19 @@ export default {
             let selectedReqId = event.target.id;
             let storeState = this.$store.state;
 
-            var selectedRequest = null;
-
             var revisingRequest = localCacheMgr.getCachedItem("revisingRequest-" + selectedReqId);
             if (revisingRequest != undefined && revisingRequest != null) {
-                selectedRequest = revisingRequest;
+
+                storeState.currentRequest = revisingRequest;
+                storeState.selectedRoom = storeState.currentRequest.locationOfEvent;
+                    
+                //check if it is an edit or a view; if edit, go to request/1, if view, go to summary
+                if($(event.target).hasClass("enableEdit")){
+                    vm.$router.push('/request/1');
+                } else if ($(event.target).hasClass("disableEdit")) {
+                    vm.$router.push('/requestsummary'); 
+                }
+
             } else {
                 //construct query string
                 var url = apiMgr.getRequestByIdUrl(selectedReqId);

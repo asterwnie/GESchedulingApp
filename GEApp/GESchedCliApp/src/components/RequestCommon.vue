@@ -193,6 +193,8 @@ export default {
         storeState.currentRequest = workingNewRequest;
       } else {
         storeState.currentRequest = {};
+        storeState.currentRequest.userCanEdit = true;
+        storeState.currentRequest.adminCanEdit = false;
       }
     } else {
       var revisingRequest = localCacheMgr.getCachedItem("revisingRequest-" + storeState.currentRequest._id);
@@ -203,9 +205,14 @@ export default {
 
     this.InitDependsOnControls();
 
-    storeState.currentRequest["eventGEContactPersonEmail"] = this.currentUserEmail;
-    storeState.currentRequest["eventGEContactPersonName"] = this.currentUserName;
-    storeState.currentRequest["eventGEContactPersonPhone"] = this.currentUserPhone;
+    if (!this.inAdminMode && 
+        (storeState.currentRequest["eventGEContactPersonEmail"] == undefined || 
+         storeState.currentRequest["eventGEContactPersonEmail"] == null ||
+         storeState.currentRequest["eventGEContactPersonEmail"] == "")) {
+      storeState.currentRequest["eventGEContactPersonEmail"] = this.currentUserEmail;
+      storeState.currentRequest["eventGEContactPersonName"] = this.currentUserName;
+      storeState.currentRequest["eventGEContactPersonPhone"] = this.currentUserPhone;
+    }
    
     bindUiValuesFromRequest(storeState.currentRequest, this.currentScreenNum, this.inAdminMode);
   },
@@ -228,7 +235,7 @@ export default {
         console.log("Not able to locally cache the working request");
       }
 
-      if (vm.currentScreenNum == 1) {
+      if (vm.currentScreenNum == 1 && !this.inAdminMode) {
           var usersUrl = apiMgr.getUsersUrl();
 
           storeState.currentUser.email = storeState.currentRequest.eventGEContactPersonEmail;
@@ -253,7 +260,7 @@ export default {
                   vm.$router.push('/attentionNotes');
                 }
             })
-        }
+      }
   },
 
   methods: {
