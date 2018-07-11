@@ -63,7 +63,7 @@ function doCatererImport() {
 
 function extractCatererItems(fileData) {
     var result = null;
-    var CatererItems = [];
+    var catererItems = [];
     var newCaterer = null;
     var errorEncountered = false;
     var currentItemSeq = 0;
@@ -79,7 +79,7 @@ function extractCatererItems(fileData) {
         if (block.search(directive) > -1) {            
             // Complete and store the previous pending caterer object if exist.
             if (newCaterer != null) {
-                var success = validateAndCollectCaterer(newCaterer, CatererItems);
+                var success = validateAndCollectCaterer(newCaterer, catererItems);
                 if (!success) {
                     errorEncountered = true;
                     return false; // Return false to stop additional block processing.
@@ -87,15 +87,15 @@ function extractCatererItems(fileData) {
             }
 
             
-            var CatererName = block.replace(directive, "").trim();
+            var catererName = block.replace(directive, "").trim();
             // Start a new caterer instance to gather its properties.
-            if (CatererName != "") {
+            if (catererName != "") {
 
                 currentItemSeq += 1;
 
                 newCaterer = new Caterer({ 
                     seqNum: currentItemSeq,
-                    name: CatererName 
+                    name: catererName 
                 });
                 
             } else {
@@ -137,7 +137,7 @@ function extractCatererItems(fileData) {
 
     // Check to see if there's one last pending new one to be collected.
     if (errorEncountered == false && newCaterer != null) {
-        var success = validateAndCollectCaterer(newCaterer, CatererItems);
+        var success = validateAndCollectCaterer(newCaterer, catererItems);
         if (!success) {
             errorEncountered = true;
         }
@@ -145,7 +145,7 @@ function extractCatererItems(fileData) {
 
     result = {
         success: true,
-        caterers: CatererItems
+        caterers: catererItems
     }
 
     if (errorEncountered == true) {
@@ -156,10 +156,10 @@ function extractCatererItems(fileData) {
 }
 
 
-function validateAndCollectCaterer(newCaterer, CatererItems) {
+function validateAndCollectCaterer(newCaterer, catererItems) {
     var valid = validateCaterer(newCaterer);
     if (valid) {
-        CatererItems.push(newCaterer);
+        catererItems.push(newCaterer);
         totalNumOfCaterers += 1;
         return true;
     } else {

@@ -17,6 +17,7 @@
           <div class="font-weight-light">
             <div class="text-left" v-html="$store.state.appConfig.siteName"></div>
             <div class="text-left" v-html="$store.state.appConfig.siteAddress"></div>
+
           </div>
           <hr>
           <br/>

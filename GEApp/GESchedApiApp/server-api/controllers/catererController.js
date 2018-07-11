@@ -77,7 +77,7 @@ exports.createCaterer = function (req, res) {
         let Caterer = getCatererType(siteCode);
         var newCaterer = new Caterer (req.body);
 
-        var validationErr = newCaterer .validateSync();
+        var validationErr = newCaterer.validateSync();
         if (validationErr != null) {
             for (var prop in validationErr.errors) {
                 logger.error(`catererController.createCaterer  - got create new Caterer  validation error: ${validationErr.errors[prop]}`);
