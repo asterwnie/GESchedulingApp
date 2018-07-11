@@ -86,13 +86,17 @@ export default {
 
   computed: {
 
+    inAdminMode() {
+      return this.$store.state.inAdminMode;
+    },
+
     canEditRequest() {
       var canEdit = false;
       var storeState = this.$store.state;
-      if (storeState.currentRequest != null && storeState.currentRequest.userCanEdit != undefined && storeState.currentRequest.userCanEdit == true) {
+      if (!this.inAdminMode && storeState.currentRequest != null && storeState.currentRequest.userCanEdit != undefined && storeState.currentRequest.userCanEdit == true) {
         canEdit = true;
       }
-      if (storeState.currentRequest != null && storeState.currentRequest.adminCanEdit != undefined && storeState.currentRequest.adminCanEdit == true) {
+      if (this.inAdminMode &&storeState.currentRequest != null && storeState.currentRequest.adminCanEdit != undefined && storeState.currentRequest.adminCanEdit == true) {
         canEdit = true;
       }
       return canEdit;
@@ -109,10 +113,6 @@ export default {
 
     adminCommentCtrlId() {
       return this.ctrlId + "AdminComment";
-    },
-
-    inAdminMode() {
-      return this.$store.state.inAdminMode;
     }
 
   },

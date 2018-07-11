@@ -193,8 +193,8 @@ export default {
         storeState.currentRequest = workingNewRequest;
       } else {
         storeState.currentRequest = {};
-        storeState.currentRequest.userCanEdit = false;
-        storeState.currentRequest.adminCanEdit = true;
+        storeState.currentRequest.userCanEdit = true;
+        storeState.currentRequest.adminCanEdit = false;
       }
     } else {
       var revisingRequest = localCacheMgr.getCachedItem("revisingRequest-" + storeState.currentRequest._id);
