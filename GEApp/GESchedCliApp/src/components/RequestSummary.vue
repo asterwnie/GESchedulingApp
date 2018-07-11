@@ -11,7 +11,7 @@
 
             <div v-if="inAdminMode">  
               <label id="generalAdminCommentLabel" for="generalAdminComment" style="display:none;">&nbsp;&nbsp;General Comment</label>
-              <textarea id="generalAdminComment" :screenNum="screenNum" style="display:none; border: 2px solid orange;" placeholder="Add General Comment" class="is-admin-comment form-control form-control-sm"></textarea>
+              <textarea id="generalAdminComment" style="display:none; border: 2px solid orange;" placeholder="Add General Comment" class="is-admin-comment form-control form-control-sm"></textarea>
             </div>
 
             <div class="card-body">
@@ -172,10 +172,6 @@ export default {
       console.log('SubmitRequest.vue created.');
   },
 
-  deactivated(){
-      this.$store.state.currentRequest = null;
-  },
-
   methods: {
 
     onAddAdminComment(evt) {  
@@ -250,7 +246,7 @@ export default {
     },
 
 
-    submitNewRequest(requestsUrl, request, goToThisRouteOnSucess) {
+    submitNewRequest(requestsUrl, request) {
 
       var vm = this;
       vm.isSubmitting = true;
@@ -269,7 +265,7 @@ export default {
               storeState.currentRequest = null;
               storeState.selectedRoom = null;
 
-              vm.$router.push(goToThisRouteOnSucess); 
+              vm.onReturnHome();
 
           } else {
                 vm.hasFailure = true;
@@ -294,7 +290,7 @@ export default {
     },
 
 
-    submitUpdatedRequest(requestsUrl, request, goToThisRouteOnSucess) {
+    submitUpdatedRequest(requestsUrl, request) {
 
       var vm = this;
       vm.isSubmitting = true;
@@ -313,7 +309,7 @@ export default {
               storeState.currentRequest = null;
               storeState.selectedRoom = null;
 
-              vm.$router.push(goToThisRouteOnSucess); 
+              vm.onReturnHome();
 
           } else {
                 vm.hasFailure = true;
@@ -341,7 +337,12 @@ export default {
     onReturnHome(){
       this.$store.state.currentRequest = null;
       this.$store.state.selectedRoom = null;
-      this.$router.push("/home");
+
+      if(this.$store.state.inAdminMode){
+        this.$router.push("/admin/home");
+      } else {
+        this.$router.push("/home");
+      }
     },
 
     // Temporary function to generate a random admin comment and request status

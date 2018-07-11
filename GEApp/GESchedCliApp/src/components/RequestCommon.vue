@@ -136,9 +136,6 @@ export default {
   },
 
   computed: {
-    inAdminMode() {
-      return this.$store.state.inAdminMode;
-    },
     requestPrompts() {
       return this.$store.state.requestPrompts;
     },
@@ -158,7 +155,13 @@ export default {
         isNew = false;
       }
       return isNew;
-    }
+    },
+    inAdminMode() {
+      if(this.isNewRequest){
+        return false;
+      }
+      return this.$store.state.inAdminMode;
+    },
   },
 
   activated() {

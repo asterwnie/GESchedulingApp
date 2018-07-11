@@ -32,7 +32,7 @@ async function queryRequests (siteCode, req, callback) {
 
     let Request = getRequestType(siteCode);
 
-    var sortDirective = { "createdAt": -1}; //default, order by createdAt, ascending
+    var sortDirective = { "updatedAt": -1}; //default, order by createdAt, ascending
 
     var filterDirective = {}; //default, no filering
     if (req.query.requesterEmailContains != null) {    

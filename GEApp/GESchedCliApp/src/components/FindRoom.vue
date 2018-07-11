@@ -18,7 +18,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" @click.prevent="onRoomDeselect">Close</button>
-        <button type="button" class="btn btn-primary" @click.prevent="onRoomSelect">Confirm Select</button>
+        <button type="button" class="btn btn-primary" @click.prevent="onRoomSelectConfirm">Confirm Select</button>
       </div>
     </div>
   </div>
@@ -34,28 +34,45 @@
     </div>
     <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
   </div>
-  <div v-if="isSelectingRoom">
+  
     <div class="row">
       <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
       <div class="col col-12 col-auto" style="color:gray">
         <div class="alert alert-warning" role="alert">
-          <h4 class="alert-heading">Select Room</h4>
+          <h5 class="alert-heading">Select Room</h5>
           <hr>
-          <p>Select a location below by clicking or tapping. Return to the request page by hitting the back button.</p>
+          <div v-if="isSelectingRoom">
+            <p>Select a location below. Return to the request page by hitting the back button.</p>
+          </div>
+          <div v-else>
+              <p>To save a room to appear on your next new request, select it below.</p>
+              <p>
+                <span>
+                Current saved room:
+                <div v-if="selectedRoom != null">
+                  {{selectedRoom.name}}
+                </div>
+                <div v-else class="font-italic">
+                  No room selected!
+                </div>
+                </span>
+              </p>
+          </div>
         </div>
       </div>
       <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
     </div>
-  </div>
+  
+
   <div class="row">
     <div class="col col-12 col-md-2 col-lg-2"></div>
 
     <div id="searchUI" class="col col-12 col-md-3 col-lg-3 col-xl-2" style="margin-bottom:20px">
       <div class="card">
-      <div class="card-header bg-primary text-light" id="headingOne" style="cursor:pointer;" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+      <div class="dropdownMenu card-header bg-primary text-light" id="searchHeader" style="cursor:pointer;" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
             Search Menu <i class="fa fa-search-plus" aria-hidden="true"></i>&nbsp;&nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i>
       </div>
-      <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+      <div id="collapseOne" class="collapse show" aria-labelledby="searchHeader" data-parent="#accordion">
           <div id="filterMenu" class="card-body" style="padding:10px; width:100%;">
 
             <div id="inputRoomName" class="input-group input-group-sm mb-3">
@@ -90,8 +107,15 @@
               </div>
               <select class="custom-select" id="sizeTypeGroupSelect">
                 <option selected></option>
-                  <option v-bind:id="sizeLabel" v-bind:value='sizeLabel' v-for="(sizeLabel, index) in sizeTypes" :key="index">
-                    {{sizeLabel}}
+                  <option v-bind:id="sizeItem._id" v-bind:value='sizeItem._id' v-for="(sizeItem, index) in sizeTypes" :key="index">
+                    <span>{{sizeItem._id}} &nbsp;
+                    <div v-if="sizeItem.minSeatingCapacity == sizeItem.maxSeatingCapacity">
+                      ({{sizeItem.minSeatingCapacity}} seats)
+                    </div>
+                    <div v-else>
+                      ({{sizeItem.minSeatingCapacity}} - {{sizeItem.maxSeatingCapacity}} seats)
+                    </div>
+                    </span>
                   </option>
               </select>
             </div>
@@ -137,10 +161,10 @@
               <span class="badge badge-info" v-for="(capability, index) in room.capabilities" :key="index">
                 {{capability}}
               </span>
-              <div v-if="isSelectingRoom">
+              
                 <br>
                 <button v-bind:id="room._id" type="button" class="btn btn-sm btn-warning float-right" @click.prevent="onRoomSelectModal">Select</button>
-              </div>
+              
             </div>
           </div>
         </div>
@@ -183,6 +207,9 @@ export default {
     buildings(){
       return this.$store.state.appConfig.buildings;
     },
+    selectedRoom(){
+      return this.$store.state.selectedRoom;
+    }
   },
 
   activated() {
@@ -196,7 +223,29 @@ export default {
 
     this.$store.state.currentViewTitle = this.title;
     this.$store.state.enableNavBar = true;
-    
+
+    //clear all search UI to be blank
+    var inputs = $("input");
+    inputs.each(function(){
+      let inputType = this.type;
+      if (inputType == "text" || inputType == "number"){
+        this.value = "";
+      } else if (inputType == "checkbox"){
+        this.checked = false; //needs fixing
+      } 
+    });
+
+    //reopen search UI
+    /* $('#dropdownMenu').each(function(){
+      this.dropdown('open');
+    }); */
+
+    var selects = $("option");
+    selects.each(function(){
+      this.selected = false;
+    });
+
+
     // empty roomSearchResult, then re-add all rooms
     if(vm.$store.state.roomSearchResult != null){
       while(vm.$store.state.roomSearchResult.length > 0) {
@@ -228,7 +277,7 @@ export default {
         var vm = this;
 
         //collapse search menu
-        $("#headingOne").click();
+        $("#searchHeader").click();
 
 
         //gather name to query
@@ -347,7 +396,7 @@ export default {
     resetFilterView: function(event){
        if(event){
         //collapse search menu
-        $("#headingOne").click();
+        $("#searchHeader").click();
 
         //reset all input boxes and checkboxes
         ///.....
@@ -373,7 +422,6 @@ export default {
 
     onRoomSelectModal: function(event){
       if(event){
-        if(this.isSelectingRoom){
           let vm = this;
           console.log("onRoomSelectModal activate.");
           $('#findRoomModal').modal('show');
@@ -398,17 +446,18 @@ export default {
                     vm.hasFailure = true;
                     vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
                 })
-        }
       }
     },
 
-    onRoomSelect() {
-      console.log('onRoomSelect activated.');
+    onRoomSelectConfirm() {
+      console.log('onRoomSelectConfirm activated.');
       let vm = this;
-      let pageNum = vm.$store.state.previousPage.substring(vm.$store.state.previousPage.length-1, vm.$store.state.previousPage.length);
       
       $('#findRoomModal').modal('hide');
-      vm.$router.push(`/request/${pageNum}`);
+      if(vm.$store.state.previousPage.indexOf("request") > -1){
+        let pageNum = vm.$store.state.previousPage.substring(vm.$store.state.previousPage.length-1, vm.$store.state.previousPage.length);
+        vm.$router.push(`/request/${pageNum}`);
+      }
          
     },
 
@@ -428,9 +477,6 @@ export default {
   display: inline-block;
   margin: 20px 20px;
 }*/
-.dropdown-menu{
-  flex-direction: column;
-}
 .containerDiv {
   display: inline-block;
   margin-top: 16px;

@@ -135,7 +135,7 @@ app.get('/api/appconfigs', async (req, res) => {
     });
     
     // get distinct sizes
-    await roomController.queryRoomSizeTypes(siteCode, (result) => {
+    /*await roomController.queryRoomSizeTypes(siteCode, (result) => {
         if (result.success) {
             logger.info(`roomController.getSizeTypes - Rooms.distinct success. About to send back http response with ${result.sizeTypes.length} sizeTypes`);
             appConfigForSite.sizeTypes = result.sizeTypes;
@@ -143,7 +143,7 @@ app.get('/api/appconfigs', async (req, res) => {
             logger.error(`roomController.getSizeTypes failed. Error: ${result.errMsg}`);
             res.status(500).json({ error: result.errMsg });
         }
-    });
+    });*/
 
 
     // Getting all the min & max seating capacity per room size type:
@@ -155,6 +155,7 @@ app.get('/api/appconfigs', async (req, res) => {
         if (result.success) {
             logger.info(`roomController.queryMaxSeatingCapacityGrpBySizeType success. found ${result.minMaxSeatingCapacityItems.length} items.`);
             var minMaxSeatingCapacityItems = result.minMaxSeatingCapacityItems;
+            appConfigForSite.sizeTypes = minMaxSeatingCapacityItems;
         } else {
             logger.error(`roomController.queryMaxSeatingCapacityGrpBySizeType failed. Error: ${result.errMsg}`);
             res.status(500).json({ error: result.errMsg });

@@ -46,6 +46,7 @@
                 New Requests&nbsp;<button type="button" @click.prevent="$router.push('/admin/requests')" style="cursor:pointer;" class="btn btn-outline-light btn-sm float-right">View All Requests&nbsp;<span class="fas fa-chevron-right"></span></button>
                 </div>
             </div>
+            <div style="height:10px;"></div>
             <div v-if="requestsPreview == null || requestsPreview == undefined">
                 <div class="card">
                     <br>
@@ -60,12 +61,6 @@
                             <h6 class="card-title">{{requestItem.eventTitle}}</h6>
                             <div class="card-text">{{requestItem.eventGEContactPersonName}}</div>
                             <div class="card-text text-muted">Last updated:&nbsp;{{requestItem.updatedAt.substring(0, requestItem.updatedAt.indexOf("T"))}}</div>
-                            <div v-if="requestItem.canEdit">
-                                <button :id="requestItem._id" type="button" @click.prevent="onEditViewRequest" class="enableEdit btn btn-warning btn-sm float-right">Edit</button>
-                            </div>
-                            <div v-else>
-                                <button :id="requestItem._id" type="button" @click.prevent="onEditViewRequest" class="disableEdit btn btn-secondary btn-sm float-right">View</button>
-                            </div>
                         </div>
                     </div>
                 </div>

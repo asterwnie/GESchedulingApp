@@ -94,6 +94,8 @@
                 </select>
             </div>
 
+            <p>add: display per page...</p>
+
             
             <br>
             <button type="button" class="btn btn-sm btn-primary float-right" @click.prevent="filterView">Search</button>
@@ -117,6 +119,7 @@
                         Requests
                     </div>
                 </div>
+                <div style="height:10px;"></div>
                 <div class="container" style="width:100%; display:flex; flex-wrap:wrap;">
                     <div class="request-item card col-12 col-lg-6 col-xl-4" v-for="(requestItem, index) in requestsPreview" :key="index">
                         <div class="card-body">
@@ -218,6 +221,17 @@ export default {
 
         this.$store.state.currentViewTitle = this.title;
         this.$store.state.enableNavBar = true;
+
+        //clear all search UI to be blank
+        var inputs = $("input");
+        inputs.each(function(){
+        let inputType = this.type;
+        if (inputType == "text" || inputType == "number"){
+            this.value = "";
+        } else if (inputType == "checkbox"){
+            this.checked = false; //needs fixing
+        } 
+        });
 
         vm.getNumPages();
         vm.updateRequests();
@@ -385,7 +399,101 @@ export default {
                     vm.hasFailure = true;
                     vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
                 })
-        }
+        },
+
+        onEditViewRequest: function(event) {
+            console.log('AdminRequests.vue - onEditViewRequest activate');
+
+            let vm = this;
+            let selectedReqId = event.target.id;
+            let storeState = this.$store.state;
+
+            var selectedRequest = null;
+
+            var revisingRequest = localCacheMgr.getCachedItem("revisingRequest-" + selectedReqId);
+            if (revisingRequest != undefined && revisingRequest != null) {
+                selectedRequest = revisingRequest;
+            } else {
+                //construct query string
+                var url = apiMgr.getRequestByIdUrl(selectedReqId);
+                console.log(url);
+
+                //get requests
+                axios.get(url)
+                    .then(res => {
+                        console.log("getRequestByIdUrl return status: " + res.status);
+ 
+                        storeState.currentRequest = res.data;
+                        storeState.selectedRoom = storeState.currentRequest.locationOfEvent;
+                    
+                        //check if it is an edit or a view; if edit, go to request/1, if view, go to summary
+                        if($(event.target).hasClass("enableEdit")){
+                            vm.$router.push('/request/1');
+                        } else if ($(event.target).hasClass("disableEdit")) {
+                            vm.$router.push('/requestsummary'); 
+                        }
+                    })
+                    .catch((err) => { //todo
+                        vm.hasFailure = true;
+                        vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                    })
+            }
+
+            },
+
+            onDeleteRequest: function (event){
+                console.log('AdminRequests.vue - onDeleteRequest activate');
+                let vm = this;
+
+                //get request for deletion
+                let currId = event.target.id;
+
+                let queryId = `/${currId}`;
+                var url = apiMgr.getRequestsUrl().substring(0, apiMgr.getRequestsUrl().indexOf("?")) + queryId + apiMgr.getRequestsUrl().substring(apiMgr.getRequestsUrl().indexOf("?"), apiMgr.getRequestsUrl().length);
+                console.log(`Home.vue - Query url: ${url}`);
+
+                //delete request
+                axios.delete(url)
+                    .then(res => {
+                        console.log("getRequestsUrl return status: " + res.status);
+
+                        //refresh requests in UI
+                        vm.$nextTick(function () {
+                        console.log(`onDeleteRequest - Delete request id: ${currId} success. Refreshing data.`) // => 'updated'
+
+                        //get requests for current user
+                        let queryUser = `&requesterEmailContains=${vm.$store.state.currentUser.email}`;
+                        var url = apiMgr.getRequestsUrl() + queryUser;
+
+                        axios.get(url)
+                            .then(res => {
+                                console.log("getRequestsUrl return status: " + res.status);
+                                
+                                while(vm.$store.state.currentUserRequests.length > 0) {
+                                    vm.$store.state.currentUserRequests.pop();
+                                }
+                                var foundRequests = res.data;
+
+                                $.each(foundRequests, function (index, request) {
+                                    vm.$store.state.currentUserRequests.push(request);
+                                });
+                                
+                                vm.isFetchingRequests = false;
+                            })
+                            .catch((err) => {
+                                vm.hasFailure = true;
+                                vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                            })
+                        })
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        vm.hasFailure = true;
+                        vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                    })
+            
+            
+            }
     }
 }
 </script>
