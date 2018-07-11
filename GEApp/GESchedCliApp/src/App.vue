@@ -17,7 +17,7 @@
         <div class="p-2 align-self-center">{{ title }}</div>
         <!--Menu button-->
         <div class="p-2 align-self-center">
-          <div id="menuButton" :hidden="!$store.state.enableNavBar" class="navbar-toggle" data-toggle="offcanvas" data-target="#myNavmenu" data-canvas="body">
+          <div id="menuButton" :hidden="!$store.state.enableNavBar" style="cursor:pointer;" class="navbar-toggle" data-toggle="offcanvas" data-target="#myNavmenu" data-canvas="body">
             <span class="fas fa-align-justify fa-lg text-white"></span>
           </div>
         </div>

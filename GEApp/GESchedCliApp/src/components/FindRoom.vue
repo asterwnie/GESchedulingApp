@@ -454,7 +454,7 @@ export default {
       let vm = this;
       
       $('#findRoomModal').modal('hide');
-      if(vm.$store.state.previousPage.indexOf("request") > -1){
+      if(vm.$store.state.previousPage.indexOf("Request") > -1){
         let pageNum = vm.$store.state.previousPage.substring(vm.$store.state.previousPage.length-1, vm.$store.state.previousPage.length);
         vm.$router.push(`/request/${pageNum}`);
       }
