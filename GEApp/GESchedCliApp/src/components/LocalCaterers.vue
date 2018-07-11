@@ -30,9 +30,11 @@
           </div>
           <div v-else>
             <div class="LocalCaterers text-white">
-              <div class="card bg-success" style="margin-bottom:7px" v-for="(caterer, index) in catererItems" :key="index">
-                  <div class="card-header">{{ caterer.name }}</div>
-                  <div class="card-body">
+              <div class="card" style="color:black; margin-bottom:7px" v-for="(caterer, index) in catererItems" :key="index">
+                  <div class="card-header" style="background-color:#76cf99">
+                    <h6 class="card-title">{{ caterer.name }}</h6>
+                  </div>
+                  <div class="card-body" style="background-color:#a9d6bb">
                     <div class="card-text" v-for="(line, index) in caterer.address" :key="index">
                       {{line}}
                     </div>
