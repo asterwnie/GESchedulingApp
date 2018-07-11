@@ -59,7 +59,7 @@
           </div>
           <div v-else>
             <button type="button" class="btn btn-primary btn-sm" 
-              @click.prevent="onReturnHome">Return Home</button>
+              @click.prevent="onReturnHome">Return</button>
               
           </div>
           <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
@@ -370,7 +370,7 @@ export default {
       this.$store.state.selectedRoom = null;
 
       if(this.$store.state.inAdminMode){
-        this.$router.push("/admin/home");
+        this.$router.push("/admin/requests");
       } else {
         this.$router.push("/home");
       }

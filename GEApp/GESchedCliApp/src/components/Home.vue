@@ -150,7 +150,7 @@ export default {
     $(function() {
       $(".approved").addClass("badge badge-success");
       $(".rejected").addClass("badge badge-danger");
-      $(".underReview").addClass("badge badge-info");
+      $(".underReview").addClass("badge badge-warning");
       $(".completed").addClass("badge badge-secondary"); //not yet implemented
     });
   },

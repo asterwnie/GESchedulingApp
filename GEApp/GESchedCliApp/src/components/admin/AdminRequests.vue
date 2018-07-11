@@ -11,36 +11,37 @@
                 </button>
             </div>
 
+            <button @click.prevent="$router.push('/admin/home')" type="button" class="btn btn-danger">
+                <span class="fas fa-chevron-left"></span>&nbsp;&nbsp;Home
+            </button>
+
+            <div style="height:10px"></div>
+
             <div class="card-header bg-primary text-light">
-                Quick Filter
-            </div>
-            <div class="card-group text-light" >
-                    <div class="card bg-secondary" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
-                        <i class="fa fa-user-circle fa-2x" aria-hidden="true"></i>
-                        All Requests
+                <span>
+                    Quick Filter&nbsp;
+                    <div @click.prevent="resetFilterView" class="badge badge-secondary" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
+                        <span><i class="fa fa-user-circle" aria-hidden="true"></i>&nbsp;All Requests</span>
                     </div>
-                    <div class="card bg-danger" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
-                        <i class="fa fa-exclamation-circle fa-2x" aria-hidden="true"></i>
-                        More Information Required
+                    <div @click.prevent="onQuickFilter" class="quickFilterButton badge badge-danger" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
+                        <span id="rejected"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;More Info Required</span>
                     </div>
 
-                    <div class="card bg-warning" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
-                        <i class="fa fa-exclamation-circle fa-2x" aria-hidden="true"></i>
-                        Under Review
+                    <div @click.prevent="onQuickFilter" class="quickFilterButton badge badge-warning" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
+                        <span id="underReview"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;Under Review</span>
                     </div>
-                    <div class="card bg-success" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
-                        <i class="fa fa-exclamation-circle fa-2x" aria-hidden="true"></i>
-                        Approved & Completed
+                    <div @click.prevent="onQuickFilter" class="quickFilterButton badge badge-success" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
+                        <span id="approved"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;Approved & Completed</span>
                     </div>
-                    <div class="card bg-info" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
-                        <i class="fa fa-exclamation-circle fa-2x" aria-hidden="true"></i>
-                        Other Status
+                    <div @click.prevent="onQuickFilter" class="quickFilterButton badge badge-info" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
+                        <span id="otherStatus"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;Other Status</span>
                     </div>
-                    <div class="card bg-white text-dark" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
-                        <i class="fa fa-exclamation-circle fa-2x" aria-hidden="true"></i>
-                        Other Status
+                    <div @click.prevent="onQuickFilter" class="quickFilterButtoncard badge badge-primary" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
+                        <span id="otherStatus"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;Other Status</span>
                     </div>
+                </span>
             </div>
+            
 
         </div>
         <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
@@ -64,9 +65,9 @@
                 <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
             </div>
 
-            <div id="inputRequesterName" class="input-group input-group-sm mb-3">
+            <div id="inputRequesterEmail" class="input-group input-group-sm mb-3">
                 <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">Requester Name</span>
+                <span class="input-group-text" id="inputGroup-sizing-sm">Requester Email</span>
                 </div>
                 <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
             </div>
@@ -102,6 +103,11 @@
     </div>
 
     <div id="requestUI" class="col col-12 col-md-5 col-lg-5 col-xl-6">
+            <div class="card" style="width:100%">
+                    <div class="card-header bg-info text-light">
+                        Requests
+                    </div>
+            </div>
             <div v-if="requestsPreview.length < 1">
                 <div class="card">
                     <br>
@@ -110,11 +116,6 @@
                 </div>
             </div>
             <div v-else>
-                <div class="card" style="width:100%">
-                    <div class="card-header bg-info text-light">
-                        Requests
-                    </div>
-                </div>
                 <div style="height:10px;"></div>
                 <div class="container" style="width:100%; display:flex; flex-wrap:wrap;">
                     <div class="request-item card col-12 col-lg-6 col-xl-4" v-for="(requestItem, index) in requestsPreview" :key="index">
@@ -200,7 +201,7 @@ export default {
             "rejected",
             "approved",
         ],
-        requestStatusToQuery: null,
+        requestsQueryString: "",
     }
   },
   
@@ -254,7 +255,7 @@ export default {
         $(function() {
         $(".approved").addClass("badge badge-success");
         $(".rejected").addClass("badge badge-danger");
-        $(".underReview").addClass("badge badge-info");
+        $(".underReview").addClass("badge badge-warning");
         $(".completed").addClass("badge badge-secondary"); //not yet implemented
         });
 
@@ -316,8 +317,8 @@ export default {
             //gather query string
             var url = apiMgr.getRequestsUrl() + `&numOfItemsToSkip=${vm.previewPerPage * (vm.currentPageNumber-1)}&summaryFieldsOnly=true&numOfItemsPerPage=${vm.previewPerPage}`;
             
-            if(vm.requestStatusToQuery != null && vm.requestStatusToQuery != ""){
-                url += `&processingStatusContains=${vm.requestStatusToQuery}`;
+            if(vm.requestsQueryString != null && vm.requestsQueryString != ""){
+                url += vm.requestsQueryString;
             }
             console.log(url);
 
@@ -338,6 +339,7 @@ export default {
                         vm.$store.state.currentRequestsPreview.push(foundRequest);
                     });
                     
+                    vm.requestsQueryString = "";
                     vm.getNumPages();
                     //vm.$forceUpdate();
                     //vm.isFetchingRequests = false;
@@ -357,17 +359,54 @@ export default {
             //collapse search menu
             $("#filterMenu").click();
 
+
+            //gather event name to query
+            var nameToQuery = '';
+            var nameSet = $("#inputEventName input");
+            
+            $.each(nameSet, function( index, item ){
+                if(item.value != null && item.value != ""){
+                    nameToQuery = item.value;
+                    vm.requestsQueryString += `&requestNameContains=${nameToQuery}`;
+                }
+            });
+
+
+            //gather requester email to query
+            //NOTE: this is misleading right now
+            var requesterEmailToQuery = '';
+            var requesterEmailSet = $("#inputRequesterEmail input");
+            
+            $.each(requesterEmailSet, function( index, item ){
+                if(item.value != null && item.value != ""){
+                    requesterEmailToQuery = item.value;
+                    vm.requestsQueryString += `&requesterEmailContains=${requesterEmailToQuery}`;
+                }
+            });
+
+
+            //gather location to query
+            var locationToQuery = '';
+            var locationSet = $("#inputLocation input");
+
+            $.each(locationSet, function( index, item ){
+                if(item.value != null && item.value != ""){
+                    locationToQuery = item.value;
+                    vm.requestsQueryString += `&locationContains=${locationToQuery}`;
+                }
+            });
+
             //gather status to query
             var statusToQuery = '';
             var statusSet = $("#inputStatus select option");
 
             $.each(statusSet, function( index, item ){
-            if (item.selected){
-                statusToQuery = item.id;
-            }
+                if (item.selected && item.id != ""){
+                    statusToQuery = item.id;
+                    vm.requestsQueryString += `&processingStatusContains=${statusToQuery}`;
+                }
             });
-
-            vm.requestStatusToQuery = statusToQuery;
+            
 
             vm.updateRequests();
         },
@@ -376,7 +415,7 @@ export default {
             console.log("resetFilterView activated.");
             let vm = this;
 
-            vm.requestStatusToQuery = null;
+            vm.requestsQueryString = null;
 
             vm.updateRequests();
         },
@@ -387,8 +426,8 @@ export default {
 
             //get requests and pages count
             var url = apiMgr.getRequestsUrl().replace("requests", "requestscount") + `&numOfItemsPerPage=${vm.previewPerPage}`;
-            if(vm.requestStatusToQuery != null && vm.requestStatusToQuery != ""){
-                url += `&processingStatusContains=${vm.requestStatusToQuery}`;
+            if(vm.requestsQueryString != null && vm.requestsQueryString != ""){
+                url += `&processingStatusContains=${vm.requestsQueryString}`;
             }
 
             axios.get(url)
@@ -507,6 +546,18 @@ export default {
                     })
             
             
+            },
+
+            onQuickFilter: function(event){
+                if (event){
+                    console.log("onQuickFilter activate.");
+                    let vm = this;
+
+                    let statusToQuery = event.target.id;
+
+                    vm.requestsQueryString += `&processingStatusContains=${statusToQuery}`;
+                    vm.updateRequests();
+                }
             }
     }
 }

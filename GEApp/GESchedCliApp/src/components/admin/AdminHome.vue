@@ -4,12 +4,13 @@
         <div class="row">
           <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
           <div class="col col-12 col-sm-10 col-md-8 col-lg-8" style="color:gray">
-              <nav class="navbar navbar-light bg-light">
-                <a class="navbar-brand text-dark">
-                    <img src="@/assets/ge-monogram.svg" width="30" height="30" class="d-inline-block align-top" alt="">
-                    Admin Home
-                </a>
-                </nav>
+            <nav class="navbar navbar-light" style="background-color:#ffb3b3">
+            <a class="navbar-brand text-dark">
+                <img src="@/assets/ge-monogram.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+                Admin Home
+            </a>
+            </nav>
+            <br>
             <p class="text-right font-italic">Welcome back, {{$store.state.currentUser.name}}</p>
             <hr>
           </div>

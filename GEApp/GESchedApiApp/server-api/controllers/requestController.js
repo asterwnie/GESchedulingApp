@@ -35,14 +35,30 @@ async function queryRequests (siteCode, req, callback) {
     var sortDirective = { "updatedAt": -1}; //default, order by createdAt, ascending
 
     var filterDirective = {}; //default, no filering
+    if (req.query.locationContains != null) {    
+        const locationName = req.query.locationContains;
+        filterDirective = {"locationOfEvent.name": locationName};
+       /*  Object.defineProperty(filterDirective, 'locationOfEvent', {
+            value: {
+                name: locationName
+            }
+          }); */
+    }
+    if (req.query.requestNameContains != null) {    
+        const regExpression = new RegExp(`(${req.query.requestNameContains})`);
+        filterDirective.eventGEContactPersonEmail = regExpression;      
+    }
     if (req.query.requesterEmailContains != null) {    
-        filterDirective = { "eventGEContactPersonEmail": req.query.requesterEmailContains};        
+        const regExpression = new RegExp(`(${req.query.requesterEmailContains})`);
+        filterDirective.eventGEContactPersonEmail = regExpression;       
     }
     if (req.query.processingStatusContains != null) {    
-        filterDirective = { "processingStatus": req.query.processingStatusContains};        
+        const regExpression = new RegExp(`(${req.query.processingStatusContains})`);
+        filterDirective.processingStatus = regExpression;        
     }
-    if (req.query.requestIdContains != null) {    
-        filterDirective = { "_id": req.query.requestIdContains};        
+    if (req.query.requestIdContains != null) {     
+        const regExpression = new RegExp(`(${req.query.requestIdContains})`);
+        filterDirective._id = regExpression;         
     }
 
     var selectedFields = {};
