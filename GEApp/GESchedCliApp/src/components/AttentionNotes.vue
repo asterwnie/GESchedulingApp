@@ -32,16 +32,32 @@ export default {
   },
   
   computed: {
+    
     title() {
       return this.$store.state.appConfig.attentionNotesViewTitle; 
     },
+
     viewDescription() {
       return this.$store.state.appConfig.attentionNotesDescription; 
     },
+
     noteItems() {
       return this.$store.state.notes;
     },
+
+    isNewRequest() {
+      var isNew = true;
+      var storeState = this.$store.state;
+      if (storeState.currentRequest != null && storeState.currentRequest._id != undefined && storeState.currentRequest._id != null) {
+        isNew = false;
+      }
+      return isNew;
+    },
+
     inAdminMode() {
+       if (this.isNewRequest) {
+        return false;
+      }
       return this.$store.state.inAdminMode;
     }
   },

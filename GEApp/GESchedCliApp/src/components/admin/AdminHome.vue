@@ -11,7 +11,7 @@
             </a>
             </nav>
             <br>
-            <p class="text-right font-italic">Welcome back, {{$store.state.currentUser.name}}</p>
+            <p class="text-right font-italic">Welcome back, {{$store.state.currentAdminUser.name}}</p>
             <hr>
           </div>
           <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>

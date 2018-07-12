@@ -335,17 +335,20 @@ export default {
                 const storeState = this.$store.state;
 
                 if ((res.status == 200 || res.status == 201) && res.data != null) {
-                    storeState.currentUser = res.data;
-                    if (storeState.currentUser != null && 
-                        storeState.currentUser.name != null) {
-                        storeState.loginContext.requesterName = storeState.currentUser.name;
-                    }
 
-                    if(storeState.currentUser.isAdmin){
-                        storeState.inAdminMode = true;
-                        vm.$router.push('/admin/home');
-                    } else {
-                        vm.$router.push('/home');
+                    var loggedInUser = res.data;
+
+                    if (loggedInUser != undefined && loggedInUser != null) {
+
+                        if (loggedInUser.isAdmin != undefined && loggedInUser.isAdmin) {
+                            storeState.currentAdminUser = loggedInUser;
+                            storeState.inAdminMode = true;
+                            vm.$router.push('/admin/home');
+                        } else {
+                            storeState.currentUser = loggedInUser;
+                            storeState.inAdminMode = false;
+                            vm.$router.push('/home');
+                        }
                     }
                      
                 } else {

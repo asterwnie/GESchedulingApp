@@ -8,17 +8,17 @@ export const getCachedItem = (key) => {
     //debugger; // Uncomment to trigger breakpoint.
  
     let browserLocalStorage = window.localStorage;
-    var loginContextInLocal = null;
+    var cachedJsonData = null;
     var cachedItem = null;
 
     try {
         if (centralStore.state.appDefConfig.useCookieForLoginContext == false && browserLocalStorage != null) {
-            loginContextInLocal = browserLocalStorage.getItem(key);
+            cachedJsonData = browserLocalStorage.getItem(key);
         } else {
-            loginContextInLocal = getCookie(key);
+            cachedJsonData = getCookie(key);
         }
-        if (loginContextInLocal != null && loginContextInLocal != "") {
-            cachedItem = JSON.parse(loginContextInLocal);
+        if (cachedJsonData != null && cachedJsonData != "") {
+            cachedItem = JSON.parse(cachedJsonData);
         }
     } catch (err) {}
 

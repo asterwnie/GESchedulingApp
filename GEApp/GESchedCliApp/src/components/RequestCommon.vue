@@ -136,18 +136,27 @@ export default {
   },
 
   computed: {
+
     requestPrompts() {
       return this.$store.state.requestPrompts;
     },
+
     currentUserEmail() {
-      return this.$store.state.currentUser.email;
+      var email = null;
+      if (this.$store.state.currentUser != null) {
+        email = this.$store.state.currentUser.email;
+      }
+      return email;
     },
+
     currentUserName() {
       return this.$store.state.currentUser.name;
     },
+
     currentUserPhone() {
       return this.$store.state.currentUser.phone;
     },
+
     isNewRequest() {
       var isNew = true;
       var storeState = this.$store.state;
@@ -156,12 +165,14 @@ export default {
       }
       return isNew;
     },
+
     inAdminMode() {
       if(this.isNewRequest){
         return false;
       }
       return this.$store.state.inAdminMode;
-    },
+    }
+
   },
 
   activated() {
@@ -205,15 +216,19 @@ export default {
 
     this.InitDependsOnControls();
 
-    if (!this.inAdminMode && 
-        (storeState.currentRequest["eventGEContactPersonEmail"] == undefined || 
-         storeState.currentRequest["eventGEContactPersonEmail"] == null ||
-         storeState.currentRequest["eventGEContactPersonEmail"] == "")) {
+
+    if (this.currentUserEmail != null) {
       storeState.currentRequest["eventGEContactPersonEmail"] = this.currentUserEmail;
+    }
+
+    if (this.currentUserName != null) {
       storeState.currentRequest["eventGEContactPersonName"] = this.currentUserName;
+    }
+
+    if (this.currentUserPhone != null) {
       storeState.currentRequest["eventGEContactPersonPhone"] = this.currentUserPhone;
     }
-   
+
     bindUiValuesFromRequest(storeState.currentRequest, this.currentScreenNum, this.inAdminMode);
   },
 
@@ -235,7 +250,7 @@ export default {
         console.log("Not able to locally cache the working request");
       }
 
-      if (vm.currentScreenNum == 1 && !this.inAdminMode) {
+      if (vm.currentScreenNum == 1 && storeState.currentUser != null) {
           var usersUrl = apiMgr.getUsersUrl();
 
           storeState.currentUser.email = storeState.currentRequest.eventGEContactPersonEmail;
@@ -254,11 +269,13 @@ export default {
                 // But should not stop the UI from going to the next screen.
                 vm.isSubmitting = false;
                 vm.hasFailure = false;
-                if (vm.inAdminMode) {
-                  vm.$router.push('/requestsummary');
-                } else {
-                  vm.$router.push('/attentionNotes');
-                }
+                vm.$router.push('/attentionNotes');
+
+                // if (!vm.isNewRequest) {
+                //   vm.$router.push('/requestsummary');
+                // } else {
+                //   vm.$router.push('/attentionNotes');
+                // }
             })
       }
   },
@@ -276,20 +293,23 @@ export default {
       
       if (allValid) {
 
-        storeState.currentUser.name = vm.$store.state.currentRequest["eventGEContactPersonName"];
-        storeState.currentUser.email = vm.$store.state.currentRequest["eventGEContactPersonEmail"];
-        storeState.currentUser.phone = vm.$store.state.currentRequest["eventGEContactPersonPhone"];
+        // if (storeState.currentUser != null) {
+        //   storeState.currentUser.name = vm.$store.state.currentRequest["eventGEContactPersonName"];
+        //   storeState.currentUser.email = vm.$store.state.currentRequest["eventGEContactPersonEmail"];
+        //   storeState.currentUser.phone = vm.$store.state.currentRequest["eventGEContactPersonPhone"];
+        // }
 
         var nextScreenNum = vm.currentScreenNum + 1;
         if (nextScreenNum <= vm.$store.state.numOfRequestScreens) {
           vm.$router.push('/request/' + nextScreenNum);          
         } else {
 
-          if (vm.inAdminMode) {
-            vm.$router.push('/requestsummary');
-          } else {
-            vm.$router.push('/attentionNotes');
-          }
+          vm.$router.push('/attentionNotes');
+          // if (!vm.isNewRequest) {
+          //   vm.$router.push('/requestsummary');
+          // } else {
+          //   vm.$router.push('/attentionNotes');
+          // }
         }
         
       }

@@ -6,7 +6,7 @@
 
           <div class="card">
             <div class="card-header bg-info text-light">
-              Request Summary &nbsp;&nbsp;<span class="badge badge-warning" v-if="inAdminMode" :adminCommentCtrlId="adminCommentCtrlId" @click.prevent="onAddAdminComment"><span class="far fa-comment-dots"></span></span>
+              Request Summary &nbsp;&nbsp;<span class="badge badge-warning" v-if="inAdminMode && !isNewRequest" :adminCommentCtrlId="adminCommentCtrlId" @click.prevent="onAddAdminComment"><span class="far fa-comment-dots"></span></span>
             </div>
 
             <div v-if="inAdminMode">  
@@ -43,7 +43,7 @@
          
           <br>
           <div v-if="canEditRequest">
-            <div v-if="inAdminMode">
+            <div v-if="inAdminMode && !isNewRequest">
               <button type="button" class="btn btn-primary btn-sm" 
                 :disabled="isSubmitting" 
                 @click.prevent="onApproveRequest">Approve Request</button>
@@ -86,6 +86,15 @@ export default {
 
   computed: {
 
+    isNewRequest() {
+      var isNew = true;
+      var storeState = this.$store.state;
+      if (storeState.currentRequest != null && storeState.currentRequest._id != undefined && storeState.currentRequest._id != null) {
+        isNew = false;
+      }
+      return isNew;
+    },
+
     inAdminMode() {
       return this.$store.state.inAdminMode;
     },
@@ -93,10 +102,12 @@ export default {
     canEditRequest() {
       var canEdit = false;
       var storeState = this.$store.state;
-      if (!this.inAdminMode && storeState.currentRequest != null && storeState.currentRequest.userCanEdit != undefined && storeState.currentRequest.userCanEdit == true) {
+
+      if (this.isNewRequest) {
         canEdit = true;
-      }
-      if (this.inAdminMode &&storeState.currentRequest != null && storeState.currentRequest.adminCanEdit != undefined && storeState.currentRequest.adminCanEdit == true) {
+      } else if (!this.inAdminMode && storeState.currentRequest != null && storeState.currentRequest.userCanEdit != undefined && storeState.currentRequest.userCanEdit == true) {
+        canEdit = true;
+      } else if (this.inAdminMode &&storeState.currentRequest != null && storeState.currentRequest.adminCanEdit != undefined && storeState.currentRequest.adminCanEdit == true) {
         canEdit = true;
       }
       return canEdit;
