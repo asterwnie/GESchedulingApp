@@ -209,7 +209,7 @@ export default {
         //get request for deletion
         let currId = event.target.id;
     
-        var url = getRequestByIdUrl(currId);
+        var url = apiMgr.getRequestByIdUrl(currId);
         console.log(`Home.vue - Query url: ${url}`);
 
         //delete request
