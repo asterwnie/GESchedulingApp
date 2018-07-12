@@ -107,7 +107,9 @@ noteRoutes(app);
 var appConfigRoutes = require('./server-api/routes/appConfigRoutes');
 appConfigRoutes(app);
 
-
+//Set up API routes for the AccessCode entity:
+var accessCodeRoutes = require ('./server-api/routes/accessCodeRoutes');
+accessCodeRoutes(app);
 
 
 

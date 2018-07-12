@@ -100,6 +100,18 @@
             "request": "launch",
             "name": "ADMIN: Delete Requests",
             "program": "${workspaceFolder}/server-api/dataImports/deleteRequests.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "ADMIN: Delete AccessCode",
+            "program": "${workspaceFolder}/server-api/dataImports/deleteAccessCode.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "ADMIN: Import AccessCode",
+            "program": "${workspaceFolder}/server-api/dataImports/importAccessCodes.js"
         }
     ]
 }

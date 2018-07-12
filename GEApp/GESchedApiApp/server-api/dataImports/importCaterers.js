@@ -109,26 +109,26 @@ function extractCatererItems(fileData) {
 
         directive = "--Caterer.Address:"; // Note, there can be multiple address blocks.
         if (!blockProcessed && block.search(directive) > -1) {
-            var CatererAddressBlock = block.replace(directive, "").trim();
-            if (CatererAddressBlock != "") {
+            var catererAddressBlock = block.replace(directive, "").trim();
+            if (catererAddressBlock != "") {
                 // Add address block to the array:
-                newCaterer.address.push(CatererAddressBlock);
+                newCaterer.address.push(catererAddressBlock);
             }
         }
 
         directive = "--Caterer.Phone:";
         if (!blockProcessed && block.search(directive) > -1) {
-            var CatererPhone = block.replace(directive, "").trim();
-            if (CatererPhone != "") {
-                newCaterer.phone = CatererPhone;
+            var catererPhone = block.replace(directive, "").trim();
+            if (catererPhone != "") {
+                newCaterer.phone = catererPhone;
             }
         }
 
         directive = "--Caterer.Website:";
         if (!blockProcessed && block.search(directive) > -1) {
-            var CatererWebsite = block.replace(directive, "").trim();
-            if (CatererWebsite != "") {
-                newCaterer.website = CatererWebsite;
+            var catererWebsite = block.replace(directive, "").trim();
+            if (catererWebsite != "") {
+                newCaterer.website = catererWebsite;
             }
         }
 
