@@ -27,18 +27,12 @@
 <div class="containerDiv container-fluid" style="width:100%">
   <div class="row">
     <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
-    <div class="col col-12 col-auto" style="color:gray">
+    <div class="col col-12 col-sm-10 col-md-8 col-lg-8" style="color:gray">
       <h5 class="text-center" v-html="$store.state.appConfig.siteName"></h5>
       <h6 class="text-center" v-html="$store.state.appConfig.siteAddress"></h6>
       <br>
-    </div>
-    <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
-  </div>
-  
-    <div class="row">
-      <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
-      <div class="col col-12 col-auto" style="color:gray">
-        <div class="alert alert-warning" role="alert">
+
+      <div class="alert alert-warning" role="alert">
           <h5 class="alert-heading">Select Room</h5>
           <hr>
           <div v-if="isSelectingRoom">
@@ -59,10 +53,10 @@
               </p>
           </div>
         </div>
-      </div>
-      <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
+
     </div>
-  
+    <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
+  </div>
 
   <div class="row">
     <div class="col col-12 col-md-2 col-lg-2"></div>

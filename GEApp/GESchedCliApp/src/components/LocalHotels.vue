@@ -41,7 +41,8 @@
                   <br>
                   <div class="card-text" :hidden="hotel.phone == null ||hotel.phone == ''"><i class="fas fa-phone"></i> {{hotel.phone}}</div>
                   <div class="card-text" :hidden="hotel.fax == null ||hotel.fax == ''">Fax: {{hotel.fax}}</div>
-                  <div class="card-text" :hidden="hotel.corpRates == null ||hotel.corpRates == ''">Discount: {{hotel.corpRates}}</div>
+                  <div class="card-text" :hidden="hotel.discount == null ||hotel.discount == ''">Discount: {{hotel.discount}}</div> <!-- .corpRates or .Discount -->
+
                 </div>
               </div>
             </div>

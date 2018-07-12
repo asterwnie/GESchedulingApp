@@ -8,7 +8,7 @@
           <div class="GuestWiFi">
             {{ viewDescription }}
           </div>
-
+          <div style="height:10px; width:100%"></div>
           <!--For each note in noteItems-->
           <div style="padding:10px; width:100%" class="alert alert-info card" v-for="(note, index) in noteItems" :key="index" :hidden="note.type != 'GuestWiFiAccess'">
             <!--if the object is an array,-->

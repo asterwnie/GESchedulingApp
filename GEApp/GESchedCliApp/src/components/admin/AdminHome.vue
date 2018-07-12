@@ -11,7 +11,8 @@
             </a>
             </nav>
             <br>
-            <p class="text-right font-italic">Welcome back, {{$store.state.currentAdminUser.name}}</p>
+            <div class="text-right font-italic">Welcome back, {{$store.state.currentAdminUser.name}}</div>
+            <div style="cursor:pointer;" class="text-right" @click.prevent="$router.push('/login')">Log Out</div>
             <hr>
           </div>
           <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
@@ -22,6 +23,8 @@
       <div id="adminBar" class="col col-12 col-md-3 col-lg-3 col-xl-2" style="padding-bottom:10px">
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
             <strong>Admin mode activated.</strong> As long as you are in admin mode, the red admin indicator show be above the navigation bar.
+            <hr>
+            NOTE: THIS NOTE MAY BE REMOVED.*
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -76,7 +79,7 @@
           <div id="utilityMenu">
                 
                 <div class="card-header bg-danger text-light">
-                    Utilities
+                    Utilities (NOTE THESE DO NOT WORK RIGHT NOW)
                 </div>
                 <div style="height:10px;"></div>
                 <div class="card-group">

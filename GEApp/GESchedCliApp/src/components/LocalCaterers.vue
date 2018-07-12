@@ -34,11 +34,13 @@
                   <div class="card-header" style="background-color:#76cf99">
                     <h6 class="card-title">{{ caterer.name }}</h6>
                   </div>
-                  <div class="card-body" style="background-color:#a9d6bb">
+                  <div class="card-body" style="background-color:#afffce">
                     <div class="card-text" v-for="(line, index) in caterer.address" :key="index">
                       {{line}}
-                    </div>
+                    </div> 
                     <br>
+                    <div class="card-text" :hidden="caterer.phone == null ||caterer.phone == ''"><i class="fas fa-phone"></i> {{caterer.phone}}</div>
+                   <i class="far fa-window-restore"></i> <a href= "#" class="card-link" :hidden="caterer.website == null ||caterer.website == ''">  {{caterer.website}}</a>
                     <div></div>
                     <div></div>
                   </div>

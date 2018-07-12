@@ -1,12 +1,12 @@
 'use strict';
-
+///delete all appConfigs
 
 const fs = require('fs'); // File system.
 const appRoot = require('app-root-path'); 
 const mongoose = require('mongoose'); // Helper libray for MongoDB. http://mongoosejs.com/ 
 const appConfig = require(`${appRoot}/server.config`); // Load app configuration settings server.config.js
 const logger = require(`${appRoot}/server-api/logger`); // Create logging helper
-const getAppConfigSiteCode = require(`${appRoot}/server-api/models/appConfigModel`);
+const getAccessCode = require(`${appRoot}/server-api/models/accessCodeModel`);
 
 
 mongoose.Promise = global.Promise;
@@ -19,25 +19,25 @@ var siteCode = appConfig.defaultSite; // The current default in HLS-MA in server
 if (args.length == 3 && args[2] != null) { siteCode = args[2]; }
 
 
-let appConfigItems = getAppConfigSiteCode(siteCode);
+let accessCode = getAccessCode(siteCode);
 
 const delyInSecs = 3;
-const timer = setInterval(() => deleteAppConfigs(), delyInSecs * 1000); // Ensures db connection is established in getappConfigType since it's an async operation.
+const timer = setInterval(() => deleteAccessCodes(), delyInSecs * 1000); // Ensures db connection is established in getappConfigType since it's an async operation.
 
 
 
-function deleteAppConfigs() {
+function deleteAccessCodes() {
 
     clearInterval(timer);
     
     // Match any name therefore, deleting all.
-    appConfigItems.deleteMany({ siteCode: /(.*?)/ }) 
+    accessCode.deleteMany({ siteCode: /(.*?)/ }) 
         .then(function () {
-            logger.info(`ADMIN: All appConfigs deleted for site: ${siteCode}`);
+            logger.info(`ADMIN: All accessCodes deleted for site: ${siteCode}`);
 
             mongoose.disconnect((err) => {
                 if (err) {
-                    logger.error(`ADMIN: appConfig.deleteMany failed for site: ${siteCode}! Error: ${err}`);
+                    logger.error(`ADMIN: accessCode.deleteMany failed for site: ${siteCode}! Error: ${err}`);
                 } else {
                     logger.info(`ADMIN: Disconnected from database for site: ${siteCode}.`);
                 }
@@ -46,7 +46,7 @@ function deleteAppConfigs() {
            
         })
         .catch (function (err) { 
-            logger.error(`ADMIN: appConfig.deleteMany failed for site: ${siteCode}! Error: ${err}`);
+            logger.error(`ADMIN: accessCode.deleteMany failed for site: ${siteCode}! Error: ${err}`);
             
             mongoose.disconnect();
             logger.info(`ADMIN: Disconnect from database for site: ${siteCode}`);
