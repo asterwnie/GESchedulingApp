@@ -37,18 +37,18 @@ async function queryRooms (siteCode, query, callback) {
 
     let Room = roomModel.getRoomType(siteCode);
 
-    var sortDirective = { "name": 1}; //default, order by name, ascending
+    var sortDirective = { "name": 1 }; //default, order by name, ascending
     if (query.orderBy != null) {
         if (query.orderBy == 'seqNum:1') {
-            sortDirective = { "seqNum": 1};  //ascending order
+            sortDirective = { "seqNum": 1 };  //ascending order
         } else if (query.orderBy == 'seqNum:-1') {
-            sortDirective = { "seqNum": -1}; //descending order
+            sortDirective = { "seqNum": -1 }; //descending order
         }
 
         if (query.orderBy == 'seatCapacity:1') {
-            sortDirective = { "seatCapacity": 1};  //ascending order
+            sortDirective = { "seatCapacity": 1 };  //ascending order
         } else if (query.orderBy == 'seatCapacity:-1') {
-            sortDirective = { "seatCapacity": -1}; //descending order
+            sortDirective = { "seatCapacity": -1 }; //descending order
         }
     }
 
@@ -350,7 +350,9 @@ async function queryMinMaxSeatingCapacityGrpBySizeType(siteCode, callback) {
         }
     }];
 
-    await Room.aggregate(directive)
+    var sortDirective = { "minSeatingCapacity": 1 };
+
+    await Room.aggregate(directive).sort(sortDirective)
     .then((minMaxSeatingCapacityItems) => {
         if (minMaxSeatingCapacityItems == null) {
             var errMsg = "roomController.queryMaxSeatingCapacityGrpBySizeType - did not find any minMaxSeatingCapacityItems.";
