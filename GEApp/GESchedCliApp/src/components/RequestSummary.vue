@@ -21,13 +21,19 @@
                       {{requestReadOnlyProperty.label}}: 
                     </span>
                     <br>
-                    <div v-if="requestReadOnlyProperty.value.name == null">
+                    <div v-if="requestReadOnlyProperty.value.name != null">
                       <span class="font-italic">
-                        {{requestReadOnlyProperty.value}}
+                        {{requestReadOnlyProperty.value.name}}
+                      </span>
+                    </div>
+                    <div v-else-if="requestReadOnlyProperty.value.startDate != null">
+                      <span class="font-italic">
+                        <div>Start: {{requestReadOnlyProperty.value.startDate.replace('T', ' ')}}</div>
+                        <div>End: {{requestReadOnlyProperty.value.endDate.replace('T', ' ')}}</div>
                       </span>
                     </div>
                     <div v-else>
-                      {{requestReadOnlyProperty.value.name}}
+                      {{requestReadOnlyProperty.value}}
                     </div>
                     <div v-if="requestReadOnlyProperty.adminComment != null">
                       <span class="font-italic">

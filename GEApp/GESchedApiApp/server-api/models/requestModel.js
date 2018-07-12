@@ -9,6 +9,20 @@ let RoomSchema = roomModel.RoomSchema;
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+
+const EventDateTimeSchema = new Schema({
+
+    startDate: {
+        type: String,
+        required: [true, 'Start Date is required!']
+    },
+    endDate: {
+        type: String,
+        required: [true, 'End Date is required!']
+    },
+
+});
+
 // The schema definition for a request entity
 
 const RequestSchema = new Schema({
@@ -24,7 +38,7 @@ const RequestSchema = new Schema({
     },
 
     eventSchedule: {
-        type: String,
+        type: EventDateTimeSchema,
         required: [true, 'The event schedule is required!']
     },
 

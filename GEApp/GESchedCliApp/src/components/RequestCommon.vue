@@ -301,6 +301,9 @@ export default {
       var storeState = this.$store.state; 
       var vm = this;
 
+      let foundStartDate = null;
+      let foundEndDate = null;
+
       var ctrls = $('.is-request-data');
       $.each(ctrls, function (index, inputCtrl) {
 
@@ -316,7 +319,6 @@ export default {
           if ($(inputCtrl).attr('isBoolean') == "true") {
               let tempVal = $(inputCtrl);
               storeState.currentRequest[inputCtrl.id] = tempVal[0].checked;  
-              console.log(storeState.currentRequest[inputCtrl.id]);
           } else if ($(inputCtrl).attr('isNumeric') == "true") {
             try {
               if (ctrlVal == null || ctrlVal == "") {
@@ -334,6 +336,18 @@ export default {
               // ToDo: need to assign the selected room
               if(storeState.selectedRoom != null && storeState.selectedRoom != undefined){
                 storeState.currentRequest[inputCtrl.id] = storeState.selectedRoom;
+              }
+          } else if ($(inputCtrl).attr('isDateTime') == "true") {
+              if($(inputCtrl).val() != ""){
+                if($(inputCtrl).hasClass("start-date")){
+                  foundStartDate = $(inputCtrl).val()
+                } else if ($(inputCtrl).hasClass("end-date")) {
+                  foundEndDate = $(inputCtrl).val();
+                }
+                storeState.currentRequest[inputCtrl.id] = {
+                  startDate: foundStartDate,
+                  endDate: foundEndDate,
+                } 
               }
 
           } else {

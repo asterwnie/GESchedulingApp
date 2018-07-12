@@ -43,6 +43,7 @@ export const validatePrompts = (prompts) => {
 
     $.each(prompts, function (index, prompt) {
   
+        debugger;
         var currentFieldInvalid = false;
         var isValid = true;
 
@@ -56,6 +57,18 @@ export const validatePrompts = (prompts) => {
             }
             
         }
+
+        /* if (!currentFieldInvalid && (prompt.inputType.ctrlType == 'eventSchedule')) {
+            debugger;
+            var ctrlDataId = prompt.inputType.ctrlDataId;
+            var inputVal = $("#" + ctrlDataId).val();
+            isValid = validateEventSchedulePrompt(ctrlDataId, inputVal);
+            if (!isValid) {
+                //debugger;
+                allValid = false;
+                currentFieldInvalid = true;
+            }
+        }  */
 
         if (!currentFieldInvalid && prompt.inputType.ctrlType == 'email') {
             var ctrlDataId = prompt.inputType.ctrlDataId;
@@ -87,6 +100,7 @@ export const validatePrompts = (prompts) => {
                 currentFieldInvalid = true;
             }
         }
+        
 
     });
 
@@ -145,6 +159,21 @@ export const validateEmailPrompt = (ctrlDataId, inputVal) => {
 
     return isValid;
 }
+
+/* export const validateEventSchedulePrompt = (ctrlDataId, inputVal) => {
+    
+    let isValid = true;
+    debugger;
+    if (inputVal == "") {
+        isValid = false;
+        var invalidMsg = $('#INVALID-MSG-FOR-' + ctrlDataId)
+        if (invalidMsg != null) {
+            invalidMsg.show();
+        }
+    }
+
+    return isValid;
+} */
 
 
 export const validateNumberPrompt = (ctrlDataId, inputVal) => {
@@ -229,6 +258,18 @@ export const validateRequest = (request, currentScreenNum) => {
                     currentFieldInvalid = true;
                 }
             }
+
+            /* if (!currentFieldInvalid && (requestPrompt.inputType.ctrlType == 'eventSchedule')) {
+                debugger;
+                var ctrlDataId = requestPrompt.inputType.ctrlDataId;
+                var inputVal = $("#" + ctrlDataId).val();
+                isValid = validateEventSchedulePrompt(ctrlDataId, inputVal);
+                if (!isValid) {
+                    //debugger;
+                    allValid = false;
+                    currentFieldInvalid = true;
+                }
+            }  */
 
             if (!currentFieldInvalid && requestPrompt.inputType.ctrlType == 'email') {
                 var ctrlDataId = requestPrompt.inputType.ctrlDataId;
