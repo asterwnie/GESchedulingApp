@@ -343,10 +343,14 @@ export default {
       var vm = this;
 
       if (this.canEditRequest) {
+
         var ctrls = $('.is-request-data');
         $.each(ctrls, function (index, inputCtrl) {
 
           //index becomes a property (obj1['prop1'] acts like obj1.prop1)
+
+          let foundStartDate = null;
+          let foundEndDate = null;
           
           if ($(inputCtrl).attr('screenNum') == vm.currentScreenNum) {
 
@@ -377,14 +381,27 @@ export default {
                 if(storeState.selectedRoom != null && storeState.selectedRoom != undefined){
                   storeState.currentRequest[inputCtrl.id] = storeState.selectedRoom;
                 }
+            } else if ($(inputCtrl).attr('isDateTime') == "true") {
+                if($(inputCtrl).val() != ""){
+                  if($(inputCtrl).hasClass("start-date")){
+                    foundStartDate = $(inputCtrl).val()
+                  } else if ($(inputCtrl).hasClass("end-date")) {
+                    foundEndDate = $(inputCtrl).val();
+                  }
+                  storeState.currentRequest[inputCtrl.id] = {
+                    startDate: foundStartDate,
+                    endDate: foundEndDate,
+                  } 
+                }
 
-            } else {
-              storeState.currentRequest[inputCtrl.id] = ctrlVal;
-            } 
+              } else {
+                storeState.currentRequest[inputCtrl.id] = ctrlVal;
+              } 
 
           }        
         });
       }
+      
 
       if (this.inAdminMode) {
         var adminCommentctrls = $('.is-admin-comment');

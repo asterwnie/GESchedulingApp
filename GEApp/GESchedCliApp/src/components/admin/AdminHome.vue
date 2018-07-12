@@ -4,6 +4,7 @@
         <div class="row">
           <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
           <div class="col col-12 col-sm-10 col-md-8 col-lg-8" style="color:gray">
+
             <nav class="navbar navbar-light" style="background-color:#ffb3b3">
             <a class="navbar-brand text-dark">
                 <img src="@/assets/ge-monogram.svg" width="30" height="30" class="d-inline-block align-top" alt="">
@@ -170,12 +171,14 @@ export default {
         },
         requestsPreview() {
           return this.$store.state.currentRequestsPreview;
-        }
+        },
     },
 
     activated() {
         console.log('AdminHome.vue activated.');
         let vm = this;
+
+        console.log(vm.currentDate);
 
         if (this.$store.state.appConfig.adminHomeViewTitle == null) {
         this.$router.push('/login'); // Config data lost, force back to login to refetch data.
@@ -211,31 +214,16 @@ export default {
                 vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
             })
 
-        vm.$forceUpdate();
-    },
-
-    created() {
-        console.log('AdminHome.vue created.');
-
-        //color badge based on status
-        $(function() {
-        $(".approved").addClass("badge badge-success");
-        $(".rejected").addClass("badge badge-danger");
-        $(".underReview").addClass("badge badge-info");
-        $(".completed").addClass("badge badge-secondary"); //not yet implemented
-        });
     },
 
     updated(){
-        console.log('AdminHome.vue updated.');
-
         //color badge based on status
-        $(function() {
+        /* $(function() {
         $(".approved").addClass("badge badge-success");
         $(".rejected").addClass("badge badge-danger");
         $(".underReview").addClass("badge badge-info");
         $(".completed").addClass("badge badge-secondary"); //not yet implemented
-        });
+        }); */
     },
 
     methods: {
@@ -327,7 +315,9 @@ export default {
                     vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
                 })
         
-        }
+        },
+
+        
     }
 }
 </script>
