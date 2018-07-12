@@ -12,7 +12,7 @@
             </a>
             </nav>
             <br>
-            <div class="text-right font-italic">Welcome back, {{$store.state.currentUser.name}}</div>
+            <div class="text-right font-italic">Welcome back, {{$store.state.currentAdminUser.name}}</div>
             <div style="cursor:pointer;" class="text-right" @click.prevent="$router.push('/login')">Log Out</div>
             <hr>
           </div>
