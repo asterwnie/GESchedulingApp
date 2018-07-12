@@ -150,11 +150,27 @@ export default {
     },
 
     currentUserName() {
-      return this.$store.state.currentUser.name;
+      var name = null;
+      if (this.$store.state.currentUser != null) {
+        name = this.$store.state.currentUser.name;
+      }
+      return name;
     },
 
     currentUserPhone() {
-      return this.$store.state.currentUser.phone;
+      var phone = null;
+      if (this.$store.state.currentUser != null) {
+        phone = this.$store.state.currentUser.phone;
+      }
+      return phone;
+    },
+
+    canEditEmail() {
+      var canEdit = false;
+      if (this.$store.state.currentAdminUser != null) {
+        canEdit = true;
+      }
+      return canEdit;
     },
 
     isNewRequest() {
@@ -167,10 +183,24 @@ export default {
     },
 
     inAdminMode() {
-      if(this.isNewRequest){
-        return false;
-      }
       return this.$store.state.inAdminMode;
+    },
+
+    canEditRequest() {
+
+      var canEdit = false;
+      var storeState = this.$store.state;
+
+      if (this.isNewRequest) {
+        canEdit = true;
+      } else if (storeState.currentRequest != null) {
+        if (this.inAdminMode) {
+          canEdit = storeState.currentRequest.adminCanEdit;
+        } else {
+          canEdit = storeState.currentRequest.userCanEdit;
+        }
+      }
+      return canEdit;
     }
 
   },
@@ -217,19 +247,28 @@ export default {
     this.InitDependsOnControls();
 
 
-    if (this.currentUserEmail != null) {
+    if (this.canEditRequest && this.currentUserEmail != null) {
       storeState.currentRequest["eventGEContactPersonEmail"] = this.currentUserEmail;
     }
 
-    if (this.currentUserName != null) {
+    if (this.canEditRequest && this.currentUserName != null) {
       storeState.currentRequest["eventGEContactPersonName"] = this.currentUserName;
     }
 
-    if (this.currentUserPhone != null) {
+    if (this.canEditRequest && this.currentUserPhone != null) {
       storeState.currentRequest["eventGEContactPersonPhone"] = this.currentUserPhone;
     }
 
     bindUiValuesFromRequest(storeState.currentRequest, this.currentScreenNum, this.inAdminMode);
+
+    var emailCtrl = $("#eventGEContactPersonEmail");
+    if (emailCtrl != null) {
+      if (this.inAdminMode) {
+        emailCtrl.prop('readonly', false);
+      } else {
+        emailCtrl.prop('readonly', true);
+      }
+    }
   },
 
   deactivated() {
@@ -238,7 +277,7 @@ export default {
       var vm = this;
       var storeState = vm.$store.state;
 
-       this.bindCtrlValuesToRequestProperties();
+      this.bindCtrlValuesToRequestProperties();   
       
       try {
         if (this.isNewRequest) {
@@ -270,12 +309,6 @@ export default {
                 vm.isSubmitting = false;
                 vm.hasFailure = false;
                 vm.$router.push('/attentionNotes');
-
-                // if (!vm.isNewRequest) {
-                //   vm.$router.push('/requestsummary');
-                // } else {
-                //   vm.$router.push('/attentionNotes');
-                // }
             })
       }
   },
@@ -293,23 +326,11 @@ export default {
       
       if (allValid) {
 
-        // if (storeState.currentUser != null) {
-        //   storeState.currentUser.name = vm.$store.state.currentRequest["eventGEContactPersonName"];
-        //   storeState.currentUser.email = vm.$store.state.currentRequest["eventGEContactPersonEmail"];
-        //   storeState.currentUser.phone = vm.$store.state.currentRequest["eventGEContactPersonPhone"];
-        // }
-
         var nextScreenNum = vm.currentScreenNum + 1;
         if (nextScreenNum <= vm.$store.state.numOfRequestScreens) {
           vm.$router.push('/request/' + nextScreenNum);          
         } else {
-
           vm.$router.push('/attentionNotes');
-          // if (!vm.isNewRequest) {
-          //   vm.$router.push('/requestsummary');
-          // } else {
-          //   vm.$router.push('/attentionNotes');
-          // }
         }
         
       }
@@ -321,47 +342,49 @@ export default {
       var storeState = this.$store.state; 
       var vm = this;
 
-      var ctrls = $('.is-request-data');
-      $.each(ctrls, function (index, inputCtrl) {
+      if (this.canEditRequest) {
+        var ctrls = $('.is-request-data');
+        $.each(ctrls, function (index, inputCtrl) {
 
-        //index becomes a property (obj1['prop1'] acts like obj1.prop1)
-        
-        if ($(inputCtrl).attr('screenNum') == vm.currentScreenNum) {
+          //index becomes a property (obj1['prop1'] acts like obj1.prop1)
+          
+          if ($(inputCtrl).attr('screenNum') == vm.currentScreenNum) {
 
-          var ctrlVal = $(inputCtrl).val();
-          if (ctrlVal != null && typeof ctrlVal == "string") {
-            ctrlVal = ctrlVal.trim();
-          }
-
-          if ($(inputCtrl).attr('isBoolean') == "true") {
-              let tempVal = $(inputCtrl);
-              storeState.currentRequest[inputCtrl.id] = tempVal[0].checked;  
-              console.log(storeState.currentRequest[inputCtrl.id]);
-          } else if ($(inputCtrl).attr('isNumeric') == "true") {
-            try {
-              if (ctrlVal == null || ctrlVal == "") {
-                try {
-                  delete storeState.currentRequest[inputCtrl.id];
-                } catch (err) {}
-              } else {
-                storeState.currentRequest[inputCtrl.id] = parseInt(ctrlVal);               
-              }
-            } catch (err) {
-              console.log(`Unable to assign ${ctrlVal} to ${inputCtrl.id}`);
+            var ctrlVal = $(inputCtrl).val();
+            if (ctrlVal != null && typeof ctrlVal == "string") {
+              ctrlVal = ctrlVal.trim();
             }
-          } else if ($(inputCtrl).attr('isRoom') == "true") {
-              // ToDo: Need to track and store the select room from Find Room
-              // ToDo: need to assign the selected room
-              if(storeState.selectedRoom != null && storeState.selectedRoom != undefined){
-                storeState.currentRequest[inputCtrl.id] = storeState.selectedRoom;
+
+            if ($(inputCtrl).attr('isBoolean') == "true") {
+                let tempVal = $(inputCtrl);
+                storeState.currentRequest[inputCtrl.id] = tempVal[0].checked;  
+                console.log(storeState.currentRequest[inputCtrl.id]);
+            } else if ($(inputCtrl).attr('isNumeric') == "true") {
+              try {
+                if (ctrlVal == null || ctrlVal == "") {
+                  try {
+                    delete storeState.currentRequest[inputCtrl.id];
+                  } catch (err) {}
+                } else {
+                  storeState.currentRequest[inputCtrl.id] = parseInt(ctrlVal);               
+                }
+              } catch (err) {
+                console.log(`Unable to assign ${ctrlVal} to ${inputCtrl.id}`);
               }
+            } else if ($(inputCtrl).attr('isRoom') == "true") {
+                // ToDo: Need to track and store the select room from Find Room
+                // ToDo: need to assign the selected room
+                if(storeState.selectedRoom != null && storeState.selectedRoom != undefined){
+                  storeState.currentRequest[inputCtrl.id] = storeState.selectedRoom;
+                }
 
-          } else {
-            storeState.currentRequest[inputCtrl.id] = ctrlVal;
-          } 
+            } else {
+              storeState.currentRequest[inputCtrl.id] = ctrlVal;
+            } 
 
-        }        
-      });
+          }        
+        });
+      }
 
       if (this.inAdminMode) {
         var adminCommentctrls = $('.is-admin-comment');

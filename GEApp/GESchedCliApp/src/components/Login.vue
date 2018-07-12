@@ -342,10 +342,12 @@ export default {
 
                         if (loggedInUser.isAdmin != undefined && loggedInUser.isAdmin) {
                             storeState.currentAdminUser = loggedInUser;
+                            storeState.currentUser = null;
                             storeState.inAdminMode = true;
                             vm.$router.push('/admin/home');
                         } else {
                             storeState.currentUser = loggedInUser;
+                            storeState.currentAdminUser = null;
                             storeState.inAdminMode = false;
                             vm.$router.push('/home');
                         }
