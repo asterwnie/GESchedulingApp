@@ -345,13 +345,11 @@ export default {
       if (this.canEditRequest) {
 
         var ctrls = $('.is-request-data');
+        let foundStartDate = null;
+        let foundEndDate = null;
         $.each(ctrls, function (index, inputCtrl) {
 
           //index becomes a property (obj1['prop1'] acts like obj1.prop1)
-
-          let foundStartDate = null;
-          let foundEndDate = null;
-          
           if ($(inputCtrl).attr('screenNum') == vm.currentScreenNum) {
 
             var ctrlVal = $(inputCtrl).val();
@@ -407,8 +405,14 @@ export default {
 
                   if ($(inputCtrl).hasClass("start-time") && inputCtrl.selected) {
                       if(storeState.currentRequest[inputCtrl.id].startDateTime != null){
-                        let savedTime = new Date(storeState.currentRequest[inputCtrl.id].startDateTime);
-                        storeState.currentRequest[inputCtrl.id].startDateTime = new Date(foundStartDate).setTime(savedTime.getTime() + (parseInt(inputCtrl.text.substring(0, inputCtrl.text.indexOf(":")))*60*60*1000)); 
+                        /* ***NEEDS WORK***
+                        For some reason, .setTime() replaces the entire Date object with the new time object.
+                        In this way, the original Date object saved above (startDateTime) gets completely overwritten by the time.
+                        The date stored no longer has dd/mm/yyyy. It is now just a time.
+
+                        Note: Currently just trying to get this work for the Start time. Once it works, I will copy it for the End time.
+                        */
+                        storeState.currentRequest[inputCtrl.id].startDateTime = new Date(foundStartDate).setTime((parseInt(inputCtrl.text.substring(0, inputCtrl.text.indexOf(":"))))); 
                       }
                   } else if ($(inputCtrl).hasClass("end-time") && inputCtrl.selected) {
                     if(storeState.currentRequest[inputCtrl.id].endDateTime != null){
