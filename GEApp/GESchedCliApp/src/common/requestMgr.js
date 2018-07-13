@@ -322,7 +322,12 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
     $.each(ctrls, function (index, inputCtrl) {
         var ctrl = $(inputCtrl);
         if (ctrl != null && ctrl.attr('screenNum') == currentScreenNum) {
-            ctrl.val(null);
+
+            if (ctrl.is(':checkbox')) {
+                ctrl.prop('checked', false);
+            } else if (ctrl.is(':text')) {
+                ctrl.val(null);
+            }
             var val = request[inputCtrl.id];
             if (val != undefined && val != null && val != "") {
                 ctrl.val(val);
