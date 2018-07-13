@@ -266,9 +266,9 @@ export default {
                     vm.failureMessage = "Server unavailable or not working at this time. Please try later. [error code: 7]";  
                     vm.isFetchingRequests = false;                             
                 })
-
         },
-         getHotels() {
+
+        getHotels() {
 
         var vm = this;
         var url = apiMgr.getHotelsUrl() + '&orderBy=seqNum:1'; 
@@ -285,8 +285,8 @@ export default {
                 vm.failureMessage = "Server unavailable or not working at this time. Please try later.  [error code: 4]";   
                 vm.isFetchingHotels = false;                            
             })
+        },
 
-    },
         onLogin() {
             var vm = this;
             vm.isSubmitting = true;
@@ -342,10 +342,12 @@ export default {
 
                         if (loggedInUser.isAdmin != undefined && loggedInUser.isAdmin) {
                             storeState.currentAdminUser = loggedInUser;
+                            storeState.currentUser = null;
                             storeState.inAdminMode = true;
                             vm.$router.push('/admin/home');
                         } else {
                             storeState.currentUser = loggedInUser;
+                            storeState.currentAdminUser = null;
                             storeState.inAdminMode = false;
                             vm.$router.push('/home');
                         }

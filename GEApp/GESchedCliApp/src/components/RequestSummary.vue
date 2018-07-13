@@ -6,10 +6,10 @@
 
           <div class="card">
             <div class="card-header bg-info text-light">
-              Request Summary &nbsp;&nbsp;<span class="badge badge-warning" v-if="inAdminMode && !isNewRequest" :adminCommentCtrlId="adminCommentCtrlId" @click.prevent="onAddAdminComment"><span class="far fa-comment-dots"></span></span>
+              Request Summary &nbsp;&nbsp;<span class="badge badge-warning" v-if="canEditRequest && inAdminMode" :adminCommentCtrlId="adminCommentCtrlId" @click.prevent="onAddAdminComment"><span class="far fa-comment-dots"></span></span>
             </div>
 
-            <div v-if="inAdminMode">  
+            <div v-if="canEditRequest">  
               <label id="generalAdminCommentLabel" for="generalAdminComment" style="display:none;">&nbsp;&nbsp;General Comment</label>
               <textarea id="generalAdminComment" style="display:none; border: 2px solid orange;" placeholder="Add General Comment" class="is-admin-comment form-control form-control-sm"></textarea>
             </div>

@@ -43,3 +43,16 @@ export const tranformNotes = (notes) => {
 
     return notes;
 }
+
+
+export const tranformCaterers = (caterers) => {
+    //debugger; // Uncomment to trigger breakpoint.
+
+    caterers.forEach((caterer, index) => {
+        var text = caterer.website;
+        var transfromedText = tranformMetaTags(text);
+        caterer.website = transfromedText;
+      });
+
+    return caterers;
+}

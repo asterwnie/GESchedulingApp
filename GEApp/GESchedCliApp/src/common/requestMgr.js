@@ -42,7 +42,8 @@ export const validatePrompts = (prompts) => {
     var allValid = true;
 
     $.each(prompts, function (index, prompt) {
-
+  
+        //debugger;
         var currentFieldInvalid = false;
         var isValid = true;
 
@@ -372,6 +373,11 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
                     ctrl.val(val);
                     assignmentCount += 1;
                 }
+            }
+            if (inAdminMode) {
+                ctrl.prop('readonly', true);
+            } else {
+                ctrl.prop('readonly', false);
             }
         }
     });

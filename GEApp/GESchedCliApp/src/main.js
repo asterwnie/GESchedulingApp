@@ -13,7 +13,6 @@ import { centralStore } from '@/common/centralStore.js'
 import { prepareApiServerUrlSettings } from '@/common/apiMgr.js';
 
 
-// debugger;
 if (!window.Promise) { 
   window.Promise = Promise 
 }

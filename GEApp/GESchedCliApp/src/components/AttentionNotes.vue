@@ -55,9 +55,6 @@ export default {
     },
 
     inAdminMode() {
-       if (this.isNewRequest) {
-        return false;
-      }
       return this.$store.state.inAdminMode;
     }
   },
@@ -65,8 +62,8 @@ export default {
   activated() {
     console.log('AttentionNotes.vue activated.');
 
-    if (this.inAdminMode) {
-       this.$router.push('/requestsummary'); // In Admin mode, no need to show these notes.
+    if (this.inAdminMode && !this.isNewRequest) {
+       this.$router.push('/requestsummary'); // In Admin mode review, no need to show these notes.
     }
 
     if (this.$store.state.appConfig.attentionNotesViewTitle == null) {

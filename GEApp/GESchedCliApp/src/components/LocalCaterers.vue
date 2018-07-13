@@ -39,8 +39,8 @@
                       {{line}}
                     </div> 
                     <br>
-                    <div class="card-text" :hidden="caterer.phone == null ||caterer.phone == ''"><i class="fas fa-phone"></i> {{caterer.phone}}</div>
-                   <i class="far fa-window-restore"></i> <a href= "#" class="card-link" :hidden="caterer.website == null ||caterer.website == ''">  {{caterer.website}}</a>
+                    <div class="card-text" :hidden="caterer.phone == null || caterer.phone == ''"><i class="fas fa-phone"></i> {{caterer.phone}}</div>
+                    <div class="card-text" :hidden="caterer.website == null || caterer.website == ''"><i class="far fa-window-restore"></i> Website: <span v-html="caterer.website"></span></div>
                     <div></div>
                     <div></div>
                   </div>
@@ -59,6 +59,7 @@
 <script>
 import axios from 'axios'
 import * as apiMgr from '@/common/apiMgr.js';
+import * as textTranformer from '@/common/textTranformer.js';
 
 export default {
   data () {
@@ -110,7 +111,7 @@ export default {
           .then(res => {
               console.log("getCaterersUrl return status: " + res.status);
 
-              vm.$store.state.caterers = res.data;
+              vm.$store.state.caterers = textTranformer.tranformCaterers(res.data);
               vm.isFetchingCaterers = false;
           })
           .catch((err) => {
