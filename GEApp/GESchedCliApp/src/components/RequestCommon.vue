@@ -358,17 +358,41 @@ export default {
                 storeState.currentRequest[inputCtrl.id] = storeState.selectedRoom;
               }
           } else if ($(inputCtrl).attr('isDateTime') == "true") {
-              if($(inputCtrl).val() != ""){
+
                 if($(inputCtrl).hasClass("start-date")){
-                  foundStartDate = $(inputCtrl).val()
+                  if($(inputCtrl).val()!=""){
+                    foundStartDate = new Date($(inputCtrl).val());
+                  } else {
+                    foundStartDate = new Date().toLocaleString();
+                  }
                 } else if ($(inputCtrl).hasClass("end-date")) {
-                  foundEndDate = $(inputCtrl).val();
+                  if($(inputCtrl).val()!=""){
+                    foundEndDate = new Date($(inputCtrl).val());
+                  } else {
+                    foundEndDate = new Date().toLocaleString();
+                  }
                 }
+
+                
                 storeState.currentRequest[inputCtrl.id] = {
-                  startDate: foundStartDate,
-                  endDate: foundEndDate,
-                } 
-              }
+                  startDateTime: foundStartDate,
+                  endDateTime: foundEndDate,
+                }
+                
+                 
+
+                if ($(inputCtrl).hasClass("start-time") && inputCtrl.selected) {
+                    if(storeState.currentRequest[inputCtrl.id].startDateTime != null){
+                      let savedTime = new Date(storeState.currentRequest[inputCtrl.id].startDateTime);
+                      storeState.currentRequest[inputCtrl.id].startDateTime = new Date(foundStartDate).setTime(savedTime.getTime() + (parseInt(inputCtrl.text.substring(0, inputCtrl.text.indexOf(":")))*60*60*1000)); 
+                    }
+                } else if ($(inputCtrl).hasClass("end-time") && inputCtrl.selected) {
+                  if(storeState.currentRequest[inputCtrl.id].endDateTime != null){
+                    storeState.currentRequest[inputCtrl.id].endDateTime.setHours($(inputCtrl).val()); 
+                  }
+                }
+                
+              
 
           } else {
             storeState.currentRequest[inputCtrl.id] = ctrlVal;

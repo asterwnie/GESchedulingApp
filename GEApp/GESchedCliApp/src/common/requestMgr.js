@@ -42,8 +42,7 @@ export const validatePrompts = (prompts) => {
     var allValid = true;
 
     $.each(prompts, function (index, prompt) {
-  
-        debugger;
+
         var currentFieldInvalid = false;
         var isValid = true;
 
@@ -122,7 +121,14 @@ export const validateIsRequiredPrompt = (ctrlDataId, inputVal) => {
             console.warn("validateIsRequiredPrompt error: " + err);
         }
     } else if (inputVal != null && inputVal != undefined) {
-        validInput = inputVal;
+        //for datetime, check if inner values are null
+        if(inputVal.startDateTime !== undefined && inputVal.endDateTime !== undefined){
+            if(inputVal.startDateTime == null || inputVal.endDateTime == null){
+                validInput = null;
+            }
+        } else {
+            validInput = inputVal;
+        }
     }
 
     if (validInput == null) {
@@ -325,8 +331,47 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
             ctrl.val(null);
             var val = request[inputCtrl.id];
             if (val != undefined && val != null && val != "") {
-                ctrl.val(val);
-                assignmentCount += 1;
+                if(val.startDateTime != undefined && val.startDateTime != undefined){
+                    
+                    if(ctrl.hasClass("start-date")){
+                        ctrl.val(val.startDateTime);
+
+                    } else if (ctrl.hasClass("end-date")) {
+                        ctrl.val(val.endDateTime);
+
+                    } else if (ctrl.hasClass("start-time")) {
+                        var startDateTime = new Date(val.startDateTime);
+                        var hours = startDateTime.getHours();
+                        /* //currently the UI only supports hours. 
+                        var minutes = startDateTime.getMinutes();*/
+
+                        if($(ctrl).hasClass(`H-${hours}`)){  
+                            debugger;
+                            ctrl.selected = true;
+                        } else {
+                            ctrl.selected = false;
+                        }
+
+
+                    } else if(ctrl.hasClass("end-time")){
+                        var endDateTime = new Date(val.endDateTime);
+                        var hours = endDateTime.getHours();
+                        var minutes = endDateTime.getMinutes();
+                        var timeHelper = "AM";
+
+                        if(hours > 12){
+                            hours -= 12;
+                            timeHelper = "PM";
+                        }
+
+                        var timeString = `${hours}:${minutes} ${timeHelper}`;
+                        ctrl.val(timeString);
+                    }
+
+                } else {
+                    ctrl.val(val);
+                    assignmentCount += 1;
+                }
             }
         }
     });
