@@ -3,43 +3,32 @@
   <div :id="ctrlContainerId">  
     <label :for="ctrlId">{{ promptLabel }}</label>&nbsp;&nbsp;<span v-if="inAdminMode" class="badge badge-warning" :adminCommentCtrlId="adminCommentCtrlId" @click.prevent="onAddAdminComment"><span class="far fa-comment-dots"></span></span>
     <br>
-    <label>Start</label>
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <i class="input-group-text fa fa-calendar" aria-hidden="true"></i>
+    <div :id="ctrlId" :screenNum="screenNum" isEventDateTime="true" class="is-request-data">
+     
+      <div class="input-group mb-3">
+         <label>Start:&nbsp;</label>
+        <input :id="startDateCtrlId" :screenNum="screenNum" type="date" :min="currentDate" class="form-control form-control-sm" aria-describedby="basic-addon3">
+        <div class="input-group-append">
+          <select :id="startTimeCtrlId" :screenNum="screenNum" class="custom-select form-control form-control-sm">
+            <option v-for="(timeOption, index) in timeOptions" :key="index" 
+              :value="timeOption.time" :selected="timeOption.time == defaultTimeOption">
+              {{timeOption.label}}
+            </option>
+          </select>
+        </div>
       </div>
-      <input :id="ctrlId" :screenNum="screenNum" type="date" isDateTime="true" :min="currentDate" class="start-date is-request-data form-control form-control-sm" aria-describedby="basic-addon3">
-      <div class="input-group-append">
-        <select :id="ctrlId" :screenNum="screenNum" class="custom-select form-control form-control-sm">
-          <option selected class="start-time is-request-data" :screenNum="screenNum" :id="ctrlId"></option>
-          <option :class="['H-0', 'start-time', 'is-request-data']" isDateTime="true" :screenNum="screenNum" :id="ctrlId" time="0">12:00 AM</option>
-          <option :class="[`H-${numberAM}`, 'start-time', 'is-request-data']" isDateTime="true" :screenNum="screenNum" :id="ctrlId" v-for="numberAM in numHours" :key="`A-${numberAM}`" :time="numberAM">
-            {{numberAM}}:00 AM
-          </option>
-          <option :class="['H-12', 'start-time', 'is-request-data']" isDateTime="true" :screenNum="screenNum" :id="ctrlId" time="12">12:00 PM</option>
-          <option :class="[`H-${numberPM+12}`, 'start-time', 'is-request-data']" isDateTime="true" :screenNum="screenNum" :id="ctrlId" v-for="numberPM in numHours" :key="`B-${numberPM}`" :time="numberPM+12">
-            {{numberPM}}:00 PM
-          </option>
-      </select>
-      </div>
-    </div>
-    <label>End</label>
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <i class="input-group-text fa fa-calendar" aria-hidden="true"></i>
-      </div>
-      <input :id="ctrlId" :screenNum="screenNum" type="date" isDateTime="true" :min="currentDate" class="end-date is-request-data form-control form-control-sm" aria-describedby="basic-addon3">
-      <div class="input-group-append">
-        <select :id="ctrlId" :screenNum="screenNum" isDateTime="true" class="custom-select end-time is-request-data form-control form-control-sm">
-          <option class="hoursInput H-0" value="0">12:00 AM</option>
-          <option :class="['hoursInput', `H-${numberAM}`]" v-for="numberAM in numHours" :key="`A-${numberAM}`" :value="numberAM">
-            {{numberAM}}:00 AM
-          </option>
-          <option class="hoursInput H-12" value="12" selected>12:00 PM</option>
-          <option :class="['hoursInput', `H-${numberPM+12}`]" v-for="numberPM in numHours" :key="`B-${numberPM}`" :value="numberPM+12">
-            {{numberPM}}:00 PM
-          </option>
-        </select>
+      
+      <div class="input-group mb-3">
+        <label>End:&nbsp;&nbsp;</label>
+        <input :id="endDateCtrlId" :screenNum="screenNum" type="date" :min="currentDate" class="form-control form-control-sm" aria-describedby="basic-addon3">
+        <div class="input-group-append">
+          <select :id="endTimeCtrlId" :screenNum="screenNum" class="custom-select form-control form-control-sm">
+            <option v-for="(timeOption, index) in timeOptions" :key="index" 
+              :value="timeOption.time" :selected="timeOption.time == defaultTimeOption">
+              {{timeOption.label}}
+            </option>
+          </select>
+        </div>
       </div>
     </div>
     <p :id="dataInvalidMsgId" style="display:none;" class="text-danger">Invalid input.</p>
@@ -55,21 +44,95 @@ export default {
 
   data (){
     return {
-      numHours: 11,
+      timeOptions: null,
+      defaultTimeOption: "09:30:00"
+    }
+  },
+
+  activated() {
+ 
+    if (this.timeOptions == null) {
+
+      this.timeOptions = [];
+      var curLabel = null;
+      var curTime = null;
+      var hrStr  = "00";
+      var minStr = "00";
+      var secStr = "00";
+      
+      this.timeOptions.push({ time: "00:00:00", label: '12:00 AM' });
+      this.timeOptions.push({ time: "00:30:00", label: '12:30 AM' });
+
+      var suffix = " AM";
+      for (var i = 1; i <= 11; i++) {
+        if (i < 10) { hrStr = "0" + i.toString(); } else { hrStr = i.toString(); }
+        minStr = "00";
+        curTime = hrStr + ":" + minStr + ":" + secStr;
+        curLabel = i + ":" + minStr + suffix;
+        this.timeOptions.push({ time: curTime, label: curLabel });
+        
+        if (i < 10) { hrStr = "0" + i.toString(); } else { hrStr = i.toString(); }
+        minStr = "30";
+        curTime = hrStr + ":" + minStr + ":" + secStr;
+        curLabel = i + ":" + minStr + suffix;
+        this.timeOptions.push({ time: curTime, label: curLabel });
+      }
+
+      this.timeOptions.push({ time: "12:00:00", label: '12:00 PM' });
+      this.timeOptions.push({ time: "12:30:00", label: '12:30 PM' });
+
+      suffix = " PM";
+      for (var i = 1; i <= 11; i++) {
+        hrStr = (i+12).toString();
+        minStr = "00";
+        curTime = hrStr + ":" + minStr + ":" + secStr;
+        curLabel = i + ":" + minStr + suffix;
+        this.timeOptions.push({ time: curTime, label: curLabel });
+        
+        hrStr = (i+12).toString();
+        minStr = "30";
+        curTime = hrStr + ":" + minStr + ":" + secStr;
+        curLabel = i + ":" + minStr + suffix;
+        this.timeOptions.push({ time: curTime, label: curLabel });
+      }
+
     }
   },
 
   computed: {
+    startDateCtrlId() {
+      return this.ctrlId + "StartDate";
+    },
+
+    startTimeCtrlId() {
+      return this.ctrlId + "StartTime";
+    },
+
+    endDateCtrlId() {
+      return this.ctrlId + "EndDate";
+    },
+
+    endTimeCtrlId() {
+      return this.ctrlId + "EndTime";
+    },
+
     adminCommentCtrlId() {
       return this.ctrlId + "AdminComment";
     },
+
     ctrlContainerId() {
       return this.ctrlId + "Container";
     },
+
     currentDate(){
-      let currDate = new Date().toLocaleString();
-      currDate = currDate.substring(0, currDate.indexOf(',')).replace(/\//g, '-');
-      return currDate;
+      let nowDateTime = new Date();
+      var dd = nowDateTime.getDate();
+      var mm = nowDateTime.getMonth() + 1; //January is 0!
+      var yyyy = nowDateTime.getFullYear();
+      if (dd < 10) { dd = '0'+ dd; } 
+      if (mm < 10) { mm = '0'+ mm; } 
+      var today = yyyy + '-' + mm + '-' + dd;
+      return today;
     }
   },
 

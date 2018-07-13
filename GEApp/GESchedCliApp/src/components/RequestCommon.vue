@@ -358,10 +358,13 @@ export default {
             }
 
             if ($(inputCtrl).attr('isBoolean') == "true") {
+
                 let tempVal = $(inputCtrl);
                 storeState.currentRequest[inputCtrl.id] = tempVal[0].checked;  
                 console.log(storeState.currentRequest[inputCtrl.id]);
+
             } else if ($(inputCtrl).attr('isNumeric') == "true") {
+              
               try {
                 if (ctrlVal == null || ctrlVal == "") {
                   try {
@@ -373,52 +376,44 @@ export default {
               } catch (err) {
                 console.log(`Unable to assign ${ctrlVal} to ${inputCtrl.id}`);
               }
+
             } else if ($(inputCtrl).attr('isRoom') == "true") {
-              // ToDo: Need to track and store the select room from Find Room
-              // ToDo: need to assign the selected room
+
               if(storeState.selectedRoom != null && storeState.selectedRoom != undefined){
                 storeState.currentRequest[inputCtrl.id] = storeState.selectedRoom;
               }
-            } else if ($(inputCtrl).attr('isDateTime') == "true") {
 
-                  if($(inputCtrl).hasClass("start-date")){
-                    if($(inputCtrl).val()!=""){
-                      foundStartDate = new Date($(inputCtrl).val());
-                    } else {
-                      foundStartDate = new Date().toLocaleString();
-                    }
-                  } else if ($(inputCtrl).hasClass("end-date")) {
-                    if($(inputCtrl).val()!=""){
-                      foundEndDate = new Date($(inputCtrl).val());
-                    } else {
-                      foundEndDate = new Date().toLocaleString();
-                    }
-                  }
+            } else if ($(inputCtrl).attr('isEventDateTime') == "true") {
 
+                let startDateCtrlId = inputCtrl.id + "StartDate";
+                let startTimeCtrlId = inputCtrl.id + "StartTime";
+                let endDateCtrlId = inputCtrl.id + "EndDate";
+                let endTimeCtrlId = inputCtrl.id + "EndTime";
+                
+                var startDateVal = $('#' + startDateCtrlId).val();
+                var startTimeVal = $('#' + startTimeCtrlId).val();
+
+                var endDateVal = $('#' + endDateCtrlId).val();
+                if (endDateVal != null && endDateVal != "") {
+                  endDateVal = startDateVal;
+                }
+                var endTimeVal = $('#' + endTimeCtrlId).val();
+
+                if (startDateVal != null && startDateVal != "" &&
+                    startTimeVal != null && startTimeVal != "" &&
+                    endTimeVal != null && endTimeVal != "") {
+
+                  let selectStartDateTimeStr = startDateVal + " " + startTimeVal;
+                  let providedStartDateTime = new Date(selectStartDateTimeStr);
                   
+                  let selectEndDateTimeStr = endDateVal + " " + endTimeVal;
+                  let providedEndDateTime = new Date(selectEndDateTimeStr);
+
                   storeState.currentRequest[inputCtrl.id] = {
-                    startDateTime: foundStartDate,
-                    endDateTime: foundEndDate,
+                    startDateTime: providedStartDateTime,
+                    endDateTime: providedEndDateTime,
                   }
-                  
-                  
-
-                  if ($(inputCtrl).hasClass("start-time") && inputCtrl.selected) {
-                      if(storeState.currentRequest[inputCtrl.id].startDateTime != null){
-                        /* ***NEEDS WORK***
-                        For some reason, .setTime() replaces the entire Date object with the new time object.
-                        In this way, the original Date object saved above (startDateTime) gets completely overwritten by the time.
-                        The date stored no longer has dd/mm/yyyy. It is now just a time.
-
-                        Note: Currently just trying to get this work for the Start time. Once it works, I will copy it for the End time.
-                        */
-                        storeState.currentRequest[inputCtrl.id].startDateTime = new Date(foundStartDate).setTime((parseInt(inputCtrl.text.substring(0, inputCtrl.text.indexOf(":"))))); 
-                      }
-                  } else if ($(inputCtrl).hasClass("end-time") && inputCtrl.selected) {
-                    if(storeState.currentRequest[inputCtrl.id].endDateTime != null){
-                      storeState.currentRequest[inputCtrl.id].endDateTime.setHours($(inputCtrl).val()); 
-                    }
-                  }
+                }
 
               } else {
                 storeState.currentRequest[inputCtrl.id] = ctrlVal;
