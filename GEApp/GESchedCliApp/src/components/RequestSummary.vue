@@ -26,9 +26,9 @@
                         {{requestReadOnlyProperty.value.name}}
                       </span>
                     </div>
-                    <div v-else-if="requestReadOnlyProperty.value.startDateTime != null">
+                    <div v-else-if="requestReadOnlyProperty.value.startDateTime != undefined && requestReadOnlyProperty.value.startDateTime != null">
                       <span class="font-italic">
-                        <div>Start: {{requestReadOnlyProperty.value.startDateTime.toDateString()}}</div>
+                        <div>Start: {{requestReadOnlyProperty.value.startDateTime}}</div>
                         <div>End: {{requestReadOnlyProperty.value.endDateTime}}</div>
                       </span>
                     </div>

@@ -43,32 +43,40 @@ export const validatePrompts = (prompts) => {
 
     $.each(prompts, function (index, prompt) {
   
-        //debugger;
         var currentFieldInvalid = false;
         var isValid = true;
 
         if (prompt.isRequired != undefined && prompt.isRequired == true) {
+
             var ctrlDataId = prompt.inputType.ctrlDataId;
-            var inputVal = $("#" + ctrlDataId).val();
-            isValid = validateIsRequiredPrompt(ctrlDataId, inputVal);
-            if (!isValid) {
-                allValid = false;
-                currentFieldInvalid = true;
+
+            //debugger;
+            if (prompt.inputType.ctrlType == "eventSchedule") {
+                isValid = validateIsRequiredEventSchedulePrompt(ctrlDataId);
+                if (!isValid) {
+                    allValid = false;
+                    currentFieldInvalid = true;
+                }
+            } else {             
+                var inputVal = $("#" + ctrlDataId).val();
+                isValid = validateIsRequiredPrompt(ctrlDataId, inputVal);
+                if (!isValid) {
+                    allValid = false;
+                    currentFieldInvalid = true;
+                }
             }
             
         }
 
-        /* if (!currentFieldInvalid && (prompt.inputType.ctrlType == 'eventSchedule')) {
-            debugger;
+        if (!currentFieldInvalid && (prompt.inputType.ctrlType == 'eventSchedule')) {
+            //debugger;
             var ctrlDataId = prompt.inputType.ctrlDataId;
-            var inputVal = $("#" + ctrlDataId).val();
-            isValid = validateEventSchedulePrompt(ctrlDataId, inputVal);
+            isValid = validateEventSchedulePrompt(ctrlDataId);
             if (!isValid) {
-                //debugger;
                 allValid = false;
                 currentFieldInvalid = true;
             }
-        }  */
+        }
 
         if (!currentFieldInvalid && prompt.inputType.ctrlType == 'email') {
             var ctrlDataId = prompt.inputType.ctrlDataId;
@@ -110,6 +118,8 @@ export const validatePrompts = (prompts) => {
 
 export const validateIsRequiredPrompt = (ctrlDataId, inputVal) => {
 
+    //debugger; // Uncomment to trigger breakpoint.
+
     let isValid = true;
     let validInput = null;
 
@@ -122,14 +132,7 @@ export const validateIsRequiredPrompt = (ctrlDataId, inputVal) => {
             console.warn("validateIsRequiredPrompt error: " + err);
         }
     } else if (inputVal != null && inputVal != undefined) {
-        //for datetime, check if inner values are null
-        if(inputVal.startDateTime !== undefined && inputVal.endDateTime !== undefined){
-            if(inputVal.startDateTime == null || inputVal.endDateTime == null){
-                validInput = null;
-            }
-        } else {
-            validInput = inputVal;
-        }
+        validInput = inputVal;       
     }
 
     if (validInput == null) {
@@ -167,12 +170,81 @@ export const validateEmailPrompt = (ctrlDataId, inputVal) => {
     return isValid;
 }
 
-/* export const validateEventSchedulePrompt = (ctrlDataId, inputVal) => {
+
+export const validateIsRequiredEventSchedulePrompt = (ctrlDataId) => {
     
-    let isValid = true;
-    debugger;
-    if (inputVal == "") {
-        isValid = false;
+    //debugger; // Uncomment to trigger breakpoint.
+
+    var isValid = isEventScheduleFieldsFilledIn(ctrlDataId);
+
+    if (!isValid) {
+        var invalidMsg = $('#REQUIRED-MSG-FOR-' + ctrlDataId)
+        if (invalidMsg != null) {
+            invalidMsg.show();
+        }
+    }
+
+    return isValid;
+} 
+
+export const isEventScheduleFieldsFilledIn = (ctrlDataId) => {
+    let allFilled = true;
+    
+    let startDateCtrlId = ctrlDataId + "StartDate";
+    let startTimeCtrlId = ctrlDataId + "StartTime";
+    let endDateCtrlId = ctrlDataId + "EndDate";
+    let endTimeCtrlId = ctrlDataId + "EndTime";
+    
+    var startDateVal = $('#' + startDateCtrlId).val();
+    var startTimeVal = $('#' + startTimeCtrlId).val();
+
+    var endDateVal = $('#' + endDateCtrlId).val();
+    var endTimeVal = $('#' + endTimeCtrlId).val();
+
+    if (startDateVal == null || startDateVal == "" ||
+        startTimeVal == null || startTimeVal == "" ||
+        endDateVal == null || endDateVal == "" ||
+        endTimeVal == null || endTimeVal == "") {
+            allFilled = false;
+    }
+
+    return allFilled;
+}
+
+
+export const validateEventSchedulePrompt = (ctrlDataId) => {
+    
+    //debugger; // Uncomment to trigger breakpoint.
+
+    var isValid = isEventScheduleFieldsFilledIn(ctrlDataId);
+    
+    if (isValid) {
+
+        let startDateCtrlId = ctrlDataId + "StartDate";
+        let startTimeCtrlId = ctrlDataId + "StartTime";
+        let endDateCtrlId = ctrlDataId + "EndDate";
+        let endTimeCtrlId = ctrlDataId + "EndTime";
+        
+        var startDateVal = $('#' + startDateCtrlId).val();
+        var startTimeVal = $('#' + startTimeCtrlId).val();
+    
+        var endDateVal = $('#' + endDateCtrlId).val();
+        var endTimeVal = $('#' + endTimeCtrlId).val();
+
+        const millisecondsPerMinute = 60000;  
+
+        let selectStartDateTimeStr = startDateVal + " " + startTimeVal;
+        let providedStartDateTime = new Date(selectStartDateTimeStr);
+        
+        let selectEndDateTimeStr = endDateVal + " " + endTimeVal;
+        let providedEndDateTime = new Date(selectEndDateTimeStr);  
+        
+        if (providedStartDateTime > providedEndDateTime) {
+            isValid = false;
+        }
+    }
+
+    if (!isValid) {
         var invalidMsg = $('#INVALID-MSG-FOR-' + ctrlDataId)
         if (invalidMsg != null) {
             invalidMsg.show();
@@ -180,7 +252,7 @@ export const validateEmailPrompt = (ctrlDataId, inputVal) => {
     }
 
     return isValid;
-} */
+} 
 
 
 export const validateNumberPrompt = (ctrlDataId, inputVal) => {
@@ -257,26 +329,32 @@ export const validateRequest = (request, currentScreenNum) => {
 
             if (requestPrompt.isRequired != undefined && requestPrompt.isRequired == true) {
                 var ctrlDataId = requestPrompt.inputType.ctrlDataId;
-                var inputVal = request[ctrlDataId]
-                isValid = validateIsRequiredPrompt(ctrlDataId, inputVal);
-                if (!isValid) {
-                    //debugger;
-                    allValid = false;
-                    currentFieldInvalid = true;
+
+                if (requestPrompt.inputType.ctrlType == "eventSchedule") {
+                    isValid = validateIsRequiredEventSchedulePrompt(ctrlDataId);
+                    if (!isValid) {
+                        allValid = false;
+                        currentFieldInvalid = true;
+                    }
+                } else { 
+                    var inputVal = request[ctrlDataId]
+                    isValid = validateIsRequiredPrompt(ctrlDataId, inputVal);
+                    if (!isValid) {
+                        allValid = false;
+                        currentFieldInvalid = true;
+                    }
                 }
             }
 
-            /* if (!currentFieldInvalid && (requestPrompt.inputType.ctrlType == 'eventSchedule')) {
-                debugger;
+            if (!currentFieldInvalid && (requestPrompt.inputType.ctrlType == 'eventSchedule')) {
+                //debugger;
                 var ctrlDataId = requestPrompt.inputType.ctrlDataId;
-                var inputVal = $("#" + ctrlDataId).val();
-                isValid = validateEventSchedulePrompt(ctrlDataId, inputVal);
+                isValid = validateEventSchedulePrompt(ctrlDataId);
                 if (!isValid) {
-                    //debugger;
                     allValid = false;
                     currentFieldInvalid = true;
                 }
-            }  */
+            } 
 
             if (!currentFieldInvalid && requestPrompt.inputType.ctrlType == 'email') {
                 var ctrlDataId = requestPrompt.inputType.ctrlDataId;
@@ -337,41 +415,80 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
             }
             var val = request[inputCtrl.id];
             if (val != undefined && val != null && val != "") {
-                if(val.startDateTime != undefined && val.startDateTime != undefined){
+
+                if (ctrl.is(':checkbox')) {
+
+                    if (val == true) {
+                        ctrl.prop('checked', true);
+                    } else {
+                        ctrl.prop('checked', false);
+                    }
+
+                } else if (ctrl.is(':text')) {
+
+                    ctrl.val(val);
+
+                } else if (ctrl.attr('isEventDateTime') == "true"){
                     
-                    if(ctrl.hasClass("start-date")){
-                        ctrl.val(val.startDateTime);
+                    var startDateTimeVal = val.startDateTime;
+                    var endDateTimeVal = val.endDateTime;
 
-                    } else if (ctrl.hasClass("end-date")) {
-                        ctrl.val(val.endDateTime);
+                    if (startDateTimeVal != undefined && startDateTimeVal != null && startDateTimeVal != "") {
 
-                    } else if (ctrl.hasClass("start-time")) {
-                        var startDateTime = new Date(val.startDateTime);
-                        var hours = startDateTime.getHours();
-                        /* //currently the UI only supports hours. 
-                        var minutes = startDateTime.getMinutes();*/
+                        let startDateCtrlId = inputCtrl.id + "StartDate";
+                        let startTimeCtrlId = inputCtrl.id + "StartTime";
 
-                        if($(ctrl).hasClass(`H-${hours}`)){  
-                            debugger;
-                            ctrl.selected = true;
-                        } else {
-                            ctrl.selected = false;
-                        }
+                        var startDateTime = new Date(startDateTimeVal);
+                        var dd = startDateTime.getDate();
+                        var mm = startDateTime.getMonth() + 1; //January is 0!
+                        var yyyy = startDateTime.getFullYear();
+                        var hrs = startDateTime.getHours();
+                        var mins = startDateTime.getMinutes();
 
+                        var ddStr = dd.toString();
+                        var mmStr = mm.toString();
+                        if (dd < 10) { ddStr = '0'+ ddStr; } 
+                        if (mm < 10) { mmStr = '0'+ mmStr; } 
+                        var dateValToSet = yyyy + '-' + mmStr + '-' + ddStr;                       
+                        
+                        var hrsStr = hrs.toString();
+                        var minsStr = mins.toString();
+                        if (hrs < 10) { hrsStr = '0'+ hrsStr; } 
+                        if (mins < 10) { minsStr = '0'+ minsStr; } 
 
-                    } else if(ctrl.hasClass("end-time")){
-                        var endDateTime = new Date(val.endDateTime);
-                        var hours = endDateTime.getHours();
-                        var minutes = endDateTime.getMinutes();
-                        var timeHelper = "AM";
+                        var timeValToSet = hrsStr + ':' + minsStr + ':00';
 
-                        if(hours > 12){
-                            hours -= 12;
-                            timeHelper = "PM";
-                        }
+                        $('#' + startDateCtrlId).val(dateValToSet);
+                        $('#' + startTimeCtrlId).val(timeValToSet);
+                    }
 
-                        var timeString = `${hours}:${minutes} ${timeHelper}`;
-                        ctrl.val(timeString);
+                    if (endDateTimeVal != undefined && endDateTimeVal != null && endDateTimeVal != "") {
+
+                        let endDateCtrlId = inputCtrl.id + "EndDate";
+                        let endTimeCtrlId = inputCtrl.id + "EndTime";
+
+                        var endDateTime = new Date(endDateTimeVal);
+                        var dd = endDateTime.getDate();
+                        var mm = endDateTime.getMonth() + 1; //January is 0!
+                        var yyyy = endDateTime.getFullYear();
+                        var hrs = endDateTime.getHours();
+                        var mins = endDateTime.getMinutes();
+
+                        var ddStr = dd.toString();
+                        var mmStr = mm.toString();
+                        if (dd < 10) { ddStr = '0'+ ddStr; } 
+                        if (mm < 10) { mmStr = '0'+ mmStr; } 
+                        var dateValToSet = yyyy + '-' + mmStr + '-' + ddStr;                       
+                        
+                        var hrsStr = hrs.toString();
+                        var minsStr = mins.toString();
+                        if (hrs < 10) { hrsStr = '0'+ hrsStr; } 
+                        if (mins < 10) { minsStr = '0'+ minsStr; } 
+
+                        var timeValToSet = hrsStr + ':' + minsStr + ':00';
+
+                        $('#' + endDateCtrlId).val(dateValToSet);
+                        $('#' + endTimeCtrlId).val(timeValToSet);
                     }
 
                 } else {
