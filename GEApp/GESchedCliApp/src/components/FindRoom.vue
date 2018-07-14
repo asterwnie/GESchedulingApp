@@ -12,8 +12,22 @@
       </div>
       <div class="modal-body">
         <p>Would you like to select this room?</p>
-        <div id="selectedRoomUI">
-          <!--Room card will be injected here-->
+        <div class="card" id="selectedRoomUI">
+            <!--Room card will be injected here-->
+          </div>
+        <div v-if="selectedRoom != null">
+          <div v-if="selectedRoom.configurations.length > 0">
+            Select a configuration:
+            <div v-for="configuration in selectedRoom.configurations" :key="configuration">
+              <div class="card">
+                <div class="card-body">
+                  <div style="text-align:center">
+                    <img style="height:200px" :src="`@/assets/roomconfig/${selectedRoom.name.replace(/\'|\s+/g, '')}/${configuration}.png`" :alt="configuration"/>
+                    </div>
+                </div>
+              </div>
+            </div>
+        </div>
         </div>
       </div>
       <div class="modal-footer">
@@ -28,6 +42,9 @@
   <div class="row">
     <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
     <div class="col col-12 col-sm-10 col-md-8 col-lg-8" style="color:gray">
+
+      
+      
       <h5 class="text-center" v-html="$store.state.appConfig.siteName"></h5>
       <h6 class="text-center" v-html="$store.state.appConfig.siteAddress"></h6>
       <br>

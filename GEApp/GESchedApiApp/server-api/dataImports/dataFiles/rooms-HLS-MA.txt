@@ -19,9 +19,9 @@
 --Room.Capability: Telephone available upon request
 --Room.Capability: Monitors|ClickShare
 --Room.Capability: Non-GE computers can present
---Room.Configuration: U-Setup-14-People-max
---Room.Configuration: Classroom-Setup-16-People-max
---Room.Configuration: Conference-Setup-16-People-max
+--Room.Configuration: U-Setup-14-Max
+--Room.Configuration: Classroom-Setup-16-Max
+--Room.Configuration: Conference-Setup-16-Max
 
 --Room.Name: Martha's Vineyard
 --Room.SizeType: Large Training Room
@@ -35,11 +35,11 @@
 --Room.Capability: Telephone available upon request
 --Room.Capability: Podium|Projector|Screen|Speaker System|ClickShare
 --Room.Capability: Non-GE computers can present
---Room.Configuration: Classroom-Setup-40-People-max
---Room.Configuration: Conference-Setup-24-People-max
---Room.Configuration: Split-V-Setup-40-People-max
---Room.Configuration: U-Setup-24-People-max
---Room.Configuration: Theather-Setup-40-People-max
+--Room.Configuration: Classroom-Setup-40-Max
+--Room.Configuration: Conference-Setup-24-Max
+--Room.Configuration: SplitV-Setup-40-Max
+--Room.Configuration: U-Setup-24-Max
+--Room.Configuration: Theather-Setup-40-Max
 
 --Room.Name:Falmouth
 --Room.SizeType:Medium Conference
@@ -52,9 +52,6 @@
 --Room.SpecialNote: FDA inspection takes priority over previously scheduled meetings
 --Room.Capability:Crestron units
 --Room.Capability: Only GE employees can present Wirelessly
---Room.Configuration: U-Setup-10-People-max
---Room.Configuration: Classroom-Setup-12-People-max
---Room.Configuration: Conference-Setup-12-People-max
 
 --Room.Name:Mashpee
 --Room.SizeType:Medium Conference
@@ -67,9 +64,6 @@
 --Room.SpecialNote: FDA inspection takes priority over previously scheduled meetings
 --Room.Capability:Crestron units
 --Room.Capability: Only GE employees can present Wirelessly
---Room.Configuration: U-Setup-8-People-max
---Room.Configuration: Classroom-Setup-8-People-max
---Room.Configuration: Conference-Setup-8-People-max
 
 --Room.Name:Provincetown
 --Room.SizeType:Medium Conference
@@ -82,9 +76,6 @@
 --Room.SpecialNote: FDA inspection takes priority over previously scheduled meetings
 --Room.Capability:Crestron units
 --Room.Capability: Only GE employees can present Wirelessly
---Room.Configuration: U-Setup-8-People-max
---Room.Configuration: Classroom-Setup-8-People-max
---Room.Configuration: Conference-Setup-8-People-max
 
 --Room.Name:Boardroom
 --Room.SizeType:Boardroom
@@ -97,9 +88,7 @@
 --Room.SpecialNote: 
 --Room.Capability: Monitor|Speaker System|Phone|ClickShare
 --Room.Capability: Non-GE computers can present
---Room.Configuration: U-Setup-20-People-max
---Room.Configuration: Classroom-Setup-20-People-max
---Room.Configuration: Conference-Setup-20-People-max
+
 
 --Room.Name:Bunker Hill
 --Room.SizeType:Large Conference
@@ -113,9 +102,6 @@
 --Room.Capability: Telephone available upon request
 --Room.Capability: Monitors|ClickShare
 --Room.Capability: Non-GE computers can present
---Room.Configuration: U-Setup-20-People-max
---Room.Configuration: Classroom-Setup-20-People-max
---Room.Configuration: Conference-Setup-20-People-max
 
 
 --Room.Name:Kenmore
@@ -130,9 +116,6 @@
 --Room.Capability: Telephone available upon request
 --Room.Capability: 
 --Room.Capability: 
---Room.Configuration: U-Setup- -People-max
---Room.Configuration: Classroom-Setup-14-People-max
---Room.Configuration: Conference-Setup-14-People-max
 
 --Room.Name:Foxboro
 --Room.SizeType:Large Conference
@@ -146,9 +129,6 @@
 --Room.Capability: Telephone available upon request
 --Room.Capability: 
 --Room.Capability: 
---Room.Configuration: U-Setup- -People-max
---Room.Configuration: Classroom-Setup-14-People-max
---Room.Configuration: Conference-Setup-14-People-max
 
 --Room.Name:Freedom Trail
 --Room.SizeType:Medium Conference
@@ -162,9 +142,6 @@
 --Room.Capability: Telephone available upon request
 --Room.Capability: 
 --Room.Capability: 
---Room.Configuration: U-Setup- -People-max
---Room.Configuration: Classroom-Setup-10-People-max
---Room.Configuration: Conference-Setup-10-People-max
 
 --Room.Name:Fenway
 --Room.SizeType:Medium Conference
@@ -178,9 +155,7 @@
 --Room.Capability: Telephone available upon request
 --Room.Capability: Monitors|ClickShare
 --Room.Capability: Non-GE computers can present
---Room.Configuration: U-Setup- -People-max
---Room.Configuration: Classroom-Setup-8-People-max
---Room.Configuration: Conference-Setup-8-People-max
+
 
 --Room.Name:TP US Marlborough HC 2010
 --Room.SizeType:Telepresence
@@ -194,9 +169,7 @@
 --Room.Capability: Telephone available upon request
 --Room.Capability: 
 --Room.Capability: 
---Room.Configuration: U-Setup- -People-max
---Room.Configuration: Classroom-Setup-6-People-max
---Room.Configuration: Conference-Setup-6-People-max
+
 
 --Room.Name:TP US Marlborough HC 2411
 --Room.SizeType:TP Lite
@@ -210,9 +183,7 @@
 --Room.Capability: Telephone available upon request
 --Room.Capability: 
 --Room.Capability: 
---Room.Configuration: U-Setup- -People-max
---Room.Configuration: Classroom-Setup-4-People-max
---Room.Configuration: Conference-Setup-4-People-max
+
 
 --Room.Name:Video Room 2124
 --Room.SizeType:Video Phone
@@ -225,9 +196,7 @@
 --Room.SpecialNote: 
 --Room.Capability:Crestron units
 --Room.Capability: Only GE employees can present Wirelessly
---Room.Configuration: U-Setup-2-People-max
---Room.Configuration: Classroom-Setup-2-People-max
---Room.Configuration: Conference-Setup-2-People-max
+
 
 --Room.Name:Nantucket
 --Room.SizeType:Small Training Room
@@ -241,9 +210,9 @@
 --Room.Capability: Telephone available upon request
 --Room.Capability: Monitors|ClickShare
 --Room.Capability: Non-GE computers can present
---Room.Configuration: U-Setup-14-People-max
---Room.Configuration: Classroom-Setup-16-People-max
---Room.Configuration: Conference-Setup-16-People-max
+--Room.Configuration: U-Setup-14-Max
+--Room.Configuration: Classroom-Setup-16-Max
+--Room.Configuration: Conference-Setup-16-Max
 
 --Room.Name:Wachusett
 --Room.SizeType:Large Conference
@@ -257,9 +226,6 @@
 --Room.Capability: Telephone available upon request
 --Room.Capability: Monitors|ClickShare
 --Room.Capability: Non-GE computers can present
---Room.Configuration: U-Setup-14-People-max
---Room.Configuration: Classroom-Setup-16-People-max
---Room.Configuration: Conference-Setup-16-People-max
 
 --Room.Name:Shaker
 --Room.SizeType:Large Conference
@@ -272,9 +238,6 @@
 --Room.SpecialNote:
 --Room.Capability:Crestron units
 --Room.Capability: Only GE employees can present Wirelessly
---Room.Configuration: U-Setup-12-People-max
---Room.Configuration: Classroom-Setup-12-People-max
---Room.Configuration: Conference-Setup-12-People-max
 
 --Room.Name:Blackpoll
 --Room.SizeType: Medium Conference 
@@ -287,9 +250,6 @@
 --Room.SpecialNote:
 --Room.Capability:Crestron units
 --Room.Capability: Only GE employees can present Wirelessly
---Room.Configuration: U-Setup-12-People-max
---Room.Configuration: Classroom-Setup-12-People-max
---Room.Configuration: Conference-Setup-12-People-max
 
 --Room.Name:Sugarloaf
 --Room.SizeType: Medium Conference 
@@ -302,9 +262,6 @@
 --Room.SpecialNote:
 --Room.Capability:Crestron units
 --Room.Capability: Only GE employees can present Wirelessly
---Room.Configuration: U-Setup-10-People-max
---Room.Configuration: Classroom-Setup-10-People-max
---Room.Configuration: Conference-Setup-10-People-max
 
 --Room.Name:Nashoba
 --Room.SizeType: Medium Conference 
@@ -317,9 +274,6 @@
 --Room.SpecialNote:
 --Room.Capability:Crestron units
 --Room.Capability: Only GE employees can present Wirelessly
---Room.Configuration: U-Setup-10-People-max
---Room.Configuration: Classroom-Setup-10-People-max
---Room.Configuration: Conference-Setup-10-People-max
 
 --Room.Name:Greylock
 --Room.SizeType: Medium Conference 
@@ -332,9 +286,6 @@
 --Room.SpecialNote:
 --Room.Capability:Crestron units
 --Room.Capability: Only GE employees can present Wirelessly
---Room.Configuration: U-Setup-10-People-max
---Room.Configuration: Classroom-Setup-10-People-max
---Room.Configuration: Conference-Setup-10-People-max
 
 --Room.Name:TP US Marlborough HC 3210
 --Room.SizeType: Telepresence (Large)
@@ -347,6 +298,3 @@
 --Room.SpecialNote:
 --Room.Capability:Crestron units
 --Room.Capability: Only GE employees can present Wirelessly
---Room.Configuration: U-Setup-14-People-max
---Room.Configuration: Classroom-Setup-14-People-max
---Room.Configuration: Conference-Setup-14-People-max
