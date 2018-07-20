@@ -39,7 +39,7 @@
 --Room.Configuration: Conference-Setup-24-Max
 --Room.Configuration: SplitV-Setup-40-Max
 --Room.Configuration: U-Setup-24-Max
---Room.Configuration: Theather-Setup-40-Max
+--Room.Configuration: Theater-Setup-40-Max
 
 --Room.Name:Falmouth
 --Room.SizeType:Medium Conference

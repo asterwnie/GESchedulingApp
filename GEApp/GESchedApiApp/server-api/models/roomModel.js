@@ -59,6 +59,10 @@ const RoomSchema = new Schema({
         type: [String]
     },
 
+    selectedConfig: {
+        type: String
+    },
+
     seqNum: {
         type: Number
     }

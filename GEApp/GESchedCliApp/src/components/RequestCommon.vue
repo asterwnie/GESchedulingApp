@@ -361,7 +361,6 @@ export default {
 
                 let tempVal = $(inputCtrl);
                 storeState.currentRequest[inputCtrl.id] = tempVal[0].checked;  
-                console.log(storeState.currentRequest[inputCtrl.id]);
 
             } else if ($(inputCtrl).attr('isNumeric') == "true") {
               
@@ -381,6 +380,7 @@ export default {
 
               if(storeState.selectedRoom != null && storeState.selectedRoom != undefined){
                 storeState.currentRequest[inputCtrl.id] = storeState.selectedRoom;
+                storeState.selectedRoom = null;
               }
 
             } else if ($(inputCtrl).attr('isEventDateTime') == "true") {

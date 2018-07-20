@@ -2,8 +2,8 @@
 // Request Manager for request initialization and validation.
 //
 
-import { centralStore } from '@/common/centralStore.js'
-
+//import { centralStore } from '@/common/centralStore.js';
+const centralStore = require('@/common/centralStore.js').centralStore;
 
 export const inferNumOfRequestScreens = (prompts) => {
     //debugger; // Uncomment to trigger breakpoint.
@@ -53,6 +53,12 @@ export const validatePrompts = (prompts) => {
             //debugger;
             if (prompt.inputType.ctrlType == "eventSchedule") {
                 isValid = validateIsRequiredEventSchedulePrompt(ctrlDataId);
+                if (!isValid) {
+                    allValid = false;
+                    currentFieldInvalid = true;
+                }
+            } else if (prompt.inputType.ctrlType == "selectRoom") {
+                isValid = validateIsRequiredLocationOfEventPrompt(ctrlDataId);
                 if (!isValid) {
                     allValid = false;
                     currentFieldInvalid = true;
@@ -140,6 +146,30 @@ export const validateIsRequiredPrompt = (ctrlDataId, inputVal) => {
         var requiredMsg = $('#REQUIRED-MSG-FOR-' + ctrlDataId)
         if (requiredMsg != null) {
             requiredMsg.show();
+        }
+    }
+
+    return isValid;
+}
+
+export const validateIsRequiredLocationOfEventPrompt = (ctrlDataId, inputVal) => {
+    
+    //debugger;
+
+    let isValid = true;
+    var location = null;
+
+    try {
+        location = centralStore.state.currentRequest.locationOfEvent;
+    } catch (err) {
+        console.warn("validateLocationOfEventPrompt error: " + err);
+    }
+
+    if (location == null) {
+        isValid = false;
+        var invalidMsg = $('#REQUIRED-MSG-FOR-' + ctrlDataId)
+        if (invalidMsg != null) {
+            invalidMsg.show();
         }
     }
 
@@ -330,8 +360,15 @@ export const validateRequest = (request, currentScreenNum) => {
             if (requestPrompt.isRequired != undefined && requestPrompt.isRequired == true) {
                 var ctrlDataId = requestPrompt.inputType.ctrlDataId;
 
+                //debugger;
                 if (requestPrompt.inputType.ctrlType == "eventSchedule") {
                     isValid = validateIsRequiredEventSchedulePrompt(ctrlDataId);
+                    if (!isValid) {
+                        allValid = false;
+                        currentFieldInvalid = true;
+                    }
+                } else if (requestPrompt.inputType.ctrlType == "selectRoom") {
+                    isValid = validateIsRequiredLocationOfEventPrompt(ctrlDataId);
                     if (!isValid) {
                         allValid = false;
                         currentFieldInvalid = true;
