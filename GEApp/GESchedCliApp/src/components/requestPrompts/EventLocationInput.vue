@@ -1,7 +1,7 @@
 <template>
 
   <div :id="ctrlContainerId">
-    <button type="button" class="btn btn-secondary btn-sm" v-if="!inAdminMode" @click.prevent="$router.push('/findroom')">Find</button>&nbsp;<label :for="ctrlId">{{ promptLabel }}</label>&nbsp;&nbsp;<span v-if="inAdminMode" class="badge badge-warning" :adminCommentCtrlId="adminCommentCtrlId" @click.prevent="onAddAdminComment"><span class="far fa-comment-dots"></span></span>
+    <label :for="ctrlId">{{ promptLabel }}</label>&nbsp;&nbsp;<span v-if="inAdminMode" class="badge badge-warning" :adminCommentCtrlId="adminCommentCtrlId" @click.prevent="onAddAdminComment"><span class="far fa-comment-dots"></span></span><button type="button" class="btn btn-secondary btn-sm float-right" v-if="!inAdminMode" @click.prevent="$router.push('/findroom')">Find</button>
     <div :id="ctrlId" :screenNum="screenNum" isRoom="true" class="is-request-data">
       <div v-if="selectedRoom != null && selectedRoom != undefined">
         <div class="card" v-bind:class="selectedRoom._id">
@@ -15,6 +15,26 @@
               <span class="badge badge-info" v-for="(capability, index) in selectedRoom.capabilities" :key="index">
                 {{capability}}
               </span>
+            </div>
+          </div>
+          <div v-if="selectedRoom['selectedConfig'] != null">
+            <div class="card">
+              <div class="card-body">
+                <table>
+                  <tr>
+                    <td style="padding:0px 10px 0px 0px; width:100%">
+                      <h6>Configuration</h6>
+                      <div>{{selectedRoom['selectedConfig'].replace(/\-/g, " ")}}</div>
+                    </td>
+                    <td>
+                      <div style="text-align:center">
+                        <img style="height:100px" :src="require(`@/assets/roomconfig/${selectedRoom.name.replace(/\'|\s+/g, '')}/${selectedRoom['selectedConfig']}.png`)"/>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+                
+              </div>
             </div>
           </div>
         </div>
@@ -50,6 +70,10 @@ export default {
       selectedRoom(){
         return this.$store.state.selectedRoom;
       }
+    },
+
+    activated() {
+      this.$forceUpdate();
     },
 
   methods: {

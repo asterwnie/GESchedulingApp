@@ -17,16 +17,29 @@
           </div>
         <div v-if="selectedRoom != null">
           <div v-if="selectedRoom.configurations.length > 0">
-            Select a configuration:
-            <div v-for="configuration in selectedRoom.configurations" :key="configuration">
-              <div class="card">
+            <hr>
+            <p>Select a configuration:</p>
+            <div class="card">
+              <div class="card-header" id="configHeading" data-toggle="collapse" data-target="#configCollapse" aria-expanded="false" aria-controls="configCollapse">
+                  Configurations&nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i>
+              </div>
+
+              <div id="configCollapse" class="collapse" aria-labelledby="configHeading" data-parent="#accordionExample">
                 <div class="card-body">
-                  <div style="text-align:center">
-                    <img style="height:200px" :src="`@/assets/roomconfig/${selectedRoom.name.replace(/\'|\s+/g, '')}/${configuration}.png`" :alt="configuration"/>
+                  <div v-for="configuration in selectedRoom.configurations" :key="configuration">
+                    <div :id="`${configuration}`" @click.prevent="onConfigSelect" class="card">
+                      <div :id="`${configuration}`" class="card-body">
+                        <div :id="`${configuration}`" style="text-align:center">
+                          <img :id="`${configuration}`" style="height:200px" :src="require(`@/assets/roomconfig/${selectedRoom.name.replace(/\'|\s+/g, '')}/${configuration}.png`)" :alt="configuration"/>
+                          </div>
+                      </div>
                     </div>
+                  </div>
                 </div>
               </div>
             </div>
+            
+            
         </div>
         </div>
       </div>
@@ -61,7 +74,10 @@
                 <span>
                 Current saved room:
                 <div v-if="selectedRoom != null">
-                  {{selectedRoom.name}}
+                  {{selectedRoom.name}}&nbsp;
+                  <div v-if="selectedRoom['selectedConfig'] != null">
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;{{selectedRoom['selectedConfig'].replace(/\-/g, " ")}}
+                  </div>
                 </div>
                 <div v-else class="font-italic">
                   No room selected!
@@ -463,12 +479,19 @@ export default {
     onRoomSelectConfirm() {
       console.log('onRoomSelectConfirm activated.');
       let vm = this;
+
+      //save selected config
+       if($(".border-success").length > 0){
+        vm.$store.state.selectedRoom["selectedConfig"] = $(".border-success")[0].id;
+      }
       
       $('#findRoomModal').modal('hide');
       if(vm.$store.state.previousPage.indexOf("Request") > -1){
         let pageNum = vm.$store.state.previousPage.substring(vm.$store.state.previousPage.length-1, vm.$store.state.previousPage.length);
         vm.$router.push(`/request/${pageNum}`);
       }
+
+      vm.$forceUpdate();
          
     },
 
@@ -476,7 +499,21 @@ export default {
       console.log('onRoomDeselect activated. selectedRoom unset.');
       this.$store.state.selectedRoom = null;
       $('#findRoomModal').modal('hide');
+      $(".card").removeClass("border-success");
+    },
+
+    onConfigSelect: function(event){
+      if (event){
+        if(!($(`#${event.target.id}`).hasClass("border-success"))){
+          $(".card").removeClass("border-success");
+          $(`#${event.target.id}`).addClass("border-success");
+        } else {
+          $(".card").removeClass("border-success");
+        }
+
+      }
     }
+
 
   }
 }
@@ -491,5 +528,8 @@ export default {
 .containerDiv {
   display: inline-block;
   margin-top: 16px;
+}
+.border-success{
+  border-width: 3px;
 }
 </style>

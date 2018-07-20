@@ -21,10 +21,41 @@
                       {{requestReadOnlyProperty.label}}: 
                     </span>
                     <br>
-                    <div v-if="requestReadOnlyProperty.value.name != null">
-                      <span class="font-italic">
-                        {{requestReadOnlyProperty.value.name}}
-                      </span>
+                    <div v-if="requestReadOnlyProperty.value.sizeType != null">
+                      <div class="card">
+                        <div class="card-body">
+                          <h6 class="card-title">{{requestReadOnlyProperty.value.name}}</h6>
+                          <div class="card-text" :hidden="requestReadOnlyProperty.value.building == null || requestReadOnlyProperty.value.building == ''">Building: {{requestReadOnlyProperty.value.building}}</div>
+                          <div class="card-text" :hidden="requestReadOnlyProperty.value.sizeType == null || requestReadOnlyProperty.value.sizeType == ''">Size Type: {{requestReadOnlyProperty.value.sizeType}}</div>
+                          <div class="card-text" :hidden="requestReadOnlyProperty.value.seatingCapacity == null || requestReadOnlyProperty.value.seatingCapacity == ''">Seating Capacity: {{requestReadOnlyProperty.value.seatingCapacity}}</div>
+                          <div class="card-text" :hidden="requestReadOnlyProperty.value.capabilities == null || requestReadOnlyProperty.value.capabilities.length == 0">
+                            <hr>
+                            <span class="badge badge-info" v-for="(capability, index) in requestReadOnlyProperty.value.capabilities" :key="index">
+                              {{capability}}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div v-if="requestReadOnlyProperty.value['selectedConfig'] != null">
+                        <div class="card">
+                          <div class="card-body">
+                            <table>
+                              <tr>
+                                <td style="padding:0px 10px 0px 0px; width:100%">
+                                  <h6>Configuration</h6>
+                                  <div>{{requestReadOnlyProperty.value['selectedConfig'].replace(/\-/g, " ")}}</div>
+                                </td>
+                                <td>
+                                  <div style="text-align:center">
+                                    <img style="height:100px" :src="require(`@/assets/roomconfig/${requestReadOnlyProperty.value.name.replace(/\'|\s+/g, '')}/${requestReadOnlyProperty.value['selectedConfig']}.png`)"/>
+                                  </div>
+                                </td>
+                              </tr>
+                            </table>
+                            
+                          </div>
+                        </div>
+                      </div>
                     </div>
                     <div v-else-if="requestReadOnlyProperty.value.startDateTime != undefined && requestReadOnlyProperty.value.startDateTime != null">
                       <span class="font-italic">
