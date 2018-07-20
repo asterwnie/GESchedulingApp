@@ -60,6 +60,12 @@ import { addAdminComment } from '@/common/requestMgr.js'
 export default {
     props: ['screenNum', 'ctrlId', 'promptLabel', 'dataInvalidMsgId', 'dataRequiredMsgId', 'inAdminMode'],
 
+    data () {
+      return {  
+        selectedRoom: null,
+      }
+    },
+
     computed: {
       adminCommentCtrlId() {
         return this.ctrlId + "AdminComment";
@@ -67,12 +73,13 @@ export default {
       ctrlContainerId() {
         return this.ctrlId + "Container";
       },
-      selectedRoom(){
-        return this.$store.state.selectedRoom;
-      }
     },
 
     activated() {
+      let vm = this;
+      if(this.$store.state.currentRequest != null){
+          vm.selectedRoom = vm.$store.state.currentRequest.locationOfEvent;
+        }
       this.$forceUpdate();
     },
 

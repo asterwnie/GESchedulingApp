@@ -20,7 +20,7 @@
             <hr>
             <p>Select a configuration:</p>
             <div class="card">
-              <div class="card-header" id="configHeading" data-toggle="collapse" data-target="#configCollapse" aria-expanded="false" aria-controls="configCollapse">
+              <div class="card-header bg-warning" id="configHeading" data-toggle="collapse" data-target="#configCollapse" aria-expanded="false" aria-controls="configCollapse">
                   Configurations&nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i>
               </div>
 
@@ -207,6 +207,7 @@
 <script>
 import axios from 'axios';
 import * as apiMgr from '@/common/apiMgr.js';
+import * as localCacheMgr from '@/common/localCacheMgr.js';
 
 export default {
   data () {
@@ -487,6 +488,17 @@ export default {
       
       $('#findRoomModal').modal('hide');
       if(vm.$store.state.previousPage.indexOf("Request") > -1){
+        //save to currentRequest and flush selectedRoom
+        vm.$store.state.currentRequest.locationOfEvent = vm.$store.state.selectedRoom;
+        vm.$store.state.selectedRoom = null;
+        //cache currentRequest
+        try {
+            localCacheMgr.cacheItem("workingNewRequest", vm.$store.state.currentRequest);
+        } catch (err) {
+          console.log("Not able to locally cache the working request");
+        }
+
+        //navigate back to request page
         let pageNum = vm.$store.state.previousPage.substring(vm.$store.state.previousPage.length-1, vm.$store.state.previousPage.length);
         vm.$router.push(`/request/${pageNum}`);
       }

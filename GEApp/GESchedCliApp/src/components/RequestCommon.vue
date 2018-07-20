@@ -380,7 +380,7 @@ export default {
 
               if(storeState.selectedRoom != null && storeState.selectedRoom != undefined){
                 storeState.currentRequest[inputCtrl.id] = storeState.selectedRoom;
-                //storeState.selectedRoom = null;
+                storeState.selectedRoom = null;
               }
 
             } else if ($(inputCtrl).attr('isEventDateTime') == "true") {
