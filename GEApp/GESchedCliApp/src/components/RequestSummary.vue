@@ -77,6 +77,7 @@
 
 <script>
 import axios from 'axios'
+import * as util from '@/common/util.js';
 import * as apiMgr from '@/common/apiMgr.js';
 import * as localCacheMgr from '@/common/localCacheMgr.js';
 
@@ -178,6 +179,24 @@ export default {
           } else {
             reqProperty.value = "No";
           }
+        }
+
+        if (requestPrompt.inputType.ctrlType == "eventSchedule") {
+          
+          var schedValue = currentRequest[requestPrompt.inputType.ctrlDataId];
+          var schedDispValue = {
+            startDateTime: null,
+            endDateTime: null
+          };
+
+          if (schedValue.startDateTime != null) {
+            schedDispValue.startDateTime = util.getDateTimeDisplay(schedValue.startDateTime);
+          } 
+          if (schedValue.endDateTime != null) {
+            schedDispValue.endDateTime = util.getDateTimeDisplay(schedValue.endDateTime);
+          }
+
+          reqProperty.value = schedDispValue;
         }
 
         var additionalComment = currentRequest[requestPrompt.inputType.ctrlDataId + "AdditionalComment"]; 
