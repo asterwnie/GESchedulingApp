@@ -34,8 +34,8 @@
             <h6 class="card-title">{{requestItem.eventTitle}}</h6>
             <h6 class="card-title">Status:&nbsp;<span :class="requestItem.processingStatus">{{requestItem.processingStatusLabel}}</span></h6>
             <p class="card-text font-italic">{{requestItem.processingStatusMessage}}</p>
-            <div class="card-text text-muted">Last updated:&nbsp;{{requestItem.updatedAt.substring(0, requestItem.updatedAt.indexOf("T"))}}</div>
-            <div v-if="requestItem.processingStatus == 'rejected'">
+            <div class="card-text text-muted">Last updated:&nbsp;{{requestItem.updatedAtDisp}}</div>
+            <div v-if="requestItem.userCanEdit">
               <button :id="requestItem._id" type="button" @click.prevent="onEditViewRequest" class="enableEdit btn btn-warning btn-sm float-right">Edit</button>
             </div>
             <div v-else>
@@ -55,6 +55,7 @@
 
 <script>
 import axios from 'axios';
+import * as util from '@/common/util.js';
 import * as apiMgr from '@/common/apiMgr.js';
 import * as localCacheMgr from '@/common/localCacheMgr.js';
 
@@ -119,6 +120,7 @@ export default {
             var foundRequests = res.data;
 
             $.each(foundRequests, function (index, request) {
+              request.updatedAtDisp = util.getDateTimeDisplay(request.updatedAt);
               vm.$store.state.currentUserRequests.push(request);
             });
             

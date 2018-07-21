@@ -7,7 +7,7 @@
      
       <div class="input-group mb-3">
          <label>Start:&nbsp;</label>
-        <input :id="startDateCtrlId" :screenNum="screenNum" type="date" :min="currentDate" class="form-control form-control-sm" aria-describedby="basic-addon3">
+        <input :id="startDateCtrlId" :screenNum="screenNum" type="date" :min="currentDate" v-on:change="onStartDateChanged" class="form-control form-control-sm" aria-describedby="basic-addon3">
         <div class="input-group-append">
           <select :id="startTimeCtrlId" :screenNum="screenNum" class="custom-select form-control form-control-sm">
             <option v-for="(timeOption, index) in timeOptions" :key="index" 
@@ -143,6 +143,15 @@ export default {
           adminCtrl.show();
       } else {
           adminCtrl.hide();
+      }
+    },
+
+    onStartDateChanged: function(evt) {
+      var newStartVal = $(evt.srcElement).val();
+      var endDateCtrlId = evt.srcElement.id.replace("StartDate", "EndDate");
+      var endDateVal = $('#' + endDateCtrlId).val();
+      if (newStartVal != null && newStartVal != "" && (endDateVal == null || endDateVal == "")) {
+        $('#' + endDateCtrlId).val(newStartVal);
       }
     }
   }
