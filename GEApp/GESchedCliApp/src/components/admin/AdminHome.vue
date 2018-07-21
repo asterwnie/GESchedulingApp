@@ -53,7 +53,7 @@
           <div id="newRequests">
             <div class="card">
                 <div class="card-header bg-info text-light">
-                New Requests&nbsp;<button type="button" @click.prevent="$router.push('/admin/requests')" style="cursor:pointer;" class="btn btn-outline-light btn-sm float-right">View All Requests&nbsp;<span class="fas fa-chevron-right"></span></button>
+                Recent Requests&nbsp;<button type="button" @click.prevent="$router.push('/admin/requests')" style="cursor:pointer;" class="btn btn-outline-light btn-sm float-right">View All Requests&nbsp;<span class="fas fa-chevron-right"></span></button>
                 </div>
             </div>
             <div style="height:10px;"></div>

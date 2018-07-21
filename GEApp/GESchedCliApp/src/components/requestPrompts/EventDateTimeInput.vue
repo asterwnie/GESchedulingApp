@@ -45,7 +45,7 @@ export default {
   data (){
     return {
       timeOptions: null,
-      defaultTimeOption: "09:30:00"
+      defaultTimeOption: "09:00:00"
     }
   },
 
