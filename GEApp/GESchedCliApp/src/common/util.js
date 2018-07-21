@@ -20,6 +20,7 @@ export const getDateTimeDisplay = (inDateTime) => {
     var dateDispVal =  mmStr + '/' + ddStr + '/' + yyyy;                       
     
     var hrsStr = hrs.toString();
+    if (hrs == 0) { hrsStr = "00"; }
     var minsStr = mins.toString();
     if (mins < 10) { minsStr = '0'+ minsStr; } 
 
