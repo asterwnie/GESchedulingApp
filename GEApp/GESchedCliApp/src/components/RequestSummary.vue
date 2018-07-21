@@ -67,7 +67,7 @@
                       {{requestReadOnlyProperty.value}}
                     </div>
                     <div v-if="requestReadOnlyProperty.adminComment != null">
-                      <span class="font-italic">
+                      <span class="font-italic" style="background-color:yellow">
                       Comment:  {{requestReadOnlyProperty.adminComment}}
                       </span>
                     </div>

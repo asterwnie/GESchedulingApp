@@ -106,7 +106,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card" style="background-color:#ffb0b0; cursor:pointer; text-align:center;">
+                        <div @click.prevent="$router.push('/admin/maintenance')" class="card" style="background-color:#ffb0b0; cursor:pointer; text-align:center;">
                             <div class="card-body">
                                 <h6 class="card-title">
                                     Maintenance&nbsp;&nbsp;<span class="fas fa-chevron-right"></span>
