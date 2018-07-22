@@ -5,9 +5,6 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
     state: {
-        enableCliDebugOutput: true,
-        cliDebugMsgSqeNum: 0, 
-
         currentViewTitle: "...",
         enableNavBar: false,
         previousPage: null,

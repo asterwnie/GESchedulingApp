@@ -29,7 +29,7 @@
         <router-view></router-view>
       </keep-alive>
     </transition>
-    <div :hidden="!$store.state.enableCliDebugOutput" id="debugOutput">
+    <div :hidden="!isInDebugMode" id="debugOutput">
       <br>
       <button class="btn btn-secondary btn-sm"  @click.prevent="onClearDebug">Clear Debug</button> 
       <button class="btn btn-secondary btn-sm"  @click.prevent="onRequestData">Request Data</button>
@@ -119,12 +119,28 @@ export default {
   },
 
   computed: {
+
     title() {
       return this.$store.state.currentViewTitle;
     },
+
     isAdmin(){
       this.$store.state.inAdminMode;
+    },
+
+    isInDebugMode() {
+      var isInDebugModeVal = false;
+      var isInDebugModeVal = this.$route.query.debug;
+      if (isInDebugModeVal == "true") {
+        this.$store.state.isInDebugMode = true;
+        this.$store.state.cliDebugMsgSqeNum = 0;
+      }
+      if (this.$store.state.isInDebugMode == true) {
+        isInDebugModeVal = true;
+      }
+      return isInDebugModeVal;
     }
+
   },
 
   watch:{
@@ -135,6 +151,8 @@ export default {
   },
 
   methods: {
+
+
     collapseMenu: function(event) {
       if (event) {
         //collapse menu

@@ -57,7 +57,7 @@ export const getDateTimeDisplay = (inDateTime) => {
 }
 
 export const logDebugMsg = (msg) => {
-    if (centralStore.state.enableCliDebugOutput) {
+    if (centralStore.state.isInDebugMode) {
         centralStore.state.cliDebugMsgSqeNum += 1;
         $('#debugOutput ul').append("<li>[" + centralStore.state.cliDebugMsgSqeNum + "] " + msg + "</li>");
     }
