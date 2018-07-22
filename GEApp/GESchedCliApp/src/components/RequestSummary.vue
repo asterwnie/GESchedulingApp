@@ -97,7 +97,8 @@
           <div v-else>
             <button type="button" class="btn btn-primary btn-sm" 
               @click.prevent="onReturnHome">Return</button>
-              
+            <button type="button" class="btn btn-primary btn-sm" 
+              @click.prevent="onPrint">Print</button>              
           </div>
           <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
       </div>
@@ -448,7 +449,12 @@ export default {
       })
     },
 
-    onReturnHome(){
+    onPrint(evt) {
+      window.print();
+      return false;
+    },
+
+    onReturnHome() {
       this.$store.state.currentRequest = null;
       this.$store.state.selectedRoom = null;
 
