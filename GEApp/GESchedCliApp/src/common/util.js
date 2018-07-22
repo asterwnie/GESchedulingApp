@@ -1,14 +1,37 @@
+
+import * as util from '@/common/util.js';
+const centralStore = require('@/common/centralStore.js').centralStore;
+
+
 export const getDateTimeDisplay = (inDateTime) => {
     //debugger; // Uncomment to trigger breakpoint.
 
-    var curDateTime = inDateTime.replace('Z', '');
-    var theDateTime = new Date(curDateTime);
-    var dd = theDateTime.getDate();
-    var mm = theDateTime.getMonth() + 1; //January is 0!
-    var yyyy = theDateTime.getFullYear();
-    var hrs = theDateTime.getHours();
-    var mins = theDateTime.getMinutes();
+    var theDateTime = null;
+    try {
+        theDateTime = new Date(inDateTime);
+    } catch (err) {
+        util.logDebugMsg("getDateTimeDisplay new Date failed - " + inDateTime + " Error: " + err);
+    }
 
+    if (theDateTime == null) {
+        return "...";
+    }
+
+    var dd = null;
+    var mm = null;
+    var yyyy = null;
+    var hrs = null;
+    var mins = null;
+
+    try {
+        dd = theDateTime.getDate();
+        mm = theDateTime.getMonth() + 1; //January is 0!
+        yyyy = theDateTime.getFullYear();
+        hrs = theDateTime.getHours();
+        mins = theDateTime.getMinutes();
+    } catch (err) {
+        util.logDebugMsg("getDateTimeDisplay - get Date parts failed - Error: " + err);
+    }
     var ampm = "AM";
     if (hrs > 12) {
         hrs -= 12;
@@ -27,4 +50,12 @@ export const getDateTimeDisplay = (inDateTime) => {
     var dispValue = dateDispVal + ' ' + hrsStr + ':' + minsStr + ' ' + ampm;
 
     return dispValue;
+}
+
+export const logDebugMsg = (msg) => {
+    if (centralStore.state.enableCliDebugOutput) {
+        centralStore.state.cliDebugMsgSqeNum += 1;
+        $('#debugOutput ul').append("<li>[" + centralStore.state.cliDebugMsgSqeNum + "] " + msg + "</li>");
+    }
+    console.log(msg);
 }

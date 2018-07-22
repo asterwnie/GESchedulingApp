@@ -57,7 +57,7 @@
                         </div>
                       </div>
                     </div>
-                    <div v-else-if="requestReadOnlyProperty.value.startDateTime != undefined && requestReadOnlyProperty.value.startDateTime != null">
+                    <div v-else-if="requestReadOnlyProperty.value.isEventSchedule">
                       <span class="font-italic">
                         <div>Start: {{requestReadOnlyProperty.value.startDateTime}}</div>
                         <div>End: {{requestReadOnlyProperty.value.endDateTime}}</div>
@@ -167,7 +167,7 @@ export default {
   },
 
   activated() {
-    console.log('SubmitRequest.vue activated.');
+    util.logDebugMsg('SubmitRequest.vue activated.');
     let vm = this;
     var storeState = this.$store.state;
 
@@ -200,6 +200,15 @@ export default {
 
       var val = currentRequest[requestPrompt.inputType.ctrlDataId];
 
+      util.logDebugMsg("Preparing read-only request item - id: " + requestPrompt.inputType.ctrlDataId);
+      util.logDebugMsg("Preparing read-only request item - ctrlType: " + requestPrompt.inputType.ctrlType);
+
+      if (val == null || val == "") {
+        util.logDebugMsg("Preparing read-only request item - value NOT assigned!");
+      } else {
+        util.logDebugMsg("Preparing read-only request item - value: " + val);
+      }
+
       if (val != undefined && val != null && val != "") {
         var reqProperty = { label: requestPrompt.label, value: val, adminComment: null };
         
@@ -214,17 +223,24 @@ export default {
 
         if (requestPrompt.inputType.ctrlType == "eventSchedule") {
           
+          util.logDebugMsg("Preparing eventSchedule start & end time display for: " + requestPrompt.inputType.ctrlDataId);
+
           var schedValue = currentRequest[requestPrompt.inputType.ctrlDataId];
           var schedDispValue = {
             startDateTime: null,
-            endDateTime: null
+            endDateTime: null,
+            isEventSchedule: true
           };
 
           if (schedValue.startDateTime != null) {
             schedDispValue.startDateTime = util.getDateTimeDisplay(schedValue.startDateTime);
-          } 
+          } else {
+            util.logDebugMsg("Preparing eventSchedule startDateTime - value is null!");
+          }
           if (schedValue.endDateTime != null) {
             schedDispValue.endDateTime = util.getDateTimeDisplay(schedValue.endDateTime);
+          } else {
+            util.logDebugMsg("Preparing eventSchedule endDateTime - value is null!");
           }
 
           reqProperty.value = schedDispValue;

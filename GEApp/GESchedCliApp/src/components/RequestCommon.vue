@@ -104,6 +104,7 @@
 
 <script>
 import axios from 'axios'
+import * as util from '@/common/util.js';
 import * as apiMgr from '@/common/apiMgr.js';
 import * as localCacheMgr from '@/common/localCacheMgr.js';
 
@@ -206,7 +207,7 @@ export default {
   },
 
   activated() {
-    console.log('RequestCommon.vue activated.');
+    util.logDebugMsg('RequestCommon.vue activated.');
     var storeState = this.$store.state;
 
     if (storeState.appConfig.newRequestViewTitle == null) {
@@ -272,7 +273,7 @@ export default {
   },
 
   deactivated() {
-      console.log('RequestCommon.vue deactivated.');
+      util.logDebugMsg('RequestCommon.vue deactivated.');
 
       var vm = this;
       var storeState = vm.$store.state;
@@ -385,6 +386,8 @@ export default {
 
             } else if ($(inputCtrl).attr('isEventDateTime') == "true") {
 
+                util.logDebugMsg("bindCtrlValuesToRequestProperties - isEventDateTime - ctrl id: " + inputCtrl.id);
+
                 let startDateCtrlId = inputCtrl.id + "StartDate";
                 let startTimeCtrlId = inputCtrl.id + "StartTime";
                 let endDateCtrlId = inputCtrl.id + "EndDate";
@@ -394,25 +397,47 @@ export default {
                 var startTimeVal = $('#' + startTimeCtrlId).val();
 
                 var endDateVal = $('#' + endDateCtrlId).val();
-                if (endDateVal != null && endDateVal != "") {
+                if (endDateVal == null || endDateVal == "") {
                   endDateVal = startDateVal;
                 }
                 var endTimeVal = $('#' + endTimeCtrlId).val();
 
+                var providedStartDateTime = null;
+                var providedEndDateTime = null;
+
                 if (startDateVal != null && startDateVal != "" &&
-                    startTimeVal != null && startTimeVal != "" &&
-                    endTimeVal != null && endTimeVal != "") {
+                    startTimeVal != null && startTimeVal != "") {
 
                   let selectStartDateTimeStr = startDateVal + " " + startTimeVal;
-                  let providedStartDateTime = new Date(selectStartDateTimeStr);
+                  selectStartDateTimeStr = selectStartDateTimeStr.replace(new RegExp('-', 'g'), '/');
+                  util.logDebugMsg("providedStartDateTime - selectStartDateTimeStr: " + selectStartDateTimeStr);
+                  providedStartDateTime = Date.parse(selectStartDateTimeStr);                 
+                  util.logDebugMsg("providedStartDateTime - Date: " + providedStartDateTime.toString());
+
+                }
+
+                if (endDateVal != null && endDateVal != "" &&
+                    endTimeVal != null && endTimeVal != "") {
                   
                   let selectEndDateTimeStr = endDateVal + " " + endTimeVal;
-                  let providedEndDateTime = new Date(selectEndDateTimeStr);
+                  selectEndDateTimeStr = selectEndDateTimeStr.replace(new RegExp('-', 'g'), '/');
+                  util.logDebugMsg("providedStartDateTime - selectEndDateTimeStr: " + selectEndDateTimeStr);
+                  providedEndDateTime = Date.parse(selectEndDateTimeStr);
+                  util.logDebugMsg("providedStartDateTime - Date: " + providedEndDateTime.toString());
 
+                }
+
+                if (providedStartDateTime == null && providedEndDateTime == null) {
+                  util.logDebugMsg("providedStartDateTime - both providedStartDateTime & providedEndDateTime are null!");
+                  delete storeState.currentRequest[inputCtrl.id];
+                } else {
                   storeState.currentRequest[inputCtrl.id] = {
                     startDateTime: providedStartDateTime,
                     endDateTime: providedEndDateTime,
                   }
+
+                  util.logDebugMsg(inputCtrl.id + " - assigned startDateTime: " + util.getDateTimeDisplay(storeState.currentRequest[inputCtrl.id].startDateTime));
+                  util.logDebugMsg(inputCtrl.id + " - assigned endDateTime: " + util.getDateTimeDisplay(storeState.currentRequest[inputCtrl.id].startDateTime));
                 }
 
               } else {

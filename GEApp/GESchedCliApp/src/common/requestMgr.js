@@ -2,7 +2,7 @@
 // Request Manager for request initialization and validation.
 //
 
-//import { centralStore } from '@/common/centralStore.js';
+import * as util from '@/common/util.js';
 const centralStore = require('@/common/centralStore.js').centralStore;
 
 export const inferNumOfRequestScreens = (prompts) => {
@@ -152,6 +152,7 @@ export const validateIsRequiredPrompt = (ctrlDataId, inputVal) => {
     return isValid;
 }
 
+
 export const validateIsRequiredLocationOfEventPrompt = (ctrlDataId, inputVal) => {
     
     //debugger;
@@ -217,6 +218,7 @@ export const validateIsRequiredEventSchedulePrompt = (ctrlDataId) => {
     return isValid;
 } 
 
+
 export const isEventScheduleFieldsFilledIn = (ctrlDataId) => {
     let allFilled = true;
     
@@ -264,9 +266,11 @@ export const validateEventSchedulePrompt = (ctrlDataId) => {
         const millisecondsPerMinute = 60000;  
 
         let selectStartDateTimeStr = startDateVal + " " + startTimeVal;
+        selectStartDateTimeStr = selectStartDateTimeStr.replace(new RegExp('-', 'g'), '/');
         let providedStartDateTime = new Date(selectStartDateTimeStr);
         
         let selectEndDateTimeStr = endDateVal + " " + endTimeVal;
+        selectEndDateTimeStr = selectEndDateTimeStr.replace(new RegExp('-', 'g'), '/');
         let providedEndDateTime = new Date(selectEndDateTimeStr);  
         
         if (providedStartDateTime > providedEndDateTime) {
@@ -450,6 +454,9 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
             } else if (ctrl.is(':text')) {
                 ctrl.val(null);
             }
+
+            util.logDebugMsg("bindUiValuesFromRequest - About to get value for " + inputCtrl.id);
+
             var val = request[inputCtrl.id];
             if (val != undefined && val != null && val != "") {
 
@@ -457,16 +464,23 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
 
                     if (val == true) {
                         ctrl.prop('checked', true);
+                        util.logDebugMsg("bindUiValuesFromRequest - Check control");
                     } else {
                         ctrl.prop('checked', false);
+                        util.logDebugMsg("bindUiValuesFromRequest - Uncheck control");
                     }
+                    assignmentCount += 1;
 
                 } else if (ctrl.is(':text')) {
 
                     ctrl.val(val);
+                    util.logDebugMsg("bindUiValuesFromRequest - set text control value: " + val);
+                    assignmentCount += 1;
 
                 } else if (ctrl.attr('isEventDateTime') == "true"){
                     
+                    util.logDebugMsg("bindUiValuesFromRequest - About to bind to isEventDateTime control.");
+
                     var startDateTimeVal = val.startDateTime;
                     var endDateTimeVal = val.endDateTime;
 
@@ -474,6 +488,8 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
 
                         let startDateCtrlId = inputCtrl.id + "StartDate";
                         let startTimeCtrlId = inputCtrl.id + "StartTime";
+                        
+                        util.logDebugMsg("bindUiValuesFromRequest - About to create startDateTime Date object from " + startDateTimeVal);
 
                         var startDateTime = new Date(startDateTimeVal);
                         var dd = startDateTime.getDate();
@@ -495,14 +511,21 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
 
                         var timeValToSet = hrsStr + ':' + minsStr + ':00';
 
+                        util.logDebugMsg("bindUiValuesFromRequest - About to set start date to control with: " + dateValToSet);
+                        util.logDebugMsg("bindUiValuesFromRequest - About to set start time to control with: " + timeValToSet);
+
                         $('#' + startDateCtrlId).val(dateValToSet);
                         $('#' + startTimeCtrlId).val(timeValToSet);
+                    } else {
+                        util.logDebugMsg("bindUiValuesFromRequest - About to create startDateTime value is null!");
                     }
 
                     if (endDateTimeVal != undefined && endDateTimeVal != null && endDateTimeVal != "") {
 
                         let endDateCtrlId = inputCtrl.id + "EndDate";
                         let endTimeCtrlId = inputCtrl.id + "EndTime";
+
+                        util.logDebugMsg("bindUiValuesFromRequest - About to create endDateTime Date object from " + endDateTimeVal);
 
                         var endDateTime = new Date(endDateTimeVal);
                         var dd = endDateTime.getDate();
@@ -523,13 +546,23 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
                         if (mins < 10) { minsStr = '0'+ minsStr; } 
 
                         var timeValToSet = hrsStr + ':' + minsStr + ':00';
+                        
+                        util.logDebugMsg("bindUiValuesFromRequest - About to set end date to control with: " + dateValToSet);
+                        util.logDebugMsg("bindUiValuesFromRequest - About to set end time to control with: " + timeValToSet);
 
                         $('#' + endDateCtrlId).val(dateValToSet);
                         $('#' + endTimeCtrlId).val(timeValToSet);
+                    } else {
+                        util.logDebugMsg("bindUiValuesFromRequest - About to create endDateTime value is null!");
                     }
+
+                    assignmentCount += 1;
 
                 } else {
                     ctrl.val(val);
+
+                    util.logDebugMsg("bindUiValuesFromRequest - for other control, set value: " + val);
+
                     assignmentCount += 1;
                 }
             }

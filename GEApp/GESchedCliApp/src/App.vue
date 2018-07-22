@@ -29,6 +29,15 @@
         <router-view></router-view>
       </keep-alive>
     </transition>
+    <div :hidden="!$store.state.enableCliDebugOutput" id="debugOutput">
+      <br>
+      <button class="btn btn-secondary btn-sm"  @click.prevent="onClearDebug">Clear Debug</button>
+      <button class="btn btn-secondary btn-sm"  @click.prevent="onRequestData">Request Data</button>
+      <br>
+      <div id="debugOutput"></div>
+      <br>
+      <ul></ul>
+    </div>
 
     <!--Menu slidein-->
     <nav id="myNavmenu" class="navmenu navmenu-default navmenu-fixed-right offcanvas bg-secondary" role="navigation">
@@ -93,6 +102,8 @@
 
 <script>
 import Router from 'vue-router'
+import * as util from '@/common/util.js';
+import { centralStore } from '@/common/centralStore.js'
 
 export default {
   name: 'app',
@@ -124,10 +135,31 @@ export default {
   },
 
   methods: {
-    collapseMenu: function(event){
-      if(event){
+    collapseMenu: function(event) {
+      if (event) {
         //collapse menu
         $("#menuButton").click();
+      }
+    },
+
+    onClearDebug: function(event) {
+      if (event) {
+        $("#debugOutput ul").html("");
+      }
+    },
+
+  onRequestData: function(event) {
+      if (event) {
+        var storeState = centralStore.state;
+        util.logDebugMsg("Showing eventSchedule:");
+
+        if (storeState.currentRequest != null && storeState.currentRequest["eventSchedule"] != undefined && storeState.currentRequest["eventSchedule"] != null) {
+          util.logDebugMsg("eventSchedule - startDateTime: " + util.getDateTimeDisplay(storeState.currentRequest["eventSchedule"].startDateTime));
+          util.logDebugMsg("eventSchedule - endDateTime: " + util.getDateTimeDisplay(storeState.currentRequest["eventSchedule"].endDateTime));
+
+        } else {
+          util.logDebugMsg("eventSchedule not defined");
+        }
       }
     }
   }
