@@ -4,7 +4,7 @@ const centralStore = require('@/common/centralStore.js').centralStore;
 
 
 export const getDateTimeDisplay = (inDateTime) => {
-    //debugger; // Uncomment to trigger breakpoint.
+    //debugger; // Uncomment to trigger breakpoint. 
 
     var theDateTime = null;
     try {

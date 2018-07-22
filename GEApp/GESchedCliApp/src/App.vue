@@ -31,7 +31,7 @@
     </transition>
     <div :hidden="!$store.state.enableCliDebugOutput" id="debugOutput">
       <br>
-      <button class="btn btn-secondary btn-sm"  @click.prevent="onClearDebug">Clear Debug</button>
+      <button class="btn btn-secondary btn-sm"  @click.prevent="onClearDebug">Clear Debug</button> 
       <button class="btn btn-secondary btn-sm"  @click.prevent="onRequestData">Request Data</button>
       <br>
       <div id="debugOutput"></div>

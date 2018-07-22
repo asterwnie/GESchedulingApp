@@ -507,7 +507,7 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
                         var hrsStr = hrs.toString();
                         var minsStr = mins.toString();
                         if (hrs < 10) { hrsStr = '0'+ hrsStr; } 
-                        if (mins < 10) { minsStr = '0'+ minsStr; } 
+                        if (mins < 10) { minsStr = '0'+ minsStr; }  
 
                         var timeValToSet = hrsStr + ':' + minsStr + ':00';
 

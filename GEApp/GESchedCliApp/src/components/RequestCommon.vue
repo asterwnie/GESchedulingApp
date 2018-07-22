@@ -420,7 +420,7 @@ export default {
                     endTimeVal != null && endTimeVal != "") {
                   
                   let selectEndDateTimeStr = endDateVal + " " + endTimeVal;
-                  selectEndDateTimeStr = selectEndDateTimeStr.replace(new RegExp('-', 'g'), '/');
+                  selectEndDateTimeStr = selectEndDateTimeStr.replace(new RegExp('-', 'g'), '/');  
                   util.logDebugMsg("providedStartDateTime - selectEndDateTimeStr: " + selectEndDateTimeStr);
                   providedEndDateTime = Date.parse(selectEndDateTimeStr);
                   util.logDebugMsg("providedStartDateTime - Date: " + providedEndDateTime.toString());

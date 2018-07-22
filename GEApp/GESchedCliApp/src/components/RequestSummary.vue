@@ -206,7 +206,7 @@ export default {
       if (val == null || val == "") {
         util.logDebugMsg("Preparing read-only request item - value NOT assigned!");
       } else {
-        util.logDebugMsg("Preparing read-only request item - value: " + val);
+        util.logDebugMsg("Preparing read-only request item - value: " + val); 
       }
 
       if (val != undefined && val != null && val != "") {
