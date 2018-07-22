@@ -384,6 +384,12 @@ export default {
               if(storeState.selectedRoom != null && storeState.selectedRoom != undefined){
                 storeState.currentRequest[inputCtrl.id] = storeState.selectedRoom;
                 storeState.selectedRoom = null;
+              } else {
+                try {
+                  if (storeState.currentRequest[inputCtrl.id] == null) {
+                    delete storeState.currentRequest[inputCtrl.id];
+                  }
+                } catch (err) {}
               }
 
             } else if ($(inputCtrl).attr('isEventDateTime') == "true") {
@@ -431,7 +437,10 @@ export default {
 
                 if (providedStartDateTime == null && providedEndDateTime == null) {
                   util.logDebugMsg("providedStartDateTime - both providedStartDateTime & providedEndDateTime are null!");
-                  delete storeState.currentRequest[inputCtrl.id];
+                  try {
+                    delete storeState.currentRequest[inputCtrl.id];
+                  } catch (err) {}
+
                 } else {
                   storeState.currentRequest[inputCtrl.id] = {
                     startDateTime: providedStartDateTime,
@@ -443,7 +452,13 @@ export default {
                 }
 
               } else {
-                storeState.currentRequest[inputCtrl.id] = ctrlVal;
+                if (ctrlVal == null || ctrlVal == "") {
+                  try {
+                    delete storeState.currentRequest[inputCtrl.id];
+                  } catch (err) {}
+                } else {
+                  storeState.currentRequest[inputCtrl.id] = ctrlVal;
+                }
               } 
 
           }        

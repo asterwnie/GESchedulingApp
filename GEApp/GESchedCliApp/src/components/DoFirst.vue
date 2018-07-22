@@ -15,13 +15,11 @@
             <span v-html="note.text"></span>
           </template>
           </div>
+          <br>
+          <button type="button" class="btn btn-primary btn-sm" @click.prevent="$router.push('/request/1')">Begin New Request</button>
         </div>
 
       </div>
-    </div>
-
-    <div class="fixed-bottom d-flex justify-content-between" style="margin: 10px;">
-        <button type="button" class="btn btn-primary btn-sm" @click.prevent="$router.push('/request/1')">Begin New Request</button>
     </div>
   </div>
 </template>
@@ -71,7 +69,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.container-fluid{
+.footerBar {
+  display: inline-block;
+  margin: 16px;
+}
+.container{
   flex-direction: column;
   display: flex;
 }

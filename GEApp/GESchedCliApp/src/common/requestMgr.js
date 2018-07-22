@@ -175,7 +175,7 @@ export const validateIsRequiredLocationOfEventPrompt = (ctrlDataId, inputVal) =>
         console.warn("validateLocationOfEventPrompt error: " + err);
     }
 
-    if (location == null) {
+    if (location == undefined || location == null) {
         isValid = false;
         var invalidMsg = $('#REQUIRED-MSG-FOR-' + ctrlDataId)
         if (invalidMsg != null) {
