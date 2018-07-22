@@ -9,6 +9,8 @@ const store = new Vuex.Store({
         enableNavBar: false,
         previousPage: null,
 
+        defaultTimeOption: "09:00:00",
+        
         selectedRoom: null,
         currentRequestsPreview: [],
 

@@ -509,8 +509,9 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
 
                         $('#' + startDateCtrlId).val(dateValToSet);
                         $('#' + startTimeCtrlId).val(timeValToSet);
-                    } else {
-                        util.logDebugMsg("bindUiValuesFromRequest - About to create startDateTime value is null!");
+                    } else {                        
+                        util.logDebugMsg("bindUiValuesFromRequest - startDateTime value is null so default the time only!");
+                        $('#' + startTimeCtrlId).val(centralStore.state.defaultTimeOption);
                     }
 
                     if (endDateTimeVal != undefined && endDateTimeVal != null && endDateTimeVal != "") {
@@ -546,7 +547,8 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
                         $('#' + endDateCtrlId).val(dateValToSet);
                         $('#' + endTimeCtrlId).val(timeValToSet);
                     } else {
-                        util.logDebugMsg("bindUiValuesFromRequest - About to create endDateTime value is null!");
+                        util.logDebugMsg("bindUiValuesFromRequest - endDateTime value is null so default the time only!");
+                        $('#' + endTimeCtrlId).val(centralStore.state.defaultTimeOption);
                     }
 
                     assignmentCount += 1;
@@ -555,10 +557,19 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
                     ctrl.val(val);
 
                     util.logDebugMsg("bindUiValuesFromRequest - for other control, set value: " + val);
-
                     assignmentCount += 1;
                 }
+            } else {
+                if (ctrl.attr('isEventDateTime') == "true") {
+                    //debugger;
+                    let startTimeCtrlId = inputCtrl.id + "StartTime";
+                    let endTimeCtrlId = inputCtrl.id + "EndTime";
+                    $('#' + startTimeCtrlId).val(centralStore.state.defaultTimeOption);
+                    $('#' + endTimeCtrlId).val(centralStore.state.defaultTimeOption);
+                }
             }
+
+
             if (inAdminMode) {
                 ctrl.prop('readonly', true);
             } else {
