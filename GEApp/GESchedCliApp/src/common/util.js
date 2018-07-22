@@ -1,4 +1,8 @@
 
+//
+// General utility functions.
+//
+
 import * as util from '@/common/util.js';
 const centralStore = require('@/common/centralStore.js').centralStore;
 

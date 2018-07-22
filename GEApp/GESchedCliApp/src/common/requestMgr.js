@@ -19,25 +19,34 @@ export const inferNumOfRequestScreens = (prompts) => {
 }
 
 
+export const clearValidationMessages = (prompts, currentScreenNum) => {
+    
+    $.each(prompts, function (index, requestPrompt) {
+        if (requestPrompt.screenNum == undefined || requestPrompt.screenNum == null ||
+            requestPrompt.screenNum < 1 || requestPrompt.screenNum == currentScreenNum) {
+
+            var ctrlDataId = requestPrompt.inputType.ctrlDataId;
+
+            var invalidMsg = $('#INVALID-MSG-FOR-' + ctrlDataId)
+            if (invalidMsg != null) {
+                invalidMsg.hide();
+            }
+
+            var requiredMsg = $('#REQUIRED-MSG-FOR-' + ctrlDataId)
+            if (requiredMsg != null) {
+                requiredMsg.hide();
+            }
+         
+        }
+    });
+}
+
+
 export const validatePrompts = (prompts) => {
     //debugger; // Uncomment to trigger breakpoint.
 
     // Hide all existing errors since the fields will be re-validated.
-    $.each(prompts, function (index, prompt) {
-
-        var ctrlDataId = prompt.inputType.ctrlDataId;
-
-        var invalidMsg = $('#INVALID-MSG-FOR-' + ctrlDataId)
-        if (invalidMsg != null) {
-            invalidMsg.hide();
-        }
-
-        var requiredMsg = $('#REQUIRED-MSG-FOR-' + ctrlDataId)
-        if (requiredMsg != null) {
-            requiredMsg.hide();
-        }
-
-    });
+    clearValidationMessages(prompts, -1);
 
     var allValid = true;
 
@@ -337,23 +346,7 @@ export const validateRequest = (request, currentScreenNum) => {
     var allValid = true;
 
     // Hide all existing errors since the fields will be re-validated.
-    $.each(centralStore.state.requestPrompts, function (index, requestPrompt) {
-        if (requestPrompt.screenNum == currentScreenNum) {
-
-            var ctrlDataId = requestPrompt.inputType.ctrlDataId;
-
-            var invalidMsg = $('#INVALID-MSG-FOR-' + ctrlDataId)
-            if (invalidMsg != null) {
-                invalidMsg.hide();
-            }
-
-            var requiredMsg = $('#REQUIRED-MSG-FOR-' + ctrlDataId)
-            if (requiredMsg != null) {
-                requiredMsg.hide();
-            }
-         
-        }
-    });
+    clearValidationMessages(centralStore.state.requestPrompts, currentScreenNum);
 
     $.each(centralStore.state.requestPrompts, function (index, requestPrompt) {
         if (requestPrompt.screenNum == currentScreenNum) {

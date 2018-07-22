@@ -110,7 +110,7 @@ import * as localCacheMgr from '@/common/localCacheMgr.js';
 
 //import Room from '@/../GESchedApiApp/server-api/models/roomModel.js'
 
-import { validateRequest, bindUiValuesFromRequest } from '@/common/requestMgr.js'
+import { clearValidationMessages, validateRequest, bindUiValuesFromRequest } from '@/common/requestMgr.js'
 
 import textInputCtrl from '@/components/requestPrompts/TextInput.vue'
 import textAreaInputCtrl from '@/components/requestPrompts/TextAreaInput.vue'
@@ -214,6 +214,8 @@ export default {
       this.$router.push('/login'); // Config data lost, force back to login to refetch data.
       return;
     }
+
+    clearValidationMessages(storeState.requestPrompts, this.currentScreenNum);
 
     $('.is-admin-comment').hide();
     if (this.isNewRequest) {
