@@ -17,7 +17,17 @@ export const getDateTimeDisplay = (inDateTime) => {
 export const getDateTimeParts = (inDateTime) => {
     //debugger; // Uncomment to trigger breakpoint. 
 
-    var dateTimeParts = {};
+    var dateTimeParts = {
+        date: null, 
+        month: null,
+        year: null,
+        hrs: null,
+        mins: null,
+        fullDateDisplayUsingSlashes: null, // e.g. 7/22/2018, for display use
+        fullDateUsingSlashes: null, // e.g. 2018/07/22, for Date object init
+        fullDateUsingDashes: null, // e.g. 2018-07-22, use for date input control
+        timeOption: null // e.g. 09:30:00
+    };
 
     var theDateTime = null;
     try {
@@ -44,7 +54,7 @@ export const getDateTimeParts = (inDateTime) => {
         mins = theDateTime.getMinutes();
 
         dateTimeParts.date = dd;
-        dateTimeParts.Month = mm;
+        dateTimeParts.month = mm;
         dateTimeParts.year = yyyy;
         dateTimeParts.hrs = hrs;
         dateTimeParts.mins = mins;
@@ -70,9 +80,7 @@ export const getDateTimeParts = (inDateTime) => {
     if (mins < 10) { minsStr = '0'+ minsStr; } 
 
     var dispValue = dateDispVal + ' ' + hrsStr + ':' + minsStr + ' ' + ampm;
-
     dateTimeParts.fullDateTimeDispLabel = dispValue;
-
 
     if (dd < 10) { dd = '0'+ dd; } 
     if (mm < 10) { mm = '0'+ mm; }
