@@ -59,7 +59,7 @@
                   <button type="button" width="100%" v-on:click="collapseMenu" class="btn btn-secondary" data-dismiss="modal" @click="$router.push('/admin/home')">Admin Home</button>
                 </div>
                 <div class="form-group">
-                  <button type="button" width="100%" v-on:click="collapseMenu" class="btn btn-secondary" data-dismiss="modal" @click="$router.push('/admin/requests')">Admin Requests</button>
+                  <button type="button" width="100%" v-on:click="collapseMenu" class="btn btn-secondary" data-dismiss="modal" @click="$router.push('/admin/maintenance')">Admin Maintenance</button>
                 </div>
                 <hr>
                 <h4 width="100%" style="text-align:center">User Menu</h4><br>
