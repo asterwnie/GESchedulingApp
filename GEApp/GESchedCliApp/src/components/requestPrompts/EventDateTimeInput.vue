@@ -11,7 +11,7 @@
         <div class="input-group-append">
           <select :id="startTimeCtrlId" :screenNum="screenNum" class="custom-select form-control form-control-sm">
             <option v-for="(timeOption, index) in timeOptions" :key="index" 
-              :value="timeOption.time" :selected="timeOption.time == defaultTimeOption">
+              :value="timeOption.time">
               {{timeOption.label}}
             </option>
           </select>
@@ -24,7 +24,7 @@
         <div class="input-group-append">
           <select :id="endTimeCtrlId" :screenNum="screenNum" class="custom-select form-control form-control-sm">
             <option v-for="(timeOption, index) in timeOptions" :key="index" 
-              :value="timeOption.time" :selected="timeOption.time == defaultTimeOption">
+              :value="timeOption.time">
               {{timeOption.label}}
             </option>
           </select>
@@ -39,19 +39,24 @@
 </template>
 
 <script>
+import * as util from '@/common/util.js';
+
 export default {
   props: ['screenNum', 'ctrlId', 'promptLabel', 'dataInvalidMsgId', 'dataRequiredMsgId', 'inAdminMode'],
 
   data (){
     return {
-      timeOptions: null,
-      defaultTimeOption: this.$store.state.defaultTimeOption
+      timeOptions: null
     }
   },
 
   activated() {
  
+    util.logDebugMsg('EventDateTimeInput.vue activated.');
+
     if (this.timeOptions == null) {
+
+      util.logDebugMsg('Creating time options.');
 
       this.timeOptions = [];
       var curLabel = null;
@@ -100,6 +105,16 @@ export default {
   },
 
   computed: {
+
+    isNewRequest() {
+      var isNew = true;
+      var storeState = this.$store.state;
+      if (storeState.currentRequest != null && storeState.currentRequest._id != undefined && storeState.currentRequest._id != null) {
+        isNew = false;
+      }
+      return isNew;
+    },
+
     startDateCtrlId() {
       return this.ctrlId + "StartDate";
     },
@@ -126,13 +141,10 @@ export default {
 
     currentDate(){
       let nowDateTime = new Date();
-      var dd = nowDateTime.getDate();
-      var mm = nowDateTime.getMonth() + 1; //January is 0!
-      var yyyy = nowDateTime.getFullYear();
-      if (dd < 10) { dd = '0'+ dd; } 
-      if (mm < 10) { mm = '0'+ mm; } 
-      var today = yyyy + '-' + mm + '-' + dd;
-      return today;
+      var timeParts = util.getDateTimeParts(nowDateTime);
+      var fullDateUsingDashes = timeParts.fullDateUsingDashes;
+
+      return fullDateUsingDashes;
     }
   },
 

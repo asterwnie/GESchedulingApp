@@ -32,6 +32,7 @@
     <div :hidden="!isInDebugMode" id="debugOutput">
       <br>
       <button class="btn btn-secondary btn-sm"  @click.prevent="onClearDebug">Clear Debug</button> 
+      <button class="btn btn-secondary btn-sm"  @click.prevent="onClearLocalCache">Clear Local Cache</button> 
       <button class="btn btn-secondary btn-sm"  @click.prevent="onRequestData">Request Data</button>
       <br>
       <div id="debugOutput"></div>
@@ -104,6 +105,7 @@
 import Router from 'vue-router'
 import * as util from '@/common/util.js';
 import { centralStore } from '@/common/centralStore.js'
+import * as localCacheMgr from '@/common/localCacheMgr.js';
 
 export default {
   name: 'app',
@@ -152,7 +154,6 @@ export default {
 
   methods: {
 
-
     collapseMenu: function(event) {
       if (event) {
         //collapse menu
@@ -166,7 +167,13 @@ export default {
       }
     },
 
-  onRequestData: function(event) {
+    onClearLocalCache: function(event) {
+      if (event) {
+        localCacheMgr.clearLocalCache();
+      }
+    },
+
+    onRequestData: function(event) {
       if (event) {
         var storeState = centralStore.state;
         util.logDebugMsg("Showing eventSchedule:");

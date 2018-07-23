@@ -178,8 +178,6 @@ export default {
         console.log('AdminHome.vue activated.');
         let vm = this;
 
-        console.log(vm.currentDate);
-
         if (this.$store.state.appConfig.adminHomeViewTitle == null) {
         this.$router.push('/login'); // Config data lost, force back to login to refetch data.
         return;

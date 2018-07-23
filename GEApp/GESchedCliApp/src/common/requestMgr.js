@@ -479,34 +479,19 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
 
                     if (startDateTimeVal != undefined && startDateTimeVal != null && startDateTimeVal != "") {
 
-                        let startDateCtrlId = inputCtrl.id + "StartDate";
-                        let startTimeCtrlId = inputCtrl.id + "StartTime";
+                        var startDateCtrlId = inputCtrl.id + "StartDate";
+                        var startTimeCtrlId = inputCtrl.id + "StartTime";
                         
                         util.logDebugMsg("bindUiValuesFromRequest - About to create startDateTime Date object from " + startDateTimeVal);
 
-                        var startDateTime = new Date(startDateTimeVal);
-                        var dd = startDateTime.getDate();
-                        var mm = startDateTime.getMonth() + 1; //January is 0!
-                        var yyyy = startDateTime.getFullYear();
-                        var hrs = startDateTime.getHours();
-                        var mins = startDateTime.getMinutes();
-
-                        var ddStr = dd.toString();
-                        var mmStr = mm.toString();
-                        if (dd < 10) { ddStr = '0'+ ddStr; } 
-                        if (mm < 10) { mmStr = '0'+ mmStr; } 
-                        var dateValToSet = yyyy + '-' + mmStr + '-' + ddStr;                       
-                        
-                        var hrsStr = hrs.toString();
-                        var minsStr = mins.toString();
-                        if (hrs < 10) { hrsStr = '0'+ hrsStr; } 
-                        if (mins < 10) { minsStr = '0'+ minsStr; }  
-
-                        var timeValToSet = hrsStr + ':' + minsStr + ':00';
+                        var timeParts = util.getDateTimeParts(startDateTimeVal);
+                        var dateValToSet = timeParts.fullDateUsingDashes;
+                        var timeValToSet = timeParts.timeOption;
 
                         util.logDebugMsg("bindUiValuesFromRequest - About to set start date to control with: " + dateValToSet);
                         util.logDebugMsg("bindUiValuesFromRequest - About to set start time to control with: " + timeValToSet);
 
+                        //debugger;
                         $('#' + startDateCtrlId).val(dateValToSet);
                         $('#' + startTimeCtrlId).val(timeValToSet);
                     } else {                        
@@ -521,25 +506,9 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
 
                         util.logDebugMsg("bindUiValuesFromRequest - About to create endDateTime Date object from " + endDateTimeVal);
 
-                        var endDateTime = new Date(endDateTimeVal);
-                        var dd = endDateTime.getDate();
-                        var mm = endDateTime.getMonth() + 1; //January is 0!
-                        var yyyy = endDateTime.getFullYear();
-                        var hrs = endDateTime.getHours();
-                        var mins = endDateTime.getMinutes();
-
-                        var ddStr = dd.toString();
-                        var mmStr = mm.toString();
-                        if (dd < 10) { ddStr = '0'+ ddStr; } 
-                        if (mm < 10) { mmStr = '0'+ mmStr; } 
-                        var dateValToSet = yyyy + '-' + mmStr + '-' + ddStr;                       
-                        
-                        var hrsStr = hrs.toString();
-                        var minsStr = mins.toString();
-                        if (hrs < 10) { hrsStr = '0'+ hrsStr; } 
-                        if (mins < 10) { minsStr = '0'+ minsStr; } 
-
-                        var timeValToSet = hrsStr + ':' + minsStr + ':00';
+                        var timeParts = util.getDateTimeParts(endDateTimeVal);
+                        var dateValToSet = timeParts.fullDateUsingDashes;
+                        var timeValToSet = timeParts.timeOption;
                         
                         util.logDebugMsg("bindUiValuesFromRequest - About to set end date to control with: " + dateValToSet);
                         util.logDebugMsg("bindUiValuesFromRequest - About to set end time to control with: " + timeValToSet);
