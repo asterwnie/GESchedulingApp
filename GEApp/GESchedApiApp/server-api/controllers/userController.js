@@ -20,7 +20,7 @@ exports.getUsers = function (req, res) {
 
     var filterDirective = {}; //default, no filering
     if (req.query.nameContains != null) {    
-        const regExpression = new RegExp(`(${req.query.nameContains})`);
+        const regExpression = new RegExp(`(${req.query.nameContains})`, "i");
         filterDirective = { "name": regExpression};        
     }
 
@@ -249,7 +249,8 @@ exports.loginUser = async function (req, res) {
         return;
     }
 
-    await User.findOne({ 'email': login.email })
+    const regExpression = new RegExp(`(${login.email})`, "i");
+    await User.findOne({ 'email': regExpression })
         .then((user) => {
             if (user != null) {
                 logger.info(`userController.loginUser - User.findOne success. About to send back http response with user: ${user}`);

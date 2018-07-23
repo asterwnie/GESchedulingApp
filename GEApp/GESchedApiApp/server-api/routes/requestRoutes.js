@@ -25,7 +25,10 @@ module.exports = function (app) {
             .delete(requestController.deleteRequest);
      
         app.route('/api/requestscount')
-            .get(requestController.getRequestsCount)           
+            .get(requestController.getRequestsCount)        
+
+        app.route('/api/deleterequests')
+            .get(requestController.deleteMultipleRequests)       
 
     } catch (err) {
         logger.error(`Set up API routes for the Request entity failed. Error: ${err}`);

@@ -54,7 +54,7 @@ async function queryRooms (siteCode, query, callback) {
 
     var filterDirective = {}; //default is no filering
     if (query.nameContains != null) {    
-        const regExpression = new RegExp(`(${query.nameContains})`);
+        const regExpression = new RegExp(`(${query.nameContains})`, "i");
         filterDirective.name = regExpression;        
     }
 

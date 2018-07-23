@@ -38,11 +38,6 @@ async function queryRequests (siteCode, req, callback) {
     if (req.query.locationContains != null) {    
         const locationName = new RegExp(`(${req.query.locationContains})`);
         filterDirective = {"locationOfEvent.name": locationName};
-       /*  Object.defineProperty(filterDirective, 'locationOfEvent', {
-            value: {
-                name: locationName
-            }
-          }); */
     }
     if (req.query.requestNameContains != null) {    
         const regExpression = new RegExp(`(${req.query.requestNameContains})`);
@@ -294,6 +289,60 @@ exports.deleteRequest = function (req, res) {
     })
     .catch((err) => {
         var errMsg = `requestController.deleteRequest - Request.findByIdAndRemove ${req.params.id} failed. Error: ${err}`;
+        logger.error(errMsg);
+        res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
+    });
+};
+
+
+exports.deleteMultipleRequests = function (req, res) {
+    logger.verbose('requestController.deleteMultipleRequests begin');
+
+    let siteCode = httpRequestHelper.getSite(req);
+    let Request = getRequestType(siteCode);
+   
+    let filterDirective = {}
+    var hasFilter = false;
+
+    try {
+        let daysOld = parseInt(req.query.daysOld);
+        let dateForFilter = new Date(Date.now() - (daysOld * 24*60*60*1000));
+        filterDirective.updatedAt = {$lt: dateForFilter};
+        hasFilter = true;
+    } catch (err) {}
+
+    let processingStatus = req.query.processingStatus;
+    if (processingStatus != null && processingStatus != "") {
+        filterDirective.processingStatus = processingStatus;
+        hasFilter = true;
+    }
+
+    let requesterEmail = req.query.requesterEmail;
+    if (requesterEmail != null && requesterEmail != "") {
+        const regExpression = new RegExp(`(${requesterEmail})`, "i");
+        filterDirective.eventGEContactPersonEmail = regExpression;
+        hasFilter = true;
+    }
+
+    if (!hasFilter) {
+        var errMsg = `requestController.deleteMultipleRequests error. Error: missing filter(s).`;
+        logger.error(errMsg);
+        res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
+        return;
+    }
+
+    Request.remove(filterDirective)
+    .then((status) => {
+        if (status.ok == 1) {
+            res.status(200).json({ deletedCount: status.n });
+        } else {
+            var errMsg = "requestController.deleteMultipleRequests - Remove requests failed.";
+            logger.error(errMsg);
+            res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
+        }
+    })
+    .catch((err) => {
+        var errMsg = `requestController.deleteMultipleRequests - Remove requests failed. Error: ${err}`;
         logger.error(errMsg);
         res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
     });
