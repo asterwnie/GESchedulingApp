@@ -316,7 +316,7 @@ export default {
                 loginContext.accessCode = vm.accessCode;
                 localCacheMgr.cacheItem("loginContextKey", loginContext);
             } else {
-                localCacheMgr.uncacheItem("loginContextKey");
+                localCacheMgr.clearLocalCache();
             }
 
 

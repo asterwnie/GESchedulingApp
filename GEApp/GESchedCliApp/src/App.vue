@@ -33,6 +33,7 @@
       <br>
       <button class="btn btn-secondary btn-sm"  @click.prevent="onClearDebug">Clear Debug</button> 
       <button class="btn btn-secondary btn-sm"  @click.prevent="onClearLocalCache">Clear Local Cache</button> 
+      <button class="btn btn-secondary btn-sm"  @click.prevent="onShowLocalCache">Local Cache</button>
       <button class="btn btn-secondary btn-sm"  @click.prevent="onRequestData">Request Data</button>
       <br>
       <div id="debugOutput"></div>
@@ -170,6 +171,20 @@ export default {
     onClearLocalCache: function(event) {
       if (event) {
         localCacheMgr.clearLocalCache();
+      }
+    },
+
+    onShowLocalCache: function(event) {
+      if (event) {
+        var cachedItems = localCacheMgr.getLocalCacheCollection();
+        if (cachedItems.length > 0) {
+          $.each(cachedItems, function (index, cachedItem) {
+            util.logDebugMsg("CACHE-KEY: " + cachedItem.key);
+            util.logDebugMsg("CACHE-ITEM: " + cachedItem.jsonValue);
+          });
+        } else {
+          util.logDebugMsg("The Local Storage Cache is empty!");
+        }
       }
     },
 

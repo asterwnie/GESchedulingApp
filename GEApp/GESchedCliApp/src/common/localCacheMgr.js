@@ -54,13 +54,36 @@ export const uncacheItem = (key) => {
     }
 }
 
+
 export const clearLocalCache = () => {
 
+    //debugger; // Uncomment to trigger breakpoint.
+    
     var browserLocalStorage = window.localStorage;
 
     if (centralStore.state.appDefConfig.useCookieForLoginContext == false && browserLocalStorage != null) {
         browserLocalStorage.clear();
     }
+}
+
+
+export const getLocalCacheCollection = () => {
+
+    //debugger; // Uncomment to trigger breakpoint.
+
+    var cachedItems = [];
+    var browserLocalStorage = window.localStorage;
+
+    if (centralStore.state.appDefConfig.useCookieForLoginContext == false && browserLocalStorage != null) {
+        for (var i = 0; i < browserLocalStorage.length; i++){
+            cachedItems.push({
+                key: browserLocalStorage.key(i),
+                jsonValue: browserLocalStorage.getItem(browserLocalStorage.key(i))
+            });
+        }
+    }
+
+    return cachedItems;
 }
 
 
