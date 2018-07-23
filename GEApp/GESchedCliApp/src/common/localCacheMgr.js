@@ -54,6 +54,15 @@ export const uncacheItem = (key) => {
     }
 }
 
+export const clearLocalCache = () => {
+
+    var browserLocalStorage = window.localStorage;
+
+    if (centralStore.state.appDefConfig.useCookieForLoginContext == false && browserLocalStorage != null) {
+        browserLocalStorage.clear();
+    }
+}
+
 
 export const setCookie  = (cname, cvalue, exdays) => {
     var d = new Date();

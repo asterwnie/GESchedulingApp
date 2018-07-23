@@ -239,6 +239,8 @@ export default {
         storeState.currentRequest = {};
         storeState.currentRequest.userCanEdit = true;
         storeState.currentRequest.adminCanEdit = false;
+
+        util.logDebugMsg('Set startTimeCtrl and endTimeCtrl with defaultTimeOption: ' + this.$store.state.defaultTimeOption);   
       }
     } else {
       var revisingRequest = localCacheMgr.getCachedItem("revisingRequest-" + storeState.currentRequest._id);
@@ -248,7 +250,6 @@ export default {
     }
 
     this.InitDependsOnControls();
-
 
     if (this.canEditRequest && this.currentUserEmail != null) {
       storeState.currentRequest["eventGEContactPersonEmail"] = this.currentUserEmail;
@@ -272,6 +273,30 @@ export default {
         emailCtrl.prop('readonly', true);
       }
     }
+
+    this.$nextTick(function () {
+      if (this.isNewRequest) {
+        $('#eventScheduleStartTime').val(this.$store.state.defaultTimeOption);
+        $('#eventScheduleEndTime').val(this.$store.state.defaultTimeOption); 
+      } else {
+        try {
+          var timeParts = util.getDateTimeParts(storeState.currentRequest.eventSchedule.startDateTime);
+          var fullDateUsingDashes = timeParts.fullDateUsingDashes;
+          var timeOption = timeParts.timeOption;
+          $('#eventScheduleStartDate').val(fullDateUsingDashes);
+          $('#eventScheduleStartTime').val(timeOption);
+        } catch (err) {}
+
+        try {
+          var timeParts = util.getDateTimeParts(storeState.currentRequest.eventSchedule.endDateTime);
+          var fullDateUsingDashes = timeParts.fullDateUsingDashes;
+          var timeOption = timeParts.timeOption;
+          $('#eventScheduleEndDate').val(fullDateUsingDashes);
+          $('#eventScheduleEndTime').val(timeOption);
+        } catch (err) {}
+      }
+    });
+
   },
 
   deactivated() {

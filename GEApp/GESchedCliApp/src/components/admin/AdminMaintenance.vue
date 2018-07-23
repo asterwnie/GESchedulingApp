@@ -36,8 +36,7 @@ import * as localCacheMgr from '@/common/localCacheMgr.js';
 export default {
     data () {
     return {
-        previewRequestNum: 3,
-        currentDate: null,
+        previewRequestNum: 3
     }
   },
 
@@ -54,15 +53,15 @@ export default {
         console.log('AdminHome.vue activated.');
         let vm = this;
 
-        let nowDateTime = new Date();
-        var dd = nowDateTime.getDate();
-        var mm = nowDateTime.getMonth() + 1; //January is 0!
-        var yyyy = nowDateTime.getFullYear();
-        if (dd < 10) { dd = '0'+ dd; } 
-        if (mm < 10) { mm = '0'+ mm; } 
-        var today = yyyy + '-' + mm + '-' + dd;
+        // let nowDateTime = new Date();
+        // var dd = nowDateTime.getDate();
+        // var mm = nowDateTime.getMonth() + 1; //January is 0!
+        // var yyyy = nowDateTime.getFullYear();
+        // if (dd < 10) { dd = '0'+ dd; } 
+        // if (mm < 10) { mm = '0'+ mm; } 
+        // var today = yyyy + '-' + mm + '-' + dd;
 
-        console.log(today);
+        // console.log(today);
 
         if (this.$store.state.appConfig.adminHomeViewTitle == null) {
         this.$router.push('/login'); // Config data lost, force back to login to refetch data.
