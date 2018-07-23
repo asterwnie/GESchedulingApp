@@ -168,7 +168,7 @@ export default {
 
     canEditEmail() {
       var canEdit = false;
-      if (this.$store.state.currentAdminUser != null) {
+      if (this.inAdminMode && this.isNewRequest) {
         canEdit = true;
       }
       return canEdit;
@@ -267,10 +267,13 @@ export default {
 
     var emailCtrl = $("#eventGEContactPersonEmail");
     if (emailCtrl != null) {
-      if (this.canEditRequest) {
+      if (this.canEditEmail) {
         emailCtrl.prop('readonly', false);
+        emailCtrl.prop('disabled', false);    
       } else {
         emailCtrl.prop('readonly', true);
+        emailCtrl.prop('disabled', true);
+        emailCtrl.css("background-color", "white")
       }
     }
 

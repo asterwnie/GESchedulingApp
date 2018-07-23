@@ -540,10 +540,15 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
 
 
             if (inAdminMode) {
-                ctrl.prop('readonly', true);
-                ctrl.prop('disabled', true);
-                ctrl.css("background-color", "white")
-            } 
+                if (!ctrl.is('div')) {
+                    ctrl.prop('readonly', true);
+                    ctrl.prop('disabled', true);
+                    ctrl.css("background-color", "white")
+                }
+            } else {
+                ctrl.prop('readonly', false);
+                ctrl.prop('disabled', false);
+            }
         }
     });
 
@@ -555,7 +560,10 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
                 ctrl.prop('readonly', true);
                 ctrl.prop('disabled', true);
                 ctrl.css("background-color", "white")
-            } 
+            } else {
+                ctrl.prop('readonly', false);
+                ctrl.prop('disabled', false);
+            }
         }
     });
 
