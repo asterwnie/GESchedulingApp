@@ -43,6 +43,10 @@ export default {
       } else {
           adminCtrl.hide();
       }
+    },
+
+    canShowAdditionalComment() {
+      
     }
   }
 }

@@ -267,7 +267,7 @@ export default {
 
     var emailCtrl = $("#eventGEContactPersonEmail");
     if (emailCtrl != null) {
-      if (this.inAdminMode) {
+      if (this.canEditRequest) {
         emailCtrl.prop('readonly', false);
       } else {
         emailCtrl.prop('readonly', true);

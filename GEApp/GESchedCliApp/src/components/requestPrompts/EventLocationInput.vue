@@ -4,7 +4,7 @@
     <label :for="ctrlId">{{ promptLabel }}</label>&nbsp;&nbsp;<span v-if="inAdminMode" class="badge badge-warning" :adminCommentCtrlId="adminCommentCtrlId" @click.prevent="onAddAdminComment"><span class="far fa-comment-dots"></span></span><button type="button" class="btn btn-secondary btn-sm float-right" v-if="!inAdminMode" @click.prevent="$router.push('/findroom')">Find</button>
     <div :id="ctrlId" :screenNum="screenNum" isRoom="true" class="is-request-data">
       <div v-if="selectedRoom != null && selectedRoom != undefined">
-        <div class="card" v-bind:class="selectedRoom._id">
+        <div class="card" v-bind:class="[selectedRoom._id, 'is-request-data-part']">
           <div class="card-body">
             <h6 class="card-title">{{selectedRoom.name}}</h6>
             <div class="card-text" :hidden="selectedRoom.building == null || selectedRoom.building == ''">Building: {{selectedRoom.building}}</div>

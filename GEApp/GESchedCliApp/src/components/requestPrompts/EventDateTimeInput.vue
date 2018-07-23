@@ -7,9 +7,9 @@
      
       <div class="input-group mb-3">
          <label>Start:&nbsp;</label>
-        <input :id="startDateCtrlId" :screenNum="screenNum" type="date" :min="currentDate" v-on:change="onStartDateChanged" class="form-control form-control-sm" aria-describedby="basic-addon3">
+        <input :id="startDateCtrlId" :screenNum="screenNum" type="date" :min="currentDate" v-on:change="onStartDateChanged" class="is-request-data-part form-control form-control-sm" aria-describedby="basic-addon3">
         <div class="input-group-append">
-          <select :id="startTimeCtrlId" :screenNum="screenNum" class="custom-select form-control form-control-sm">
+          <select :id="startTimeCtrlId" :screenNum="screenNum" class="is-request-data-part custom-select form-control form-control-sm">
             <option v-for="(timeOption, index) in timeOptions" :key="index" 
               :value="timeOption.time">
               {{timeOption.label}}
@@ -20,9 +20,9 @@
       
       <div class="input-group mb-3">
         <label>End:&nbsp;&nbsp;</label>
-        <input :id="endDateCtrlId" :screenNum="screenNum" type="date" :min="currentDate" class="form-control form-control-sm" aria-describedby="basic-addon3">
+        <input :id="endDateCtrlId" :screenNum="screenNum" type="date" :min="currentDate" class="is-request-data-part form-control form-control-sm" aria-describedby="basic-addon3">
         <div class="input-group-append">
-          <select :id="endTimeCtrlId" :screenNum="screenNum" class="custom-select form-control form-control-sm">
+          <select :id="endTimeCtrlId" :screenNum="screenNum" class="is-request-data-part custom-select form-control form-control-sm">
             <option v-for="(timeOption, index) in timeOptions" :key="index" 
               :value="timeOption.time">
               {{timeOption.label}}

@@ -541,9 +541,21 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
 
             if (inAdminMode) {
                 ctrl.prop('readonly', true);
-            } else {
-                ctrl.prop('readonly', false);
-            }
+                ctrl.prop('disabled', true);
+                ctrl.css("background-color", "white")
+            } 
+        }
+    });
+
+    ctrls = $('.is-request-data-part');
+    $.each(ctrls, function (index, inputCtrl) {
+        var ctrl = $(inputCtrl);
+        if (ctrl != null && ctrl.attr('screenNum') == currentScreenNum) {
+            if (inAdminMode) {
+                ctrl.prop('readonly', true);
+                ctrl.prop('disabled', true);
+                ctrl.css("background-color", "white")
+            } 
         }
     });
 
@@ -558,6 +570,8 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
 
                 if (!inAdminMode) {
                     ctrl.prop('readonly', true);
+                    ctrl.prop('disabled', true);
+                    ctrl.css("background-color", "lightyellow")
                 } 
                 ctrl.show();
             }
