@@ -313,7 +313,7 @@ exports.deleteMultipleRequests = function (req, res) {
 
     let processingStatus = req.query.processingStatus;
     if (processingStatus != null && processingStatus != "") {
-        filterDirective.processingStatus = processingStatus;
+        filterDirective.processingStatus = new RegExp(`(${processingStatus})`, "i");;
         hasFilter = true;
     }
 
