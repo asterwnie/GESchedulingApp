@@ -6,7 +6,7 @@
         <form class="needs-validation" novalidate>
           <button class="btn btn-primary btn-block" type="submit" @click.prevent="onNewRequest">New Request</button>
         </form>
-        <div v-if="currentRequestData != null">
+        <div v-if="hasWorkingNewRequestCached">
           <br>
           <form class="needs-validation" novalidate>
             <button class="btn btn-primary btn-block" type="submit" @click.prevent="onContinueRequest">Continue Request</button>
@@ -90,6 +90,15 @@ export default {
 
     currentRequestData() {
       return this.$store.state.currentRequest;
+    },
+
+    hasWorkingNewRequestCached() {
+      var cached = false;
+      let workingNewRequest = localCacheMgr.getCachedItem(this.$store.state.loginContext.requesterEmail+"-WorkingNewRequest");
+      if (workingNewRequest != null) {
+        cached = true;
+      }
+      return cached;
     }
 
   },
@@ -181,7 +190,7 @@ export default {
 
       var selectedRequest = null;
 
-      var revisingRequest = localCacheMgr.getCachedItem("revisingRequest-" + selectedReqId);
+      var revisingRequest = localCacheMgr.getCachedItem(storeState.loginContext.requesterEmail+"-RevisingRequest-" + selectedReqId);
       if (revisingRequest != undefined && revisingRequest != null) {
         selectedRequest = revisingRequest;
       } else {

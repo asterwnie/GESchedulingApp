@@ -562,7 +562,7 @@ export default {
             let selectedReqId = event.target.id;
             let storeState = this.$store.state;
 
-            var revisingRequest = localCacheMgr.getCachedItem("revisingRequest-" + selectedReqId);
+            var revisingRequest = localCacheMgr.getCachedItem(storeState.loginContext.requesterEmail+"-RevisingRequest-" + selectedReqId);
             if (revisingRequest != undefined && revisingRequest != null) {
 
                 storeState.currentRequest = revisingRequest;

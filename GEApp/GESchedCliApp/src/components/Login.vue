@@ -176,7 +176,7 @@ export default {
                 .then(res => {
                     console.log("getDefAppConfig return status: " + res.status);
 
-                    vm.$store.state.appConfig = res.data;
+                    vm.$store.state.appConfig = textTranformer.tranformAppConfig(res.data);
                     vm.isFetchingDefAppConfig = false;
                 })
                 .catch((err) => {
@@ -316,7 +316,7 @@ export default {
                 loginContext.accessCode = vm.accessCode;
                 localCacheMgr.cacheItem("loginContextKey", loginContext);
             } else {
-                localCacheMgr.uncacheItem("loginContextKey");
+                localCacheMgr.clearLocalCache();
             }
 
 
