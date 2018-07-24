@@ -109,7 +109,7 @@ export default new Router({
       component: AdminMaintenance
     },
     {
-      path: '/admin/addadmin',
+      path: '/admin/manageaccounts',
       name: 'AdminAdd',
       component: AdminAdd
     },

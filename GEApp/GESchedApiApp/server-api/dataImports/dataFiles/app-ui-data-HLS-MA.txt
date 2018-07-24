@@ -80,3 +80,39 @@ More Information Required
 
 --RequestStatusMessage.Rejected
 Your request is not complete. More Information is required. Please review and update your request before resubmitting it. 
+
+--AdminHome.ViewTitle
+Admin Home
+
+--AdminHome.ViewDescription
+Hub for administrative tasks
+
+--AdminRequest.ViewTitle
+Admin Requests
+
+--AdminSendInvite.ViewTitle
+Send Invite
+
+AdminSendInvite.ViewDescription
+Invite a requester to use this booking utility
+
+--SendInviteEmailTemplate
+Hello, [RECIPIENTNAME]![line-break][ADMINNAME] would like to invite you to access the GE Scheduling Utility.[line-break][line-break]Access Code: [ACCESSCODE][line-break][line-break]To access the GE Scheduling Utility, paste this link into your browser: [APPLINK][line-break]Note that the utility is still in development, and any feedback you may have can be sent to: [FEEDBACKEMAIL][line-break][line-break]
+
+--SendInviteEmailSubject
+GE Scheduling Utility Access
+
+--AddAdminEmailTemplate
+PLACEHOLDER
+
+--deleteOlderThanNumDays
+14
+
+--adminMaintenanceViewTitle
+Admin Maintenance
+
+--adminAddViewTitle
+Admin Add User
+
+--addAdminEmailTemplate
+Hello, [RECIPIENTNAME]![line-break][ADMINNAME] would like to invite you to become an administrator on the GE Scheduling Utility.[line-break][line-break]Admin Access Code: [ADMINACCESSCODE][line-break][line-break]To access the GE Scheduling Utility, paste this link into your browser: [APPLINK][line-break]Note that the utility is still in development, and any feedback you may have can be sent to: [FEEDBACKEMAIL][line-break][line-break]

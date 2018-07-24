@@ -1,23 +1,36 @@
 <template>  
 
     <div class="container-fluid">
+        <div class="row">
+            <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
+            <div class="col col-12 col-sm-10 col-md-8 col-lg-8" style="color:gray">
+        
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Send Invite</strong> {{viewDescription}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+            </div>
+            <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
+        </div>
+        <div style="height:10px"></div>
       <div class="row">
       <div class="col col-12 col-md-2 col-lg-2"></div>
 
         <div id="adminBar" class="col col-12 col-md-3 col-lg-3 col-xl-2" style="padding-bottom:10px">
-            admin sendinvite
-
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">Recipient Name</span>
                 </div>
-                <input id="recipientName" type="text" class="form-control" placeholder="Username" aria-label="John Doe" aria-describedby="basic-addon1">
+                <input id="recipientName" type="text" class="form-control" placeholder="John Doe" aria-label="recipient-name" aria-describedby="basic-addon1">
             </div>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon2">Recipient Email</span>
                 </div>
-                <input id="recipientEmail" type="text" class="form-control" placeholder="Username" aria-label="johndoe@ge.com" aria-describedby="basic-addon2">
+                <input id="recipientEmail" type="text" class="form-control" placeholder="johndoe@ge.com" aria-label="recipient-email" aria-describedby="basic-addon2">
             </div>
 
             <button @click.prevent="onGenerateEmail" type="button" class="float-right btn btn-primary">Generate Email</button>
@@ -30,7 +43,7 @@
                 <textarea class="form-control" id="emailPreview" rows="10" disabled></textarea>
             </div>
             <div v-if="canEmail">
-                <a :href="`mailto:${recipientEmail}?body=${emailStringDataExport}`">
+                <a :href="`mailto:${recipientEmail}?subject=${sendInviteEmailSubject}&body=${emailStringDataExport}`">
                     <button type="button" class="float-right btn btn-primary">Send Email</button>
                 </a>
             </div>
@@ -80,10 +93,13 @@ export default {
 
   computed: {
         title() {
-        return this.$store.state.appConfig.adminHomeViewTitle; 
+            return this.$store.state.appConfig.adminSendInviteViewTitle; 
         },
         viewDescription() {
-        return this.$store.state.appConfig.adminHomeViewDescription; 
+            return this.$store.state.appConfig.adminSendInviteViewDescription; 
+        },
+        sendInviteEmailSubject() {
+            return this.$store.state.appConfig.sendInviteEmailSubject;
         }
     },
 
@@ -91,7 +107,7 @@ export default {
         console.log('AdminHome.vue activated.');
         let vm = this;
 
-        if (this.$store.state.appConfig.adminHomeViewTitle == null) {
+        if (this.$store.state.appConfig.adminSendInviteViewTitle == null) {
             this.$router.push('/login'); // Config data lost, force back to login to refetch data.
             return;
         }
@@ -152,7 +168,7 @@ export default {
                     vm.hasFailure = false;
 
                     //replace email and name (and access code)
-                    vm.emailStringDataExport = vm.$store.state.appConfig.sendInviteEmailTemplate.replace('--RECIPIENTNAME--', vm.recipientName).replace('--RECIPIENTEMAIL--', vm.recipientEmail).replace('--ACCESSCODE--', vm.$store.state.tempAccessCode).replace('--ADMINNAME--', adminName);
+                    vm.emailStringDataExport = vm.$store.state.appConfig.sendInviteEmailTemplate.replace('[RECIPIENTNAME]', vm.recipientName).replace('[RECIPIENTEMAIL]', vm.recipientEmail).replace('[ACCESSCODE]', vm.$store.state.tempAccessCode).replace('[ADMINNAME]', adminName);
                     
                     //reformat for display in preview
                     vm.emailStringDataDisplay = vm.emailStringDataExport.replace(/%0D%0A/g, '\n').replace(/%20/g, ' ');

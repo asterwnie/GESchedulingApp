@@ -12,10 +12,10 @@
       </div>
       <div class="modal-body">
         <p>Are you sure you want to delete this request? This action cannot be undone.</p>
-        <div id="selectedRequestUI"></div>
+        <div class="card" id="selectedRequestUI"></div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" @click.prevent="onDeleteModalDeselect">Close</button>
+        <button type="button" class="btn btn-secondary" @click.prevent="onDeleteModalDeselect">Cancel</button>
         <button type="button" class="btn btn-primary" @click.prevent="onDeleteRequest(requestToDelete)">Confirm Delete</button>
       </div>
     </div>
@@ -35,32 +35,31 @@
         </nav>
         <br>
         <div class="text-right font-italic">Welcome back, {{$store.state.currentAdminUser.name}}</div>
-        <div style="cursor:pointer;" class="text-right" @click.prevent="$router.push('/login')">Log Out</div>
+        <div style="cursor:pointer;" class="text-right" @click.prevent="$router.push('/login')">Log Out&nbsp;<span class="fas fa-chevron-right"></span></div>
         <hr>
         </div>
         <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
     </div>
+    
+    <div style="height:10px"></div>
+
     <div class="row">
         <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
         <div class="col col-12 col-sm-10 col-md-8 col-lg-8" style="color:gray">
-        
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <strong>Alert</strong> some alert here.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+    
+            <div class="card" style="width:100%">
+                    <div class="card-header bg-info text-light">
+                        Requests
+                        <button type="button" @click.prevent="onToggleDeleteMode" cursor="pointer" class="float-right btn btn-sm btn-outline-light">Browse Mode</button>
+                    </div>
             </div>
-
-
-            <div style="height:10px"></div>
-
-            
-            
 
         </div>
         <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
     </div>
+
     <div style="height:10px"></div>
+
     <div class="row">
     <div class="col col-12 col-md-2 col-lg-2"></div>
 
@@ -72,20 +71,20 @@
                     <span><i class="fa fa-user-circle" aria-hidden="true"></i>&nbsp;All Requests</span>
                 </div>
                 <div @click.prevent="onQuickFilter" class="quickFilterButton badge badge-danger" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
-                    <span id="rejected"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;More Info Required</span>
+                    <span id="rejected">More Info Required</span>
                 </div>
 
                 <div @click.prevent="onQuickFilter" class="quickFilterButton badge badge-warning" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
-                    <span id="underReview"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;Under Review</span>
+                    <span id="underReview">Under Review</span>
                 </div>
                 <div @click.prevent="onQuickFilter" class="quickFilterButton badge badge-success" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
-                    <span id="approved"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;Approved & Completed</span>
+                    <span id="approved">Approved & Completed</span>
                 </div>
                 <div @click.prevent="onQuickFilter" class="quickFilterButton badge badge-info" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
-                    <span id="otherStatus"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;Other Status</span>
+                    <span id="otherStatus">Other Status</span>
                 </div>
                 <div @click.prevent="onQuickFilter" class="quickFilterButtoncard badge badge-primary" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
-                    <span id="otherStatus"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;Other Status</span>
+                    <span id="otherStatus">Other Status</span>
                 </div>
             </span>
         </div>
@@ -100,6 +99,13 @@
             <div id="inputEventName" class="input-group input-group-sm mb-3">
                 <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Event Name</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+            </div>
+
+            <div id="inputRequesterName" class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm">Requester Name</span>
                 </div>
                 <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
             </div>
@@ -130,8 +136,17 @@
                 </select>
             </div>
 
-            <p>add: display per page...</p>
-
+            <div id="inputPreviewPerPage" class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">Items Per Page</span>
+                </div>
+                <select class="custom-select">
+                    <option value="6" selected>6</option>
+                    <option value="9">9</option>
+                    <option value="12">12</option>
+                    <option value="15">15</option>
+                </select>
+            </div>
             
             <br>
             <button type="button" class="btn btn-sm btn-primary float-right" @click.prevent="filterView">Search</button>
@@ -142,11 +157,6 @@
     </div>
 
     <div id="requestUI" class="col col-12 col-md-5 col-lg-5 col-xl-6">
-            <div class="card" style="width:100%">
-                    <div class="card-header bg-info text-light">
-                        Requests
-                    </div>
-            </div>
             <div v-if="requestsPreview.length < 1">
                 <div class="card">
                     <br>
@@ -167,12 +177,14 @@
                             <br>
                             <div class="card-text text-muted">Last updated:&nbsp;{{requestItem.updatedAt.substring(0, requestItem.updatedAt.indexOf("T"))}}</div>
                             <div v-if="requestItem.adminCanEdit">
-                                <button :id="requestItem._id" type="button" @click.prevent="onEditViewRequest" class="enableEdit btn btn-warning btn-sm float-right">Edit</button>
+                                <button :id="requestItem._id" cursor="pointer" type="button" @click.prevent="onEditViewRequest" class="enableEdit btn btn-warning btn-sm float-right">Edit</button>
                             </div>
                             <div v-else>
-                                <button :id="requestItem._id" type="button" @click.prevent="onEditViewRequest" class="disableEdit btn btn-secondary btn-sm float-right">View</button>
+                                <button :id="requestItem._id" cursor="pointer" type="button" @click.prevent="onEditViewRequest" class="disableEdit btn btn-secondary btn-sm float-right">View</button>
                             </div>
-                            <button :id="requestItem._id" type="button" @click.prevent="onDeleteModalSelect" class="btn btn-danger btn-sm float-left">Delete</button>
+                            <div v-if="deleteMode">
+                                <button :id="requestItem._id" type="button" @click.prevent="onDeleteModalSelect" class="btn btn-danger btn-sm float-left">Delete</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -219,21 +231,10 @@
             <div id="utilityMenu">
                     
                 <div class="card-header bg-danger text-light">
-                    Utilities (NOTE THESE DO NOT WORK RIGHT NOW)
+                    Utilities
                 </div>
                 <div style="height:10px;"></div>
                 <div class="card-group">
-                        <div @click.prevent="$router.push('/admin/updatedata')" class="card" style="background-color:#ffb0b0; cursor:pointer; text-align:center;">
-                            <div class="card-body">
-                                <h6 class="card-title">
-                                    Update Data&nbsp;&nbsp;<span class="fas fa-chevron-right"></span>
-                                </h6>
-                                <hr>
-                                <div class="card-text">
-                                    Add or revise Room, Hotel, and Catering data.
-                                </div>
-                            </div>
-                        </div>
                         <div @click.prevent="$router.push('/admin/sendinvite')" class="card" style="background-color:#ffb0b0; cursor:pointer; text-align:center;">
                             <div class="card-body">
                                 <h6 class="card-title">
@@ -245,6 +246,17 @@
                                 </div>
                             </div>
                         </div>
+                        <div @click.prevent="$router.push('/admin/manageaccounts')" class="card" style="background-color:#ffb0b0; cursor:pointer; text-align:center;">
+                            <div class="card-body">
+                                <h6 class="card-title">
+                                    Manage Accounts&nbsp;&nbsp;<span class="fas fa-chevron-right"></span>
+                                </h6>
+                                <hr>
+                                <div class="card-text">
+                                    Add and view Admin users.
+                                </div>
+                            </div>
+                        </div>
                         <div @click.prevent="$router.push('/admin/maintenance')" class="card" style="background-color:#ffb0b0; cursor:pointer; text-align:center;">
                             <div class="card-body">
                                 <h6 class="card-title">
@@ -252,18 +264,7 @@
                                 </h6>
                                 <hr>
                                 <div class="card-text">
-                                    Flush and archive old, cancelled, and completed requests.
-                                </div>
-                            </div>
-                        </div>
-                        <div @click.prevent="$router.push('/admin/addadmin')" class="card" style="background-color:#ffb0b0; cursor:pointer; text-align:center;">
-                            <div class="card-body">
-                                <h6 class="card-title">
-                                    Add Admin&nbsp;&nbsp;<span class="fas fa-chevron-right"></span>
-                                </h6>
-                                <hr>
-                                <div class="card-text">
-                                    Create a new Admin profile.
+                                    Manage app data (Hotels, caterers, rooms, etc), flush old requests.
                                 </div>
                             </div>
                         </div>
@@ -306,6 +307,7 @@ export default {
         ],
         requestsQueryString: "",
         requestToDelete: null,
+        deleteMode: false,
     }
   },
   
@@ -466,8 +468,10 @@ export default {
 
             vm.currentPageNumber = 1;
             //collapse search menu
-            $("#filterMenu").click();
+            //$("#filterMenu").click();
 
+            //get preview per page
+            vm.previewPerPage = $("#inputPreviewPerPage select")[0].value;
 
             //gather event name to query
             var nameToQuery = '';
@@ -482,7 +486,6 @@ export default {
 
 
             //gather requester email to query
-            //NOTE: this is misleading right now
             var requesterEmailToQuery = '';
             var requesterEmailSet = $("#inputRequesterEmail input");
             
@@ -490,6 +493,17 @@ export default {
                 if(item.value != null && item.value != ""){
                     requesterEmailToQuery = item.value;
                     vm.requestsQueryString += `&requesterEmailContains=${requesterEmailToQuery}`;
+                }
+            });
+
+            //gather requester email to query
+            var requesterNameToQuery = '';
+            var requesterNameSet = $("#inputRequesterName input");
+            
+            $.each(requesterNameSet, function( index, item ){
+                if(item.value != null && item.value != ""){
+                    requesterNameToQuery = item.value;
+                    vm.requestsQueryString += `&requesterNameContains=${requesterNameToQuery}`;
                 }
             });
 
@@ -554,6 +568,7 @@ export default {
                     vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
                 })
         },
+
 
         onEditViewRequest: function(event) {
             console.log('AdminHome.vue - onEditViewRequest activate');
@@ -674,6 +689,30 @@ export default {
                 vm.requestToDelete = null;
                 $('#deleteModal').modal('hide');
             },
+
+            onToggleDeleteMode: function(event){
+                if(event){
+                    console.log("onToggleDeleteMode activated.")
+                    let vm = this;
+                    let button = event.target;
+
+                    if($(button).hasClass("btn-outline-light")){
+                        $(button).removeClass("btn-outline-light");
+                        $(button).addClass("btn-danger");
+                        button.innerHTML = "Delete Mode";
+
+                        vm.deleteMode = true;
+
+                    } else {
+                        $(button).removeClass("btn-danger");
+                        $(button).addClass("btn-outline-light");
+                        button.innerHTML = "Browse Mode";
+
+                        vm.deleteMode = false;
+                    }
+                    
+                }
+            }
 
     }
 } 

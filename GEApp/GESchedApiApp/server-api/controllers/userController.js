@@ -21,7 +21,10 @@ exports.getUsers = function (req, res) {
     var filterDirective = {}; //default, no filering
     if (req.query.nameContains != null) {    
         const regExpression = new RegExp(`(${req.query.nameContains})`, "i");
-        filterDirective = { "name": regExpression};        
+        filterDirective.name = regExpression;        
+    }
+    if (req.query.isAdmin != null) {    
+        filterDirective.isAdmin = req.query.isAdmin;        
     }
 
     User.find(filterDirective).sort(sortDirective)

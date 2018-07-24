@@ -36,16 +36,20 @@ async function queryRequests (siteCode, req, callback) {
 
     var filterDirective = {}; //default, no filering
     if (req.query.locationContains != null) {    
-        const locationName = new RegExp(`(${req.query.locationContains})`);
+        const locationName = new RegExp(`(${req.query.locationContains})`, "i");
         filterDirective = {"locationOfEvent.name": locationName};
     }
     if (req.query.requestNameContains != null) {    
-        const regExpression = new RegExp(`(${req.query.requestNameContains})`);
+        const regExpression = new RegExp(`(${req.query.requestNameContains})`, "i");
         filterDirective.eventGEContactPersonEmail = regExpression;      
     }
     if (req.query.requesterEmailContains != null) {    
-        const regExpression = new RegExp(`(${req.query.requesterEmailContains})`);
+        const regExpression = new RegExp(`(${req.query.requesterEmailContains})`, "i");
         filterDirective.eventGEContactPersonEmail = regExpression;       
+    }
+    if (req.query.requesterNameContains != null) {    
+        const regExpression = new RegExp(`(${req.query.requesterNameContains})`, "i");
+        filterDirective.eventGEContactPersonName = regExpression;       
     }
     if (req.query.processingStatusContains != null) {    
         const regExpression = new RegExp(`(${req.query.processingStatusContains})`);

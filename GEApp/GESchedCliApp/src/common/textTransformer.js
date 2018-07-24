@@ -62,9 +62,6 @@ export const transformAsMailToBodyText = (text) => {
                 let lineBreakCode = '%0D%0A';
                 transformedText = transformedText.replace(bracketedString, lineBreakCode);
                 console.log(`The transformed text: ${transformedText}`);
-            } else {
-                // Remove any remaining []
-                transformedText = transformedText.replace(bracketedString, "");
             }
         });
     }
