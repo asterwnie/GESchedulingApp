@@ -18,7 +18,7 @@
           <br>
           <button type="button" class="btn btn-primary btn-sm" @click.prevent="$router.push('/request/1')">Begin New Request</button>
         </div>
-
+        <br>
       </div>
     </div>
   </div>

@@ -117,6 +117,7 @@
           </div>
           <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
           <br>
+          <br>
       </div>
     </div>
   </div>
