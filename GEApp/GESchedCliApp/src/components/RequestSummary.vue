@@ -6,13 +6,21 @@
 
           <div class="card">
             <div class="card-header bg-info text-light">
-              Request Summary &nbsp;&nbsp;<span class="badge badge-warning" v-if="canEditRequest && inAdminMode" :adminCommentCtrlId="adminCommentCtrlId" @click.prevent="onAddAdminComment"><span class="far fa-comment-dots"></span></span>
+              Request Summary &nbsp;&nbsp;
+              <span class="badge badge-warning" v-if="canEditRequest && inAdminMode" @click.prevent="onAddAdminComment"><span class="far fa-comment-dots"></span></span>
+              &nbsp;
+              <span class="badge badge-warning" v-if="canEditPreparationInfo" @click.prevent="onAddPreparationNotes">Preparation Notes</span>
             </div>
 
-            <div v-if="true">  
-              <label id="generalAdminCommentLabel" for="generalAdminComment" style="display:none;">&nbsp;&nbsp;General Comment</label>
+            <div>  
+              <label id="generalAdminCommentLabel" for="generalAdminComment" style="display:none;">&nbsp;&nbsp;General Comment:</label>
               <textarea id="generalAdminComment" style="display:none; border: 2px solid orange;" placeholder="Add General Comment" class="is-admin-comment form-control form-control-sm"></textarea>
             </div>
+
+            <div>  
+              <label id="generalPreparationNotesLabel" for="generalPreparationNotes" style="display:none;">&nbsp;&nbsp;Preparation Notes:</label>
+              <textarea id="generalPreparationNotes" style="display:none; border: 2px solid orange;" placeholder="Add Preparation Notes" class="is-admin-comment form-control form-control-sm"></textarea>
+            </div>            
 
             <div class="card-body">
                 <div style="width:100%" v-for="(requestReadOnlyProperty, index) in requestReadOnlyProperties" :key="index">
@@ -81,12 +89,19 @@
           <br>
           <div v-if="canEditRequest">
             <div v-if="inAdminMode && !isNewRequest">
-              <button type="button" class="btn btn-primary btn-sm" 
-                :disabled="isSubmitting" 
-                @click.prevent="onApproveRequest">Approve Request</button>
-              <button type="button" class="btn btn-primary btn-sm" 
-                :disabled="isSubmitting" 
-                @click.prevent="onRejectRequest">Need More Information</button>
+              <div v-if="!isApproved">
+                <button type="button" class="btn btn-primary btn-sm" 
+                  :disabled="isSubmitting" 
+                  @click.prevent="onApproveRequest">Approve Request</button>
+                <button type="button" class="btn btn-primary btn-sm" 
+                  :disabled="isSubmitting" 
+                  @click.prevent="onRejectRequest">Need More Information</button>
+              </div>
+              <div v-else>
+                <button type="button" class="btn btn-primary btn-sm" 
+                  :disabled="isSubmitting" 
+                  @click.prevent="onSubmitRequest">Update</button>
+              </div>
             </div>
             <div v-else>
               <button type="button" class="btn btn-primary btn-sm" 
@@ -101,6 +116,7 @@
               @click.prevent="onPrint">Print</button>              
           </div>
           <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
+          <br>
       </div>
     </div>
   </div>
@@ -138,6 +154,18 @@ export default {
       return this.$store.state.inAdminMode;
     },
 
+    canEditPreparationInfo() {
+      var storeState = this.$store.state;
+      if (this.inAdminMode && storeState.currentRequest != null && 
+          storeState.currentRequest.processingStatus != "underReview" &&
+          storeState.currentRequest.processingStatus != "rejected") {
+        return true;
+      } else {
+        return false;
+      }
+
+    },
+
     canEditRequest() {
       var canEdit = false;
       var storeState = this.$store.state;
@@ -161,8 +189,25 @@ export default {
       return isNew;
     },
 
+    isApproved() {
+      var approved = false;
+      var storeState = this.$store.state;
+      if (storeState.currentRequest != null && 
+          storeState.currentRequest.processingStatus != undefined && 
+          (storeState.currentRequest.processingStatus == "approved" || 
+           storeState.currentRequest.processingStatus == "completed" ||
+           storeState.currentRequest.processingStatus == "prepared")) {
+        approved = true;
+      }
+      return approved;
+    },
+
     adminCommentCtrlId() {
       return this.ctrlId + "AdminComment";
+    },
+
+    adminPreparationInfoCtrlId() {
+      return this.ctrlId + "PreparationInfo";
     }
 
   },
@@ -178,58 +223,27 @@ export default {
     }
 
     if (this.inAdminMode) {
+
       var commentCtrl = $("#generalAdminComment");
-      var comment = commentCtrl.val("");
-      if (storeState.currentRequest.generalAdminComment != undefined) {
+      if (storeState.currentRequest.generalAdminComment != undefined && storeState.currentRequest.generalAdminComment != "") {
         commentCtrl.val(storeState.currentRequest.generalAdminComment);
       }
+
+      var notesCtrl = $("#generalPreparationNotes");
+      if (storeState.currentRequest.generalPreparationNotes != undefined && storeState.currentRequest.generalPreparationNotes != "") {
+        notesCtrl.val(storeState.currentRequest.generalPreparationNotes);
+      }
+
     }
 
     if (this.canEditRequest) {
       storeState.currentViewTitle = storeState.appConfig.submitRequestViewTitle;
-
-      var adminCtrlLabel = $("#generalAdminCommentLabel");
-      var adminCtrl = $("#generalAdminComment");
-      adminCtrl.prop('readonly', false);
-      adminCtrl.prop('disabled', false);
-
-      var needToShow = false;
-
-      var adminCtrlVal = adminCtrl.val();
-      if (adminCtrlVal != null && adminCtrlVal != "") {
-        needToShow = true;
-      }
-
-      if (needToShow && !adminCtrl.is(':visible')) {
-        adminCtrlLabel.show();
-        adminCtrl.show();
-      } else {
-        adminCtrlLabel.hide();
-        adminCtrl.hide();
-      }
-       
     } else {
       storeState.currentViewTitle = storeState.appConfig.viewRequestViewTitle;
-
-      var adminCtrlLabel = $("#generalAdminCommentLabel");
-      var adminCtrl = $("#generalAdminComment");
-      adminCtrl.prop('readonly', true);
-      adminCtrl.prop('disabled', true);
-      adminCtrl.css("background-color", "white")
-
-      var adminCtrlVal = adminCtrl.val();
-      if (adminCtrlVal != null && adminCtrlVal != "") {
-        needToShow = true;
-      }
-
-      if (needToShow && !adminCtrl.is(':visible')) {
-        adminCtrlLabel.show();
-        adminCtrl.show();
-      } else {
-        adminCtrlLabel.hide();
-        adminCtrl.hide();
-      }
     }
+
+    this.showHideLabeledTextArea(this.canEditRequest, "generalAdminComment");
+    this.showHideLabeledTextArea(this.canEditRequest, "generalPreparationNotes");
 
     storeState.enableNavBar = true;
 
@@ -297,6 +311,7 @@ export default {
           reqProperty.adminComment = adminComment;
         }
 
+
         vm.requestReadOnlyProperties.push(reqProperty);
       }
 
@@ -304,15 +319,74 @@ export default {
     });
   },
 
+
   created() {
       console.log('SubmitRequest.vue created.');
   },
 
   methods: {
 
+    showHideLabeledTextArea(canEditRequest, ctrlId) {
+
+      var adminCtrlLabel = $("#" + ctrlId + "Label");
+      var adminCtrl = $("#" + ctrlId);
+
+      if (canEditRequest) {
+
+        adminCtrl.prop('readonly', false);
+        adminCtrl.prop('disabled', false);
+
+        var needToShow = false;
+
+        var adminCtrlVal = adminCtrl.val();
+        if (adminCtrlVal != null && adminCtrlVal != "") {
+          needToShow = true;
+        }
+
+        if (needToShow) {
+          adminCtrlLabel.show();
+          adminCtrl.show();
+        } else {
+          adminCtrlLabel.hide();
+          adminCtrl.hide();
+        }
+        
+      } else {
+
+        adminCtrl.prop('readonly', true);
+        adminCtrl.prop('disabled', true);
+        adminCtrl.css("background-color", "white")
+
+        var adminCtrlVal = adminCtrl.val();
+        if (adminCtrlVal != null && adminCtrlVal != "") {
+          needToShow = true;
+        }
+
+        if (needToShow) {
+          adminCtrlLabel.show();
+          adminCtrl.show();
+        } else {
+          adminCtrlLabel.hide();
+          adminCtrl.hide();
+        }
+      }
+    },
+
     onAddAdminComment(evt) {  
       var adminCtrlLabel = $("#generalAdminCommentLabel");
       var adminCtrl = $("#generalAdminComment");
+      if (!adminCtrl.is(':visible')) {
+        adminCtrlLabel.show();
+        adminCtrl.show();
+      } else {
+        adminCtrlLabel.hide();
+        adminCtrl.hide();
+      }
+    },
+
+    onAddPreparationNotes(evt) {  
+      var adminCtrlLabel = $("#generalPreparationNotesLabel");
+      var adminCtrl = $("#generalPreparationNotes");
       if (!adminCtrl.is(':visible')) {
         adminCtrlLabel.show();
         adminCtrl.show();
@@ -349,6 +423,7 @@ export default {
       var currRequest = storeState.currentRequest;
 
       if (this.inAdminMode) {
+
         var comment = $("#generalAdminComment").val();
         comment = comment.trim();
         if (comment != null && comment != "") {
@@ -358,6 +433,17 @@ export default {
             delete currRequest.generalAdminComment;
           } catch (err) {}
         }
+
+        var notes = $("#generalPreparationNotes").val();
+        notes = notes.trim();
+        if (notes != null && notes != "") {
+          currRequest.generalPreparationNotes = notes;
+        } else if (currRequest.generalPreparationNotes != undefined) {
+          try {
+            delete currRequest.generalPreparationNotes;
+          } catch (err) {}
+        }        
+
       }
 
       var requestsUrl = apiMgr.getRequestsUrl();
