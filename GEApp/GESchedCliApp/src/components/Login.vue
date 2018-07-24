@@ -81,7 +81,7 @@
 import axios from 'axios'
 import * as apiMgr from '@/common/apiMgr.js';
 import * as localCacheMgr from '@/common/localCacheMgr.js';
-import * as textTranformer from '@/common/textTranformer.js';
+import * as textTransformer from '@/common/textTransformer.js';
 import { validatePrompts, inferNumOfRequestScreens } from '@/common/requestMgr.js'
 
 export default {  
@@ -176,7 +176,7 @@ export default {
                 .then(res => {
                     console.log("getDefAppConfig return status: " + res.status);
 
-                    vm.$store.state.appConfig = textTranformer.tranformAppConfig(res.data);
+                    vm.$store.state.appConfig = textTransformer.transformAppConfig(res.data);
                     vm.isFetchingDefAppConfig = false;
                 })
                 .catch((err) => {
@@ -218,7 +218,7 @@ export default {
                 .then(res => {
                     console.log("getNotesUrl return status: " + res.status);
 
-                    vm.$store.state.notes = textTranformer.tranformNotes(res.data);
+                    vm.$store.state.notes = textTransformer.transformNotes(res.data);
                     vm.isFetchingNotes = false;
                 })
                 .catch((err) => {

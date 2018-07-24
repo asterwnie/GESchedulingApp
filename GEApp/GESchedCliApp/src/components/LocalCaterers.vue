@@ -59,7 +59,7 @@
 <script>
 import axios from 'axios'
 import * as apiMgr from '@/common/apiMgr.js';
-import * as textTranformer from '@/common/textTranformer.js';
+import * as textTransformer from '@/common/textTransformer.js';
 
 export default {
   data () {
@@ -111,7 +111,7 @@ export default {
           .then(res => {
               console.log("getCaterersUrl return status: " + res.status);
 
-              vm.$store.state.caterers = textTranformer.tranformCaterers(res.data);
+              vm.$store.state.caterers = textTransformer.transformCaterers(res.data);
               vm.isFetchingCaterers = false;
           })
           .catch((err) => {

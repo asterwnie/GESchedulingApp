@@ -1,5 +1,5 @@
 
-export const tranformMetaTags = (text) => {
+export const transformMetaTags = (text) => {
     //debugger; // Uncomment to trigger breakpoint.
 
     var htmlLinkTmpl = '<a href="{0}" target="_blank"><span class="far fa-paper-plane fa-sm"></span></a>';
@@ -7,7 +7,7 @@ export const tranformMetaTags = (text) => {
     var transformedText = text;
 
     // Uses Regular Expression to get all URLs in [] brackets. e.g. [http://www.ge.com]
-    var bracketedLinks = text.match(/\[([^\]]*)\]/);
+    var bracketedLinks = text.match(/\[([^\]]*)\]/g);
 
     // For each bracketed link, trim the [ and ] to get just the url.
     // And then replace the [url] with: <a href="url" target="_blank">website</a>
@@ -32,20 +32,54 @@ export const tranformMetaTags = (text) => {
 }
 
 
-export const tranformAsMailToBobyText = (text) => {
-    //ToDo: replace each space with %20 and each [line-break] with %0D%0A
+export const transformAsMailToBodyText = (text) => {
+    //debugger; // Uncomment to trigger breakpoint.
+
+    
     var transformedText = text;
+
+    // Replace each space with %20
+    //transformedText.replace(/\s/g, "%20"); //This regex doesn't work for some reason.
+    var spaces = text.match(/\s/g);
+
+    if (spaces != null) {
+        spaces.forEach((space, index) => {
+                transformedText = transformedText.replace(space, "%20");
+        });
+    }
+
+    // Replace each [line-break] with %0D%0A
+    // Uses Regular Expression to get all URLs in [] brackets. e.g. [http://www.ge.com]
+    var bracketedStrings = text.match(/\[([^\]]*)\]/g);
+
+    // For each bracketed link, trim the [ and ] to get just the string inside.
+    if (bracketedStrings != null) {
+        bracketedStrings.forEach((bracketedString, index) => {
+            console.log(`Detected bracketed String: %{bracketedString}`);
+
+            //if a line break is detected, replace it
+            if (bracketedString != null && bracketedString.toLowerCase().indexOf("[line-break") > -1) {
+                let lineBreakCode = '%0D%0A';
+                transformedText = transformedText.replace(bracketedString, lineBreakCode);
+                console.log(`The transformed text: ${transformedText}`);
+            } else {
+                // Remove any remaining []
+                transformedText = transformedText.replace(bracketedString, "");
+            }
+        });
+    }
+   
 
     return transformedText;
 }
 
 
-export const tranformNotes = (notes) => {
+export const transformNotes = (notes) => {
     //debugger; // Uncomment to trigger breakpoint.
 
     notes.forEach((note, index) => {
         var text = note.text;
-        var transfromedText = tranformMetaTags(text);
+        var transfromedText = transformMetaTags(text);
         note.text = transfromedText;
       });
 
@@ -53,12 +87,12 @@ export const tranformNotes = (notes) => {
 }
 
 
-export const tranformCaterers = (caterers) => {
+export const transformCaterers = (caterers) => {
     //debugger; // Uncomment to trigger breakpoint.
 
     caterers.forEach((caterer, index) => {
         var text = caterer.website;
-        var transfromedText = tranformMetaTags(text);
+        var transfromedText = transformMetaTags(text);
         caterer.website = transfromedText;
       });
 
@@ -66,19 +100,19 @@ export const tranformCaterers = (caterers) => {
 }
 
 
-export const tranformAppConfig = (appConfig) => {
-    debugger; // Uncomment to trigger breakpoint.
+export const transformAppConfig = (appConfig) => {
+    //debugger; // Uncomment to trigger breakpoint.
 
 
     var appConfigSettings = Object.getOwnPropertyNames(appConfig);
 
     appConfigSettings.forEach((setting, index) => {
         //ToDo: Uncomment to allow EmailTemplate transformation.
-        //if (property.indexOf('EmailTemplate') > -1) {
+        if (setting.indexOf('EmailTemplate') > -1) {
             let originalText = appConfig[setting];
-            var transformedText = tranformAsMailToBobyText(originalText);
+            var transformedText = transformAsMailToBodyText(originalText);
             appConfig[setting] = transformedText;
-        //}
+        }
     });
 
     return appConfig;

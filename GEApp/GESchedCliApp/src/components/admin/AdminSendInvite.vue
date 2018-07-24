@@ -66,12 +66,14 @@ export default {
     return {
         hasFailure: false,
         failureMessage: "",
+
+        hasBeenActivated: false,
+
         previewRequestNum: 3,
         recipientEmail: "",
         recipientName: "",
-        emailStringDataRaw: "",
-        emailStringDataDisplay: "",
         emailStringDataExport: "",
+        emailStringDataDisplay: "",
         canEmail: false,
     }
   },
@@ -82,7 +84,7 @@ export default {
         },
         viewDescription() {
         return this.$store.state.appConfig.adminHomeViewDescription; 
-        },
+        }
     },
 
     activated() {
@@ -97,15 +99,16 @@ export default {
         this.$store.state.currentViewTitle = this.title;
         this.$store.state.enableNavBar = true;
         
-
+        vm.hasBeenActivated = true;
         vm.recipientName = "";
         vm.recipientEmail = "";
     },
 
     updated(){
-        let vm = this;
-        $("#emailPreview")[0].value = vm.emailStringDataDisplay;
-
+        if(this.hasBeenActivated){
+            let vm = this;
+            $("#emailPreview")[0].value = vm.emailStringDataDisplay;
+        }
     },
 
     methods: {
@@ -143,14 +146,17 @@ export default {
             if(vm.recipientName != "" && vm.recipientEmail != ""){
 
                 let isValid = vm.validateEmailString(vm.recipientEmail);
+                let adminName = vm.$store.state.currentAdminUser.name;
                 
                 if(isValid){
                     vm.hasFailure = false;
-                    //the location of this will be different. it is in .state for debugging
-                    vm.emailStringDataRaw = vm.$store.state.sendInviteEmailTemplate.replace('--RECIPIENTNAME--', vm.recipientName).replace('--RECIPIENTEMAIL--', vm.recipientEmail).replace('--ACCESSCODE--', vm.$store.state.tempAccessCode);
+
+                    //replace email and name (and access code)
+                    vm.emailStringDataExport = vm.$store.state.appConfig.sendInviteEmailTemplate.replace('--RECIPIENTNAME--', vm.recipientName).replace('--RECIPIENTEMAIL--', vm.recipientEmail).replace('--ACCESSCODE--', vm.$store.state.tempAccessCode).replace('--ADMINNAME--', adminName);
                     
-                    vm.emailStringDataDisplay = vm.emailStringDataRaw.replace(/\#/g, '\n');
-                    vm.emailStringDataExport = vm.emailStringDataRaw.replace(/\#/g, '%0D%0A');
+                    //reformat for display in preview
+                    vm.emailStringDataDisplay = vm.emailStringDataExport.replace(/%0D%0A/g, '\n').replace(/%20/g, ' ');
+
                     $("#emailPreview")[0].disabled = false;
                     vm.canEmail = true;
                 }

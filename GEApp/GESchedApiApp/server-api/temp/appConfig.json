@@ -63,5 +63,10 @@
 
     "adminHomeViewDescription": "",
 
-    "adminRequestViewTitle": "Admin Requests"
+    "adminRequestViewTitle": "Admin Requests",
+
+    "sendInviteEmailTemplate":
+    "Hello, --RECIPIENTNAME--![line-break]--ADMINNAME-- would like to invite you to access the GE Scheduling Utility.[line-break][line-break]Access Code: --ACCESSCODE--[line-break][line-break]To access the GE Scheduling Utility, paste this link into your browser: --APPLINK--[line-break]Note that the utility is still in development, and any feedback you may have can be sent to: --FEEDBACKEMAIL--",
+
+    "addAdminEmailTemplate": ""
 }
