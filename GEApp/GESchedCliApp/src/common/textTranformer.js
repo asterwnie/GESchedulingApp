@@ -32,6 +32,14 @@ export const tranformMetaTags = (text) => {
 }
 
 
+export const tranformAsMailToBobyText = (text) => {
+    //ToDo: replace each space with %20 and each [line-break] with %0D%0A
+    var transformedText = text;
+
+    return transformedText;
+}
+
+
 export const tranformNotes = (notes) => {
     //debugger; // Uncomment to trigger breakpoint.
 
@@ -55,4 +63,23 @@ export const tranformCaterers = (caterers) => {
       });
 
     return caterers;
+}
+
+
+export const tranformAppConfig = (appConfig) => {
+    debugger; // Uncomment to trigger breakpoint.
+
+
+    var appConfigSettings = Object.getOwnPropertyNames(appConfig);
+
+    appConfigSettings.forEach((setting, index) => {
+        //ToDo: Uncomment to allow EmailTemplate transformation.
+        //if (property.indexOf('EmailTemplate') > -1) {
+            let originalText = appConfig[setting];
+            var transformedText = tranformAsMailToBobyText(originalText);
+            appConfig[setting] = transformedText;
+        //}
+    });
+
+    return appConfig;
 }

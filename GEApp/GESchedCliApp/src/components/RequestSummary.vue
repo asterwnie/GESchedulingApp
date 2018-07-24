@@ -376,7 +376,7 @@ export default {
           if (res.status == 201 && res.data != null) {
               var requestCreated = res.data;
 
-              localCacheMgr.uncacheItem("workingNewRequest");
+              localCacheMgr.uncacheItem(storeState.loginContext.requesterEmail+"-WorkingNewRequest");
               storeState.currentRequest = null;
               storeState.selectedRoom = null;
 
@@ -420,7 +420,7 @@ export default {
           if (res.status == 200 && res.data != null) {
               var requestUdated = res.data;
 
-              localCacheMgr.uncacheItem("revisingRequest-" + storeState.currentRequest._id);          
+              localCacheMgr.uncacheItem(storeState.loginContext.requesterEmail+"-RevisingRequest-" + storeState.currentRequest._id);          
               storeState.currentRequest = null;
               storeState.selectedRoom = null;
 
@@ -459,7 +459,7 @@ export default {
       this.$store.state.selectedRoom = null;
 
       if(this.$store.state.inAdminMode){
-        this.$router.push("/admin/requests");
+        this.$router.push("/admin/home");
       } else {
         this.$router.push("/home");
       }

@@ -10,7 +10,7 @@
 
               <template v-if="(requestPrompt.inputType.ctrlType == 'text' && requestPrompt.screenNum == currentScreenNum)"> 
                 <text-input 
-                  :inAdminMode="inAdminMode"
+                  :inAdminMode="inAdminMode&&!isNewRequest"
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
                   :promptLabel="requestPrompt.label"
@@ -20,7 +20,7 @@
 
               <template v-if="(requestPrompt.inputType.ctrlType == 'textArea' && requestPrompt.screenNum == currentScreenNum)"> 
                 <text-area-input 
-                  :inAdminMode="inAdminMode"
+                  :inAdminMode="inAdminMode&&!isNewRequest"
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
                   :promptLabel="requestPrompt.label"
@@ -30,7 +30,7 @@
 
               <template v-if="(requestPrompt.inputType.ctrlType == 'email' && requestPrompt.screenNum == currentScreenNum)"> 
                 <email-input 
-                  :inAdminMode="inAdminMode"
+                  :inAdminMode="inAdminMode&&!isNewRequest"
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
                   :promptLabel="requestPrompt.label" 
@@ -40,7 +40,7 @@
 
               <template v-if="(requestPrompt.inputType.ctrlType == 'number' && requestPrompt.screenNum == currentScreenNum)"> 
                 <number-input 
-                  :inAdminMode="inAdminMode"
+                  :inAdminMode="inAdminMode&&!isNewRequest"
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
                   :promptLabel="requestPrompt.label" 
@@ -50,7 +50,7 @@
 
               <template v-if="(requestPrompt.inputType.ctrlType == 'yesNoWithComment' && requestPrompt.screenNum == currentScreenNum)"> 
                 <yes-no-with-comment-input 
-                  :inAdminMode="inAdminMode"
+                  :inAdminMode="inAdminMode&&!isNewRequest"
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
                   :promptLabel="requestPrompt.label" 
@@ -60,7 +60,7 @@
 
               <template v-if="(requestPrompt.inputType.ctrlType == 'yesNo' && requestPrompt.screenNum == currentScreenNum)"> 
                 <yes-no-input 
-                  :inAdminMode="inAdminMode"
+                  :inAdminMode="inAdminMode&&!isNewRequest"
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
                   :promptLabel="requestPrompt.label" 
@@ -70,7 +70,7 @@
 
               <template v-if="(requestPrompt.inputType.ctrlType == 'selectRoom' && requestPrompt.screenNum == currentScreenNum)"> 
                 <event-location-input
-                  :inAdminMode="inAdminMode" 
+                  :inAdminMode="inAdminMode&&!isNewRequest" 
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
                   :promptLabel="requestPrompt.label" 
@@ -81,7 +81,7 @@
               <!--WORK NEEDED-->
               <template v-if="(requestPrompt.inputType.ctrlType == 'eventSchedule' && requestPrompt.screenNum == currentScreenNum)"> 
                 <event-date-time-input 
-                  :inAdminMode="inAdminMode"
+                  :inAdminMode="inAdminMode&&!isNewRequest"
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
                   :promptLabel="requestPrompt.label" 
@@ -231,7 +231,7 @@ export default {
     storeState.enableNavBar = true;
 
     if (storeState.currentRequest == null) {
-      var workingNewRequest = localCacheMgr.getCachedItem("workingNewRequest");
+      var workingNewRequest = localCacheMgr.getCachedItem(storeState.loginContext.requesterEmail+"-WorkingNewRequest");
       if (workingNewRequest != undefined && workingNewRequest != null) {
 
         storeState.currentRequest = workingNewRequest;
@@ -243,7 +243,7 @@ export default {
         util.logDebugMsg('Set startTimeCtrl and endTimeCtrl with defaultTimeOption: ' + this.$store.state.defaultTimeOption);   
       }
     } else {
-      var revisingRequest = localCacheMgr.getCachedItem("revisingRequest-" + storeState.currentRequest._id);
+      var revisingRequest = localCacheMgr.getCachedItem(storeState.loginContext.requesterEmail+"-RevisingRequest-" + storeState.currentRequest._id);
       if (revisingRequest != undefined && revisingRequest != null) {
         storeState.currentRequest = revisingRequest;
       }
@@ -263,7 +263,7 @@ export default {
       storeState.currentRequest["eventGEContactPersonPhone"] = this.currentUserPhone;
     }
 
-    bindUiValuesFromRequest(storeState.currentRequest, this.currentScreenNum, this.inAdminMode);
+    bindUiValuesFromRequest(storeState.currentRequest, this.currentScreenNum, (this.inAdminMode && !this.isNewRequest));
 
     var emailCtrl = $("#eventGEContactPersonEmail");
     if (emailCtrl != null) {
@@ -312,9 +312,9 @@ export default {
       
       try {
         if (this.isNewRequest) {
-          localCacheMgr.cacheItem("workingNewRequest", storeState.currentRequest);
+          localCacheMgr.cacheItem(storeState.loginContext.requesterEmail+"-WorkingNewRequest", storeState.currentRequest);
         } else {
-          localCacheMgr.cacheItem("revisingRequest-" + storeState.currentRequest._id, storeState.currentRequest);
+          localCacheMgr.cacheItem(storeState.loginContext.requesterEmail+"-RevisingRequest-" + storeState.currentRequest._id, storeState.currentRequest);
         }
       } catch (err) {
         console.log("Not able to locally cache the working request");

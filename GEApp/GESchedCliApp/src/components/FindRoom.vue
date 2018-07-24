@@ -493,7 +493,9 @@ export default {
         vm.$store.state.selectedRoom = null;
         //cache currentRequest
         try {
-            localCacheMgr.cacheItem("workingNewRequest", vm.$store.state.currentRequest);
+            localCacheMgr.cacheItem(
+              vm.$store.state.loginContext.requesterEmail+"-WorkingNewRequest", 
+              vm.$store.state.currentRequest);
         } catch (err) {
           console.log("Not able to locally cache the working request");
         }
