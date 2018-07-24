@@ -75,7 +75,7 @@
                 <button type="button" width="100%" v-on:click="collapseMenu" class="btn btn-secondary" data-dismiss="modal" @click="$router.push('/findroom')">Find Room</button>
               </div>
               <div class="form-group">
-                <button type="button" width="100%" v-on:click="collapseMenu" class="btn btn-secondary" data-dismiss="modal" @click="$router.push('/dofirst')">New Request</button>
+                <button type="button" width="100%" v-on:click="collapseMenu" class="btn btn-secondary" data-dismiss="modal" @click="$router.push('/dofirst/true')">New Request</button>
               </div>
               <div class="form-group">
                 <button type="button" width="100%" v-on:click="collapseMenu" class="btn btn-secondary" data-dismiss="modal" @click="$router.push('/guestwifi')">Guest WiFi</button>

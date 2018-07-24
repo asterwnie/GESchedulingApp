@@ -49,6 +49,11 @@ export default {
   activated() {
     console.log('DoFirst.vue activated.');
 
+    if (this.$route.params.isNewRequest != null && this.$route.params.isNewRequest == "true") {
+      this.$store.state.currentRequest = null;
+      this.$store.state.selectedRoom = null;
+    }
+
     if (this.inAdminMode) {
        this.$router.push('/request/1'); // In Admin mode, no need to show these notes.
     }
