@@ -9,7 +9,7 @@
               Request Summary &nbsp;&nbsp;<span class="badge badge-warning" v-if="canEditRequest && inAdminMode" :adminCommentCtrlId="adminCommentCtrlId" @click.prevent="onAddAdminComment"><span class="far fa-comment-dots"></span></span>
             </div>
 
-            <div v-if="canEditRequest">  
+            <div v-if="true">  
               <label id="generalAdminCommentLabel" for="generalAdminComment" style="display:none;">&nbsp;&nbsp;General Comment</label>
               <textarea id="generalAdminComment" style="display:none; border: 2px solid orange;" placeholder="Add General Comment" class="is-admin-comment form-control form-control-sm"></textarea>
             </div>
@@ -187,8 +187,48 @@ export default {
 
     if (this.canEditRequest) {
       storeState.currentViewTitle = storeState.appConfig.submitRequestViewTitle;
+
+      var adminCtrlLabel = $("#generalAdminCommentLabel");
+      var adminCtrl = $("#generalAdminComment");
+      adminCtrl.prop('readonly', false);
+      adminCtrl.prop('disabled', false);
+
+      var needToShow = false;
+
+      var adminCtrlVal = adminCtrl.val();
+      if (adminCtrlVal != null && adminCtrlVal != "") {
+        needToShow = true;
+      }
+
+      if (needToShow && !adminCtrl.is(':visible')) {
+        adminCtrlLabel.show();
+        adminCtrl.show();
+      } else {
+        adminCtrlLabel.hide();
+        adminCtrl.hide();
+      }
+       
     } else {
       storeState.currentViewTitle = storeState.appConfig.viewRequestViewTitle;
+
+      var adminCtrlLabel = $("#generalAdminCommentLabel");
+      var adminCtrl = $("#generalAdminComment");
+      adminCtrl.prop('readonly', true);
+      adminCtrl.prop('disabled', true);
+      adminCtrl.css("background-color", "white")
+
+      var adminCtrlVal = adminCtrl.val();
+      if (adminCtrlVal != null && adminCtrlVal != "") {
+        needToShow = true;
+      }
+
+      if (needToShow && !adminCtrl.is(':visible')) {
+        adminCtrlLabel.show();
+        adminCtrl.show();
+      } else {
+        adminCtrlLabel.hide();
+        adminCtrl.hide();
+      }
     }
 
     storeState.enableNavBar = true;
