@@ -44,7 +44,7 @@
     <nav id="myNavmenu" class="navmenu navmenu-default navmenu-fixed-right offcanvas bg-secondary" role="navigation">
       <div style="width:100%;" class="text-light mx-auto">
         <div style="width:100%; text-align:center; margin:20px; margin-left:0px; margin-bottom:30px">
-          <img style="height:100px; width:auto" src="http://2015nzusergroup.regstep.com/images/logos/ge-logo-white.png"/>
+          <img style="height:50px; width:auto" src="@/assets/ge-monogram-white.png"/>
         </div>
         <hr>
         <div class="nav">

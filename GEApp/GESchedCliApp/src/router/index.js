@@ -19,6 +19,9 @@ import About from '@/components/About.vue'
 //import AdminCommon from '@/components/AdminCommon.vue'
 import AdminHome from '@/components/admin/AdminHome.vue'
 import AdminMaintenance from '@/components/admin/AdminMaintenance.vue'
+import AdminAdd from '@/components/admin/AdminAdd.vue'
+import AdminUpdate from '@/components/admin/AdminUpdate.vue'
+import AdminSendInvite from '@/components/admin/AdminSendInvite.vue'
 
 Vue.use(Router)
 
@@ -104,6 +107,21 @@ export default new Router({
       path: '/admin/maintenance',
       name: 'AdminMaintenance',
       component: AdminMaintenance
+    },
+    {
+      path: '/admin/addadmin',
+      name: 'AdminAdd',
+      component: AdminAdd
+    },
+    {
+      path: '/admin/updatedata',
+      name: 'AdminUpdate',
+      component: AdminUpdate
+    },
+    {
+      path: '/admin/sendinvite',
+      name: 'AdminSendInvite',
+      component: AdminSendInvite
     },
   ]
 })

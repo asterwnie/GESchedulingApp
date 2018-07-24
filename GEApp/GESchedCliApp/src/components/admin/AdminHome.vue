@@ -1,4 +1,27 @@
-<template>  
+<template>
+<div>
+<!-- Modal -->
+<div class="modal" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Delete Request</h5>
+        <button @click.prevent="onDeleteModalDeselect" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete this request? This action cannot be undone.</p>
+        <div id="selectedRequestUI"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" @click.prevent="onDeleteModalDeselect">Close</button>
+        <button type="button" class="btn btn-primary" @click.prevent="onDeleteRequest(requestToDelete)">Confirm Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Page Contents-->
 <div class="container-fluid">
     <div class="row">
         <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
@@ -134,7 +157,7 @@
             <div v-else>
                 <div style="height:10px;"></div>
                 <div class="container" style="width:100%; display:flex; flex-wrap:wrap;">
-                    <div class="request-item card col-12 col-lg-6 col-xl-4" v-for="(requestItem, index) in requestsPreview" :key="index">
+                    <div :class="[requestItem._id, 'request-item', 'card', 'col-12', 'col-lg-6', 'col-xl-4']" v-for="(requestItem, index) in requestsPreview" :key="index">
                         <div class="card-body">
                             <h6 class="card-title">{{requestItem.eventTitle}}</h6>
                             <h6 class="card-title">Status:&nbsp;<span :class="requestItem.processingStatus">{{requestItem.processingStatusLabel}}</span></h6>
@@ -149,7 +172,7 @@
                             <div v-else>
                                 <button :id="requestItem._id" type="button" @click.prevent="onEditViewRequest" class="disableEdit btn btn-secondary btn-sm float-right">View</button>
                             </div>
-                            <button :id="requestItem._id" type="button" @click.prevent="onDeleteRequest" class="btn btn-danger btn-sm float-left">Delete</button>
+                            <button :id="requestItem._id" type="button" @click.prevent="onDeleteModalSelect" class="btn btn-danger btn-sm float-left">Delete</button>
                         </div>
                     </div>
                 </div>
@@ -200,7 +223,7 @@
                 </div>
                 <div style="height:10px;"></div>
                 <div class="card-group">
-                        <div class="card" style="background-color:#ffb0b0; cursor:pointer; text-align:center;">
+                        <div @click.prevent="$router.push('/admin/updatedata')" class="card" style="background-color:#ffb0b0; cursor:pointer; text-align:center;">
                             <div class="card-body">
                                 <h6 class="card-title">
                                     Update Data&nbsp;&nbsp;<span class="fas fa-chevron-right"></span>
@@ -211,7 +234,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card" style="background-color:#ffb0b0; cursor:pointer; text-align:center;">
+                        <div @click.prevent="$router.push('/admin/sendinvite')" class="card" style="background-color:#ffb0b0; cursor:pointer; text-align:center;">
                             <div class="card-body">
                                 <h6 class="card-title">
                                     Send Invite&nbsp;&nbsp;<span class="fas fa-chevron-right"></span>
@@ -233,7 +256,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card" style="background-color:#ffb0b0; cursor:pointer; text-align:center;">
+                        <div @click.prevent="$router.push('/admin/addadmin')" class="card" style="background-color:#ffb0b0; cursor:pointer; text-align:center;">
                             <div class="card-body">
                                 <h6 class="card-title">
                                     Add Admin&nbsp;&nbsp;<span class="fas fa-chevron-right"></span>
@@ -261,6 +284,7 @@
         <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
     </div>
 </div> 
+</div>
 </template>
 
 <script>
@@ -281,6 +305,7 @@ export default {
             "approved",
         ],
         requestsQueryString: "",
+        requestToDelete: null,
     }
   },
   
@@ -347,6 +372,12 @@ export default {
                 $(this).addClass('pageNumberButton btn btn-secondary btn-sm');
             }
         });
+    },
+
+    deactivated(){
+        console.log("AdminHome.vue deactivated.");
+        let vm = this;
+        vm.requestToDelete = null;
     },
 
     methods: {
@@ -572,12 +603,12 @@ export default {
 
             },
 
-            onDeleteRequest: function (event){
+            onDeleteRequest(targetId){
                 console.log('AdminHome.vue - onDeleteRequest activate');
                 let vm = this;
 
                 //get request for deletion
-                let currId = event.target.id;                
+                let currId = targetId;                
                 var url = apiMgr.getRequestByIdUrl(currId);
                 console.log(`Home.vue - Query url: ${url}`);
                
@@ -585,6 +616,8 @@ export default {
                     .then(res => {
                         console.log("getRequestsUrl return status: " + res.status);
                         vm.removeRequestPreviewFromLocalCollection(currId);
+                        vm.requestToDelete = null;
+                        $('#deleteModal').modal('hide');
                     })
                     .catch((err) => {
                         if (err.response.status == 400) {
@@ -619,7 +652,29 @@ export default {
                     vm.requestsQueryString += `&processingStatusContains=${statusToQuery}`;
                     vm.updateRequests();
                 }
-            }
+            },
+
+            onDeleteModalSelect: function(event){
+                if(event){
+                    console.log("onDeleteModalSelect activate.");
+                    let vm = this;
+                   
+                    $('#deleteModal').modal('show');
+                    vm.requestToDelete = event.target.id;
+
+                    let currCard = document.getElementsByClassName(vm.requestToDelete)[0].innerHTML;
+                    currCard = currCard.replace(event.target.outerHTML, ""); //get rid of the button in modal
+                    document.getElementById("selectedRequestUI").innerHTML = currCard;
+                }
+            },
+
+            onDeleteModalDeselect(){
+                console.log('onDeleteModalDeselect activated. requestToDelete unset.');
+                let vm = this;
+                vm.requestToDelete = null;
+                $('#deleteModal').modal('hide');
+            },
+
     }
 } 
 </script>

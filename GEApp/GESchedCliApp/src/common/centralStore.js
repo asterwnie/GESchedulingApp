@@ -67,8 +67,11 @@ const store = new Vuex.Store({
 
             requestsUrlTmpl: 'http://{0}:{1}/api/requests'
 
-        }
-  
+        },
+
+        //temp variables for sending invites
+        sendInviteEmailTemplate: "EMAIL TO: --RECIPIENTEMAIL--##Hello, --RECIPIENTNAME--! GE would like to invite you to access the GE Scheduling Utility.##Access Code: --ACCESSCODE--###",
+        tempAccessCode: "ge123",
     }
 })
 

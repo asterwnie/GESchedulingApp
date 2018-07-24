@@ -5,7 +5,7 @@
       <div class="col col-12 col-md-2 col-lg-2"></div>
 
         <div id="adminBar" class="col col-12 col-md-3 col-lg-3 col-xl-2" style="padding-bottom:10px">
-        admin maintenance
+        admin update
         </div>
 
         <div id="adminUI" class="col col-12 col-md-5 col-lg-5 col-xl-6">
