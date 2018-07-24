@@ -94,6 +94,8 @@
             <div class="mb-3">
               <button type="button" class="btn btn-primary btn-sm" @click.prevent="onContinue">Continue Request ></button>
             </div>
+            <br>
+            <br>
           </form>
         </div>
 

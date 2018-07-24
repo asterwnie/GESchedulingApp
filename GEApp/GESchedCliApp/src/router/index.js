@@ -44,7 +44,7 @@ export default new Router({
         component: FindRoom
     },
     {
-      path: '/dofirst',
+      path: '/dofirst/:isNewRequest',
       name: 'DoFirst',
       component: DoFirst
     },

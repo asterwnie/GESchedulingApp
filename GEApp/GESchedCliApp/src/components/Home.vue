@@ -172,13 +172,13 @@ export default {
       console.log('Home.vue - onNewRequest activate');
       this.$store.state.currentRequest = null;
       localCacheMgr.uncacheItem("workingNewRequest");
-      this.$router.push('/dofirst');
+      this.$router.push('/dofirst/true');
     },
 
     onContinueRequest: function(event) {
       this.$store.state.currentRequest = null;
       console.log('Home.vue - onNewRequest activate');
-      this.$router.push('/dofirst');
+      this.$router.push('/dofirst/true');
     },
 
     onEditViewRequest: function(event) {

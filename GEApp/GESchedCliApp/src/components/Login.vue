@@ -1,13 +1,10 @@
 <template>
-
     <div class="containerDiv container-fluid" style="width:100%">
         <div class="row">
             <div class="col col-sm-1 col-md-2 col-lg-4"></div>
             <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%">
                 <div>
-                    <h4 class="display-8 text-center" v-html="$store.state.appConfig.appTitle"></h4>
-                    <br>
-
+                    <h5 class="display-8 text-center" v-html="$store.state.appConfig.appTitle"></h5>
                     <div>
                         <div class="pagination-centered"><img src="@/assets/ge-monogram.svg" alt="header" /></div>
                         <div id="loading" class="pagination-centered" :hidden="!isLoading||hasFailure">
@@ -17,8 +14,6 @@
                         </div>
                     </div>
                 </div>
-
-                <br>
                 <br>
                 <div id="loginUI" :hidden="isLoading" style="width:100%">
 
@@ -64,7 +59,7 @@
 
                     <br>
                     <div style="color:gray">
-                        <h4 class="text-center" v-html="$store.state.appConfig.siteName"></h4>
+                        <h5 class="text-center" v-html="$store.state.appConfig.siteName"></h5>
                         <h6 class="text-center" v-html="$store.state.appConfig.siteAddress"></h6>
                         <br>
                     </div>

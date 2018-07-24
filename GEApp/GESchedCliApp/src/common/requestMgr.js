@@ -580,7 +580,11 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
                     ctrl.prop('readonly', true);
                     ctrl.prop('disabled', true);
                     ctrl.css("background-color", "lightyellow")
-                } 
+                } else {
+                    ctrl.prop('readonly', false);
+                    ctrl.prop('disabled', false);
+                    ctrl.css("background-color", "lightyellow")
+                }
                 ctrl.show();
             }
 
