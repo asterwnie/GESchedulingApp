@@ -94,6 +94,7 @@
             <div class="mb-3">
               <button type="button" class="btn btn-primary btn-sm" @click.prevent="onContinue">Continue Request ></button>
             </div>
+            <p class="text-danger" :hidden="!hasValidationError">Please correct your input above.</p>
             <br>
             <br>
           </form>
@@ -136,6 +137,12 @@ export default {
     yesNoWithCommentInput: yesNoWithCommentInputCtrl,
     eventLocationInput: eventLocInputCtrl,
     eventDateTimeInput: eventDateTimeInputCtrl
+  },
+
+    data () {
+    return {  
+      hasValidationError: false
+    }
   },
 
   computed: {
@@ -359,6 +366,8 @@ export default {
       
       if (allValid) {
 
+        this.hasValidationError = false;
+
         var nextScreenNum = vm.currentScreenNum + 1;
         if (nextScreenNum <= vm.$store.state.numOfRequestScreens) {
           vm.$router.push('/request/' + nextScreenNum);          
@@ -366,6 +375,8 @@ export default {
           vm.$router.push('/attentionNotes');
         }
         
+      } else {
+        this.hasValidationError = true;
       }
     },
 

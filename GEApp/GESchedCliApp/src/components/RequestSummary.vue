@@ -114,7 +114,7 @@
               @click.prevent="onReturnHome">Return</button>
             <button type="button" class="btn btn-primary btn-sm" 
               @click.prevent="onPrint">Print</button>              
-          </div>
+          </div>         
           <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
           <br>
           <br>
