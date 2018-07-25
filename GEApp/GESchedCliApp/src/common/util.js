@@ -103,10 +103,25 @@ export const getDateTimeParts = (inDateTime) => {
     return dateTimeParts;
 }
 
+
 export const logDebugMsg = (msg) => {
     if (centralStore.state.isInDebugMode) {
         centralStore.state.cliDebugMsgSqeNum += 1;
         $('#debugOutput ul').append("<li>[" + centralStore.state.cliDebugMsgSqeNum + "] " + msg + "</li>");
     }
     console.log(msg);
+}
+
+
+export const makeWorkingNewRequestCacheKey  = (requesterEmail) => {
+    var prefix = requesterEmail.toLowerCase();
+    var key = prefix + "-WorkingNewRequest";
+    return key;
+}
+
+
+export const makeRevisingRequestCacheKey  = (requesterEmail, requestId) => {
+    var prefix = requesterEmail.toLowerCase();
+    var key = prefix + "-RevisingRequest-" + requestId;
+    return key;
 }

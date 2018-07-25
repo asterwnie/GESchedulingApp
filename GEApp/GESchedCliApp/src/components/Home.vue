@@ -93,12 +93,7 @@ export default {
     },
 
     hasWorkingNewRequestCached() {
-      var cached = false;
-      let workingNewRequest = localCacheMgr.getCachedItem(this.$store.state.loginContext.requesterEmail+"-WorkingNewRequest");
-      if (workingNewRequest != null) {
-        cached = true;
-      }
-      return cached;
+      return this.$store.state.hasWorkingNewRequestCache;
     }
 
   },
@@ -114,6 +109,8 @@ export default {
 
     vm.$store.state.currentViewTitle = this.title;
     vm.$store.state.enableNavBar = true;
+
+    this.checkHasWorkingNewRequestCached();
 
     //get requests for current user
     let queryUser = `&requesterEmailContains=${this.$store.state.currentUser.email}`;
@@ -168,10 +165,20 @@ export default {
 
   methods:{
 
+    checkHasWorkingNewRequestCached() {
+      let storeState = this.$store.state;
+      storeState.hasWorkingNewRequestCache = false;
+      let workingNewRequest = localCacheMgr.getCachedItem(util.makeWorkingNewRequestCacheKey(this.$store.state.loginContext.requesterEmail));
+      if (workingNewRequest != null) {
+        storeState.hasWorkingNewRequestCache = true;
+      }
+      workingNewRequest = null;
+    },
+
     onNewRequest: function(event) {
       console.log('Home.vue - onNewRequest activate');
       this.$store.state.currentRequest = null;
-      localCacheMgr.uncacheItem("workingNewRequest");
+      localCacheMgr.uncacheItem(util.makeWorkingNewRequestCacheKey(this.$store.state.loginContext.requesterEmail));
       this.$router.push('/dofirst/true');
     },
 
@@ -190,7 +197,7 @@ export default {
 
       var selectedRequest = null;
 
-      var revisingRequest = localCacheMgr.getCachedItem(storeState.loginContext.requesterEmail+"-RevisingRequest-" + selectedReqId);
+      var revisingRequest = localCacheMgr.getCachedItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, selectedReqId));
       if (revisingRequest != undefined && revisingRequest != null) {
         selectedRequest = revisingRequest;
       } else {

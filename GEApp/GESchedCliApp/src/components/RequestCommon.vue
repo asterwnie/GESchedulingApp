@@ -233,7 +233,7 @@ export default {
     storeState.enableNavBar = true;
 
     if (storeState.currentRequest == null) {
-      var workingNewRequest = localCacheMgr.getCachedItem(storeState.loginContext.requesterEmail+"-WorkingNewRequest");
+      var workingNewRequest = localCacheMgr.getCachedItem(util.makeWorkingNewRequestCacheKey(storeState.loginContext.requesterEmail));
       if (workingNewRequest != undefined && workingNewRequest != null) {
 
         storeState.currentRequest = workingNewRequest;
@@ -245,7 +245,7 @@ export default {
         util.logDebugMsg('Set startTimeCtrl and endTimeCtrl with defaultTimeOption: ' + this.$store.state.defaultTimeOption);   
       }
     } else {
-      var revisingRequest = localCacheMgr.getCachedItem(storeState.loginContext.requesterEmail+"-RevisingRequest-" + storeState.currentRequest._id);
+      var revisingRequest = localCacheMgr.getCachedItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, storeState.currentRequest._id));
       if (revisingRequest != undefined && revisingRequest != null) {
         storeState.currentRequest = revisingRequest;
       }
@@ -314,9 +314,9 @@ export default {
       
       try {
         if (this.isNewRequest) {
-          localCacheMgr.cacheItem(storeState.loginContext.requesterEmail+"-WorkingNewRequest", storeState.currentRequest);
+          localCacheMgr.cacheItem(util.makeWorkingNewRequestCacheKey(storeState.loginContext.requesterEmail), storeState.currentRequest);
         } else {
-          localCacheMgr.cacheItem(storeState.loginContext.requesterEmail+"-RevisingRequest-" + storeState.currentRequest._id, storeState.currentRequest);
+          localCacheMgr.cacheItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, storeState.currentRequest._id), storeState.currentRequest);
         }
       } catch (err) {
         console.log("Not able to locally cache the working request");

@@ -206,6 +206,7 @@
 
 <script>
 import axios from 'axios';
+import * as util from '@/common/util.js';
 import * as apiMgr from '@/common/apiMgr.js';
 import * as localCacheMgr from '@/common/localCacheMgr.js';
 
@@ -494,7 +495,7 @@ export default {
         //cache currentRequest
         try {
             localCacheMgr.cacheItem(
-              vm.$store.state.loginContext.requesterEmail+"-WorkingNewRequest", 
+              util.makeWorkingNewRequestCacheKey(vm.$store.state.loginContext.requesterEmail), 
               vm.$store.state.currentRequest);
         } catch (err) {
           console.log("Not able to locally cache the working request");
