@@ -68,9 +68,6 @@ function extractAccessCodeItems(fileData) {
     var newAccessCode = null;
     var errorEncountered = false;
     var currentItemSeq = 0;
-    var newAccessCodes = null;
-    
-    
     
 
    /// UPDATE to ACCESS CODE
@@ -83,60 +80,80 @@ function extractAccessCodeItems(fileData) {
 
        //test if the line is a new accessCode
        directive = "--AccessCode."; 
-       if (line.search(directive) > -1) {            
-           // Complete and store the previous pending notes object if exist.
-           if (newAccessCodes != null) {
-               var success = validateAndCollectAccessCode(newAccessCode, accessCodeItems);
-               if (!success) {
-                   errorEncountered = true;
-                   return false; // Return false to stop additional line processing.
-               }
-           }
-        }
-        var accessCodetype = line.replace(directive, "").trim();
-        // Start a new note instance to gather its properties.
-        if (accessCodetype != "") {
-
-            currentItemSeq += 1;
-
-            newAccessCode = new AccessCode({ 
-                seqNum: currentItemSeq,
-                type: accessCodetype, 
-            });
+       if (line.search(directive) > -1) {
+            // Complete and store the previous pending notes object if exist.
+            if (newAccessCode != null) {
+                var success = validateAndCollectAccessCodes(newAccessCode, accessCodeItems);
+                if (!success) {
+                    errorEncountered = true;
+                    return false; // Return false to stop additional line processing.
+                }
+            }
             
-        } else {
-            logger.error("ERROR: Code is required!");
-            errorEncountered = true;
-            return false; // Return false to stop additional line processing.
-        }
-        lineProcessed = true;
-        return true; // Return true to continue processing for the next line item.
-    })
+            var accessCodetype = line.substring(0, line.indexOf(":")).replace(directive, "").trim();
+            var accessCode = line.substring(line.indexOf(":")+1, line.length).trim();
+            // Start a new access code instance to gather its properties.
+            if (accessCodetype == "ForUsers") {
 
-    directive = "--Admin.";  ///For the Admin directive
-    if (line.search(directive) > -1) {            
-        if (newAdmin != null) {
-            var success = validateAndCollectAdmin(newAdmin, adminItems);
-            if (!success) {
+                currentItemSeq += 1;
+
+                newAccessCode = new AccessCode({
+                    seqNum: currentItemSeq,
+                    code: accessCode, 
+                });
+                
+            } else if (accessCodetype == "ForAdministrators") {
+
+                currentItemSeq += 1;
+
+                newAccessCode = new AccessCode({
+                    seqNum: currentItemSeq,
+                    code: accessCode, 
+                    isForAdmin: true,
+                });
+
+            } else {
+                logger.error("ERROR: Code type is required!");
                 errorEncountered = true;
                 return false; // Return false to stop additional line processing.
-            }}}
+            }
 
-     var admin = line.replace(directive, "").trim();
-     // Start a new note instance to gather its properties.
-         if (admin != "") {
+            lineProcessed = true;
+        }
 
-         currentItemSeq += 1;
+        /* directive = "--Admin.";  ///For the Admin directive
+        if (line.search(directive) > -1) {            
+            if (newAdmin != null) {
+                var success = validateAndCollectAdmin(newAdmin, adminItems);
+                if (!success) {
+                    errorEncountered = true;
+                    return false; // Return false to stop additional line processing.
+                }
+            }
 
-         newAdmin = new Admin({ 
-             seqNum: currentItemSeq,
-             email: admin, 
-         });
-        } 
-         lineProcessed = true;
-     
+            var accessCodetype = line.replace(directive, "").trim();
+            // Start a new access code instance to gather its properties.
+            if (accessCodetype != "") {
 
+                currentItemSeq += 1;
+
+                newAccessCode = new AccessCode({
+                    seqNum: currentItemSeq,
+                    type: accessCodetype, 
+                });
+                
+            } else {
+                logger.error("ERROR: Code is required!");
+                errorEncountered = true;
+                return false; // Return false to stop additional line processing.
+            }
+
+            lineProcessed = true;
+        } */
         
+
+        return true; // Return true to continue processing for the next line item.
+    })
 
     // Check to see if there's one last pending new one to be collected.
     if (errorEncountered == false && newAccessCode != null) {
@@ -148,7 +165,7 @@ function extractAccessCodeItems(fileData) {
 
     result = {
         success: true,
-        accessCode: accessCodeItems
+        accessCodes: accessCodeItems
     }
 
     if (errorEncountered == true) {
@@ -159,11 +176,11 @@ function extractAccessCodeItems(fileData) {
 }
 
 
-function validateAndCollectAccessCode(newAccessCode, accessCodeItems) {
+function validateAndCollectAccessCodes (newAccessCode, accessCodeItems) {
     var valid = validateAccessCode(newAccessCode);
     if (valid) {
         accessCodeItems.push(newAccessCode);
-        totalNumOfaccessCodes += 1;
+        totalNumOfAccessCodes += 1;
         return true;
     } else {
         return false;

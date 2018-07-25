@@ -76,7 +76,7 @@ function extractHotelItems(fileData) {
         logger.info(`Processing block: ${block}`);
 
         directive = "--Hotel.Name:";
-        if (block.search(directive) > -1) {            
+        if (block.search(directive) > -1) {           
             // Complete and store the previous pending hotel object if exist.
             if (newHotel != null) {
                 var success = validateAndCollectHotel(newHotel, hotelItems);

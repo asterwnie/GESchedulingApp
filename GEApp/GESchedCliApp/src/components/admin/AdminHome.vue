@@ -175,7 +175,7 @@
                             <div class="card-text">{{requestItem.locationOfEvent.name}}</div>
                             <div class="card-text">{{requestItem.eventSchedule}}</div>
                             <br>
-                            <div class="card-text text-muted">Last updated:&nbsp;{{requestItem.updatedAt.substring(0, requestItem.updatedAt.indexOf("T"))}}</div>
+                            <div class="card-text text-muted">Last updated:&nbsp;{{requestItem.updatedAtDisp}}</div>
                             <div v-if="requestItem.adminCanEdit">
                                 <button :id="requestItem._id" cursor="pointer" type="button" @click.prevent="onEditViewRequest" class="enableEdit btn btn-warning btn-sm float-right">Edit</button>
                             </div>
@@ -298,6 +298,7 @@ export default {
         } 
         });
 
+
         vm.getNumPages();
         vm.updateRequests();
         vm.$forceUpdate();
@@ -381,6 +382,7 @@ export default {
             console.log(url);
 
 
+
             //get requests
             axios.get(url)
                 .then(res => {
@@ -393,7 +395,9 @@ export default {
                     }
                     var foundRequests = res.data;
 
+
                     $.each(foundRequests, function (index, foundRequest) {
+                        foundRequest.updatedAtDisp = util.getDateTimeDisplay(foundRequest.updatedAt);
                         vm.$store.state.currentRequestsPreview.push(foundRequest);
                     });
                     
@@ -443,7 +447,7 @@ export default {
                 }
             });
 
-            //gather requester email to query
+            //gather requester name to query
             var requesterNameToQuery = '';
             var requesterNameSet = $("#inputRequesterName input");
             

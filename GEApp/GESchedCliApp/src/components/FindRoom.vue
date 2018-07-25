@@ -405,7 +405,9 @@ export default {
                     while(vm.$store.state.roomSearchResult.length > 0) {
                       vm.$store.state.roomSearchResult.pop();
                     }
+
                     var foundRooms = res.data;
+                    
                     $.each(foundRooms, function (index, room) {
                       vm.$store.state.roomSearchResult.push(room);
                     });

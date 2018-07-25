@@ -6,7 +6,7 @@ const getDbConnection = require(`${appRoot}/server-api/databaseManager`);
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// The schema definition for an accessCode  entity
+// The schema definition for an accessCode entity
 
 const AccessCodeSchema = new Schema({
 
@@ -17,9 +17,13 @@ const AccessCodeSchema = new Schema({
     },
     
     isForAdmin: {
-        type: String,
+        type: Boolean,
     
     },
+
+    seqNum: {
+        type: Number
+    }
 },
 {
     timestamps: true // auto-add createdAt and updatedAt
