@@ -7,27 +7,28 @@ const appRoot = require('app-root-path');
 const mongoose = require('mongoose'); // Helper libray for MongoDB. http://mongoosejs.com/ 
 const appConfig = require(`${appRoot}/server.config`); // Load app configuration settings server.config.js
 const logger = require(`${appRoot}/server-api/logger`); // Create logging helper
-const getAccessCode = require(`${appRoot}/server-api/models/CatererModel`);
+const getAccessCode = require(`${appRoot}/server-api/models/accessCodeModel`);
+
 
 mongoose.Promise = global.Promise;
 
 const args = process.argv; 
 var siteCode = appConfig.defaultSite; // The current default in HLS-MA in server.config.js
 
-// if a site code is passed in on the command-block then use it. For example:
+// if a site code is passed in on the command-line then use it. For example:
 // node ./server-api/dataImports/importaccessCodes.js HLS-MA
 // Note: currently in VS Code debug mode you have to rely on using the appConfig.defaultSite setting.
 if (args.length == 3 && args[2] != null) { siteCode = args[2]; }
 
-const fileName = `Access-HLS-MA-${siteCode}.txt`;
+const fileName = `access-${siteCode}.txt`;
 
-let accessCode = getAcessCode(siteCode);
+let AccessCode = getAccessCode(siteCode);
 
-var totalNumOfAccessCode = 0;
+var totalNumOfAccessCodes = 0;
 var totalNumOfAccessCodesCreated = 0;
 
 const delyInSecs = 3;
-const timer = setInterval(() => doAccessCodeImport(), delyInSecs * 1000); // Ensures db connection is established in getCatererType since it's an async operation.
+const timer = setInterval(() => doAccessCodeImport(), delyInSecs * 1000); // Ensures db connection is established in getAccessCode since it's an async operation.
 
 
 
@@ -40,15 +41,15 @@ function doAccessCodeImport() {
         
         var result = extractAccessCodeItems(fileData);
         if (result.success) {
-            logger.info(`Total number of accessCode parsed: ${result.caterers.length}`);
+            logger.info(`Total number of accessCode parsed: ${result.accessCodes.length}`);
 
-            if (result.caterers.length == 0) {
+            if (result.accessCodes.length == 0) {
                 logger.info('No accessCode got extracted from the data file!');
                 process.exit();
             }
             logger.info(result.accessCodes);
             
-            result.caterers.forEach((accessCode) => createAccessCode(accessCode));
+            result.accessCodes.forEach((accessCode) => createAccessCode(accessCode));
         } else {
             process.exit();
         }
@@ -67,129 +68,79 @@ function extractAccessCodeItems(fileData) {
     var newAccessCode = null;
     var errorEncountered = false;
     var currentItemSeq = 0;
+    var newAccessCodes = null;
+    
+    
+    
 
    /// UPDATE to ACCESS CODE
-    fileData.split(/\r?\n/).every((block) => {
+    fileData.split(/\r?\n/).every((line) => {
 
         var directive = null;
-        var blockProcessed = false;
+        var lineProcessed = false;
 
-        logger.info(`Processing block: ${block}`);
+        logger.info(`Processing line: ${line}`);
 
-        directive = "--accessCode.ForUsers:";
-        if (block.search(directive) > -1) {            
-            // Complete and store the previous pending accessCode object if exist.
-            if (newAccessCode != null) {
-                var success = validateAndCollectAccessCode(newAccessCode, AccessCodeItems);
-                if (!success) {
-                    errorEncountered = true;
-                    return false; // Return false to stop additional block processing.
-                }
-            }
-
-            var accessCodeForUsers = block.replace(directive, "").trim();
-            // Start a new accessCode instance to gather its properties.
-            if (accessCodeForUsers != "") {
-
-                currentItemSeq += 1;
-
-                newAccessCode = new accessCode({ 
-                    seqNum: currentItemSeq,
-                    name: accessCodeForUsers 
-                });
-                
-            } else {
-                logger.error("ERROR: The accessCode user is required!");
-                errorEncountered = true;
-                return false; // Return false to stop additional block processing.
-            }
-            blockProcessed = true;
+       //test if the line is a new accessCode
+       directive = "--AccessCode."; 
+       if (line.search(directive) > -1) {            
+           // Complete and store the previous pending notes object if exist.
+           if (newAccessCodes != null) {
+               var success = validateAndCollectAccessCode(newAccessCode, accessCodeItems);
+               if (!success) {
+                   errorEncountered = true;
+                   return false; // Return false to stop additional line processing.
+               }
+           }
         }
+        var accessCodetype = line.replace(directive, "").trim();
+        // Start a new note instance to gather its properties.
+        if (accessCodetype != "") {
 
-            directive = "--accessCode.ForAdministrators:";
-            if (block.search(directive) > -1) {            
-                // Complete and store the previous pending accessCode object if exist.
-                if (newAccessCode != null) {
-                    var success = validateAndCollectAccessCode(newAccessCode, AccessCodeItems);
-                    if (!success) {
-                        errorEncountered = true;
-                        return false; // Return false to stop additional block processing.
-                    }
-                }
-    
-                var accessCodeForAdministrators = block.replace(directive, "").trim();
-                // Start a new accessCode instance to gather its properties.
-                if ( accessCodeForAdministrators != "") {
-    
-                    currentItemSeq += 1;
-    
-                    newAccessCode = new accessCode({ 
-                        seqNum: currentItemSeq,
-                        name: accessCodeForAdministrators 
-                    });
-                    
-                } else {
-                    logger.error("ERROR: The accessCode admin is required!");
-                    errorEncountered = true;
-                    return false; // Return false to stop additional block processing.
-                }
-    
+            currentItemSeq += 1;
 
-            blockProcessed = true;
+            newAccessCode = new AccessCode({ 
+                seqNum: currentItemSeq,
+                type: accessCodetype, 
+            });
+            
+        } else {
+            logger.error("ERROR: Code is required!");
+            errorEncountered = true;
+            return false; // Return false to stop additional line processing.
         }
-
-        directive = "--Admin.Email:";
-            if (block.search(directive) > -1) {            
-                // Complete and store the previous pending accessCode object if exist.
-                if (newAccessCode != null) {
-                    var success = validateAndCollectAccessCode(newAccessCode, AccessCodeItems);
-                    if (!success) {
-                        errorEncountered = true;
-                        return false; // Return false to stop additional block processing.
-                    }
-                }
-    
-                var adminEmail = block.replace(directive, "").trim();
-                // Start a new accessCode instance to gather its properties.
-                if ( adminEmail != "") {
-    
-                    currentItemSeq += 1;
-    
-                    newAccessCode = new accessCode({ 
-                        seqNum: currentItemSeq,
-                        name: adminEmail 
-                    });
-                    
-                } else {
-                    logger.error("ERROR: The admin Email is required!");
-                    errorEncountered = true;
-                    return false; // Return false to stop additional block processing.
-                }
-    
-
-            blockProcessed = true;
-        }
-        directive = "--Admin.Name:";
-        if (!blockProcessed && block.search(directive) > -1) {
-            var adminName = block.replace(directive, "").trim();
-            if (adminName != "") {
-                newAdmin.Name = adminName;
-            }
-        }
-        directive = "--Admin.Phone:";
-        if (!blockProcessed && block.search(directive) > -1) {
-            var adminPhone = block.replace(directive, "").trim();
-            if (adminPhone != "") {
-                newAdmin.phone = adminPhone;
-            }
-        }
-
-        return true; // Return true to continue processing for the next block item.
+        lineProcessed = true;
+        return true; // Return true to continue processing for the next line item.
     })
+
+    directive = "--Admin.";  ///For the Admin directive
+    if (line.search(directive) > -1) {            
+        if (newAdmin != null) {
+            var success = validateAndCollectAdmin(newAdmin, adminItems);
+            if (!success) {
+                errorEncountered = true;
+                return false; // Return false to stop additional line processing.
+            }}}
+
+     var admin = line.replace(directive, "").trim();
+     // Start a new note instance to gather its properties.
+         if (admin != "") {
+
+         currentItemSeq += 1;
+
+         newAdmin = new Admin({ 
+             seqNum: currentItemSeq,
+             email: admin, 
+         });
+        } 
+         lineProcessed = true;
+     
+
+        
 
     // Check to see if there's one last pending new one to be collected.
     if (errorEncountered == false && newAccessCode != null) {
-        var success = validateAndCollectAccessCode(newAccessCode, accessCodeItems);
+        var success = validateAndCollectAccessCodes(newAccessCode, accessCodeItems);
         if (!success) {
             errorEncountered = true;
         }
@@ -197,7 +148,7 @@ function extractAccessCodeItems(fileData) {
 
     result = {
         success: true,
-        caterers: accessCodeItems
+        accessCode: accessCodeItems
     }
 
     if (errorEncountered == true) {
@@ -209,7 +160,7 @@ function extractAccessCodeItems(fileData) {
 
 
 function validateAndCollectAccessCode(newAccessCode, accessCodeItems) {
-    var valid = validateCaterer(newCaterer);
+    var valid = validateAccessCode(newAccessCode);
     if (valid) {
         accessCodeItems.push(newAccessCode);
         totalNumOfaccessCodes += 1;
