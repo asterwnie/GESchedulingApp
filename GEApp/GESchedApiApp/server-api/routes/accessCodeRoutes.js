@@ -15,12 +15,12 @@ module.exports = function (app) {
         // Content-Type = application/json; charset=UTF-8
 
         app.route('/api/accessCodes')
-            .get(accessCodesController.getaccessCodes)
+            .get(accessCodeController.getaccessCodes)
             .post(accessCodeController.createAccessCode)
             .put(accessCodeController.updateAccessCode)
             .patch(accessCodeController.updateAccessCode);
 
-        app.route('/api/caterers/:id')
+        app.route('/api/accessCodes/:id')
             .get(accessCodeController.getAccessCode)
             .delete(accessCodeController.deleteAccessCode);
             

@@ -114,7 +114,7 @@
               @click.prevent="onReturnHome">Return</button>
             <button type="button" class="btn btn-primary btn-sm" 
               @click.prevent="onPrint">Print</button>              
-          </div>
+          </div>         
           <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
           <br>
           <br>
@@ -503,7 +503,7 @@ export default {
           if (res.status == 201 && res.data != null) {
               var requestCreated = res.data;
 
-              localCacheMgr.uncacheItem(storeState.loginContext.requesterEmail+"-WorkingNewRequest");
+              localCacheMgr.uncacheItem(util.makeWorkingNewRequestCacheKey(storeState.loginContext.requesterEmail));
               storeState.currentRequest = null;
               storeState.selectedRoom = null;
 
@@ -547,7 +547,7 @@ export default {
           if (res.status == 200 && res.data != null) {
               var requestUdated = res.data;
 
-              localCacheMgr.uncacheItem(storeState.loginContext.requesterEmail+"-RevisingRequest-" + storeState.currentRequest._id);          
+              localCacheMgr.uncacheItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, storeState.currentRequest._id));          
               storeState.currentRequest = null;
               storeState.selectedRoom = null;
 

@@ -6,25 +6,22 @@ const getDbConnection = require(`${appRoot}/server-api/databaseManager`);
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// The schema definition for a note entity
+// The schema definition for an accessCode  entity
 
-const accessCodeSchema = new Schema({
+const AccessCodeSchema = new Schema({
 
-    _id: {
-        type: String,
-        required: [true, 'accessCode _id is required!']
-    },
-
+    
     code: {
         type: String,
-        required: [true, 'accessCode code is required!']
+        required: [true, 'Code is required!']
     },
     
     isForAdmin: {
         type: String,
-        required: [true, 'accessCode isForAdmin is required!']
+    
     },
-
+},
+{
     timestamps: true // auto-add createdAt and updatedAt
     });
 
@@ -37,10 +34,10 @@ var accessCodeModelBySite = {};
 module.exports = function (siteCode) {   
 
     let siteCodeUpper = siteCode.toUpperCase();
-    if (appConfigModelBySite[siteCodeUpper] == null) {
+    if (accessCodeModelBySite[siteCodeUpper] == null) {
         let dbConnection = getDbConnection(siteCodeUpper);       
         // Mongoose automatically creates a notes collection if one does not exist.
-        accessCodeModelBySite[siteCodeUpper] = dbConnection.model(`accessCodes`, accessCodeSchema);
+        accessCodeModelBySite[siteCodeUpper] = dbConnection.model(`accessCode`, AccessCodeSchema);
     }
     return accessCodeModelBySite[siteCodeUpper];
 

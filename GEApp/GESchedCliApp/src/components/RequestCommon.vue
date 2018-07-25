@@ -6,6 +6,8 @@
 
           <form class="needs-validation" novalidate>
 
+            <p class="text-danger" :hidden="!showPleaseReviewCommentsMsg">More information is needed. Please review the comments in this request.</p>
+
             <div class="mb-3" v-for="(requestPrompt, index) in requestPrompts" :key="index">
 
               <template v-if="(requestPrompt.inputType.ctrlType == 'text' && requestPrompt.screenNum == currentScreenNum)"> 
@@ -94,6 +96,7 @@
             <div class="mb-3">
               <button type="button" class="btn btn-primary btn-sm" @click.prevent="onContinue">Continue Request ></button>
             </div>
+            <p class="text-danger" :hidden="!hasValidationError">Please correct your input above.</p>
             <br>
             <br>
           </form>
@@ -136,6 +139,13 @@ export default {
     yesNoWithCommentInput: yesNoWithCommentInputCtrl,
     eventLocationInput: eventLocInputCtrl,
     eventDateTimeInput: eventDateTimeInputCtrl
+  },
+
+    data () {
+    return {  
+      hasValidationError: false,
+      showPleaseReviewCommentsMsg: false
+    }
   },
 
   computed: {
@@ -217,7 +227,12 @@ export default {
       return;
     }
 
+    this.hasValidationError = false;
+    this.showPleaseReviewCommentsMsg = false;
+
     clearValidationMessages(storeState.requestPrompts, this.currentScreenNum);
+
+    this.checkIfUserNeedToReviewComment();
 
     $('.is-admin-comment').hide();
     if (this.isNewRequest) {
@@ -233,7 +248,7 @@ export default {
     storeState.enableNavBar = true;
 
     if (storeState.currentRequest == null) {
-      var workingNewRequest = localCacheMgr.getCachedItem(storeState.loginContext.requesterEmail+"-WorkingNewRequest");
+      var workingNewRequest = localCacheMgr.getCachedItem(util.makeWorkingNewRequestCacheKey(storeState.loginContext.requesterEmail));
       if (workingNewRequest != undefined && workingNewRequest != null) {
 
         storeState.currentRequest = workingNewRequest;
@@ -245,7 +260,7 @@ export default {
         util.logDebugMsg('Set startTimeCtrl and endTimeCtrl with defaultTimeOption: ' + this.$store.state.defaultTimeOption);   
       }
     } else {
-      var revisingRequest = localCacheMgr.getCachedItem(storeState.loginContext.requesterEmail+"-RevisingRequest-" + storeState.currentRequest._id);
+      var revisingRequest = localCacheMgr.getCachedItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, storeState.currentRequest._id));
       if (revisingRequest != undefined && revisingRequest != null) {
         storeState.currentRequest = revisingRequest;
       }
@@ -314,9 +329,9 @@ export default {
       
       try {
         if (this.isNewRequest) {
-          localCacheMgr.cacheItem(storeState.loginContext.requesterEmail+"-WorkingNewRequest", storeState.currentRequest);
+          localCacheMgr.cacheItem(util.makeWorkingNewRequestCacheKey(storeState.loginContext.requesterEmail), storeState.currentRequest);
         } else {
-          localCacheMgr.cacheItem(storeState.loginContext.requesterEmail+"-RevisingRequest-" + storeState.currentRequest._id, storeState.currentRequest);
+          localCacheMgr.cacheItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, storeState.currentRequest._id), storeState.currentRequest);
         }
       } catch (err) {
         console.log("Not able to locally cache the working request");
@@ -359,6 +374,8 @@ export default {
       
       if (allValid) {
 
+        this.hasValidationError = false;
+
         var nextScreenNum = vm.currentScreenNum + 1;
         if (nextScreenNum <= vm.$store.state.numOfRequestScreens) {
           vm.$router.push('/request/' + nextScreenNum);          
@@ -366,7 +383,31 @@ export default {
           vm.$router.push('/attentionNotes');
         }
         
+      } else {
+        this.hasValidationError = true;
       }
+    },
+
+    checkIfUserNeedToReviewComment() {
+
+      var storeState = this.$store.state;
+      this.showPleaseReviewCommentsMsg = false;
+
+      if (this.currentScreenNum == 1 && 
+      !this.inAdminMode &&
+      storeState.currentRequest != null) {
+        var properties = Object.getOwnPropertyNames(storeState.currentRequest);
+
+        properties.forEach((property, index) => {
+          if (property.indexOf('AdminComment') > -1) {
+            let comment = storeState.currentRequest[property];
+            if (comment != null && comment != "") {
+              this.showPleaseReviewCommentsMsg = true;
+            }
+        }
+        });
+      }
+
     },
 
 

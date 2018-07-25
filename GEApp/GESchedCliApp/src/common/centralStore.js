@@ -10,6 +10,8 @@ const store = new Vuex.Store({
         previousPage: null,
 
         defaultTimeOption: "09:00:00",
+
+        hasWorkingNewRequestCache: false,
         
         selectedRoom: null,
         currentRequestsPreview: [],

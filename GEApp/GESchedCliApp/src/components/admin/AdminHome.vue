@@ -241,6 +241,7 @@
 
 <script>
 import axios from 'axios';
+import * as util from '@/common/util.js';
 import * as apiMgr from '@/common/apiMgr.js';
 import * as localCacheMgr from '@/common/localCacheMgr.js';
 
@@ -523,7 +524,7 @@ export default {
             let selectedReqId = event.target.id;
             let storeState = this.$store.state;
 
-            var revisingRequest = localCacheMgr.getCachedItem(storeState.loginContext.requesterEmail+"-RevisingRequest-" + selectedReqId);
+            var revisingRequest = localCacheMgr.getCachedItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, selectedReqId));
             if (revisingRequest != undefined && revisingRequest != null) {
 
                 storeState.currentRequest = revisingRequest;
