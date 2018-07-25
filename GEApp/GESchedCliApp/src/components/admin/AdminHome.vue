@@ -225,55 +225,6 @@
 
     <div class="col col-12 col-md-2 col-lg-2"></div>
     </div>
-    <div class="row">
-        <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
-        <div class="col col-12 col-sm-10 col-md-8 col-lg-8">
-            <div id="utilityMenu">
-                    
-                <div class="card-header bg-danger text-light">
-                    Utilities
-                </div>
-                <div style="height:10px;"></div>
-                <div class="card-group">
-                        <div @click.prevent="$router.push('/admin/sendinvite')" class="card" style="background-color:#ffb0b0; cursor:pointer; text-align:center;">
-                            <div class="card-body">
-                                <h6 class="card-title">
-                                    Send Invite&nbsp;&nbsp;<span class="fas fa-chevron-right"></span>
-                                </h6>
-                                <hr>
-                                <div class="card-text">
-                                    Email an access code to a requester.
-                                </div>
-                            </div>
-                        </div>
-                        <div @click.prevent="$router.push('/admin/manageaccounts')" class="card" style="background-color:#ffb0b0; cursor:pointer; text-align:center;">
-                            <div class="card-body">
-                                <h6 class="card-title">
-                                    Manage Accounts&nbsp;&nbsp;<span class="fas fa-chevron-right"></span>
-                                </h6>
-                                <hr>
-                                <div class="card-text">
-                                    Add and view Admin users.
-                                </div>
-                            </div>
-                        </div>
-                        <div @click.prevent="$router.push('/admin/maintenance')" class="card" style="background-color:#ffb0b0; cursor:pointer; text-align:center;">
-                            <div class="card-body">
-                                <h6 class="card-title">
-                                    Maintenance&nbsp;&nbsp;<span class="fas fa-chevron-right"></span>
-                                </h6>
-                                <hr>
-                                <div class="card-text">
-                                    Manage app data (Hotels, caterers, rooms, etc), flush old requests.
-                                </div>
-                            </div>
-                        </div>
-                </div>
-
-            </div>
-        </div>
-        <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
-    </div>
     <div style="height:30px"></div>
     <div class="row">
         <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
@@ -420,11 +371,6 @@ export default {
             let pageNumber = vm.currentPageNumber;
             console.log(`Page number: ${pageNumber}`);
 
-            //&summaryFieldsOnly=true
-            //&processingStatusContains=underReview
-            //&numOfItemsToSkip=20
-            //&numOfItemsPerPage=10
-
             //gather query string
             var url = apiMgr.getRequestsUrl() + `&numOfItemsToSkip=${vm.previewPerPage * (vm.currentPageNumber-1)}&summaryFieldsOnly=true&numOfItemsPerPage=${vm.previewPerPage}`;
             
@@ -468,7 +414,7 @@ export default {
 
             vm.currentPageNumber = 1;
             //collapse search menu
-            //$("#filterMenu").click();
+            $("#filterMenu").click();
 
             //get preview per page
             vm.previewPerPage = $("#inputPreviewPerPage select")[0].value;
