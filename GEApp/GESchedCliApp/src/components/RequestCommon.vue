@@ -6,6 +6,8 @@
 
           <form class="needs-validation" novalidate>
 
+            <p class="text-danger" :hidden="!showPleaseReviewCommentsMsg">More information is needed. Please review the comments in this request.</p>
+
             <div class="mb-3" v-for="(requestPrompt, index) in requestPrompts" :key="index">
 
               <template v-if="(requestPrompt.inputType.ctrlType == 'text' && requestPrompt.screenNum == currentScreenNum)"> 
@@ -141,7 +143,8 @@ export default {
 
     data () {
     return {  
-      hasValidationError: false
+      hasValidationError: false,
+      showPleaseReviewCommentsMsg: false
     }
   },
 
@@ -224,7 +227,12 @@ export default {
       return;
     }
 
+    this.hasValidationError = false;
+    this.showPleaseReviewCommentsMsg = false;
+
     clearValidationMessages(storeState.requestPrompts, this.currentScreenNum);
+
+    this.checkIfUserNeedToReviewComment();
 
     $('.is-admin-comment').hide();
     if (this.isNewRequest) {
@@ -378,6 +386,28 @@ export default {
       } else {
         this.hasValidationError = true;
       }
+    },
+
+    checkIfUserNeedToReviewComment() {
+
+      var storeState = this.$store.state;
+      this.showPleaseReviewCommentsMsg = false;
+
+      if (this.currentScreenNum == 1 && 
+      !this.inAdminMode &&
+      storeState.currentRequest != null) {
+        var properties = Object.getOwnPropertyNames(storeState.currentRequest);
+
+        properties.forEach((property, index) => {
+          if (property.indexOf('AdminComment') > -1) {
+            let comment = storeState.currentRequest[property];
+            if (comment != null && comment != "") {
+              this.showPleaseReviewCommentsMsg = true;
+            }
+        }
+        });
+      }
+
     },
 
 
