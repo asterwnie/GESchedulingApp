@@ -1,7 +1,6 @@
 <template>
   <div>
-
-    <h5 class="justify-content-center" style="text-align:center;width:100%">Complete these items before each new request.</h5>
+    <h6 class="justify-content-center" style="text-align:center;width:100%">Complete these items before each new request.</h6>
     <br>
     <div class="container-fluid" style="width:100%">
       <div class="row">
@@ -17,8 +16,10 @@
           </div>
           <br>
           <button type="button" class="btn btn-primary btn-sm" @click.prevent="$router.push('/request/1')">Begin New Request</button>
+          <br>
+          <br>
         </div>
-        <br>
+
       </div>
     </div>
   </div>

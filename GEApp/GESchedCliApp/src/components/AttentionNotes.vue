@@ -11,12 +11,12 @@
               <!--display each item-->
               {{ note.text }}
             </template>
-
           </div>
           <br>
           <button type="button" class="btn btn-primary btn-sm" @click.prevent="$router.push('/requestsummary')">Continue Request ></button>
         </div>
         <br>
+        &nbsp;
         <br>
       </div>
     </div>
