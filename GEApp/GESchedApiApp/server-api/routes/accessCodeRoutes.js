@@ -15,7 +15,7 @@ module.exports = function (app) {
         // Content-Type = application/json; charset=UTF-8
 
         app.route('/api/accessCodes')
-            .get(accessCodeController.getaccessCodes)
+            .get(accessCodeController.getAccessCodes)
             .post(accessCodeController.createAccessCode)
             .put(accessCodeController.updateAccessCode)
             .patch(accessCodeController.updateAccessCode);
@@ -24,6 +24,9 @@ module.exports = function (app) {
             .get(accessCodeController.getAccessCode)
             .delete(accessCodeController.deleteAccessCode);
             
+        app.route('/api/isAccessCodeExist/:code')
+            .get(accessCodeController.isAccessCodeExist);
+
     } catch (err) {
         logger.error(`Set up API routes for the accessCode entity failed. Error: ${err}`);
     }

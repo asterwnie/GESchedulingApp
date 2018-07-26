@@ -18,9 +18,9 @@ exports.getAccessCodes = async function (req, res) {
 
     let siteCode = httpRequestHelper.getSite(req);
     
-    await queryAccessCodes(siteCode, req.query.orderBy, req.query.typeContains, (result) => {
+    await queryAccessCodes(siteCode, req.query.code, req.query.isForAdmin, (result) => {
         if (result.success) {
-            logger.info(`accessCodeController.getaccessCodes - AccessCode.find success. About to send back http response with ${result.accessCodes.length} accessCodes`);
+            logger.info(`accessCodeController.getaccessCodes - queryAccessCodes success. About to send back http response with ${result.accessCodes.length} accessCodes`);
             res.status(200).json(result.accessCodes);
         } else {
             logger.error(`accessCodeController.getAccessCodes failed. Error: ${result.errMsg}`);
@@ -32,26 +32,46 @@ exports.getAccessCodes = async function (req, res) {
 };
 
 
-async function queryAccessCodes (siteCode, orderBy, typeContains, callback) {
+exports.isAccessCodeExist = async function (req, res) {
+    logger.verbose('accessCodeController.isAccessCodeExist begin');
+
+    let siteCode = httpRequestHelper.getSite(req);
+    
+    await queryAccessCodes(siteCode, req.params.code, null, (result) => {
+        if (result.success) {
+            logger.info(`accessCodeController.isAccessCodeExist - queryAccessCodes success. About to send back http response.`);
+
+            if (result.accessCodes == null || result.accessCodes.length == 0) {
+                res.status(404).json({ exist: false }); // 404 NOT FOUND!
+            } else {
+                res.status(200).json({ exist: true });
+            }
+
+        } else {
+            logger.error(`accessCodeController.isAccessCodeExist failed. Error: ${result.errMsg}`);
+            res.status(500).json({ error: result.errMsg });
+        }
+    });
+
+    logger.verbose('accessCodeController.isAccessCodeExist ends.');        
+};
+
+
+async function queryAccessCodes (siteCode, code, isForAdmin, callback) {
 
     let AccessCode = getAccessCodeType(siteCode);
 
-    var sortDirective = {}; //default, no filtering
-    if (orderBy != null) {
-        if (orderBy == 'seqNum:1') {
-            sortDirective = { "seqNum": 1};  //ascending order
-        } else if (orderBy == 'seqNum:-1') {
-            sortDirective = { "seqNum": -1}; //descending order
-        }
-    }
-
     var filterDirective = {}; //default, no filering
-    if (typeContains != null) {    
-        const regExpression = new RegExp(`(${typeContains})`);
-        filterDirective = { "type": regExpression };        
+    if (code != null) {    
+        filterDirective.code = code;        
+    }
+    if (isForAdmin != null) {    
+        filterDirective.isForAdmin = (isForAdmin == "true");        
+    } else {
+        filterDirective.isForAdmin = null;
     }
 
-    await AccessCode.find(filterDirective).sort(sortDirective)
+    await AccessCode.find(filterDirective)
         .then((accessCodes) => {
             logger.info(`accessCodeController.queryAccessCodes - AccessCode.find success. Got back ${accessCodes.length} accessCodes`);           
             callback({ success: true, accessCodes: accessCodes });
