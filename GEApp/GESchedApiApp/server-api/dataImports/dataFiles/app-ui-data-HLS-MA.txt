@@ -1,118 +1,122 @@
 --SiteCode
 HLS-MA
 
---SiteName
+--SiteName 
 GE Health Life Science
 
---SiteAddress
+--SiteAddress 
 100 Results way
 Marlborough, MA 01752
 
 --AppTitle
-Meeting & Special Event 
+Meeting & Event
 Request
 
---DoFirst.ViewTitle
-Do First
+--HomeViewTitle 
+Home
 
---DoFirst.ViewDescription
-Complete these items before each new request.
-    
---NewRequest.ViewTitle
-New Request
-
---EditRequest.ViewTitle
-Edit Request
-
---SubmitRequest.ViewTitle
-Submit Request
-
---AttentionNotes.ViewTitle
-Attention
-
---About.ViewTitle
+--AboutViewTitle 
 About
 
---About.ViewDescription
-This application is for lorem ipsum sapien metus posuere nam praesent dictum, curabitur ad sit tortor tincidunt integer, quisque dictum ante quam nullam consequat.
+--AboutViewDescription 
+This application is for ipsum sapien metus posuere nam praesent dictum, curabitur ad sit tortor tincidunt integer, quisque dictum ante quam nullam consequat.
 
---TechSupport.ViewTitle
+--DoFirstViewTitle 
+Do First
+
+--DoFirstViewDescription 
+Complete these items before each new request.
+
+--NewRequestViewTitle 
+New Request
+
+--EditRequestViewTitle 
+Edit Request
+
+--ViewRequestViewTitle 
+View Request
+
+--SubmitRequestViewTitle 
+Submit Request
+
+--AttentionNotesViewTitle 
+Attention
+
+--AttentionNotesViewDescription 
+
+--TechSupportViewTitle 
 IT Help
 
---TechSupport.ViewDescription
+--TechSupportViewDescription 
 Results Way offers the MyTech Lounge located on the third-floor at tower 3. While onsite, MyTech Lounge is your solution to any IT help & questions you may have.
 
---Caterers.ViewTitle
-Catering
+--CaterersViewTitle 
+Local Caterers
 
---Caterers.ViewDescription
+--CaterersViewDescription 
 These recommended caterers who are reliable and deliver to the site and accept Amex.
 
---Hotels.ViewTitle
-Hotels
+--HotelsViewTitle 
+Local Hotels
 
---Hotels.ViewDescription
-The local listing of hotels.
+--HotelsViewDescription 
+The local listing of hotels:
 
---GuestWiFiAccess.ViewTitle
-Guest WiFi Access
+--GuestWifiViewTitle 
+Guest Wifi
 
---GuestWiFiAccess.ViewDescription
-Guest WiFi access instructions.
+--GuestWifiViewDescription 
+Guest wifi for online access on-site.
 
---FindRoom.ViewTitle
+--FindRoomViewTitle 
 Find Room
 
---RequestStatusTag.UnderReview
+--RequestStatusTagUnderReview 
 Under Review
 
---RequestStatusMessage.UnderReview
-You request will be processed within 2 business days. 
+--RequestStatusMessageUnderReview 
+You request will be processed within 2 business days.
 
---RequestStatusTag.Approved
-Approved & Completed
+--RequestStatusTagApproved 
+Approved
 
---RequestStatusMessage.Approved
+--RequestStatusMessageApproved 
 You request has been approved.
 
---RequestStatusTag.Rejected
-More Information Required
+--RequestStatusTagRejected 
+More Info Required
 
---RequestStatusMessage.Rejected
-Your request is not complete. More Information is required. Please review and update your request before resubmitting it. 
+--RequestStatusMessageRejected 
+Your request is not complete. More Information is required. Please review and update your request before resubmitting it.
 
---AdminHome.ViewTitle
+--AdminHomeViewTitle 
 Admin Home
 
---AdminHome.ViewDescription
-Hub for administrative tasks
+--AdminHomeViewDescription 
 
---AdminRequest.ViewTitle
+--AdminRequestViewTitle 
 Admin Requests
 
---AdminSendInvite.ViewTitle
+--AdminSendInviteViewTitle 
 Send Invite
 
-AdminSendInvite.ViewDescription
-Invite a requester to use this booking utility
+--AdminSendInviteViewDescription 
+Invite a requester to use this booking utility.
 
---SendInviteEmailTemplate
+--SendInviteEmailTemplate 
 Hello, [RECIPIENTNAME]![line-break][ADMINNAME] would like to invite you to access the GE Scheduling Utility.[line-break][line-break]Access Code: [ACCESSCODE][line-break][line-break]To access the GE Scheduling Utility, paste this link into your browser: [APPLINK][line-break]Note that the utility is still in development, and any feedback you may have can be sent to: [FEEDBACKEMAIL][line-break][line-break]
 
---SendInviteEmailSubject
+--SendInviteEmailSubject 
 GE Scheduling Utility Access
 
---AddAdminEmailTemplate
-PLACEHOLDER
+--AddAdminEmailTemplate 
+Hello, [RECIPIENTNAME]![line-break][ADMINNAME] would like to invite you to become an administrator on the GE Scheduling Utility.[line-break][line-break]Admin Access Code: [ADMINACCESSCODE][line-break][line-break]To access the GE Scheduling Utility, paste this link into your browser: [APPLINK][line-break]Note that the utility is still in development, and any feedback you may have can be sent to: [FEEDBACKEMAIL][line-break][line-break]
 
---deleteOlderThanNumDays
+--DeleteOlderThanNumDays 
 14
 
---adminMaintenanceViewTitle
+--AdminMaintenanceViewTitle 
 Admin Maintenance
 
---adminAddViewTitle
+--AdminAddViewTitle 
 Admin Add User
-
---addAdminEmailTemplate
-Hello, [RECIPIENTNAME]![line-break][ADMINNAME] would like to invite you to become an administrator on the GE Scheduling Utility.[line-break][line-break]Admin Access Code: [ADMINACCESSCODE][line-break][line-break]To access the GE Scheduling Utility, paste this link into your browser: [APPLINK][line-break]Note that the utility is still in development, and any feedback you may have can be sent to: [FEEDBACKEMAIL][line-break][line-break]

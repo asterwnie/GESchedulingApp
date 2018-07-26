@@ -25,13 +25,13 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">Recipient Name</span>
                 </div>
-                <input id="recipientNameAdmin" type="text" class="form-control" placeholder="John Doe" aria-label="recipient-name" aria-describedby="basic-addon1">
+                <input id="recipientNameAdmin" type="text" class="form-control" placeholder="ex. John Doe" aria-label="recipient-name" aria-describedby="basic-addon1">
             </div>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon2">Recipient Email</span>
                 </div>
-                <input id="recipientEmailAdmin" type="text" class="form-control" placeholder="johndoe@ge.com" aria-label="recipient-email" aria-describedby="basic-addon2">
+                <input id="recipientEmailAdmin" type="text" class="form-control" placeholder="ex. johndoe@ge.com" aria-label="recipient-email" aria-describedby="basic-addon2">
             </div>
 
             <button @click.prevent="onGenerateEmail" type="button" class="float-right btn btn-primary">Generate Email</button>
@@ -69,13 +69,11 @@
           </div>
         </div> 
 
-        <div id="currentAdminUI">
-          <div class="card">
-            <div v-if="adminUsers != null" class="card-body">
-              <div v-for="admin in adminUsers" :key="admin">
+        <div v-if="adminUsers != null" id="currentAdminUI">
+          <div v-for="(admin, index) in adminUsers" :key="index" class="card">
+            <div class="card-body">
                 <div class="float-left"><h6>{{admin.name}}</h6></div>
                 <div class="float-right font-weight-light">{{admin.email}}</div>
-              </div>
             </div>
           </div>
         </div> 

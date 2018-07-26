@@ -24,13 +24,13 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">Recipient Name</span>
                 </div>
-                <input id="recipientName" type="text" class="form-control" placeholder="John Doe" aria-label="recipient-name" aria-describedby="basic-addon1">
+                <input id="recipientName" type="text" class="form-control" placeholder="ex. John Doe" aria-label="recipient-name" aria-describedby="basic-addon1">
             </div>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon2">Recipient Email</span>
                 </div>
-                <input id="recipientEmail" type="text" class="form-control" placeholder="johndoe@ge.com" aria-label="recipient-email" aria-describedby="basic-addon2">
+                <input id="recipientEmail" type="text" class="form-control" placeholder="ex. johndoe@ge.com" aria-label="recipient-email" aria-describedby="basic-addon2">
             </div>
 
             <button @click.prevent="onGenerateEmail" type="button" class="float-right btn btn-primary">Generate Email</button>

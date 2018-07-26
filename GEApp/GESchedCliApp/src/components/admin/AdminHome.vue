@@ -63,7 +63,7 @@
     <div class="row">
     <div class="col col-12 col-md-2 col-lg-2"></div>
 
-    <div id="searchUI" class="col col-12 col-md-3 col-lg-3 col-xl-2" style="margin-bottom:20px">
+    <div id="searchUI" class="col col-12 col-md-4 col-lg-4 col-xl-2" style="margin-bottom:20px">
         <div class="card-header">
             <span>
                 Quick Filter&nbsp;
@@ -119,7 +119,7 @@
 
             <div id="inputLocation" class="input-group input-group-sm mb-3">
                 <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">Location</span>
+                <span class="input-group-text" id="inputGroup-sizing-sm">Room/Location</span>
                 </div>
                 <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
             </div>
@@ -128,7 +128,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-sm">Status</span>
                 </div>
-                <select class="custom-select" id="sizeTypeGroupSelect">
+                <select class="custom-select">
                     <option selected></option>
                     <option v-bind:id="statusLabel" v-bind:value='statusLabel' v-for="(statusLabel, index) in statusLabels" :key="index">
                         {{ statusLabel }}
@@ -140,11 +140,11 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-sm">Items Per Page</span>
                 </div>
-                <select class="custom-select">
+                <select class="custom-select" id="default-6">
                     <option value="6" selected>6</option>
-                    <option value="9">9</option>
+                    <option value="8">8</option>
+                    <option value="10">10</option>
                     <option value="12">12</option>
-                    <option value="15">15</option>
                 </select>
             </div>
             
@@ -156,7 +156,7 @@
       </div>
     </div>
 
-    <div id="requestUI" class="col col-12 col-md-5 col-lg-5 col-xl-6">
+    <div id="requestUI" class="col col-12 col-md-4 col-lg-4 col-xl-6">
             <div v-if="requestsPreview.length < 1">
                 <div class="card">
                     <br>
@@ -167,7 +167,7 @@
             <div v-else>
                 <div style="height:10px;"></div>
                 <div class="container" style="width:100%; display:flex; flex-wrap:wrap;">
-                    <div :class="[requestItem._id, 'request-item', 'card', 'col-12', 'col-lg-6', 'col-xl-4']" v-for="(requestItem, index) in requestsPreview" :key="index">
+                    <div :class="[requestItem._id, 'request-item', 'card', 'col-12', 'col-xl-6']" v-for="(requestItem, index) in requestsPreview" :key="index">
                         <div class="card-body">
                             <h6 class="card-title">{{requestItem.eventTitle}}</h6>
                             <h6 class="card-title">Status:&nbsp;<span :class="requestItem.processingStatus">{{requestItem.processingStatusLabel}}</span></h6>
@@ -287,18 +287,9 @@ export default {
         this.$store.state.currentViewTitle = this.title;
         this.$store.state.enableNavBar = true;
 
-        //clear all search UI to be blank
-        var inputs = $("input");
-        inputs.each(function(){
-        let inputType = this.type;
-        if (inputType == "text" || inputType == "number"){
-            this.value = "";
-        } else if (inputType == "checkbox"){
-            this.checked = false; //needs fixing
-        } 
-        });
+        
 
-
+        vm.clearSearchUI();
         vm.getNumPages();
         vm.updateRequests();
         vm.$forceUpdate();
@@ -490,7 +481,7 @@ export default {
             let vm = this;
 
             vm.requestsQueryString = null;
-
+            vm.clearSearchUI();
             vm.updateRequests();
         },
 
@@ -663,6 +654,33 @@ export default {
                     }
                     
                 }
+            },
+
+            clearSearchUI(){
+                //clear all search UI to be blank
+                var inputs = $("input");
+                inputs.each(function(){
+                let inputType = this.type;
+                if (inputType == "text" || inputType == "number"){
+                    this.value = "";
+                } else if (inputType == "checkbox"){
+                    this.checked = false; //needs fixing
+                } 
+                });
+
+                var selects = $('select');
+                selects.each(function(){
+                    if (this.id != null && this.id != "") {
+                        if (this.id.indexOf("default") > -1) {
+                            //if there is a default, reselect it
+                            this.value = this.id.replace("default-", "");
+                        } else {
+                            this.value = "";
+                        }
+                    } else {
+                        this.value = "";
+                    }
+                });
             }
 
     }

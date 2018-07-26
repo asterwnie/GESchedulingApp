@@ -113,7 +113,7 @@
               <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Building</span>
               </div>
-              <select class="custom-select" id="sizeTypeGroupSelect">
+              <select class="custom-select">
                 <option selected></option>
                   <option v-bind:id="buildingLabel" v-bind:value='buildingLabel' v-for="(buildingLabel, index) in buildings" :key="index">
                     {{buildingLabel}}
@@ -132,7 +132,7 @@
               <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Size Type</span>
               </div>
-              <select class="custom-select" id="sizeTypeGroupSelect">
+              <select class="custom-select">
                 <option selected></option>
                   <option v-bind:id="sizeItem._id" v-bind:value='sizeItem._id' v-for="(sizeItem, index) in sizeTypes" :key="index">
                     <span>{{sizeItem._id}} &nbsp;
@@ -253,16 +253,7 @@ export default {
     this.$store.state.currentViewTitle = this.title;
     this.$store.state.enableNavBar = true;
 
-    //clear all search UI to be blank
-    var inputs = $("input");
-    inputs.each(function(){
-      let inputType = this.type;
-      if (inputType == "text" || inputType == "number"){
-        this.value = "";
-      } else if (inputType == "checkbox"){
-        this.checked = false; //needs fixing
-      } 
-    });
+    vm.clearSearchUI();
 
     //reopen search UI
     /* $('#dropdownMenu').each(function(){
@@ -426,15 +417,12 @@ export default {
 
     resetFilterView: function(event){
        if(event){
-        //collapse search menu
-        $("#searchHeader").click();
+        var vm = this;
 
         //reset all input boxes and checkboxes
-        ///.....
+        vm.clearSearchUI();
 
-
-         //get full list of rooms
-        var vm = this;
+        //get full list of rooms
         var url = apiMgr.getRoomsUrl(); 
 
             axios.get(url)
@@ -529,6 +517,31 @@ export default {
         }
 
       }
+    },
+
+    clearSearchUI() {
+      //clear all search UI to be blank
+      var inputs = $("input");
+      inputs.each(function(){
+        let inputType = this.type;
+        if (inputType == "text" || inputType == "number"){
+          this.value = "";
+        } else if (inputType == "checkbox"){
+          this.checked = false;
+        }
+      });
+
+      var selects = $('select');
+      selects.each(function(){
+        if (this.id != null && this.id != "") {
+          if (this.id.indexOf("default") > -1) {
+            //if there is a default, reselect it
+            this.value = this.id.replace("default-", "");
+          }
+        } else {
+          this.value = "";
+        }
+      });
     }
 
 

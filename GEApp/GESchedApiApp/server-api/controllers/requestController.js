@@ -41,7 +41,7 @@ async function queryRequests (siteCode, req, callback) {
     }
     if (req.query.requestNameContains != null) {    
         const regExpression = new RegExp(`(${req.query.requestNameContains})`, "i");
-        filterDirective.eventGEContactPersonEmail = regExpression;      
+        filterDirective.eventTitle = regExpression;      
     }
     if (req.query.requesterEmailContains != null) {    
         const regExpression = new RegExp(`(${req.query.requesterEmailContains})`, "i");
@@ -315,13 +315,20 @@ exports.deleteMultipleRequests = function (req, res) {
         hasFilter = true;
     } catch (err) {}
 
-    let processingStatus = req.query.processingStatus;
+    let eventName = req.query.requestNameContains;
+    if (eventName != null && eventName != "") {
+        const regExpression = new RegExp(`(${eventName})`, "i");
+        filterDirective.eventTitle = regExpression;
+        hasFilter = true;
+    }
+
+    let processingStatus = req.query.processingStatusContains;
     if (processingStatus != null && processingStatus != "") {
         filterDirective.processingStatus = new RegExp(`(${processingStatus})`, "i");;
         hasFilter = true;
     }
 
-    let requesterEmail = req.query.requesterEmail;
+    let requesterEmail = req.query.requesterEmailContains;
     if (requesterEmail != null && requesterEmail != "") {
         const regExpression = new RegExp(`(${requesterEmail})`, "i");
         filterDirective.eventGEContactPersonEmail = regExpression;
