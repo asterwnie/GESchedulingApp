@@ -2,6 +2,7 @@
 
 const appRoot = require('app-root-path');
 const appConfig = require(`${appRoot}/server.config`); // Load app configuration settings.
+var accessCodeController = require(`${appRoot}/server-api/controllers/accessCodeController`);
 
 const httpRequestHelper = require(`${appRoot}/server-api/httpRequestHelper`);
 const logger = require(`${appRoot}/server-api/logger`);
@@ -243,22 +244,16 @@ exports.loginUser = async function (req, res) {
     }
      
     var needToCreateUser = false;
-
-    // TODO: AccessCode.findOne({ accessCode: login.accessCode })
-
-    if (login.accessCode != "ge123" && login.accessCode != "password123") {
-        let status = { message: "User Unauthorized!" }
-        res.status(401).json(status);
-        return;
-    }
+    var foundUser = null;
 
     const regExpression = new RegExp(`(${login.email})`, "i");
     await User.findOne({ 'email': regExpression })
         .then((user) => {
             if (user != null) {
                 logger.info(`userController.loginUser - User.findOne success. About to send back http response with user: ${user}`);
-                res.status(200).json(user);  // 200 - OK
-                return;
+                //res.status(200).json(user);  // 200 - OK
+                //return;
+                foundUser = user;
             } else {               
                 needToCreateUser = true;
             }
@@ -269,6 +264,41 @@ exports.loginUser = async function (req, res) {
             res.status(500).json({ error: errMsg }); // 500 - INTERNAL SERVER ERROR
         });
 
+
+    var matchedAccessCode = false;
+    var isForAdmin = null;
+    if (foundUser != null && foundUser.isAdmin) {
+        isForAdmin = "true";
+    }
+
+    await accessCodeController.queryAccessCodes(siteCode, login.accessCode, isForAdmin, (result) => {
+        if (result.success) {
+            logger.info(`accessCodeController.queryAccessCodes success`);
+            if (result.accessCodes == null || result.accessCodes.length == 0) {
+                matchedAccessCode = false;
+            } else {
+                matchedAccessCode = true;
+            }
+        } else {
+            logger.error(`accessCodeController.queryAccessCodes failed. Error: ${result.errMsg}`);
+            res.status(500).json({ error: result.errMsg });
+        }
+    });
+
+
+    if (!matchedAccessCode) {
+        let status = { message: "User Unauthorized!" }
+        res.status(401).json(status);
+        return;
+    }
+
+    if (foundUser != null) {
+        logger.info(`userController.loginUser success. About to send back http response with logged in user: ${foundUser}`);
+        res.status(200).json(foundUser);  // 200 - OK
+        return;
+    }
+
+
     if (needToCreateUser) {
         // Create new user object in the database to save user's name and phone for future defaulting.
 
@@ -276,7 +306,7 @@ exports.loginUser = async function (req, res) {
 
         createNewUser(siteCode, newUser, (result) => {
             if (result.success) {
-                logger.info(`userController.createUser success. About to send back http response with the new user (${result.user.email})`);
+                logger.info(`userController.createUser success. About to send back http response with the new logged in user (${result.user.email})`);
                 res.status(result.statusCode).json(result.user);
             } else {
                 logger.error(`userController.createUser failed. Error: ${result.errMsg}`);

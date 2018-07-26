@@ -19,10 +19,6 @@ const AccessCodeSchema = new Schema({
     isForAdmin: {
         type: Boolean,
     
-    },
-
-    seqNum: {
-        type: Number
     }
 },
 {
