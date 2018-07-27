@@ -11,8 +11,8 @@
       <div class="d-flex justify-content-between">
         <!--Back button-->
         <div class="p-2 align-self-center">
-          <a @click="$router.go(-1)"><span class="fas fa-chevron-left fa-lg" :hidden="!$store.state.enableNavBar"></span></a>
-        </div>
+          <a @click="$router.go(-1)"><span class="fas fa-chevron-left fa-lg" :hidden="!$store.state.enableNavBar"></span></a><span :hidden="!isInDebugMode">&nbsp;({{windowWidth}},{{windowHeight}})&nbsp;Small:&nbsp;{{this.$store.state.isInSmallWidthMode}}</span>
+        </div>       
         <!--Title-->
         <div class="p-2 align-self-center">{{ title }}</div>
         <!--Menu button-->
@@ -124,6 +124,8 @@ export default {
   data () {
     return {
       modalShowMenu: false,
+      windowWidth: 0,
+      windowHeight: 0
     }
   },
 
@@ -156,6 +158,16 @@ export default {
     $route (to, from){
         window.scrollTo(0, 0);
         this.$store.state.previousPage = from.name;
+
+        if (this.isInDebugMode) {
+          this.windowWidth = $(window).width();
+          this.windowHeight = $(window).height();
+
+          if (this.windowWidth <= this.$store.state.smallWidthModeMax) {
+            this.$store.state.isInSmallWidthMode = true;
+          }
+
+        }
     }
   },
 
