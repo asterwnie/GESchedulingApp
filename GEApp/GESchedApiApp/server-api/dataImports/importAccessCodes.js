@@ -67,7 +67,6 @@ function extractAccessCodeItems(fileData) {
     var accessCodeItems = [];
     var newAccessCode = null;
     var errorEncountered = false;
-    var currentItemSeq = 0;
     
 
    /// UPDATE to ACCESS CODE
@@ -95,19 +94,13 @@ function extractAccessCodeItems(fileData) {
             // Start a new access code instance to gather its properties.
             if (accessCodetype == "ForUsers") {
 
-                currentItemSeq += 1;
-
                 newAccessCode = new AccessCode({
-                    seqNum: currentItemSeq,
                     code: accessCode, 
                 });
                 
             } else if (accessCodetype == "ForAdministrators") {
 
-                currentItemSeq += 1;
-
                 newAccessCode = new AccessCode({
-                    seqNum: currentItemSeq,
                     code: accessCode, 
                     isForAdmin: true,
                 });

@@ -31,7 +31,7 @@ function deleteAccessCodes() {
     clearInterval(timer);
     
     // Match any name therefore, deleting all.
-    accessCode.deleteMany({ siteCode: /(.*?)/ }) 
+    accessCode.deleteMany({ code: /(.*?)/ }) 
         .then(function () {
             logger.info(`ADMIN: All accessCodes deleted for site: ${siteCode}`);
 

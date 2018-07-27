@@ -1,11 +1,13 @@
 <template>
     <div class="containerDiv container-fluid" style="width:100%">
+        
         <div class="row">
             <div class="col col-sm-1 col-md-2 col-lg-4"></div>
             <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%">
                 <div>
                     <h5 class="display-8 text-center" v-html="$store.state.appConfig.appTitle"></h5>
                     <div>
+                        <div class="pagination-centered"><span class="badge badge-secondary">Beta</span></div><br>
                         <div class="pagination-centered"><img src="@/assets/ge-monogram.svg" alt="header" /></div>
                         <div id="loading" class="pagination-centered" :hidden="!isLoading||hasFailure">
                             <br>

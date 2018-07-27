@@ -50,7 +50,10 @@
             <div class="card" style="width:100%">
                     <div class="card-header bg-info text-light">
                         Requests
-                        <button type="button" @click.prevent="onToggleDeleteMode" cursor="pointer" class="float-right btn btn-sm btn-outline-light">Browse Mode</button>
+                        <div class="float-right">
+                            Mode:&nbsp;
+                            <button type="button" @click.prevent="onToggleDeleteMode" cursor="pointer" class="btn btn-sm btn-outline-light">Delete Off</button>
+                        </div>   
                     </div>
             </div>
 
@@ -641,14 +644,14 @@ export default {
                     if($(button).hasClass("btn-outline-light")){
                         $(button).removeClass("btn-outline-light");
                         $(button).addClass("btn-danger");
-                        button.innerHTML = "Delete Mode";
+                        button.innerHTML = "Delete On";
 
                         vm.deleteMode = true;
 
                     } else {
                         $(button).removeClass("btn-danger");
                         $(button).addClass("btn-outline-light");
-                        button.innerHTML = "Browse Mode";
+                        button.innerHTML = "Delete Off";
 
                         vm.deleteMode = false;
                     }
