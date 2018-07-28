@@ -157,6 +157,25 @@ export default {
   watch:{
     $route (to, from){
       window.scrollTo(0, 0);
+      
+      if (this.$store.state.inAdminMode) {
+        if (to.name == "AttentionNotes" && this.$store.state.previousPage == "AttentionNotes") {
+          if (from.path.indexOf('/request/') > -1) {
+
+            if (from.path.indexOf('/3') > -1) {
+              this.$router.push('/request/2'); 
+            } else if (from.path.indexOf('/2') > -1) {
+              this.$router.push('/request/1'); 
+            } else if (from.path.indexOf('/1') > -1) {
+              this.$router.push('/admin/home');
+            }
+
+          } else {
+            this.$router.push('/request/'+this.$store.state.numOfRequestScreens); 
+          }
+        }
+      }
+
       this.$store.state.previousPage = from.name;
 
       util.detectIsInSmallWidthMode();

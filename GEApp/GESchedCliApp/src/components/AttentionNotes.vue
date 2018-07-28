@@ -62,7 +62,8 @@ export default {
     console.log('AttentionNotes.vue activated.');
 
     if (this.inAdminMode && !this.isNewRequest) {
-       this.$router.push('/requestsummary'); // In Admin mode review, no need to show these notes.
+      // In Admin mode review, no need to show these notes.
+      this.$router.push('/requestsummary');      
     }
 
     if (this.$store.state.appConfig.attentionNotesViewTitle == null) {
