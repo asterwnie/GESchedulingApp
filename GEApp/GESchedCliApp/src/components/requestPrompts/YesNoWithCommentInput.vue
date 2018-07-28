@@ -6,7 +6,7 @@
     <input type="checkbox" isBoolean="true" :id="ctrlId" :dependentCtrlId="additionalCommentCtrlId" :screenNum="screenNum" class="is-request-data form-control form-control-sm">
     <span class="slider round"></span>
     </label>
-    <div :id="additionalCommentCtrlContainerId" style="display:none;"> 
+    <div :id="additionalCommentCtrlContainerId" style="display:none;" :screenNum="screenNum" class="is-additional-comment"> 
     <input type="text" :id="additionalCommentCtrlId" :screenNum="screenNum" placeholder="Additional Specification" class="is-request-data form-control form-control-sm">
     </div>
     <p :id="dataInvalidMsgId" style="display:none;" class="text-danger">Invalid input.</p>
@@ -43,10 +43,6 @@ export default {
       } else {
           adminCtrl.hide();
       }
-    },
-
-    canShowAdditionalComment() {
-      
     }
   }
 }

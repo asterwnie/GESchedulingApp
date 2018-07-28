@@ -441,14 +441,16 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
     $.each(ctrls, function (index, inputCtrl) {
         var ctrl = $(inputCtrl);
         if (ctrl != null && ctrl.attr('screenNum') == currentScreenNum) {
+            //debugger;
+            util.logDebugMsg("bindUiValuesFromRequest - processing for " + inputCtrl.id);
 
             if (ctrl.is(':checkbox')) {
                 ctrl.prop('checked', false);
-            } else if (ctrl.is(':text')) {
+                util.logDebugMsg("set ctrl check false for " + inputCtrl.id);
+            } else if (ctrl.attr('type') == "text" || ctrl.attr('type') == "number") {
                 ctrl.val(null);
-            }
-
-            util.logDebugMsg("bindUiValuesFromRequest - About to get value for " + inputCtrl.id);
+                util.logDebugMsg("clear ctrl text/number for " + inputCtrl.id);
+            }            
 
             var val = request[inputCtrl.id];
             if (val != undefined && val != null && val != "") {
@@ -464,7 +466,7 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
                     }
                     assignmentCount += 1;
 
-                } else if (ctrl.is(':text')) {
+                } else if (ctrl.attr('type') == "text" || ctrl.attr('type') == "number") {
 
                     ctrl.val(val);
                     util.logDebugMsg("bindUiValuesFromRequest - set text control value: " + val);
@@ -472,6 +474,7 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
 
                 } else if (ctrl.attr('isEventDateTime') == "true"){
                     
+                    //debugger;
                     util.logDebugMsg("bindUiValuesFromRequest - About to bind to isEventDateTime control.");
 
                     var startDateTimeVal = val.startDateTime;
@@ -529,10 +532,16 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
                     assignmentCount += 1;
                 }
             } else {
+                //debugger;
                 if (ctrl.attr('isEventDateTime') == "true") {
                     //debugger;
+
+                    let startDateCtrlId = inputCtrl.id + "StartDate";
+                    let endDateCtrlId = inputCtrl.id + "EndDate";
                     let startTimeCtrlId = inputCtrl.id + "StartTime";
                     let endTimeCtrlId = inputCtrl.id + "EndTime";
+                    $('#' + startDateCtrlId).val(null);
+                    $('#' + endDateCtrlId).val(null);
                     $('#' + startTimeCtrlId).val(centralStore.state.defaultTimeOption);
                     $('#' + endTimeCtrlId).val(centralStore.state.defaultTimeOption);
                 }
@@ -567,6 +576,21 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
         }
     });
 
+    //debugger;
+    ctrls = $('.is-additional-comment');
+    $.each(ctrls, function (index, inputCtrl) {
+        var ctrl = $(inputCtrl);
+        if (ctrl != null && ctrl.attr('screenNum') == currentScreenNum) {
+            var commentCtrlId = ctrl.attr('id').replace('Container', '');
+            var commentCtrl = $('#' + commentCtrlId);
+            var val = commentCtrl.val();
+            if (val == undefined || val == null || val == "") {
+                ctrl.hide();  
+            }
+        }
+    });
+
+
     ctrls = $('.is-admin-comment');
     $.each(ctrls, function (index, inputCtrl) {
         var ctrl = $(inputCtrl);
@@ -586,6 +610,8 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
                     ctrl.css("background-color", "lightyellow")
                 }
                 ctrl.show();
+            } else {
+                ctrl.hide();              
             }
 
             assignmentCount += 1;

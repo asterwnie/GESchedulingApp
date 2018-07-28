@@ -3,7 +3,7 @@
   <div :id="ctrlContainerId">
     <label :for="ctrlId">{{ promptLabel }}</label>&nbsp;&nbsp;<span v-if="inAdminMode" class="badge badge-warning" :adminCommentCtrlId="adminCommentCtrlId" @click.prevent="onAddAdminComment"><span class="far fa-comment-dots"></span></span><button type="button" class="btn btn-secondary btn-sm float-right" v-if="!inAdminMode" @click.prevent="$router.push('/findroom')">Find</button>
     <div :id="ctrlId" :screenNum="screenNum" isRoom="true" class="is-request-data">
-      <div v-if="selectedRoom != null && selectedRoom != undefined">
+      <div v-if="selectedRoom != undefined && selectedRoom != null">
         <div class="card" v-bind:class="[selectedRoom._id, 'is-request-data-part']">
           <div class="card-body">
             <h6 class="card-title">{{selectedRoom.name}}</h6>
@@ -60,12 +60,6 @@ import { addAdminComment } from '@/common/requestMgr.js'
 export default {
     props: ['screenNum', 'ctrlId', 'promptLabel', 'dataInvalidMsgId', 'dataRequiredMsgId', 'inAdminMode'],
 
-    data () {
-      return {  
-        selectedRoom: null,
-      }
-    },
-
     computed: {
       adminCommentCtrlId() {
         return this.ctrlId + "AdminComment";
@@ -73,15 +67,15 @@ export default {
       ctrlContainerId() {
         return this.ctrlId + "Container";
       },
+      selectedRoom() {
+        if (this.$store.state.currentRequest != null) {
+          return this.$store.state.currentRequest.locationOfEvent;
+        } else {
+          return null;
+        }
+      },
     },
 
-    activated() {
-      let vm = this;
-      if(this.$store.state.currentRequest != null){
-          vm.selectedRoom = vm.$store.state.currentRequest.locationOfEvent;
-        }
-      this.$forceUpdate();
-    },
 
   methods: {
     onAddAdminComment(evt) {     
