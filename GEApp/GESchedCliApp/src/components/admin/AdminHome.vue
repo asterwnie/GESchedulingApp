@@ -412,8 +412,11 @@ export default {
             var vm = this;
 
             vm.currentPageNumber = 1;
-            //collapse search menu
-            $("#filterMenu").click();
+
+            if (util.detectIsInSmallWidthMode()) {
+                //collapse search menu
+                $("#filterMenu").click();
+            }
 
             //get preview per page
             vm.previewPerPage = $("#inputPreviewPerPage select")[0].value;

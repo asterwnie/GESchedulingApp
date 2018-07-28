@@ -296,9 +296,10 @@ export default {
         var queryString = '';
         var vm = this;
 
-        //collapse search menu
-        $("#searchHeader").click();
-
+        if (util.detectIsInSmallWidthMode()) {
+          //collapse search menu
+          $("#searchHeader").click();
+        }
 
         //gather name to query
         var nameToQuery = '';

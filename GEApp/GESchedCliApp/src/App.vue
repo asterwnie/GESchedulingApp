@@ -156,18 +156,15 @@ export default {
 
   watch:{
     $route (to, from){
-        window.scrollTo(0, 0);
-        this.$store.state.previousPage = from.name;
+      window.scrollTo(0, 0);
+      this.$store.state.previousPage = from.name;
 
-        if (this.isInDebugMode) {
-          this.windowWidth = $(window).width();
-          this.windowHeight = $(window).height();
+      util.detectIsInSmallWidthMode();
 
-          if (this.windowWidth <= this.$store.state.smallWidthModeMax) {
-            this.$store.state.isInSmallWidthMode = true;
-          }
-
-        }
+      if (this.isInDebugMode) {
+        this.windowWidth = $(window).width();
+        this.windowHeight = $(window).height();
+      }
     }
   },
 

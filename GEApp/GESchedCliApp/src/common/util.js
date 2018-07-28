@@ -125,3 +125,14 @@ export const makeRevisingRequestCacheKey  = (requesterEmail, requestId) => {
     var key = prefix + "-RevisingRequest-" + requestId;
     return key;
 }
+
+
+export const detectIsInSmallWidthMode  = () => {
+    var windowWidth = $(window).width();
+    if (windowWidth <= centralStore.state.smallWidthModeMax) {
+        centralStore.state.isInSmallWidthMode = true;
+    } else {
+        centralStore.state.isInSmallWidthMode = false;
+    }
+    return centralStore.state.isInSmallWidthMode;
+}
