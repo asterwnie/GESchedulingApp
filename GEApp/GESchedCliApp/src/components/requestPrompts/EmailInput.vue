@@ -1,6 +1,6 @@
 <template>
   <div :id="ctrlContainerId">  
-    <label :for="ctrlId">{{ promptLabel }}</label>&nbsp;&nbsp;<span v-if="inAdminMode" class="badge badge-warning" :adminCommentCtrlId="adminCommentCtrlId" @click.prevent="onAddAdminComment"><span class="far fa-comment-dots"></span></span>
+    <label :for="ctrlId">{{ promptLabel }}</label>&nbsp;<i v-if="isRequired" class="required-star">*</i>&nbsp;&nbsp;<span v-if="inAdminMode" class="badge badge-warning" :adminCommentCtrlId="adminCommentCtrlId" @click.prevent="onAddAdminComment"><span class="far fa-comment-dots"></span></span>
     <input type="text" :id="ctrlId" :screenNum="screenNum" class="is-request-data form-control form-control-sm">
     <p :id="dataInvalidMsgId" style="display:none;" class="text-danger">Please enter a valid email address.</p>
     <p :id="dataRequiredMsgId" style="display:none;" class="text-danger">Please enter an email address.</p>
@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  props: ['screenNum', 'ctrlId', 'promptLabel', 'dataInvalidMsgId', 'dataRequiredMsgId', 'inAdminMode'],
+  props: ['screenNum', 'ctrlId', 'promptLabel', 'dataInvalidMsgId', 'dataRequiredMsgId', 'inAdminMode', 'isRequired'],
 
   computed: {
     adminCommentCtrlId() {
@@ -34,3 +34,10 @@ export default {
   }    
 }
 </script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+.required-star {
+  color: red
+}
+</style>

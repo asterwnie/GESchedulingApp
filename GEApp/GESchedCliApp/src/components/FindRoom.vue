@@ -97,7 +97,7 @@
     <div id="searchUI" class="col col-12 col-md-3 col-lg-3 col-xl-2" style="margin-bottom:20px">
       <div class="card">
       <div class="dropdownMenu card-header bg-primary text-light" id="searchHeader" style="cursor:pointer;" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-            Search Menu <i class="fa fa-search-plus" aria-hidden="true"></i>&nbsp;&nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i>
+      <i class="fa fa-search-plus" aria-hidden="true"></i>&nbsp;&nbsp;Search Menu&nbsp;&nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i>
       </div>
       <div id="collapseOne" class="collapse show" aria-labelledby="searchHeader" data-parent="#accordion">
           <div id="filterMenu" class="card-body" style="padding:10px; width:100%;">

@@ -94,7 +94,7 @@
         <div style="height:10px"></div>
       <div class="card">
       <div class="card-header bg-primary text-light" id="filterMenu" style="cursor:pointer;" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-            Filter By <i class="fa fa-search-plus" aria-hidden="true"></i>&nbsp;&nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i>
+      <i class="fa fa-search-plus" aria-hidden="true"></i>&nbsp;&nbsp;Filter By&nbsp;&nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i>
       </div>
       <div id="collapseOne" class="collapse show" aria-labelledby="filterMenu" data-parent="#accordion">
           <div id="filterMenu" class="card-body" style="padding:10px; width:100%;">

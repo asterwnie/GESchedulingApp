@@ -1,7 +1,7 @@
 <template>
 
   <div :id="ctrlContainerId">  
-    <label :for="ctrlId">{{ promptLabel }}</label>&nbsp;&nbsp;<span v-if="inAdminMode" class="badge badge-warning" :adminCommentCtrlId="adminCommentCtrlId" @click.prevent="onAddAdminComment"><span class="far fa-comment-dots"></span></span><br>
+    <label :for="ctrlId">{{ promptLabel }}</label>&nbsp;<i v-if="isRequired" class="required-star">*</i>&nbsp;&nbsp;<span v-if="inAdminMode" class="badge badge-warning" :adminCommentCtrlId="adminCommentCtrlId" @click.prevent="onAddAdminComment"><span class="far fa-comment-dots"></span></span><br>
     <label class="switch">
     <input type="checkbox" isBoolean="true" :id="ctrlId" :dependentCtrlId="additionalCommentCtrlId" :screenNum="screenNum" class="is-request-data form-control form-control-sm">
     <span class="slider round"></span>
@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  props: ['screenNum', 'ctrlId', 'promptLabel', 'dataInvalidMsgId', 'dataRequiredMsgId', 'inAdminMode'],
+  props: ['screenNum', 'ctrlId', 'promptLabel', 'dataInvalidMsgId', 'dataRequiredMsgId', 'inAdminMode', 'isRequired'],
 
   computed: {
     adminCommentCtrlId() {
@@ -48,3 +48,10 @@ export default {
   }
 }
 </script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+.required-star {
+  color: red
+}
+</style>

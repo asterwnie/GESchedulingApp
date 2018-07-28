@@ -12,6 +12,7 @@
 
               <template v-if="(requestPrompt.inputType.ctrlType == 'text' && requestPrompt.screenNum == currentScreenNum)"> 
                 <text-input 
+                  :isRequired="requestPrompt.isRequired"
                   :inAdminMode="inAdminMode&&!isNewRequest"
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
@@ -22,6 +23,7 @@
 
               <template v-if="(requestPrompt.inputType.ctrlType == 'textArea' && requestPrompt.screenNum == currentScreenNum)"> 
                 <text-area-input 
+                  :isRequired="requestPrompt.isRequired"                
                   :inAdminMode="inAdminMode&&!isNewRequest"
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
@@ -32,6 +34,7 @@
 
               <template v-if="(requestPrompt.inputType.ctrlType == 'email' && requestPrompt.screenNum == currentScreenNum)"> 
                 <email-input 
+                  :isRequired="requestPrompt.isRequired"               
                   :inAdminMode="inAdminMode&&!isNewRequest"
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
@@ -42,6 +45,7 @@
 
               <template v-if="(requestPrompt.inputType.ctrlType == 'number' && requestPrompt.screenNum == currentScreenNum)"> 
                 <number-input 
+                  :isRequired="requestPrompt.isRequired"               
                   :inAdminMode="inAdminMode&&!isNewRequest"
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
@@ -52,6 +56,7 @@
 
               <template v-if="(requestPrompt.inputType.ctrlType == 'yesNoWithComment' && requestPrompt.screenNum == currentScreenNum)"> 
                 <yes-no-with-comment-input 
+                  :isRequired="requestPrompt.isRequired"               
                   :inAdminMode="inAdminMode&&!isNewRequest"
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
@@ -62,6 +67,7 @@
 
               <template v-if="(requestPrompt.inputType.ctrlType == 'yesNo' && requestPrompt.screenNum == currentScreenNum)"> 
                 <yes-no-input 
+                  :isRequired="requestPrompt.isRequired"
                   :inAdminMode="inAdminMode&&!isNewRequest"
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
@@ -72,6 +78,7 @@
 
               <template v-if="(requestPrompt.inputType.ctrlType == 'selectRoom' && requestPrompt.screenNum == currentScreenNum)"> 
                 <event-location-input
+                  :isRequired="requestPrompt.isRequired"
                   :inAdminMode="inAdminMode&&!isNewRequest" 
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
@@ -83,6 +90,7 @@
               <!--WORK NEEDED-->
               <template v-if="(requestPrompt.inputType.ctrlType == 'eventSchedule' && requestPrompt.screenNum == currentScreenNum)"> 
                 <event-date-time-input 
+                  :isRequired="requestPrompt.isRequired"
                   :inAdminMode="inAdminMode&&!isNewRequest"
                   :screenNum="currentScreenNum"
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 

@@ -1,7 +1,7 @@
 <template>
 
   <div :id="ctrlContainerId">
-    <label :for="ctrlId">{{ promptLabel }}</label>&nbsp;&nbsp;<span v-if="inAdminMode" class="badge badge-warning" :adminCommentCtrlId="adminCommentCtrlId" @click.prevent="onAddAdminComment"><span class="far fa-comment-dots"></span></span><button type="button" class="btn btn-secondary btn-sm float-right" v-if="!inAdminMode" @click.prevent="$router.push('/findroom')">Find</button>
+    <label :for="ctrlId">{{ promptLabel }}</label>&nbsp;<i v-if="isRequired" class="required-star">*</i>&nbsp;&nbsp;<span v-if="inAdminMode" class="badge badge-warning" :adminCommentCtrlId="adminCommentCtrlId" @click.prevent="onAddAdminComment"><span class="far fa-comment-dots"></span></span><button type="button" class="btn btn-secondary btn-sm float-right" v-if="!inAdminMode" @click.prevent="$router.push('/findroom')">Find</button>
     <div :id="ctrlId" :screenNum="screenNum" isRoom="true" class="is-request-data">
       <div v-if="selectedRoom != undefined && selectedRoom != null">
         <div class="card" v-bind:class="[selectedRoom._id, 'is-request-data-part']">
@@ -58,7 +58,7 @@
 import { addAdminComment } from '@/common/requestMgr.js'
 
 export default {
-    props: ['screenNum', 'ctrlId', 'promptLabel', 'dataInvalidMsgId', 'dataRequiredMsgId', 'inAdminMode'],
+    props: ['screenNum', 'ctrlId', 'promptLabel', 'dataInvalidMsgId', 'dataRequiredMsgId', 'inAdminMode', 'isRequired'],
 
     computed: {
       adminCommentCtrlId() {
@@ -90,3 +90,10 @@ export default {
   }
 }
 </script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+.required-star {
+  color: red
+}
+</style>
