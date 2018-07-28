@@ -32,6 +32,7 @@ export default {
           adminCtrl.show();
       } else {
           adminCtrl.hide();
+          adminCtrl.val(null);
       }
     }
   }
