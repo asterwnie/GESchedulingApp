@@ -26,7 +26,7 @@
                 <div style="width:100%" v-for="(requestReadOnlyProperty, index) in requestReadOnlyProperties" :key="index">
                   <div v-if="(requestReadOnlyProperty.value != '' && requestReadOnlyProperty.value != null) || requestReadOnlyProperty.value === false">
                     <span class="font-weight-light" style="">  <!--Convert to Sentence Case-->
-                      {{requestReadOnlyProperty.label}}: 
+                      {{requestReadOnlyProperty.label}}
                     </span>
                     <br>
                     <div v-if="requestReadOnlyProperty.value.sizeType != null">
@@ -311,15 +311,10 @@ export default {
         if (adminComment != undefined && adminComment != null && adminComment != "") {
           reqProperty.adminComment = adminComment;
         }
-
-
         vm.requestReadOnlyProperties.push(reqProperty);
       }
-
-
     });
   },
-
 
   created() {
       console.log('SubmitRequest.vue created.');
@@ -577,7 +572,17 @@ export default {
     },
 
     onPrint(evt) {
+
+      var topBar = $('#headerBar');
+      var buttons = $(':button');
+
+      topBar.hide();
+      buttons.hide();
+
       window.print();
+
+      topBar.show();
+      buttons.show();
       return false;
     },
 
