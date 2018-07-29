@@ -185,10 +185,11 @@
             <div class="card-text" :hidden="room.seatingCapacity == null || room.seatingCapacity == ''">Seating Capacity: {{room.seatingCapacity}}</div>
             <div class="card-text" :hidden="room.capabilities == null || room.capabilities.length == 0">
               <hr>
-              <span class="badge badge-info" v-for="(capability, index) in room.capabilities" :key="index">
-                {{capability}}
+              <span v-for="(capability, index) in room.capabilities" :key="index" style="padding:1px">
+                <span class="badge badge-info">
+                  {{capability}}
+                </span>
               </span>
-              
                 <br>
                 <button v-bind:id="room._id" type="button" class="btn btn-sm btn-warning float-right" @click.prevent="onRoomSelectModal">Select</button>
               

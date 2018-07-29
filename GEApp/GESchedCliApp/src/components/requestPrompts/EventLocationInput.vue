@@ -12,8 +12,10 @@
             <div class="card-text" :hidden="selectedRoom.seatingCapacity == null || selectedRoom.seatingCapacity == ''">Seating Capacity: {{selectedRoom.seatingCapacity}}</div>
             <div class="card-text" :hidden="selectedRoom.capabilities == null || selectedRoom.capabilities.length == 0">
               <hr>
-              <span class="badge badge-info" v-for="(capability, index) in selectedRoom.capabilities" :key="index">
+              <span v-for="(capability, index) in selectedRoom.capabilities" :key="index" style="padding:1px">
+              <span class="badge badge-info">
                 {{capability}}
+              </span>
               </span>
             </div>
           </div>
