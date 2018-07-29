@@ -48,7 +48,7 @@ export const transformAsMailToBodyText = (text) => {
         });
     }
 
-    // Replace each [line-break] with %0D%0A
+    // Replace each [LINEBREAK] with %0D%0A
     // Uses Regular Expression to get all URLs in [] brackets. e.g. [http://www.ge.com]
     var bracketedStrings = text.match(/\[([^\]]*)\]/g);
 
@@ -58,7 +58,7 @@ export const transformAsMailToBodyText = (text) => {
             console.log(`Detected bracketed String: %{bracketedString}`);
 
             //if a line break is detected, replace it
-            if (bracketedString != null && bracketedString.toLowerCase().indexOf("[line-break") > -1) {
+            if (bracketedString != null && bracketedString.toLowerCase().indexOf("[LINEBREAK") > -1) {
                 let lineBreakCode = '%0D%0A';
                 transformedText = transformedText.replace(bracketedString, lineBreakCode);
                 console.log(`The transformed text: ${transformedText}`);
@@ -100,11 +100,9 @@ export const transformCaterers = (caterers) => {
 export const transformAppConfig = (appConfig) => {
     //debugger; // Uncomment to trigger breakpoint.
 
-
     var appConfigSettings = Object.getOwnPropertyNames(appConfig);
 
     appConfigSettings.forEach((setting, index) => {
-        //ToDo: Uncomment to allow EmailTemplate transformation.
         if (setting.indexOf('EmailTemplate') > -1) {
             let originalText = appConfig[setting];
             var transformedText = transformAsMailToBodyText(originalText);

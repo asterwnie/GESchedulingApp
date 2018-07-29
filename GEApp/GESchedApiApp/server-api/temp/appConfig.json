@@ -11,7 +11,7 @@
 
     "aboutViewTitle": "About",
 
-    "aboutViewDescription": "This application is for ipsum sapien metus posuere nam praesent dictum, curabitur ad sit tortor tincidunt integer, quisque dictum ante quam nullam consequat.",
+    "aboutViewDescription": "This application is for scheduling meetings and events at a GE facility. It provides communication between the event requesters and the event administrators to ensures that setup and specific needs are met.",
 
     "doFirstViewTitle": "Do First",
 
@@ -69,11 +69,11 @@
 
     "adminSendInviteViewDescription": "Invite a requester to use this booking utility.",
 
-    "sendInviteEmailTemplate": "Hello, [RECIPIENTNAME]![line-break][ADMINNAME] would like to invite you to access the GE Scheduling Utility.[line-break][line-break]Access Code: [ACCESSCODE][line-break][line-break]To access the GE Scheduling Utility, paste this link into your browser: [APPLINK][line-break]Note that the utility is still in development, and any feedback you may have can be sent to: [FEEDBACKEMAIL][line-break][line-break]",
+    "sendInviteEmailTemplate": "Hello, [RECIPIENTNAME]![LINEBREAK][ADMINNAME] would like to invite you to access the GE Scheduling Utility.[LINEBREAK][LINEBREAK]Access Code: [ACCESSCODE][LINEBREAK][LINEBREAK]To access the GE Scheduling Utility, paste this link into your browser: [APPLINK][LINEBREAK]Note that the utility is still in development, and any feedback you may have can be sent to: [FEEDBACKEMAIL][LINEBREAK][LINEBREAK]",
 
     "sendInviteEmailSubject": "GE Scheduling Utility Access",
 
-    "addAdminEmailTemplate": "Hello, [RECIPIENTNAME]![line-break][ADMINNAME] would like to invite you to become an administrator on the GE Scheduling Utility.[line-break][line-break]Admin Access Code: [ADMINACCESSCODE][line-break][line-break]To access the GE Scheduling Utility, paste this link into your browser: [APPLINK][line-break]Note that the utility is still in development, and any feedback you may have can be sent to: [FEEDBACKEMAIL][line-break][line-break]",
+    "addAdminEmailTemplate": "Hello, [RECIPIENTNAME]![LINEBREAK][ADMINNAME] would like to invite you to become an administrator on the GE Scheduling Utility.[LINEBREAK][LINEBREAK]Admin Access Code: [ADMINACCESSCODE][LINEBREAK][LINEBREAK]To access the GE Scheduling Utility, paste this link into your browser: [APPLINK][LINEBREAK]Note that the utility is still in development, and any feedback you may have can be sent to: [FEEDBACKEMAIL][LINEBREAK][LINEBREAK]",
 
     "deleteOlderThanNumDays": "14",
 
