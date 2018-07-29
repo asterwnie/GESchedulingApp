@@ -1,42 +1,42 @@
---Prompt.Label: Event title
+--Prompt.Label: Event title:
 --Prompt.InputType.Text[dataId=eventTitle]
 --Prompt.Required
 --Prompt.OnScreen: 1
 
---Prompt.Label: Event Date(s) / Time(s)
+--Prompt.Label: Event date & Time:
 --Prompt.InputType.EventSchedule[dataId=eventSchedule]
 --Prompt.Required
 --Prompt.OnScreen: 1
 
---Prompt.Label: Location of event
+--Prompt.Label: Location of event:
 --Prompt.InputType.SelectRoom[dataId=locationOfEvent]
 --Prompt.Required
 --Prompt.OnScreen: 1
 
---Prompt.Label: Onsite GE contact person for the event
+--Prompt.Label: Onsite GE contact person for the event:
 --Prompt.InputType.Text[dataId=eventGEContactPersonName]
 --Prompt.Required
 --Prompt.OnScreen: 1
 
---Prompt.Label: Contact Person's Email
+--Prompt.Label: Contact person's email:
 --Prompt.InputType.Email[dataId=eventGEContactPersonEmail]
 --Prompt.Required
 --Prompt.OnScreen: 1
 
---Prompt.Label: Contact Person's Phone
+--Prompt.Label: Contact person's phone:
 --Prompt.InputType.Text[dataId=eventGEContactPersonPhone]
 --Prompt.OnScreen: 1
 
---Prompt.Label: Number of GE employee attending
+--Prompt.Label: Number of GE employee attending:
 --Prompt.InputType.Number[dataId=numOfGeEmpAttending]
 --Prompt.Required
 --Prompt.OnScreen: 1
 
---Prompt.Label: Number of non-GE attending
+--Prompt.Label: Number of non-GE attending:
 --Prompt.InputType.Number[dataId=numOfNonGeAttending]
 --Prompt.OnScreen: 1
 
---Prompt.Label: Specify AV Requirements
+--Prompt.Label: Specify AV requirements:
 --Prompt.InputType.TextArea[dataId=avRequirements]
 --Prompt.OnScreen: 2
 
@@ -44,7 +44,7 @@
 --Prompt.InputType.YesNo[dataId=siteTourRequested]
 --Prompt.OnScreen: 2
 
---Prompt.Label: If Yes, Subject Matter Expert needed?
+--Prompt.Label: If yes, subject matter expert needed?
 --Prompt.InputType.YesNo[dataId=subjectMatterExpertNeeded|dependsOn=siteTourRequested]
 --Prompt.OnScreen: 2
 
