@@ -274,7 +274,7 @@ export default {
       util.logDebugMsg("Preparing read-only request item - id: " + requestPrompt.inputType.ctrlDataId);
       util.logDebugMsg("Preparing read-only request item - ctrlType: " + requestPrompt.inputType.ctrlType);
 
-      if (val == null || val == "") {
+      if (val === null || val === "") {
         util.logDebugMsg("Preparing read-only request item - value NOT assigned!");
       } else {
         util.logDebugMsg("Preparing read-only request item - JSON value: " + JSON.stringify(val)); 

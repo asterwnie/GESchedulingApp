@@ -584,8 +584,10 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
             var commentCtrlId = ctrl.attr('id').replace('Container', '');
             var commentCtrl = $('#' + commentCtrlId);
             var val = commentCtrl.val();
-            if (val == undefined || val == null || val == "") {
+            if (val === undefined || val === null || val === "") {
                 ctrl.hide();  
+            } else {
+                ctrl.show();
             }
         }
     });
