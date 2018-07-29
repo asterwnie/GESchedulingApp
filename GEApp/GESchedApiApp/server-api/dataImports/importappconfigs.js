@@ -69,6 +69,7 @@ function extractAppConfigItems(fileData) {
     var errorEncountered = false;
     var currentItemSeq = 0;
     var currentItem = null;
+   
 
     //Create singular appconfig
     newAppConfig = new AppConfig({});
@@ -78,164 +79,210 @@ function extractAppConfigItems(fileData) {
 
         var directive = null;
         var lineProcessed = false;
+        var propName = propName.replace("--", "").replace(".","")
+        var propName = propName(0).toLowerCase() + propName.slice(1);
 
         logger.info(`Processing line: ${line}`);
     
         //Find current item
        
         directive = "--SiteCode";
-        if (line.search(directive) > -1) {           
-           currentItem = 'siteCode';
+        if (line.search(directive) > -1) {     
+           propName = 'siteCode';
         }
         
         directive = "--SiteName";
         if (line.search(directive)>-1) {
-            currentItem = 'siteName';
+            propName = 'siteName';
         }
 
         directive = "--SiteAddress";
         if (line.search(directive)>-1) {
-            currentItem = 'siteAddress';
+            propName = 'siteAddress';
         }
 
         directive = "--AppTitle";
         if (line.search(directive)>-1) {
-            currentItem = 'appTitle';
+            propName = 'appTitle';
         }
         
+       directive = "DoFirstViewTitle";
+       if (line.search(directive) >-1){
+            propName = 'doFirstViewTitle';
+       }
         
-        directive="--DoFirst.";
-       if (line.search(directive) > -1) {           
-           var doFirst= line.replace(directive,"").trim();
-           if (doFirst == "ViewTitle"){
-               currentItem = 'doFirstViewTitle';
-           } else if (doFirst == "ViewDescription"){
-               currentItem = 'doFirstViewDescription';
+        directive = "--DoFirstViewDecription";
+        if (line.search(directive) > -1) {           
+         propName = 'doFirstViewDescription';
+        }
+        
+        directive = "--AboutViewTitle";
+        if (line.search(directive) > -1) {
+        propName = 'aboutViewTitle';
+        }
+
+        directive = "AboutViewDescription";
+        if (line.search(description) > -1) {
+            propName = 'aboutViewDescription';
+        }
+
+        directive = "--TechSupportViewTitle";
+        if (line.search(directive) > -1){
+            propName = 'techSupportViewTitle';
+        }
+
+        directive = "--TechSupportViewDescription";
+        if (line.search(directive) > -1){
+            propName = 'techSupportViewDescription';
+        }
+        
+        directive = "--CaterersViewTitle";
+        if (line.search(directive) > -1){
+            propName = 'caterersViewTitle';
+        }
+
+        directive = "--CaterersViewDescription";
+        if (line.search(directive) > -1){
+            propName = 'caterersViewDescription';
+        }
+
+        directive = "--HotelsViewTitle";
+        if (line.search(directive) > -1){
+            propName = 'hotelsViewTitle';
+        }
+
+        directive = "--HotelsViewDescription";
+        if (line.search(directive) > -1){
+            propName = 'hotelsViewDescription';
+        }
+
+        directive = "--GuestWifiAccessViewTitle";
+        if(line.search(directive) > -1){
+            propName = 'guestWifiAccessViewTitle';
+        }
+
+        directive = "--GuestWifiAccessViewDescription";
+        if(line.search(directive) > -1){
+            propName = 'guestWifiAccessViewDescription';
+        }
+
+       directive= "--NewRequestViewTitle";
+       if (line.search(directive)>-1){
+           propName = 'newRequestViewTitle';
+        }
+     
+       directive= "--EditRequestViewTitle";
+       if (line.search(directive)>-1){
+           propName = 'editRequestViewTitle';
            }
+       
+       directive= "--SubmitRequestViewTitle";
+       if (line.search(directive)>-1){
+          propName = 'submitRequestViewTitle';
+           }
+       
+
+       directive= "--AttentionNotesViewTitle";
+       if (line.search(directive)>-1){
+          propName = 'attentionNotesViewTitle';
+           }
+       
+       directive= "--FindRoomViewTitle";
+       if (line.search(directive)>-1){
+        propName= 'findRoomViewTitle';  
        }
 
-       directive= "--About.";
-       if (line.search(directive)>-1){
-           var about= line.replace (directive,"").trim();
-           if (about == "ViewTitle"){
-               currentItem = 'aboutViewTitle';
-           } else if (about == "ViewDescription"){
-               currentItem = 'aboutViewDescription';
-           }
+       directive = "--RequestStatusTagUnderReview";
+       if(line.search(directive) > -1){
+           propName = 'requestStatusTagUnderReview';
        }
-
-       directive= "--TechSupport.";
-       if (line.search(directive)>-1){
-           var techSupport= line.replace (directive,"").trim();
-           if (techSupport == "ViewTitle"){
-               currentItem = 'techSupportViewTitle';
-           } else if (techSupport == "ViewDescription"){
-               currentItem = 'techSupportViewDescription';
-           }
-       }
-
-       directive= "--Caterers.";
-       if (line.search(directive)>-1){
-           var caterers= line.replace (directive,"").trim();
-           if (caterers == "ViewTitle"){
-               currentItem = 'caterersViewTitle';
-           } else if (caterers == "ViewDescription"){
-               currentItem = 'caterersViewDescription';
-           }
-       }
-
-       directive= "--Hotels.";
-       if (line.search(directive)>-1){
-           var hotels= line.replace (directive,"").trim();
-           if (hotels == "ViewTitle"){
-               currentItem = 'hotelsViewTitle';
-           } else if (hotels == "ViewDescription"){
-               currentItem = 'hotelsViewDescription';
-           }
-       }
-
-       directive= "--GuestWiFiAccess.";
-       if (line.search(directive)>-1){
-           var guestWiFiAccess= line.replace (directive,"").trim();
-           if (guestWiFiAccess == "ViewTitle"){
-               currentItem = 'guestWiFiAccessViewTitle';
-           } else if (guestWiFiAccess == "ViewDescription"){
-               currentItem = 'guestWiFiAccessViewDescription';
-           }
+       
+       directive = "--RequestStatusTagApproved";
+       if(line.search(directive) > -1){
+        propName = 'requestStatusTagApproved';
        }
       
-       directive= "--NewRequest.";
-       if (line.search(directive)>-1){
-           var newRequest= line.replace (directive,"").trim();
-           if (newRequest == "ViewTitle"){
-               currentItem = 'newRequestViewTitle';
-           }
-       }
-     
-       directive= "--EditRequest.";
-       if (line.search(directive)>-1){
-           var editRequest= line.replace (directive,"").trim();
-           if (editRequest == "ViewTitle"){
-               currentItem = 'editRequestViewTitle';
-           }
+       directive = "--RequestStatusTagUnderRejected";
+       if(line.search(directive) > -1){
+           propName = 'requestStatusTagUnderRejected';
        }
 
-       directive= "--SubmitRequest.";
-       if (line.search(directive)>-1){
-           var submitRequest= line.replace (directive,"").trim();
-           if (submitRequest == "ViewTitle"){
-               currentItem = 'submitRequestViewTitle';
-           }
+       directive = "--RequestStatusMessageUnderReview";
+       if(line.search(directive) > -1){
+           propName = 'requestStatusMessageUnderReview';
        }
 
-       directive= "--AttentionNotes.";
-       if (line.search(directive)>-1){
-           var attentionNotes= line.replace (directive,"").trim();
-           if (attentionNotes == "ViewTitle"){
-               currentItem = 'attentionNotesViewTitle';
-           }
+       directive = "--RequestStatusMessageApproved";
+       if(line.search(directive) > -1){
+           propName = 'requestStatusMessageApproved';
+       }
+       
+       directive = "--RequestStatusMessageRejected";
+       if(line.search(directive) > -1){
+           propName = 'requestStatusMessageRejected';
+       }
+       
+       directive = "--AdminHomeViewTitle";
+       if(line.search(directive) > -1){
+           propName = 'adminHomeViewTitle';
        }
 
-       directive= "--FindRoom.";
-       if (line.search(directive)>-1){
-           var findRoom= line.replace (directive,"").trim();
-           if (findRoom == "ViewTitle"){
-               currentItem = 'findRoomViewTitle';
-           }
+       directive = "--AdminHomeViewDescription";
+       if(line.search(directive) > -1){
+           propName = 'adminHomeViewDescription';
        }
 
-       directive= "--RequestStatusTag.";
-       if (line.search(directive)>-1){
-           var requestStatusTag= line.replace (directive,"").trim();
-           if (requestStatusTag == "UnderReview"){
-               currentItem = 'requestStatusTagUnderReview';
-           } else if (requestStatusTag == "Approved"){
-               currentItem = 'requestStatusTagApproved';
-           } else if (requestStatusTag == "Rejected"){
-                currentItem = 'requestStatusTagRejected';
-            }
+       directive = "--AdminRequestViewTitle";
+       if(line.search(directive) > -1){
+           propName = 'adminRequestViewTitle';
        }
 
-       directive= "--RequestStatusMessage.";
-       if (line.search(directive)>-1){
-           var requestStatusTag= line.replace (directive,"").trim();
-           if (requestStatusTag == "UnderReview"){
-               currentItem = 'requestStatusMessageUnderReview';
-           } else if (requestStatusTag == "Approved"){
-               currentItem = 'requestStatusMessageApproved';
-           } else if (requestStatusTag == "Rejected"){
-               currentItem = 'requestStatusMessageRejected';
-           }
+       directive = "--AdminSendViewTitle"; 
+       if(line.search(directive) > -1){
+           propName = 'adminSendViewTitle';
        }
 
+       directive = "--AdminSendViewDescription";
+       if(line.search(directive) > -1){
+           propName = 'adminSendViewDescription';
+       }
 
+       directive = "--SendInviteEmailTemplate"; 
+       if(line.search(directive) > -1){
+           propName = 'sendInviteEmailTemplate';
+       }
+
+       directive = "--SendInviteEmailSubject";
+       if(line.search(directive) > -1){
+           propName = 'sendInviteEmailSubject';
+       }
+
+       directive = "--AddAdminEmailTemplate"; 
+       if(line.search(directive) > -1){
+           propName = 'addAdminEmailTemplate';
+       }
+
+       directive = "--DeleteOlderThanNumDays"; 
+       if(line.search(directive) > -1){
+           propName = 'deleteOlderThanNumDays';
+       }
+
+       directive = "--AdminMaintenanceViewTitle";
+       if(line.search(directive) > -1){
+           propName = 'adminMaintenanceViewTitle';
+       }
+
+       directive = "--AdminAddViewTitle";
+       if(line.search(directive) > -1){
+           propName = 'adminAddViewTitle';
+       }
+       
         //After current item is found, set the current item's value to the next line
-        if (currentItem != null){
+        if (propName != null){
             if(line.indexOf("--") == -1){
-                newAppConfig[currentItem] = line;
-                currentItem = null;
+                newAppConfig[propName] = line;
+                propName = null;
             }
-         
         }
 
         return true; // Return true to continue processing for the next line item.
@@ -260,7 +307,7 @@ function extractAppConfigItems(fileData) {
     if (errorEncountered == true) {
         result.success = false;
     } 
-
+    
     return result;
 }
 
@@ -320,5 +367,5 @@ function createAppConfig(newAppConfig) {
             logger.error(errMsg);
             mongoose.disconnect();
             return;
-        });
-}
+        }); 
+    };
