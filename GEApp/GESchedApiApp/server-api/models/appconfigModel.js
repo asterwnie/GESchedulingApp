@@ -119,8 +119,63 @@ const appConfigSchema = new Schema({
         type: String,
         required: [true, 'appConfig requestStatusTagRejected is required!']
     },
-},
     
+    adminHomeViewTitle: {
+        type: String, 
+        required: [true, 'appConfig adminHomeViewTitle is required!']
+    },
+    
+    adminHomeViewDescription: {
+        type: String, 
+        required: [true,'appConfig adminHomeViewDescription is required!']
+    },
+
+    adminRequestViewTitle: {
+        type: String, 
+        required: [true,'appConfig adminRequestViewTitle is required!']
+    },
+
+    adminSendInviteViewTitle: {
+        type: String, 
+        required: [true, 'appConfig adminSendInviteViewTitle is required!']
+    },
+
+    adminSendInviteViewDescription: {
+        type: String,
+        required : [true, 'appConfig adminSendInviteViewDescription is required!']
+    },
+
+    sendInviteEmailTemplate: {
+        type: String,
+        required : [true, 'appConfig sendInviteEmailTemplate is required!']
+    },
+
+    sendInviteEmailSubject: {
+        type: String,
+        required : [true, 'appConfig sendInviteEmailSubject is required!']
+    },
+
+    addAdminEmailTemplate: {
+        type: String,
+        required : [true, 'appConfig addAdminEmailTemplate is required!']
+    },
+
+    deleteOlderThanNumDays: {
+        type: String,
+        required : [true, 'appConfig deleteOlderThanNumDays is required!']
+    },
+
+    adminMaintenanceViewTitle: {
+        type: String,
+        required : [true, 'appConfig adminMaintenanceViewTitle is required!']
+    },
+
+    adminAddViewTitle: {
+        type: String,
+        required : [true, 'appConfig adminAddViewTitle is required!']
+    },
+},   
+
     { 
     timestamps: true // auto-add createdAt and updatedAt
     });
