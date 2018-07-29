@@ -133,8 +133,8 @@
                 </div>
                 <select class="custom-select">
                     <option selected></option>
-                    <option v-bind:id="statusLabel" v-bind:value='statusLabel' v-for="(statusLabel, index) in statusLabels" :key="index">
-                        {{ statusLabel }}
+                    <option v-bind:id="statusItem.statusValue" v-bind:value='statusItem.statusValue' v-for="(statusItem, index) in processingStatusOptions" :key="index">
+                        {{ statusItem.statusLabel }}
                     </option>
                 </select>
             </div>
@@ -255,14 +255,10 @@ export default {
         numPages: 0,
         numRequests: 0,
         currentPageNumber: 1,
-        statusLabels: [
-            "underReview",
-            "rejected",
-            "approved",
-        ],
         requestsQueryString: "",
         requestToDelete: null,
         deleteMode: false,
+        processingStatusOptions: this.$store.state.processingStatusOptions
     }
   },
   
@@ -290,15 +286,12 @@ export default {
         this.$store.state.currentViewTitle = this.title;
         this.$store.state.enableNavBar = true;
 
-        
-
         vm.clearSearchUI();
         vm.getNumPages();
         vm.updateRequests();
         vm.$forceUpdate();
-        
-        
     },
+
 
     updated(){
         let vm = this;

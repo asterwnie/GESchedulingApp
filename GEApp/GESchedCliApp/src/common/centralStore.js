@@ -19,6 +19,8 @@ const store = new Vuex.Store({
         selectedRoom: null,
         currentRequestsPreview: [],
 
+        processingStatusOptions: null,
+
         loginContext: {
             requesterEmail: null,
             accessCode: null

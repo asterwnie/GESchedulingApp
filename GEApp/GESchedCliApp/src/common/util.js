@@ -136,3 +136,16 @@ export const detectIsInSmallWidthMode  = () => {
     }
     return centralStore.state.isInSmallWidthMode;
 }
+
+
+export const getProcessingStatusOptions = () => {
+    //debugger; // Uncomment to trigger breakpoint.
+
+    var statusOptions = [];
+
+    statusOptions.push({ statusValue: "underReview", statusLabel: centralStore.state.appConfig.requestStatusTagUnderReview });
+    statusOptions.push({ statusValue: "approved", statusLabel: centralStore.state.appConfig.requestStatusTagApproved });
+    statusOptions.push({ statusValue: "rejected", statusLabel: centralStore.state.appConfig.requestStatusTagRejected });
+
+    return statusOptions;
+}
