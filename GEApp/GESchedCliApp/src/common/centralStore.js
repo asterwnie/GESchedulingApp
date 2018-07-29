@@ -12,7 +12,7 @@ const store = new Vuex.Store({
         defaultTimeOption: "09:00:00",
 
         isInSmallWidthMode: false,
-        smallWidthModeMax: 400,
+        smallWidthModeMax: 768, //used to be 400
 
         hasWorkingNewRequestCache: false,
         

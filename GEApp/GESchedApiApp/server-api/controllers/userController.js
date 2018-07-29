@@ -48,7 +48,7 @@ async function queryUsers (siteCode, query, callback) {
 exports.queryUsers = queryUsers;
 
 
-async function createNewUser(siteCode, newUser, callback) {
+async function createNewUser(siteCode, newUser, callback) { //siteCode removed from params
     logger.verbose('userController.createNewUser begin');
 
     try {
