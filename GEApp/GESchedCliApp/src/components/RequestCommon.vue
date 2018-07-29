@@ -449,7 +449,7 @@ export default {
               try {
                 if (ctrlVal == null || ctrlVal == "") {
                   try {
-                    delete storeState.currentRequest[inputCtrl.id];
+                    storeState.currentRequest[inputCtrl.id] = null;
                   } catch (err) {}
                 } else {
                   storeState.currentRequest[inputCtrl.id] = parseInt(ctrlVal);               
@@ -466,7 +466,7 @@ export default {
               } else {
                 try {
                   if (storeState.currentRequest[inputCtrl.id] == null) {
-                    delete storeState.currentRequest[inputCtrl.id];
+                    storeState.currentRequest[inputCtrl.id] = null;
                   }
                 } catch (err) {}
               }
@@ -517,7 +517,7 @@ export default {
                 if (providedStartDateTime == null && providedEndDateTime == null) {
                   util.logDebugMsg("providedStartDateTime - both providedStartDateTime & providedEndDateTime are null!");
                   try {
-                    delete storeState.currentRequest[inputCtrl.id];
+                    storeState.currentRequest[inputCtrl.id] = null;
                   } catch (err) {}
 
                 } else {
@@ -533,7 +533,7 @@ export default {
               } else {
                 if (ctrlVal == null || ctrlVal == "") {
                   try {
-                    delete storeState.currentRequest[inputCtrl.id];
+                    storeState.currentRequest[inputCtrl.id] = null;
                   } catch (err) {}
                 } else {
                   storeState.currentRequest[inputCtrl.id] = ctrlVal;
@@ -556,7 +556,7 @@ export default {
             }
             if (ctrlVal == null || ctrlVal == "") {
               try {
-                delete storeState.currentRequest[inputCtrl.id];
+                storeState.currentRequest[inputCtrl.id] = null;
               } catch (err) {}
             } else {
               storeState.currentRequest[inputCtrl.id] = ctrlVal;
@@ -581,7 +581,7 @@ export default {
           } else {
             $("#"+prompt.inputType.ctrlDataId+"Container").hide();
             if (storeState.currentRequest[prompt.inputType.ctrlDataId] != undefined) {
-              delete storeState.currentRequest[prompt.inputType.ctrlDataId];
+              storeState.currentRequest[prompt.inputType.ctrlDataId] = null;
             }
           }
           $("#"+dependsOn).attr("dependentCtrlId", prompt.inputType.ctrlDataId);
@@ -606,7 +606,7 @@ export default {
                 ctrl.val("");
               }
               if (storeState.currentRequest[dependentCtrlId] != undefined) {
-                delete storeState.currentRequest[dependentCtrlId];
+                storeState.currentRequest[dependentCtrlId] = null;
               }
             }
         });

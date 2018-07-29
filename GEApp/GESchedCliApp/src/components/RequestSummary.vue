@@ -7,7 +7,7 @@
           <div class="card">
             <div class="card-header bg-info text-light">
               Request Summary &nbsp;&nbsp;
-              <span class="badge badge-warning" v-if="canEditRequest && inAdminMode" @click.prevent="onAddAdminComment"><span class="far fa-comment-dots"></span></span>
+              <span class="badge badge-warning" v-if="canEditAdminGeneralComment" @click.prevent="onAddAdminComment"><span class="far fa-comment-dots"></span></span>
               &nbsp;
               <span class="badge badge-warning" v-if="canEditPreparationInfo" @click.prevent="onAddPreparationNotes">Preparation Notes</span>
             </div>
@@ -158,8 +158,20 @@ export default {
     canEditPreparationInfo() {
       var storeState = this.$store.state;
       if (this.inAdminMode && storeState.currentRequest != null && 
+          storeState.currentRequest.processingStatus != null &&
           storeState.currentRequest.processingStatus != "underReview" &&
           storeState.currentRequest.processingStatus != "rejected") {
+        return true;
+      } else {
+        return false;
+      }
+
+    },
+
+    canEditAdminGeneralComment() {
+      var storeState = this.$store.state;
+      if (this.inAdminMode && storeState.currentRequest != null && 
+          storeState.currentRequest.processingStatus != null) {
         return true;
       } else {
         return false;
@@ -175,7 +187,10 @@ export default {
         canEdit = true;
       } else if (!this.inAdminMode && storeState.currentRequest != null && storeState.currentRequest.userCanEdit != undefined && storeState.currentRequest.userCanEdit == true) {
         canEdit = true;
-      } else if (this.inAdminMode &&storeState.currentRequest != null && storeState.currentRequest.adminCanEdit != undefined && storeState.currentRequest.adminCanEdit == true) {
+      } else if (this.inAdminMode && storeState.currentRequest != null && 
+                 storeState.currentRequest.processingStatus != null && 
+                 storeState.currentRequest.adminCanEdit != undefined && 
+                 storeState.currentRequest.adminCanEdit == true) {
         canEdit = true;
       }
       return canEdit;
@@ -243,8 +258,8 @@ export default {
       storeState.currentViewTitle = storeState.appConfig.viewRequestViewTitle;
     }
 
-    this.showHideLabeledTextArea(this.canEditRequest, "generalAdminComment");
-    this.showHideLabeledTextArea(this.canEditRequest, "generalPreparationNotes");
+    this.showHideLabeledTextArea(this.canEditAdminGeneralComment, "generalAdminComment");
+    this.showHideLabeledTextArea(this.canEditPreparationInfo, "generalPreparationNotes");
 
     storeState.enableNavBar = true;
 
@@ -369,6 +384,8 @@ export default {
     },
 
     onAddAdminComment(evt) {  
+
+      var storeState = this.$store.state;
       var adminCtrlLabel = $("#generalAdminCommentLabel");
       var adminCtrl = $("#generalAdminComment");
       if (!adminCtrl.is(':visible')) {
@@ -377,10 +394,17 @@ export default {
       } else {
         adminCtrlLabel.hide();
         adminCtrl.hide();
+        adminCtrl.val(null);
+        if (storeState.currentRequest != null && 
+            storeState.currentRequest['generalAdminComment'] != undefined) {
+          storeState.currentRequest['generalAdminComment'] = null;
+        }
       }
     },
 
     onAddPreparationNotes(evt) {  
+
+      var storeState = this.$store.state;
       var adminCtrlLabel = $("#generalPreparationNotesLabel");
       var adminCtrl = $("#generalPreparationNotes");
       if (!adminCtrl.is(':visible')) {
@@ -389,6 +413,12 @@ export default {
       } else {
         adminCtrlLabel.hide();
         adminCtrl.hide();
+        adminCtrl.val(null);
+
+        if (storeState.currentRequest != null && 
+            storeState.currentRequest['generalPreparationNotes'] != undefined) {
+          storeState.currentRequest['generalPreparationNotes'] = null;
+        }
       }
     },
 
@@ -426,7 +456,7 @@ export default {
           currRequest.generalAdminComment = comment;
         } else if (currRequest.generalAdminComment != undefined) {
           try {
-            delete currRequest.generalAdminComment;
+            currRequest.generalAdminComment = null;
           } catch (err) {}
         }
 
@@ -436,7 +466,7 @@ export default {
           currRequest.generalPreparationNotes = notes;
         } else if (currRequest.generalPreparationNotes != undefined) {
           try {
-            delete currRequest.generalPreparationNotes;
+            currRequest.generalPreparationNotes = null;
           } catch (err) {}
         }        
 
@@ -498,7 +528,7 @@ export default {
           if (res.status == 201 && res.data != null) {
               var requestCreated = res.data;
 
-              localCacheMgr.uncacheItem(util.makeWorkingNewRequestCacheKey(storeState.loginContext.requesterEmail));
+              localCacheMgr.uncacheItem(util.makeWorkingNewRequestCacheKey(storeState.loginContext.requesterEmail,));
               storeState.currentRequest = null;
               storeState.selectedRoom = null;
 
@@ -542,7 +572,7 @@ export default {
           if (res.status == 200 && res.data != null) {
               var requestUdated = res.data;
 
-              localCacheMgr.uncacheItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, storeState.currentRequest._id));          
+              localCacheMgr.uncacheItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, requestUdated._id));          
               storeState.currentRequest = null;
               storeState.selectedRoom = null;
 
