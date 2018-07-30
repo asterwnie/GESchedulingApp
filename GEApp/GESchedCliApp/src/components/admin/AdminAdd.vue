@@ -8,7 +8,7 @@
             <div class="card" style="width:100%">
               <div class="card-header bg-danger text-light">
                   Invite Admin
-                  
+                  <button @click.prevent="onResetAdd" type="button" class="float-right btn btn-outline-light">Add Another</button>
               </div>
             </div> 
 
