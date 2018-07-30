@@ -531,7 +531,7 @@ export default {
           if (res.status == 201 && res.data != null) {
               var requestCreated = res.data;
 
-              localCacheMgr.uncacheItem(util.makeWorkingNewRequestCacheKey(storeState.loginContext.requesterEmail,));
+              localCacheMgr.uncacheItem(util.makeWorkingNewRequestCacheKey(storeState.loginContext.requesterEmail));
               storeState.currentRequest = null;
               storeState.selectedRoom = null;
 
