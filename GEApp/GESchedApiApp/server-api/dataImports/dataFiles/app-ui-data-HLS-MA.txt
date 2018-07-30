@@ -5,12 +5,10 @@ HLS-MA
 GE Health Life Science
 
 --SiteAddress 
-100 Results way
-Marlborough, MA 01752
+100 Results way, Marlborough, MA 01752
 
 --AppTitle
-Meeting & Event
-Request
+Meeting & Event[LINEBREAK]Request
 
 --HomeViewTitle 
 Home
@@ -89,10 +87,17 @@ More Info Required
 --RequestStatusMessageRejected 
 Your request is not complete. More Information is required. Please review and update your request before resubmitting it.
 
+--DeleteOlderThanNumDays 
+14
+
+--AdminMaintenanceViewTitle 
+Admin Maintenance
+
+--AdminAddViewTitle 
+Admin Add User
+
 --AdminHomeViewTitle 
 Admin Home
-
---AdminHomeViewDescription 
 
 --AdminRequestViewTitle 
 Admin Requests
@@ -103,20 +108,21 @@ Send Invite
 --AdminSendInviteViewDescription 
 Invite a requester to use this booking utility.
 
---SendInviteEmailTemplate 
-Hello, [RECIPIENTNAME]![LINEBREAK][ADMINNAME] would like to invite you to access the GE Scheduling Utility.[LINEBREAK][LINEBREAK]Access Code: [ACCESSCODE][LINEBREAK][LINEBREAK]To access the GE Scheduling Utility, paste this link into your browser: [APPLINK][LINEBREAK]Note that the utility is still in development, and any feedback you may have can be sent to: [FEEDBACKEMAIL][LINEBREAK][LINEBREAK]
-
 --SendInviteEmailSubject 
 GE Scheduling Utility Access
 
+--SendInviteEmailTemplate 
+Hello, [RECIPIENTNAME]!
+[ADMINNAME] would like to invite you to access the GE Scheduling Utility.
+Access Code: [ACCESSCODE]
+[LINEBREAK]
+To access the GE Scheduling Utility, paste this link into your browser:
+[APPLINK]
+
 --AddAdminEmailTemplate 
-Hello, [RECIPIENTNAME]![LINEBREAK][ADMINNAME] would like to invite you to become an administrator on the GE Scheduling Utility.[LINEBREAK][LINEBREAK]Admin Access Code: [ADMINACCESSCODE][LINEBREAK][LINEBREAK]To access the GE Scheduling Utility, paste this link into your browser: [APPLINK][LINEBREAK]Note that the utility is still in development, and any feedback you may have can be sent to: [FEEDBACKEMAIL][LINEBREAK][LINEBREAK]
-
---DeleteOlderThanNumDays 
-14
-
---AdminMaintenanceViewTitle 
-Admin Maintenance
-
---AdminAddViewTitle 
-Admin Add User
+Hello, [RECIPIENTNAME]!
+[ADMINNAME] would like to invite you to become an administrator on the GE Scheduling Utility.
+[LINEBREAK]
+Admin Access Code: [ADMINACCESSCODE][LINEBREAK]
+To access the GE Scheduling Utility, paste this link into your browser:
+[APPLINK]

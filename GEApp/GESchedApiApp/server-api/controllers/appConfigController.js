@@ -18,7 +18,7 @@ exports.getAppConfigs = async function (req, res) {
 
     let siteCode = httpRequestHelper.getSite(req);
     
-    await queryAppConfigs(siteCode, req.query.orderBy, req.query.typeContains, (result) => {
+    await queryAppConfigs(siteCode, req.query.siteCodeContains, (result) => {
         if (result.success) {
             logger.info(`appConfigController.getAppConfigs - AppConfig.find success. About to send back http response with ${result.appConfigs.length} appConfigs`);
             res.status(200).json(result.appConfigs);
@@ -32,26 +32,17 @@ exports.getAppConfigs = async function (req, res) {
 };
 
 
-async function queryAppConfigs (siteCode, orderBy, typeContains, callback) {
+async function queryAppConfigs (siteCode, siteCodeContains, callback) {
 
     let AppConfig = getAppConfigType(siteCode);
 
-    var sortDirective = {}; //default, no filtering
-    if (orderBy != null) {
-        if (orderBy == 'seqNum:1') {
-            sortDirective = { "seqNum": 1};  //ascending order
-        } else if (orderBy == 'seqNum:-1') {
-            sortDirective = { "seqNum": -1}; //descending order
-        }
-    }
-
     var filterDirective = {}; //default, no filering
     if (typeContains != null) {    
-        const regExpression = new RegExp(`(${typeContains})`);
-        filterDirective = { "type": regExpression };        
+        const regExpression = new RegExp(`(${siteCodeContains})`);
+        filterDirective = { "siteCode": regExpression };        
     }
 
-    await AppConfig.find(filterDirective).sort(sortDirective)
+    await AppConfig.find(filterDirective)
         .then((appConfigs) => {
             logger.info(`appConfigController.queryAppConfigs - AppConfig.find success. Got back ${appConfigs.length} appConfigs`);           
             callback({ success: true, appConfigs: appConfigs });
