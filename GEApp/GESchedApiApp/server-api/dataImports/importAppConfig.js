@@ -38,7 +38,6 @@ function doAppConfigsImport() {
         
         var result = extractAppConfig(fileData);
         if (result.success) {
-            //logger.info(`Total number of appConfigs parsed: ${result.appConfigs.length}`);
 
             if (result.appConfig == null || result.appConfig == undefined) {
                 logger.info('No appConfig got extracted from the data file!');
