@@ -70,7 +70,7 @@
         <div class="card-header">
             <span>
                 Quick Filter:&nbsp;
-                <button @click.prevent="resetFilterView" class="btn btn-xs btn-info">All Requests</button>
+                <button id="allRequest" @click.prevent="resetFilterView" class="btn btn-xs btn-info">All Requests</button>
                 <button id="underReview" @click.prevent="onQuickFilter" class="btn btn-xs btn-warning">{{underReviewLabel}}</button>
                 <button id="rejected" @click.prevent="onQuickFilter" class="btn btn-xs btn-danger" >{{rejectedLabel}}</button>                
                 <button id="approved" @click.prevent="onQuickFilter" class="btn btn-xs btn-success">{{approvedLabel}}</button>
@@ -278,6 +278,8 @@ export default {
         vm.getNumPages();
         vm.updateRequests();
         vm.$forceUpdate();
+
+        $('#allRequest').focus();
     },
 
 
