@@ -76,7 +76,8 @@ function extractAppConfig(fileData) {
         if (line.indexOf("--") > -1) {
 
             currentPropName = line;
-            currentPropName = currentPropName.replace("--", "").replace(".","")
+            // Remove dashes and dots:
+            currentPropName = currentPropName.replace('--', '').replace(/\./g,'');
             currentPropName = currentPropName[0].toLowerCase() + currentPropName.slice(1);
 
         } else if (line != null && line != "" && 
