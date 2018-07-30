@@ -56,9 +56,9 @@ export const transformAsMailToBodyText = (text) => {
     if (bracketedStrings != null) {
         bracketedStrings.forEach((bracketedString, index) => {
             console.log(`Detected bracketed String: %{bracketedString}`);
-
+            
             //if a line break is detected, replace it
-            if (bracketedString != null && bracketedString.toLowerCase().indexOf("[LINEBREAK") > -1) {
+            if (bracketedString != null && bracketedString.indexOf("[LINEBREAK") > -1) {
                 let lineBreakCode = '%0D%0A';
                 transformedText = transformedText.replace(bracketedString, lineBreakCode);
                 console.log(`The transformed text: ${transformedText}`);
@@ -104,7 +104,7 @@ export const transformAppConfig = (appConfig) => {
 
     appConfigSettings.forEach((setting, index) => {
         if (setting.indexOf('EmailTemplate') > -1) {
-            let originalText = appConfig[setting];
+            let originalText = appConfig[setting];           
             var transformedText = transformAsMailToBodyText(originalText);
             appConfig[setting] = transformedText;
         }
