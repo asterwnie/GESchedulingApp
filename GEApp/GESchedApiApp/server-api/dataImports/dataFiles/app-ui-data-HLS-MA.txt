@@ -75,13 +75,13 @@ Find Room
 Under Review
 
 --RequestStatusMessageUnderReview 
-You request will be processed within 2 business days.
+Your request will be processed within 2 business days.
 
 --RequestStatusTagApproved 
 Approved
 
 --RequestStatusMessageApproved 
-You request has been approved.
+Your request has been approved.
 
 --RequestStatusTagRejected 
 More Info Required

@@ -49,11 +49,11 @@
 
     "requestStatusTagUnderReview": "Under Review",
 
-    "requestStatusMessageUnderReview": "You request will be processed within 2 business days.",
+    "requestStatusMessageUnderReview": "Your request will be processed within 2 business days.",
 
     "requestStatusTagApproved": "Approved",
 
-    "requestStatusMessageApproved": "You request has been approved.",
+    "requestStatusMessageApproved": "Your request has been approved.",
 
     "requestStatusTagRejected": "More Info Required",
 

@@ -76,6 +76,7 @@
 
 <script>
 import axios from 'axios'
+import * as util from '@/common/util.js';
 import * as apiMgr from '@/common/apiMgr.js';
 import * as localCacheMgr from '@/common/localCacheMgr.js';
 import * as textTransformer from '@/common/textTransformer.js';
@@ -137,8 +138,8 @@ export default {
         this.isFetchingNotes = true;
         this.isFetchingRequestPrompts = true;
         this.isFetchingRooms = true;
-        this.isFetchingRequests = true;
-        
+        this.isFetchingRequests = true;   
+
         this.getDefAppConfig(); 
         this.getNotes();
         this.getRequestPrompts();
@@ -164,6 +165,12 @@ export default {
 
     methods: {
 
+        prepareProcessingStatusOptions() {
+            if (this.$store.state.processingStatusOptions == null) {
+                this.$store.state.processingStatusOptions = util.getProcessingStatusOptions();
+            }
+        },
+
         getDefAppConfig() {
 
             var vm = this;
@@ -175,6 +182,7 @@ export default {
 
                     vm.$store.state.appConfig = textTransformer.transformAppConfig(res.data);
                     vm.isFetchingDefAppConfig = false;
+                    vm.prepareProcessingStatusOptions();
                 })
                 .catch((err) => {
                     vm.hasFailure = true;

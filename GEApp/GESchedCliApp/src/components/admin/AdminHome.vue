@@ -70,23 +70,23 @@
         <div class="card-header">
             <span>
                 Quick Filter&nbsp;
-                <div @click.prevent="resetFilterView" class="badge badge-secondary" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
+                <div @click.prevent="resetFilterView" class="badge badge-secondary" style="cursor:pointer; text-align:center; vertical-align:middle; padding:6px">
                     <span><i class="fa fa-user-circle" aria-hidden="true"></i>&nbsp;All Requests</span>
                 </div>
-                <div @click.prevent="onQuickFilter" class="quickFilterButton badge badge-danger" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
+                <div @click.prevent="onQuickFilter" class="quickFilterButton badge badge-danger" style="cursor:pointer; text-align:center; vertical-align:middle; padding:6px">
                     <span id="rejected">More Info Required</span>
                 </div>
 
-                <div @click.prevent="onQuickFilter" class="quickFilterButton badge badge-warning" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
+                <div @click.prevent="onQuickFilter" class="quickFilterButton badge badge-warning" style="cursor:pointer; text-align:center; vertical-align:middle; padding:6px">
                     <span id="underReview">Under Review</span>
                 </div>
-                <div @click.prevent="onQuickFilter" class="quickFilterButton badge badge-success" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
-                    <span id="approved">Approved & Completed</span>
+                <div @click.prevent="onQuickFilter" class="quickFilterButton badge badge-success" style="cursor:pointer; text-align:center; vertical-align:middle; padding:6px">
+                    <span id="approved">Approved</span>
                 </div>
-                <div @click.prevent="onQuickFilter" class="quickFilterButton badge badge-info" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
+                <div @click.prevent="onQuickFilter" class="quickFilterButton badge badge-info" style="cursor:pointer; text-align:center; vertical-align:middle; padding:6px">
                     <span id="otherStatus">Other Status</span>
                 </div>
-                <div @click.prevent="onQuickFilter" class="quickFilterButtoncard badge badge-primary" style="cursor:pointer; text-align:center; vertical-align:middle; padding:5px">
+                <div @click.prevent="onQuickFilter" class="quickFilterButtoncard badge badge-primary" style="cursor:pointer; text-align:center; vertical-align:middle; padding:6px">
                     <span id="otherStatus">Other Status</span>
                 </div>
             </span>
@@ -133,8 +133,8 @@
                 </div>
                 <select class="custom-select">
                     <option selected></option>
-                    <option v-bind:id="statusLabel" v-bind:value='statusLabel' v-for="(statusLabel, index) in statusLabels" :key="index">
-                        {{ statusLabel }}
+                    <option v-bind:id="statusItem.statusValue" v-bind:value='statusItem.statusValue' v-for="(statusItem, index) in processingStatusOptions" :key="index">
+                        {{ statusItem.statusLabel }}
                     </option>
                 </select>
             </div>
@@ -255,14 +255,10 @@ export default {
         numPages: 0,
         numRequests: 0,
         currentPageNumber: 1,
-        statusLabels: [
-            "underReview",
-            "rejected",
-            "approved",
-        ],
         requestsQueryString: "",
         requestToDelete: null,
         deleteMode: false,
+        processingStatusOptions: this.$store.state.processingStatusOptions
     }
   },
   
@@ -290,15 +286,12 @@ export default {
         this.$store.state.currentViewTitle = this.title;
         this.$store.state.enableNavBar = true;
 
-        
-
         vm.clearSearchUI();
         vm.getNumPages();
         vm.updateRequests();
         vm.$forceUpdate();
-        
-        
     },
+
 
     updated(){
         let vm = this;

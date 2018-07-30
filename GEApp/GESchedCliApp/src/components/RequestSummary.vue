@@ -38,8 +38,10 @@
                           <div class="card-text" :hidden="requestReadOnlyProperty.value.seatingCapacity == null || requestReadOnlyProperty.value.seatingCapacity == ''">Seating Capacity: {{requestReadOnlyProperty.value.seatingCapacity}}</div>
                           <div class="card-text" :hidden="requestReadOnlyProperty.value.capabilities == null || requestReadOnlyProperty.value.capabilities.length == 0">
                             <hr>
-                            <span class="badge badge-info" v-for="(capability, index) in requestReadOnlyProperty.value.capabilities" :key="index">
-                              {{capability}}
+                            <span v-for="(capability, index) in requestReadOnlyProperty.value.capabilities" :key="index" style="padding:1px">
+                              <span class="badge badge-info">
+                                {{capability}}
+                              </span>
                             </span>
                           </div>
                         </div>
@@ -171,7 +173,8 @@ export default {
     canEditAdminGeneralComment() {
       var storeState = this.$store.state;
       if (this.inAdminMode && storeState.currentRequest != null && 
-          storeState.currentRequest.processingStatus != null) {
+          storeState.currentRequest.processingStatus != null &&
+          storeState.currentRequest.processingStatus != 'rejected') {
         return true;
       } else {
         return false;
@@ -528,7 +531,7 @@ export default {
           if (res.status == 201 && res.data != null) {
               var requestCreated = res.data;
 
-              localCacheMgr.uncacheItem(util.makeWorkingNewRequestCacheKey(storeState.loginContext.requesterEmail,));
+              localCacheMgr.uncacheItem(util.makeWorkingNewRequestCacheKey(storeState.loginContext.requesterEmail));
               storeState.currentRequest = null;
               storeState.selectedRoom = null;
 

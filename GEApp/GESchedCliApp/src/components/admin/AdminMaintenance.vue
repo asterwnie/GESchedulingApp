@@ -115,9 +115,10 @@
                         </div>
                         <select class="custom-select" id="sizeTypeGroupSelect">
                             <option selected></option>
-                            <option v-bind:id="statusLabel" v-bind:value='statusLabel' v-for="(statusLabel, index) in statusLabels" :key="index">
-                                {{ statusLabel }}
+                            <option v-bind:id="statusItem.statusValue" v-bind:value='statusItem.statusValue' v-for="(statusItem, index) in processingStatusOptions" :key="index">
+                                {{ statusItem.statusLabel }}
                             </option>
+
                         </select>
                     </div>
                     
@@ -205,36 +206,27 @@
 
 <script>
 import axios from 'axios';
+import * as util from '@/common/util.js';
 import * as apiMgr from '@/common/apiMgr.js';
 import * as localCacheMgr from '@/common/localCacheMgr.js';
-import * as util from '@/common/util.js'
 
 export default {
     data () {
     return {
         hasFailure: false,
         failureMessage: "",
-
         canShowRequestResult: false,
         requestResultMessage: "Button does not work right now.",
-
         canShowAccessCodeResultCreate: false,
         accessCodeResultMessageCreate: "",
         canShowAccessCodeResultDelete: false,
         accessCodeResultMessageDelete: "",
         canShowRequestResult: false,
         requestResultMessage: "",
-
         previewRequestNum: 3,
         currentHeader: "Select a maintenance option.",
-
-        statusLabels: [
-            "underReview",
-            "rejected",
-            "approved",
-        ],
-
         requestsToDelete: null,
+        processingStatusOptions: this.$store.state.processingStatusOptions
     }
   },
 
@@ -261,14 +253,8 @@ export default {
 
         this.$store.state.currentViewTitle = this.title;
         this.$store.state.enableNavBar = true;
-
-        
-
     },
 
-    deactivated() {
-
-    },
 
     methods: {
 

@@ -36,10 +36,10 @@
             <p class="card-text font-italic">{{requestItem.processingStatusMessage}}</p>
             <div class="card-text text-muted">Last updated:&nbsp;{{requestItem.updatedAtDisp}}</div>
             <div v-if="requestItem.userCanEdit">
-              <button :id="requestItem._id" type="button" @click.prevent="onEditViewRequest" class="enableEdit btn btn-warning btn-sm float-right">Edit</button>
+              <button :id="requestItem._id" type="button" @click.prevent="onEditRequest" class="enableEdit btn btn-warning btn-sm float-right">Edit</button>
             </div>
             <div v-else>
-              <button :id="requestItem._id" type="button" @click.prevent="onEditViewRequest" class="disableEdit btn btn-secondary btn-sm float-right">View</button>
+              <button :id="requestItem._id" type="button" @click.prevent="onViewRequest" class="disableEdit btn btn-secondary btn-sm float-right">View</button>
             </div>
             <button :id="requestItem._id" type="button" @click.prevent="onDeleteRequest" class="enableEdit btn btn-danger btn-sm float-left">Delete</button>
           </div>
@@ -188,7 +188,7 @@ export default {
       this.$router.push('/dofirst/true');
     },
 
-    onEditViewRequest: function(event) {
+    onEditRequest: function(event) {
       console.log('Home.vue - onEditViewRequest activate');
 
       let vm = this;
@@ -207,6 +207,39 @@ export default {
           }
         });
       }
+
+      storeState.currentRequest = selectedRequest;
+      storeState.selectedRoom = selectedRequest.locationOfEvent;
+
+      //check if it is an edit or a view; if edit, go to request/1, if view, go to summary
+      if($(event.target).hasClass("enableEdit")){
+        vm.$router.push('/request/1');
+      } else if ($(event.target).hasClass("disableEdit")) {
+        vm.$router.push('/requestsummary'); 
+      }
+
+    },
+
+    onViewRequest: function(event) {
+      console.log('Home.vue - onEditViewRequest activate');
+
+      let vm = this;
+      let selectedReqId = event.target.id;
+      let storeState = this.$store.state;
+
+      var selectedRequest = null;
+
+      var revisingRequest = localCacheMgr.getCachedItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, selectedReqId));
+      if (revisingRequest != undefined && revisingRequest != null) {
+        localCacheMgr.uncacheItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, selectedReqId));
+      } 
+
+      storeState.currentUserRequests.forEach(function(request) {
+        if (request._id == selectedReqId) {
+          selectedRequest = request;
+        }
+      });
+      
 
       storeState.currentRequest = selectedRequest;
       storeState.selectedRoom = selectedRequest.locationOfEvent;
