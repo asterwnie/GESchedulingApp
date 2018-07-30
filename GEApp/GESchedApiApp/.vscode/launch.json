@@ -86,14 +86,14 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "ADMIN: Import AppConfigs",
-            "program": "${workspaceFolder}/server-api/dataImports/importAppConfigs.js"
+            "name": "ADMIN: Import AppConfig",
+            "program": "${workspaceFolder}/server-api/dataImports/importAppConfig.js"
         },
         {
             "type": "node",
             "request": "launch",
-            "name": "ADMIN: Delete AppConfigs",
-            "program": "${workspaceFolder}/server-api/dataImports/deleteAppConfigs.js"
+            "name": "ADMIN: Delete AppConfig",
+            "program": "${workspaceFolder}/server-api/dataImports/deleteAppConfig.js"
         },
         {
             "type": "node",

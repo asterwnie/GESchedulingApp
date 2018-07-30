@@ -69,26 +69,11 @@
     <div id="searchUI" class="col col-12 col-md-4 col-lg-4 col-xl-2" style="margin-bottom:20px">
         <div class="card-header">
             <span>
-                Quick Filter&nbsp;
-                <div @click.prevent="resetFilterView" class="badge badge-secondary" style="cursor:pointer; text-align:center; vertical-align:middle; padding:6px">
-                    <span><i class="fa fa-user-circle" aria-hidden="true"></i>&nbsp;All Requests</span>
-                </div>
-                <div @click.prevent="onQuickFilter" class="quickFilterButton badge badge-danger" style="cursor:pointer; text-align:center; vertical-align:middle; padding:6px">
-                    <span id="rejected">More Info Required</span>
-                </div>
-
-                <div @click.prevent="onQuickFilter" class="quickFilterButton badge badge-warning" style="cursor:pointer; text-align:center; vertical-align:middle; padding:6px">
-                    <span id="underReview">Under Review</span>
-                </div>
-                <div @click.prevent="onQuickFilter" class="quickFilterButton badge badge-success" style="cursor:pointer; text-align:center; vertical-align:middle; padding:6px">
-                    <span id="approved">Approved</span>
-                </div>
-                <div @click.prevent="onQuickFilter" class="quickFilterButton badge badge-info" style="cursor:pointer; text-align:center; vertical-align:middle; padding:6px">
-                    <span id="otherStatus">Other Status</span>
-                </div>
-                <div @click.prevent="onQuickFilter" class="quickFilterButtoncard badge badge-primary" style="cursor:pointer; text-align:center; vertical-align:middle; padding:6px">
-                    <span id="otherStatus">Other Status</span>
-                </div>
+                Quick Filter:&nbsp;
+                <button id="allRequest" @click.prevent="resetFilterView" class="btn btn-xs btn-info">All Requests</button>
+                <button id="underReview" @click.prevent="onQuickFilter" class="btn btn-xs btn-warning">{{underReviewLabel}}</button>
+                <button id="rejected" @click.prevent="onQuickFilter" class="btn btn-xs btn-danger" >{{rejectedLabel}}</button>                
+                <button id="approved" @click.prevent="onQuickFilter" class="btn btn-xs btn-success">{{approvedLabel}}</button>
             </span>
         </div>
         <div style="height:10px"></div>
@@ -258,7 +243,10 @@ export default {
         requestsQueryString: "",
         requestToDelete: null,
         deleteMode: false,
-        processingStatusOptions: this.$store.state.processingStatusOptions
+        processingStatusOptions: this.$store.state.processingStatusOptions,
+        underReviewLabel: this.$store.state.appConfig.requestStatusTagUnderReview,
+        rejectedLabel: this.$store.state.appConfig.requestStatusTagRejected,
+        approvedLabel: this.$store.state.appConfig.requestStatusTagApproved
     }
   },
   
@@ -290,6 +278,8 @@ export default {
         vm.getNumPages();
         vm.updateRequests();
         vm.$forceUpdate();
+
+        $('#allRequest').focus();
     },
 
 
@@ -603,6 +593,11 @@ export default {
                     console.log("onQuickFilter activate.");
                     let vm = this;
 
+                    if (util.detectIsInSmallWidthMode()) {
+                        //collapse search menu
+                        $("#filterMenu").click();
+                    }
+
                     let statusToQuery = event.target.id;
 
                     vm.requestsQueryString += `&processingStatusContains=${statusToQuery}`;
@@ -693,5 +688,16 @@ export default {
 }
 a {
     margin:2px
+}
+.btn-xs {
+  padding  : .25rem .4rem;
+  font-weight: bold;
+  font-size  : .775rem;
+  line-height  : .5;
+  border-radius : .2rem;
+  cursor:pointer; 
+  text-align:center; 
+  vertical-align:middle; 
+  padding:8px
 }
 </style>

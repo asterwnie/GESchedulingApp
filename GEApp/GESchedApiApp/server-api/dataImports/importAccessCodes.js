@@ -114,37 +114,6 @@ function extractAccessCodeItems(fileData) {
             lineProcessed = true;
         }
 
-        /* directive = "--Admin.";  ///For the Admin directive
-        if (line.search(directive) > -1) {            
-            if (newAdmin != null) {
-                var success = validateAndCollectAdmin(newAdmin, adminItems);
-                if (!success) {
-                    errorEncountered = true;
-                    return false; // Return false to stop additional line processing.
-                }
-            }
-
-            var accessCodetype = line.replace(directive, "").trim();
-            // Start a new access code instance to gather its properties.
-            if (accessCodetype != "") {
-
-                currentItemSeq += 1;
-
-                newAccessCode = new AccessCode({
-                    seqNum: currentItemSeq,
-                    type: accessCodetype, 
-                });
-                
-            } else {
-                logger.error("ERROR: Code is required!");
-                errorEncountered = true;
-                return false; // Return false to stop additional line processing.
-            }
-
-            lineProcessed = true;
-        } */
-        
-
         return true; // Return true to continue processing for the next line item.
     })
 
