@@ -20,7 +20,7 @@
 
         <div class="col col-12 col-sm-10 col-md-8 col-lg-8 accordion" id="adminAddAccordian">
             <div class="card">
-                <div class="card-header" cursor="pointer" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="addAdminCollapse" id="addAdminHeading">
+                <div class="card-header" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="addAdminCollapse" id="addAdminHeading">
                     Step 1: Add Admin<p class="float-right text-success" :hidden="!hasSuccess">&nbsp;&nbsp;{{successMessage}}</p>
                 </div>
 
@@ -28,16 +28,16 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="recipientNameAdminInput">Recipient Name<i class="required-star">*</i></label>
-                            <input type="text" class="form-control" id="recipientNameAdminInput" aria-describedby="nameHelp" placeholder="ex. John Doe">
+                            <input type="text" class="form-control" id="recipientNameAdminInput" aria-describedby="nameHelp">
                             <small id="nameHelp" class="form-text text-muted">How the name is displayed here is how it will be displayed in the app.</small>
                         </div>
                         <div class="form-group">
                             <label for="recipientEmailAdminInput">Email address<i class="required-star">*</i></label>
-                            <input type="text" class="form-control" id="recipientEmailAdminInput" aria-describedby="recipient-email" placeholder="ex. johndoe@ge.com">
+                            <input type="text" class="form-control" id="recipientEmailAdminInput" aria-describedby="recipient-email">
                         </div>
                         <div class="form-group">
                             <label for="recipientPhoneAdminInput">Phone Number</label>
-                            <input type="text" class="form-control" id="recipientPhoneAdminInput" aria-describedby="recipient-phone" placeholder="ex. 1-800-800-800">
+                            <input type="text" class="form-control" id="recipientPhoneAdminInput" aria-describedby="recipient-phone">
                         </div>
                         <button @click.prevent="onAddAdmin" type="button" class="float-right btn btn-primary">Add Admin</button>
                         <div style="height:30px"></div>
@@ -46,23 +46,24 @@
                 </div>
             </div>
             <div class="card">
-                <div class="card-header" cursor="pointer" data-toggle="collapse" data-target="#sendNotificationCollapse" aria-expanded="false" aria-controls="sendNotificationCollapse" id="sendNotificationHeading">
+                <div class="card-header" data-toggle="collapse" data-target="#sendNotificationCollapse" aria-expanded="true" aria-controls="sendNotificationCollapse" id="sendNotificationHeading">
                     Step 2: Send Notification
                 </div>
-                <div id="collapseSendNotification" class="collapse" aria-labelledby="sendNotificationCollapse" data-parent="#adminAddAccordian">
-                    <div class="card-body row">
+                <div id="collapseSendNotification" class="collapse show" aria-labelledby="sendNotificationCollapse" data-parent="#adminAddAccordian">
+                    <div class="card-body">
+                    <div class="row">
                         <div id="adminBar" class="col col-12 col-lg-6 col-xl-5">
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1">Recipient Name</span>
                                 </div>
-                                <input id="recipientNameAdmin" type="text" class="form-control" placeholder="ex. John Doe" aria-label="recipient-name" aria-describedby="basic-addon1" disabled>
+                                <input id="recipientNameAdmin" type="text" class="form-control" aria-label="recipient-name" aria-describedby="basic-addon1" disabled>
                             </div>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon2">Recipient Email</span>
                                 </div>
-                                <input id="recipientEmailAdmin" type="text" class="form-control" placeholder="ex. johndoe@ge.com" aria-label="recipient-email" aria-describedby="basic-addon2" disabled>
+                                <input id="recipientEmailAdmin" type="text" class="form-control" aria-label="recipient-email" aria-describedby="basic-addon2" disabled>
                             </div>
                             <div v-if="canGenerateEmail">
                                 <button @click.prevent="onGenerateEmail" type="button" class="float-right btn btn-primary">Generate Email</button>
@@ -76,8 +77,8 @@
 
                         <div id="adminUI" class="col col-12 col-lg-6 col-xl-7">
                             <div class="form-group">
-                                <label for="emailPreview">Email Preview</label>
-                                <textarea class="form-control" id="emailPreview" rows="10" disabled></textarea>
+                                <label for="emailPreviewAdmin">Email Preview</label>
+                                <textarea class="form-control" id="emailPreviewAdmin" rows="10" readonly></textarea>
                             </div>
                             <div v-if="canEmail">
                                 <a :href="`mailto:${recipientEmail}?subject=${addAdminEmailSubject}&body=${emailStringDataExport}`">
@@ -89,6 +90,7 @@
                             </div>
                             
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -190,14 +192,14 @@ export default {
         vm.recipientName = "";
         vm.recipientEmail = "";
 
-        
+        $("#collapseSendNotification").removeClass("show");
         vm.refreshAdminUI();
     },
 
     updated(){
         if(this.hasBeenActivated){
             let vm = this;
-            $("#emailPreview")[0].value = vm.emailStringDataDisplay;
+            $("#emailPreviewAdmin")[0].value = vm.emailStringDataDisplay;
         }
     },
 
@@ -278,7 +280,7 @@ export default {
                     //reformat for display in preview
                     vm.emailStringDataDisplay = vm.emailStringDataExport.replace(/%0D%0A/g, '\n').replace(/%20/g, ' ');
 
-                    $("#emailPreview")[0].disabled = false;
+                    //$("#emailPreviewAdmin")[0].disabled = false;
                     vm.canEmail = true;
                 }
                 
@@ -337,7 +339,8 @@ export default {
                             vm.canGenerateEmail = true;
 
                             $("#collapseAddAdmin").collapse("hide");
-                            $("#collapseSendNotification").collapse('show');
+                            //$("#collapseSendNotification").collapse("show");
+                            $("#collapseSendNotification").addClass('show');
 
                             vm.refreshAdminUI();
                             vm.$forceUpdate();
@@ -356,6 +359,20 @@ export default {
             }
         },
 
+        onResetAdd(){
+
+            $("input").each(function(){
+                if(this.id.indexOf("AdminInput") > -1){
+                    this.value = "";
+                }
+            });
+
+            this.emailStringDataExport = "";
+            this.emailStringDataDisplay = "";
+            $("#collapseAddAdmin").collapse("show");
+            $("#collapseSendNotification").removeClass("show");
+            this.$forceUpdate();
+        }
 
     }
 }

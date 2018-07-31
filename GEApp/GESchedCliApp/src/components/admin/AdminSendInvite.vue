@@ -2,8 +2,8 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
-            <div class="col col-12 col-sm-10 col-md-8 col-lg-8" style="color:gray">
+            <div class="col col-12 col-md-1 col-lg-2"></div>
+            <div class="col col-12 col-md-10 col-lg-8" style="color:gray">
         
                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
                     <strong>Send Invite</strong> {{viewDescription}}
@@ -12,35 +12,37 @@
                     </button>
                 </div>
 
+                <button @click.prevent="onResetAdd" type="button" class="float-right btn btn-secondary">Add Another</button>
+
             </div>
-            <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
+            <div class="col col-12 col-md-1 col-lg-2"></div>
         </div>
         <div style="height:10px"></div>
       <div class="row">
-      <div class="col col-12 col-md-2 col-lg-2"></div>
+      <div class="col col-12 col-md-1 col-lg-2"></div>
 
-        <div id="adminBar" class="col col-12 col-md-3 col-lg-3 col-xl-2" style="padding-bottom:10px">
+        <div id="adminBar" class="col col-12 col-md-4 col-lg-4 col-xl-3" style="padding-bottom:10px">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">Recipient Name</span>
                 </div>
-                <input id="recipientName" type="text" class="form-control" placeholder="ex. John Doe" aria-label="recipient-name" aria-describedby="basic-addon1">
+                <input id="recipientName" type="text" class="form-control" aria-label="recipient-name" aria-describedby="basic-addon1">
             </div>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon2">Recipient Email</span>
                 </div>
-                <input id="recipientEmail" type="text" class="form-control" placeholder="ex. johndoe@ge.com" aria-label="recipient-email" aria-describedby="basic-addon2">
+                <input id="recipientEmail" type="text" class="form-control" aria-label="recipient-email" aria-describedby="basic-addon2">
             </div>
 
             <button @click.prevent="onGenerateEmail" type="button" class="float-right btn btn-primary">Generate Email</button>
             <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
         </div>
 
-        <div id="adminUI" class="col col-12 col-md-5 col-lg-5 col-xl-6">
+        <div id="adminUI" class="col col-12 col-md-6 col-lg-4 col-xl-5">
             <div class="form-group">
                 <label for="emailPreview">Email Preview</label>
-                <textarea class="form-control" id="emailPreview" rows="10" disabled></textarea>
+                <textarea class="form-control" id="emailPreview" rows="10" readonly></textarea>
             </div>
             <div v-if="canEmail">
                 <a :href="`mailto:${recipientEmail}?subject=${sendInviteEmailSubject}&body=${emailStringDataExport}`">
@@ -54,7 +56,7 @@
         </div>
 
 
-      <div class="col col-12 col-md-2 col-lg-2"></div>
+      <div class="col col-12 col-md-1 col-lg-2"></div>
     </div>
     <div style="height:30px"></div>
     <div class="row">
@@ -173,7 +175,7 @@ export default {
                     //reformat for display in preview
                     vm.emailStringDataDisplay = vm.emailStringDataExport.replace(/%0D%0A/g, '\n').replace(/%20/g, ' ');
 
-                    $("#emailPreview")[0].disabled = false;
+                    //$("#emailPreview")[0].disabled = false;
                     vm.canEmail = true;
                 }
                 
@@ -185,6 +187,20 @@ export default {
             vm.$forceUpdate();
             
         },
+
+        onResetAdd(){
+
+            $("input").each(function(){
+                if(this.id.indexOf("recipient") > -1 && this.id.indexOf("AdminInput") <= -1){
+                    this.value = "";
+                }
+            });
+
+            this.emailStringDataExport = "";
+            this.emailStringDataDisplay = "";
+            
+            this.$forceUpdate();
+        }
 
 
     }

@@ -99,14 +99,14 @@
                         <div class="input-group-prepend">
                         <span class="input-group-text" id="inputGroup-sizing-sm">Event Name</span>
                         </div>
-                        <input type="text" class="form-control" aria-label="Small" placeholder="Optional" aria-describedby="inputGroup-sizing-sm">
+                        <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                     </div>
 
                     <div id="inputRequesterEmail" class="input-group input-group-sm mb-3">
                         <div class="input-group-prepend">
                         <span class="input-group-text" id="inputGroup-sizing-sm">Requester Email</span>
                         </div>
-                        <input type="text" class="form-control" aria-label="Small" placeholder="Optional" aria-describedby="inputGroup-sizing-sm">
+                        <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                     </div>
 
                     <div id="inputStatus" class="input-group input-group-sm mb-3">

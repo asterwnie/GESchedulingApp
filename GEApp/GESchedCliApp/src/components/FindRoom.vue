@@ -53,8 +53,8 @@
 <!--Page Contents-->
 <div class="containerDiv container-fluid" style="width:100%">
   <div class="row">
-    <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
-    <div class="col col-12 col-sm-10 col-md-8 col-lg-8" style="color:gray">
+    <div class="col col-12 col-md-1 col-lg-2"></div>
+    <div class="col col-12 col-md-10 col-lg-8" style="color:gray">
 
       
       
@@ -88,13 +88,13 @@
         </div>
 
     </div>
-    <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
+    <div class="col col-12 col-md-1 col-lg-2"></div>
   </div>
 
   <div class="row">
-    <div class="col col-12 col-md-2 col-lg-2"></div>
+    <div class="col col-12 col-md-1 col-lg-2"></div>
 
-    <div id="searchUI" class="col col-12 col-md-3 col-lg-3 col-xl-2" style="margin-bottom:20px">
+    <div id="searchUI" class="col col-12 col-md-5 col-lg-3 col-xl-2" style="margin-bottom:20px">
       <div class="card">
       <div class="dropdownMenu card-header bg-primary text-light" id="searchHeader" style="cursor:pointer;" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
       <i class="fa fa-search-plus" aria-hidden="true"></i>&nbsp;&nbsp;Search Menu&nbsp;&nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i>
@@ -199,7 +199,7 @@
       </div>
     </div>
 
-    <div class="col col-12 col-md-2 col-lg-2"></div>
+    <div class="col col-12 col-md-1 col-lg-2"></div>
   </div>
   </div>
   </div>

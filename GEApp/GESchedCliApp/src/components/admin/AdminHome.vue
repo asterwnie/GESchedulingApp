@@ -24,8 +24,8 @@
 <!--Page Contents-->
 <div class="container-fluid">
     <div class="row">
-        <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
-        <div class="col col-12 col-sm-10 col-md-8 col-lg-8" style="color:gray">
+        <div class="col col-12 col-sm-1 col-md-1 col-lg-2"></div>
+        <div class="col col-12 col-sm-10 col-md-10 col-lg-8" style="color:gray">
 
         <nav class="navbar navbar-light" style="background-color:#ffb3b3">
         <a class="navbar-brand text-dark">
@@ -38,14 +38,14 @@
         <div style="cursor:pointer;" class="text-right" @click.prevent="$router.push('/login')">Log Out&nbsp;<span class="fas fa-chevron-right"></span></div>
         <hr>
         </div>
-        <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
+        <div class="col col-12 col-sm-1 col-md-1 col-lg-2"></div>
     </div>
     
     <div style="height:10px"></div>
 
     <div class="row">
-        <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
-        <div class="col col-12 col-sm-10 col-md-8 col-lg-8" style="color:gray">
+        <div class="col col-12 col-sm-1 col-md-1 col-lg-2"></div>
+        <div class="col col-12 col-sm-10 col-md-10 col-lg-8" style="color:gray">
     
             <div class="card" style="width:100%">
                     <div class="card-header bg-info text-light">
@@ -58,15 +58,15 @@
             </div>
 
         </div>
-        <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
+        <div class="col col-12 col-sm-1 col-md-1 col-lg-2"></div>
     </div>
 
     <div style="height:10px"></div>
 
     <div class="row">
-    <div class="col col-12 col-md-2 col-lg-2"></div>
+    <div class="col col-12 col-sm-1 col-md-1 col-lg-2"></div>
 
-    <div id="searchUI" class="col col-12 col-md-4 col-lg-4 col-xl-2" style="margin-bottom:20px">
+    <div id="searchUI" class="col col-12 col-sm-10 col-md-4 col-lg-4 col-xl-2" style="margin-bottom:20px">
         <div class="card-header">
             <span>
                 Quick Filter:&nbsp;
@@ -144,7 +144,7 @@
       </div>
     </div>
 
-    <div id="requestUI" class="col col-12 col-md-4 col-lg-4 col-xl-6">
+    <div id="requestUI" class="col col-12 col-md-6 col-lg-4 col-xl-6">
             <div v-if="requestsPreview.length < 1">
                 <div class="card">
                     <br>
@@ -211,7 +211,7 @@
             
     </div>
 
-    <div class="col col-12 col-md-2 col-lg-2"></div>
+    <div class="col col-12 col-md-1 col-lg-2"></div>
     </div>
     <div style="height:30px"></div>
     <div class="row">

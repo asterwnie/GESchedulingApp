@@ -16,7 +16,7 @@ import RequestSummary from '@/components/RequestSummary.vue'
 import ITHelp from '@/components/ITHelp.vue'
 import About from '@/components/About.vue'
 
-//import AdminCommon from '@/components/AdminCommon.vue'
+
 import AdminHome from '@/components/admin/AdminHome.vue'
 import AdminMaintenance from '@/components/admin/AdminMaintenance.vue'
 import AdminAdd from '@/components/admin/AdminAdd.vue'
