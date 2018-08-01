@@ -198,7 +198,7 @@ function createCaterer(newCaterer) {
 
                 mongoose.disconnect((err) => {
                     if (err) {
-                        logger.error(`ADMIN: Caterer.deleteMany failed for site: ${siteCode}! Error: ${err}`);
+                        logger.error(`ADMIN: newCaterer.save failed for site: ${siteCode}! Error: ${err}`);
                     } else {
                         logger.info(`ADMIN: Disconnected from database for site: ${siteCode}.`);
                     }

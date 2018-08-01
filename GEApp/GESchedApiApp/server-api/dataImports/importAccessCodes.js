@@ -20,7 +20,7 @@ var siteCode = appConfig.defaultSite; // The current default in HLS-MA in server
 // Note: currently in VS Code debug mode you have to rely on using the appConfig.defaultSite setting.
 if (args.length == 3 && args[2] != null) { siteCode = args[2]; }
 
-const fileName = `access-${siteCode}.txt`;
+const fileName = `access-codes-${siteCode}.txt`;
 
 let AccessCode = getAccessCode(siteCode);
 

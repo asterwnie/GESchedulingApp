@@ -50,14 +50,14 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "ADMIN: Import Users",
-            "program": "${workspaceFolder}/server-api/dataImports/importUsers.js"
+            "name": "ADMIN: Import Admin Users",
+            "program": "${workspaceFolder}/server-api/dataImports/importAdminUsers.js"
         },
         {
             "type": "node",
             "request": "launch",
-            "name": "ADMIN: Delete Users",
-            "program": "${workspaceFolder}/server-api/dataImports/deleteUsers.js"
+            "name": "ADMIN: Delete Admin Users",
+            "program": "${workspaceFolder}/server-api/dataImports/deleteAdminUsers.js"
         },
         {
             "type": "node",
