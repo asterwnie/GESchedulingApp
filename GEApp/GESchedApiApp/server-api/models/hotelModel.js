@@ -28,6 +28,10 @@ const HotelSchema = new Schema({
         type: String
     },
 
+    website: {
+        type: String
+    },
+
     discount: {
         type: String
     },

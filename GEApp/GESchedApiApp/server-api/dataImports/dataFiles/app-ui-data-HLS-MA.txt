@@ -20,8 +20,15 @@ About
 This application is for scheduling meetings and events at a GE facility. It provides communication between the event requesters and the event administrators to ensures that setup and specific needs are met.
 [LINEBREAK]This version of the application is in beta. 
 [LINEBREAK]Key Contributors:
-[Michelle Nie] (Development Lead) - email: 2michellen@gmail.com
+[Michelle Nie] (Dev Lead) - email: 2michellen@gmail.com
 [Cyra Katoch]
+[LINEBREAK]
+The success of this project would not be possible without the support and mentoring from the following people:
+Cynthia Blais
+Dave Sparata
+Manny
+Mark Hamilton
+Michelle's father
 
 
 --DoFirstViewTitle 
