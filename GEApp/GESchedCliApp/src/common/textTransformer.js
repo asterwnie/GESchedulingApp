@@ -2,31 +2,44 @@
 export const transformMetaTags = (text) => {
     //debugger; // Uncomment to trigger breakpoint.
 
-    var htmlLinkTmpl = '<a href="{0}" target="_blank"><span class="far fa-paper-plane fa-sm"></span></a>';
-
     var transformedText = text;
 
-    // Uses Regular Expression to get all URLs in [] brackets. e.g. [http://www.ge.com]
-    var bracketedLinks = text.match(/\[([^\]]*)\]/g);
+    if (text == null) {
+        return transformedText;
+    }
+
+    if ((typeof text) != "string") {
+        return transformedText;
+    }
+
+    var htmlLinkTmpl = '<a href="{0}" target="_blank"><span class="far fa-paper-plane fa-sm"></span></a>';
+
+
+    // Uses Regular Expression to get all URLs in [] brackets. e.g. [http://www.ge.com], [LINEBREAK]
+    var bracketedStrings = text.match(/\[([^\]]*)\]/g);
 
     // For each bracketed link, trim the [ and ] to get just the url.
     // And then replace the [url] with: <a href="url" target="_blank">website</a>
-    if (bracketedLinks != null) {
-        bracketedLinks.forEach((bracketedLink, index) => {
-            console.log(`Detected bracketed Link: %{bracketedLink}`);
+    if (bracketedStrings != null) {
+        bracketedStrings.forEach((bracketedString, index) => {
+            console.log(`Detected bracketed Link: %{bracketedString}`);
 
-            if (bracketedLink != null && bracketedLink.toLowerCase().indexOf("[http") > -1) {
-                var rawUrl = bracketedLink.replace("[", "").replace("]", "");
+            if (bracketedString != null && bracketedString.toLowerCase().indexOf("[http") > -1) {
+                var rawUrl = bracketedString.replace("[", "").replace("]", "");
                 
                 var htmlLink = htmlLinkTmpl.replace("{0}", rawUrl);
-                transformedText = transformedText.replace(bracketedLink, htmlLink);
+                transformedText = transformedText.replace(bracketedString, htmlLink);
                 console.log(`The transformed text: ${transformedText}`);
+            } else if (bracketedString != null && bracketedString.indexOf("[LINEBREAK]") > -1) {
+                transformedText = transformedText.replace("[LINEBREAK]", "<br>");
             }
         });
     }
 
     // Now replace any remaining [] bracked text as bold text:
-    transformedText = transformedText.replace('[', '<b>').replace(']', '</b>');
+    while (transformedText.indexOf('[') > -1) {
+        transformedText = transformedText.replace('[', '<b>').replace(']', '</b>');
+    }
 
     return transformedText;
 }
@@ -35,8 +48,15 @@ export const transformMetaTags = (text) => {
 export const transformAsMailToBodyText = (text) => {
     //debugger; // Uncomment to trigger breakpoint.
 
-    
     var transformedText = text;
+
+    if (text == null) {
+        return transformedText;
+    }
+
+    if ((typeof inputVal) != "string") {
+        return transformedText;
+    }
 
     // Replace each space with %20
     //transformedText.replace(/\s/g, "%20"); //This regex doesn't work for some reason.
@@ -103,11 +123,14 @@ export const transformAppConfig = (appConfig) => {
     var appConfigSettings = Object.getOwnPropertyNames(appConfig);
 
     appConfigSettings.forEach((setting, index) => {
-        if (setting.indexOf('EmailTemplate') > -1) {
-            let originalText = appConfig[setting];           
-            var transformedText = transformAsMailToBodyText(originalText);
-            appConfig[setting] = transformedText;
+        let originalText = appConfig[setting]; 
+        var transformedText = null;
+        if (setting.indexOf('EmailTemplate') > -1) {    
+            transformedText = transformAsMailToBodyText(originalText);
+        } else {
+            transformedText = transformMetaTags(originalText);
         }
+        appConfig[setting] = transformedText;
     });
 
     return appConfig;

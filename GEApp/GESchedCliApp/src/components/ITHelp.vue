@@ -1,10 +1,7 @@
 <template>
   <div>
-    <div>{{ message }}</div>
+    <div v-html="viewDescription"></div>
     <br>
-    <div>
-    <a id="emailIT" href="mailto:example@website.com?subject=This%20is%20a%20subject&body=message%20goes%20here.%0D%0ASecond line.">Send email to IT Help</a>
-    </div>
   </div>
 </template>
 

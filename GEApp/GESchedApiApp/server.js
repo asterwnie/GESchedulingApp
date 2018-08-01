@@ -18,6 +18,7 @@ const appName = appConfig.appServerName;
 const app = express();
 
 const httpRequestHelper = require(`${appRoot}/server-api/httpRequestHelper`);
+var appConfigController = require(`${appRoot}/server-api/controllers/appConfigController`);
 var roomController = require(`${appRoot}/server-api/controllers/roomController`);
 
 if (appConfig.devMode) {
@@ -117,13 +118,27 @@ accessCodeRoutes(app);
 
 app.get('/api/appconfigs', async (req, res) => {
  
-    const jsonData = fs.readFileSync(`${appRoot}/server-api/temp/appConfig.json`);
-    const appConfigForSite = JSON.parse(jsonData);
+    var appConfigForSite = {};
+    let siteCode = httpRequestHelper.getSite(req);
+
+    await appConfigController.queryAppConfigs(siteCode, siteCode, (result) => {
+        if (result.success) {
+            logger.info(`appConfigController.queryAppConfigs success. About to send back http response with the single appConfig onject.`);
+            if (result.appConfigs.length > 0) {
+                appConfigForSite = result.appConfigs[0];
+            } else {
+                var err = `appConfigController.queryAppConfigs failed. Not able to get an appConfig object.`;
+                logger.error(err);
+                res.status(500).json({ error: err });
+            }
+        } else {
+            logger.error(`appConfigController.queryAppConfigs failed. Error: ${result.errMsg}`);
+            res.status(500).json({ error: result.errMsg });
+        }
+    });
 
     appConfigForSite.sites = appConfig.sites;
     appConfigForSite.defaultSite = appConfig.defaultSite;
-
-    let siteCode = httpRequestHelper.getSite(req);
    
     // get distinct room capabilities
     await roomController.queryRoomCapabilities(siteCode, (result) => {
@@ -136,8 +151,6 @@ app.get('/api/appconfigs', async (req, res) => {
         }
     });
     
-
-
     // Getting all the min & max seating capacity per room size type:
     // More info: https://docs.mongodb.com/manual/reference/operator/aggregation/max/
 
@@ -162,7 +175,6 @@ app.get('/api/appconfigs', async (req, res) => {
             res.status(500).json({ error: result.errMsg });
         }
      });
-   
 
     res.json(appConfigForSite);
 

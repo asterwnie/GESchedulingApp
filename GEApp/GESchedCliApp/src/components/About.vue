@@ -1,6 +1,5 @@
 <template>
-  <div>
-    {{ viewDescription }}
+  <div v-html="viewDescription">
   </div>
 </template>
 

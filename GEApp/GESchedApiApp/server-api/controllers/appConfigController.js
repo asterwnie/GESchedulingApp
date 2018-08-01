@@ -37,7 +37,7 @@ async function queryAppConfigs (siteCode, siteCodeContains, callback) {
     let AppConfig = getAppConfigType(siteCode);
 
     var filterDirective = {}; //default, no filering
-    if (typeContains != null) {    
+    if (siteCodeContains != null) {    
         const regExpression = new RegExp(`(${siteCodeContains})`);
         filterDirective = { "siteCode": regExpression };        
     }
