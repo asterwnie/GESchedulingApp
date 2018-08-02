@@ -13,10 +13,10 @@
             </template>
           </div>
           <br>
-          <button type="button" class="btn btn-primary btn-sm" @click.prevent="$router.push('/requestsummary')">Continue Request ></button>
+          <button type="button" class="btn btn-primary btn-sm" 
+              @click.prevent="$router.push('/requestsummary')">Continue Request ></button>
           <button type="button" class="btn btn-primary btn-sm float-right" 
-              @click.prevent="onPrint"><span class="fas fa-print"></span>&nbsp;Print</button>              
-          </div> 
+              @click.prevent="onPrint"><span class="fas fa-print"></span>&nbsp;Print</button>
         </div>
         <br>
         &nbsp;
