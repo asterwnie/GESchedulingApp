@@ -132,6 +132,9 @@ Access Code: [ACCESSCODE]
 To access the GE Scheduling Utility, paste this link into your browser:
 [APPLINK]
 
+--AddAdminEmailSubject 
+GE Scheduling Utility Administrator Access
+
 --AddAdminEmailTemplate 
 Hello, [RECIPIENTNAME]!
 [ADMINNAME] would like to invite you to become an administrator on the GE Scheduling Utility.

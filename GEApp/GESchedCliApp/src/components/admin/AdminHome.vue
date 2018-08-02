@@ -604,6 +604,7 @@ export default {
                         $("#filterMenu").click();
                     }
 
+                    vm.currentPageNumber = 1;
                     let statusToQuery = event.target.id;
 
                     vm.requestsQueryString += `&processingStatusContains=${statusToQuery}`;

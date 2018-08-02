@@ -108,8 +108,25 @@ exports.getRequestsCount = function (req, res) {
     let Request = getRequestType(siteCode);
 
     var filterDirective = {}; //default, no filering
+    if (req.query.locationContains != null) {    
+        const locationName = new RegExp(`(${req.query.locationContains})`, "i");
+        filterDirective = {"locationOfEvent.name": locationName};
+    }
+    if (req.query.requestNameContains != null) {    
+        const regExpression = new RegExp(`(${req.query.requestNameContains})`, "i");
+        filterDirective.eventTitle = regExpression;      
+    }
+    if (req.query.requesterEmailContains != null) {    
+        const regExpression = new RegExp(`(${req.query.requesterEmailContains})`, "i");
+        filterDirective.eventGEContactPersonEmail = regExpression;       
+    }
+    if (req.query.requesterNameContains != null) {    
+        const regExpression = new RegExp(`(${req.query.requesterNameContains})`, "i");
+        filterDirective.eventGEContactPersonName = regExpression;       
+    }
     if (req.query.processingStatusContains != null) {    
-        filterDirective = { "processingStatus": req.query.processingStatusContains};        
+        const regExpression = new RegExp(`(${req.query.processingStatusContains})`);
+        filterDirective.processingStatus = regExpression;        
     }
 
     var numOfPages = 0;
