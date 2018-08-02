@@ -384,7 +384,7 @@ export default {
                         vm.$store.state.currentRequestsPreview.push(foundRequest);
                     });
                     
-                    vm.requestsQueryString = "";
+                    
                     vm.getNumPages();
                     //vm.$forceUpdate();
                     //vm.isFetchingRequests = false;
@@ -401,6 +401,7 @@ export default {
             var vm = this;
 
             vm.currentPageNumber = 1;
+            vm.requestsQueryString = "";
 
             if (util.detectIsInSmallWidthMode()) {
                 //collapse search menu
@@ -487,7 +488,7 @@ export default {
             //get requests and pages count
             var url = apiMgr.getRequestsUrl().replace("requests", "requestscount") + `&numOfItemsPerPage=${vm.previewPerPage}`;
             if(vm.requestsQueryString != null && vm.requestsQueryString != ""){
-                url += `&processingStatusContains=${vm.requestsQueryString}`;
+                url += `${vm.requestsQueryString}`;
             }
 
             axios.get(url)
@@ -605,6 +606,7 @@ export default {
                     }
 
                     vm.currentPageNumber = 1;
+                    vm.requestsQueryString = "";
                     let statusToQuery = event.target.id;
 
                     vm.requestsQueryString += `&processingStatusContains=${statusToQuery}`;

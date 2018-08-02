@@ -153,7 +153,7 @@ exports.getRequestsCount = function (req, res) {
         if (numOfPages > 0) {
             res.status(200).json({ count: count, numOfPages: numOfPages }); // 200 - Sucess
         } else {
-            res.status(200).json({ count: count }); // 200 - Sucess
+            res.status(200).json({ count: count, numOfPages: 1 }); // 200 - Sucess
         }
     })
     .catch((err) => {
