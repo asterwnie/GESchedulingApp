@@ -67,6 +67,7 @@ async function queryRequests (siteCode, req, callback) {
             processingStatusLabel: 1,
             processingStatusMessage: 1,
             eventTitle: 1,
+            eventSchedule: 1,
             eventGEContactPersonName: 1,
             eventGEContactPersonEmail: 1,
             eventDateTimeData: 1,

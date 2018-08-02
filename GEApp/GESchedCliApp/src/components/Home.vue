@@ -32,8 +32,9 @@
         <div class="card">
           <div class="card-body">
             <h6 class="card-title">{{requestItem.eventTitle}}</h6>
+            <div v-if="requestItem.eventDateTimeDisp != null" class="card-text">Date/Time:&nbsp;{{requestItem.eventDateTimeDisp}}</div>
             <h6 class="card-title">Status:&nbsp;<span :class="requestItem.processingStatus">{{requestItem.processingStatusLabel}}</span></h6>
-            <p class="card-text font-italic">{{requestItem.processingStatusMessage}}</p>
+            <p class="card-text font-italic">{{requestItem.processingStatusMessage}}</p>         
             <div class="card-text text-muted">Last updated:&nbsp;{{requestItem.updatedAtDisp}}</div>
             <div v-if="requestItem.userCanEdit">
               <button :id="requestItem._id" type="button" @click.prevent="onEditRequest" class="enableEdit btn btn-warning btn-sm float-right">Edit</button>
@@ -127,6 +128,13 @@ export default {
 
             $.each(foundRequests, function (index, request) {
               request.updatedAtDisp = util.getDateTimeDisplay(request.updatedAt);
+
+              if (request.eventSchedule != null && 
+                 request.eventSchedule.startDateTime != null &&
+                 request.eventSchedule.endDateTime != null) {
+                request.eventDateTimeDisp = util.makeEventDateTimeDisplay(request.eventSchedule.startDateTime, request.eventSchedule.endDateTime);
+              }
+
               vm.$store.state.currentUserRequests.push(request);
             });
             

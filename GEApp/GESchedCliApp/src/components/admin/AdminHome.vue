@@ -158,11 +158,10 @@
                     <div :class="[requestItem._id, 'request-item', 'card', 'col-12', 'col-xl-6']" v-for="(requestItem, index) in requestsPreview" :key="index">
                         <div class="card-body">
                             <h6 class="card-title">{{requestItem.eventTitle}}</h6>
+                            <div v-if="requestItem.eventDateTimeDisp != null" class="card-text">Date/Time:&nbsp;{{requestItem.eventDateTimeDisp}}</div>
                             <h6 class="card-title">Status:&nbsp;<span :class="requestItem.processingStatus">{{requestItem.processingStatusLabel}}</span></h6>
                             <div class="card-text">{{requestItem.eventGEContactPersonName}}</div>
-                            <div class="card-text">{{requestItem.locationOfEvent.name}}</div>
-                            <div class="card-text">{{requestItem.eventSchedule}}</div>
-                            <br>
+                            <div class="card-text">{{requestItem.locationOfEvent.name}}</div>                            
                             <div class="card-text text-muted">Last updated:&nbsp;{{requestItem.updatedAtDisp}}</div>
                             <div v-if="requestItem.adminCanEdit">
                                 <button :id="requestItem._id" cursor="pointer" type="button" @click.prevent="onEditViewRequest" class="enableEdit btn btn-warning btn-sm float-right">Edit</button>
@@ -372,9 +371,16 @@ export default {
                     }
                     var foundRequests = res.data;
 
-
                     $.each(foundRequests, function (index, foundRequest) {
+
                         foundRequest.updatedAtDisp = util.getDateTimeDisplay(foundRequest.updatedAt);
+
+                        if (foundRequest.eventSchedule != null && 
+                            foundRequest.eventSchedule.startDateTime != null &&
+                            foundRequest.eventSchedule.endDateTime != null) {
+                        foundRequest.eventDateTimeDisp = util.makeEventDateTimeDisplay(foundRequest.eventSchedule.startDateTime, foundRequest.eventSchedule.endDateTime);
+                        }
+
                         vm.$store.state.currentRequestsPreview.push(foundRequest);
                     });
                     
