@@ -512,7 +512,17 @@ export default {
                     
                     vm.numPages = res.data.numOfPages;
                     vm.numRequests = res.data.count;
-                    vm.requestResultCaption += " (" + vm.numRequests + ")";
+
+                    var newCountPart = " (" + vm.numRequests + ")";
+                    var beginCountPart = vm.requestResultCaption.indexOf("(");
+                    if (beginCountPart > -1) {
+                        // Need to remove the previous number part first.
+                        var requestResultCaptionSuffix = vm.requestResultCaption.substring(beginCountPart, vm.requestResultCaption.length);
+                        var requestResultCaptionPrefix = vm.requestResultCaption.replace(requestResultCaptionSuffix, '').trim();                     
+                        vm.requestResultCaption = requestResultCaptionPrefix + newCountPart;
+                    } else {
+                        vm.requestResultCaption = vm.requestResultCaption + newCountPart;
+                    }
 
                     vm.$forceUpdate();                   
                 })
