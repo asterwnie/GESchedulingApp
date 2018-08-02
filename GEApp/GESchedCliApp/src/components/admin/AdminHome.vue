@@ -49,7 +49,7 @@
     
             <div class="card" style="width:100%">
                     <div class="card-header bg-info text-light">
-                        Requests
+                        {{requestResultCaption}}
                         <div class="float-right">
                             Mode:&nbsp;
                             <button type="button" @click.prevent="onToggleDeleteMode" cursor="pointer" class="btn btn-sm btn-outline-light">Delete Off</button>
@@ -78,10 +78,10 @@
         </div>
         <div style="height:10px"></div>
       <div class="card">
-      <div class="card-header bg-primary text-light" id="filterMenu" style="cursor:pointer;" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-      <i class="fa fa-search-plus" aria-hidden="true"></i>&nbsp;&nbsp;Filter By&nbsp;&nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i>
+      <div class="card-header bg-primary text-light" id="filterMenu" style="cursor:pointer;" data-toggle="collapse" data-target="#filterPanel" aria-expanded="true" aria-controls="filterPanel">
+      <i class="fa fa-search-plus" aria-hidden="true"></i>&nbsp;&nbsp;Custom Filter&nbsp;&nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i>
       </div>
-      <div id="collapseOne" class="collapse show" aria-labelledby="filterMenu" data-parent="#accordion">
+      <div id="filterPanel" class="collapse show" aria-labelledby="filterMenu" data-parent="#accordion">
           <div id="filterMenu" class="card-body" style="padding:10px; width:100%;">
 
             <div id="inputEventName" class="input-group input-group-sm mb-3">
@@ -238,6 +238,7 @@ export default {
         previewPerPage: 6, //hardcoded for now
         numPages: 0,
         numRequests: 0,
+        requestResultCaption: "Requests - All",
         currentPageNumber: 1,
         requestsQueryString: "",
         requestToDelete: null,
@@ -273,10 +274,16 @@ export default {
         this.$store.state.currentViewTitle = this.title;
         this.$store.state.enableNavBar = true;
 
+        if (util.detectIsInSmallWidthMode()) {
+            //collapse search menu
+            $("#filterPanel").removeClass("show");
+            $("#filterPanel").removeClass("hide");
+        }
+
         vm.clearSearchUI();
-        vm.getNumPages();
         vm.updateRequests();
         vm.$forceUpdate();
+
 
         $('#allRequest').focus();
     },
@@ -349,6 +356,12 @@ export default {
             let pageNumber = vm.currentPageNumber;
             console.log(`Page number: ${pageNumber}`);
 
+            if (util.detectIsInSmallWidthMode()) {
+                //collapse search menu
+                $("#filterPanel").removeClass("show");
+                $("#filterPanel").removeClass("hide");
+            }
+
             //gather query string
             var url = apiMgr.getRequestsUrl() + `&numOfItemsToSkip=${vm.previewPerPage * (vm.currentPageNumber-1)}&summaryFieldsOnly=true&numOfItemsPerPage=${vm.previewPerPage}`;
             
@@ -356,8 +369,6 @@ export default {
                 url += vm.requestsQueryString;
             }
             console.log(url);
-
-
 
             //get requests
             axios.get(url)
@@ -383,11 +394,8 @@ export default {
 
                         vm.$store.state.currentRequestsPreview.push(foundRequest);
                     });
-                    
-                    
+                                       
                     vm.getNumPages();
-                    //vm.$forceUpdate();
-                    //vm.isFetchingRequests = false;
                 })
                 .catch((err) => {
                     vm.hasFailure = true;
@@ -403,9 +411,12 @@ export default {
             vm.currentPageNumber = 1;
             vm.requestsQueryString = "";
 
+            vm.requestResultCaption = "Requests - custom filter"
+
             if (util.detectIsInSmallWidthMode()) {
                 //collapse search menu
-                $("#filterMenu").click();
+                $("#filterPanel").removeClass("show");
+                $("#filterPanel").removeClass("hide");
             }
 
             //get preview per page
@@ -421,7 +432,6 @@ export default {
                     vm.requestsQueryString += `&requestNameContains=${nameToQuery}`;
                 }
             });
-
 
             //gather requester email to query
             var requesterEmailToQuery = '';
@@ -445,7 +455,6 @@ export default {
                 }
             });
 
-
             //gather location to query
             var locationToQuery = '';
             var locationSet = $("#inputLocation input");
@@ -468,13 +477,19 @@ export default {
                 }
             });
             
-
             vm.updateRequests();
         },
 
         resetFilterView: function(event){
             console.log("resetFilterView activated.");
             let vm = this;
+            vm.requestResultCaption = "Requests - All"
+
+            if (util.detectIsInSmallWidthMode()) {
+                //collapse search menu
+                $("#filterPanel").removeClass("show");
+                $("#filterPanel").removeClass("hide");
+            }
 
             vm.requestsQueryString = null;
             vm.clearSearchUI();
@@ -497,9 +512,9 @@ export default {
                     
                     vm.numPages = res.data.numOfPages;
                     vm.numRequests = res.data.count;
+                    vm.requestResultCaption += " (" + vm.numRequests + ")";
 
-                    vm.$forceUpdate();
-                    //vm.isFetchingRequests = false;
+                    vm.$forceUpdate();                   
                 })
                 .catch((err) => {
                     vm.hasFailure = true;
@@ -602,12 +617,18 @@ export default {
 
                     if (util.detectIsInSmallWidthMode()) {
                         //collapse search menu
-                        $("#filterMenu").click();
+                        $("#filterPanel").removeClass("show");
+                        $("#filterPanel").removeClass("hide");
                     }
 
                     vm.currentPageNumber = 1;
                     vm.requestsQueryString = "";
                     let statusToQuery = event.target.id;
+
+                    var filterLabel = util.getProcessingStatusOptionLabel(statusToQuery);
+
+                    vm.requestResultCaption = "Requests - " + filterLabel;
+                    
 
                     vm.requestsQueryString += `&processingStatusContains=${statusToQuery}`;
                     vm.updateRequests();

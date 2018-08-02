@@ -154,6 +154,20 @@ export const getProcessingStatusOptions = () => {
     return statusOptions;
 }
 
+
+export const getProcessingStatusOptionLabel = (internalValue) => {
+    //debugger; // Uncomment to trigger breakpoint.
+
+    var foundLabel = null;
+    $.each(centralStore.state.processingStatusOptions, function (index, option) {
+        if (internalValue == option.statusValue) {
+            foundLabel = option.statusLabel;
+        }
+    });
+    return foundLabel;
+}
+
+
 export const makeEventDateTimeDisplay = (start, end) => {
     //debugger; // Uncomment to trigger breakpoint.
 
