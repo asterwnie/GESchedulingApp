@@ -69,7 +69,7 @@
                     </div>
                     <div v-else-if="requestReadOnlyProperty.value.isEventSchedule">
                       <span class="font-italic">
-                        <div><i class="fas fa-calendar-check"></i>&nbsp;&nbsp;{{requestReadOnlyProperty.value.eventDateTimeDisp}}</div>
+                        <div><i class="label-icon fas fa-calendar-check"></i>&nbsp;&nbsp;{{requestReadOnlyProperty.value.eventDateTimeDisp}}</div>
                       </span>
                     </div>
                     <div v-else>
@@ -676,6 +676,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.label-icon {
+    color: rgb(80, 80, 80);
+}
 /*div {
   display: inline-block;
   margin: 16px;

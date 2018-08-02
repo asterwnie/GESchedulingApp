@@ -159,9 +159,9 @@
                         <div class="card-body">
                             <h6 class="card-title">{{requestItem.eventTitle}}</h6>
                             <h6 class="card-title"><span :class="requestItem.processingStatus">{{requestItem.processingStatusLabel}}</span></h6>
-                            <div class="card-text"><i class="fas fa-building"></i>&nbsp;&nbsp;<b>{{requestItem.locationOfEvent.name}}</b>,&nbsp;{{requestItem.locationOfEvent.building}}</div> 
-                            <div v-if="requestItem.eventDateTimeDisp != null" class="card-text"><i class="fas fa-calendar-check"></i>&nbsp;&nbsp;{{requestItem.eventDateTimeDisp}}</div>
-                            <div class="card-text"><i class="fas fa-user-circle"></i>&nbsp;&nbsp;{{requestItem.eventGEContactPersonName}}</div>                      
+                            <div class="card-text"><i class="label-icon fas fa-building"></i>&nbsp;&nbsp;<b>{{requestItem.locationOfEvent.name}}</b>,&nbsp;{{requestItem.locationOfEvent.building}}</div> 
+                            <div v-if="requestItem.eventDateTimeDisp != null" class="card-text"><i class="label-icon fas fa-calendar-check"></i>&nbsp;&nbsp;{{requestItem.eventDateTimeDisp}}</div>
+                            <div class="card-text"><i class="label-icon fas fa-user-circle"></i>&nbsp;&nbsp;{{requestItem.eventGEContactPersonName}}</div>                      
                             <div class="card-text text-muted" style="font-size:80%;margin-bottom: 8px;">Updated On:&nbsp;{{requestItem.updatedAtDisp}}</div>
                             <div v-if="requestItem.adminCanEdit">
                                 <button :id="requestItem._id" cursor="pointer" type="button" @click.prevent="onEditViewRequest" class="enableEdit btn btn-warning btn-sm float-right">Edit</button>
@@ -728,6 +728,9 @@ export default {
 }
 a {
     margin:2px
+}
+.label-icon {
+    color: rgb(80, 80, 80);
 }
 .btn-xs {
   padding  : .25rem .4rem;
