@@ -100,14 +100,12 @@ export default {
             isFetchingRequestPrompts: true,
             isFetchingRooms: true,
             isFetchingRequests: true,
-            isFetchingHotels:true,
 
             canShowError: false,
             hasFailure: false,
             failureMessage: ""
         }
     },
-
 
 
     activated() {
@@ -144,9 +142,7 @@ export default {
         this.getNotes();
         this.getRequestPrompts();
         this.getRooms();
-        this.getRequests();
-        this.getHotels();
-        
+        this.getRequests();     
 
     },
 
@@ -157,8 +153,7 @@ export default {
                 this.isFetchingNotes || 
                 this.isFetchingRequestPrompts ||
                 this.isFetchingRooms ||
-                this.isFetchingRequests ||
-                this.isFetchingHotels
+                this.isFetchingRequests
                 ); 
         }
     },
@@ -271,25 +266,6 @@ export default {
                     vm.failureMessage = "Server unavailable or not working at this time. Please try later. [error code: 7]";  
                     vm.isFetchingRequests = false;                             
                 })
-        },
-
-        getHotels() {
-
-        var vm = this;
-        var url = apiMgr.getHotelsUrl() + '&orderBy=seqNum:1'; 
-
-        axios.get(url)
-            .then(res => {
-                console.log("getHotelsUrl return status: " + res.status);
-
-                vm.$store.state.hotels = res.data;
-                vm.isFetchingHotels = false;                  
-            })
-            .catch((err) => {
-                vm.hasFailure = true;
-                vm.failureMessage = "Server unavailable or not working at this time. Please try later.  [error code: 4]";   
-                vm.isFetchingHotels = false;                            
-            })
         },
 
         onLogin() {

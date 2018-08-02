@@ -139,6 +139,14 @@ function extractHotelItems(fileData) {
                 newHotel.discount = hotelDiscount;
             }
         }
+        
+        directive = "--Hotel.Website:";
+        if (!blockProcessed && block.search(directive) > -1) {
+            var website = block.replace(directive, "").trim();
+            if (website != "") {
+                newHotel.website = website;
+            }
+        }
 
         return true; // Return true to continue processing for the next block item.
     })

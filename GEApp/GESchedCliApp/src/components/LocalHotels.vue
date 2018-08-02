@@ -13,7 +13,7 @@
       <div class="row">
         <div class="col col-sm-1 col-md-2 col-lg-4"></div>
         <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%;">
-            
+          <div class="alert alert-info">{{ viewDescription }}</div>
           <h4>Location:</h4>
           <div class="font-weight-light">
             <div class="text-left" v-html="$store.state.appConfig.siteName"></div>
@@ -39,10 +39,10 @@
                     {{line}}
                   </div>
                   <br>
-                  <div class="card-text" :hidden="hotel.phone == null ||hotel.phone == ''"><i class="fas fa-phone"></i> {{hotel.phone}}</div>
+                  <div class="card-text" :hidden="hotel.phone == null ||hotel.phone == ''"><i class="fas fa-phone"></i> <span v-html="hotel.phone"></span></div>
                   <div class="card-text" :hidden="hotel.fax == null ||hotel.fax == ''">Fax: {{hotel.fax}}</div>
+                  <div class="card-text" :hidden="hotel.website == null || hotel.website == ''"><i class="far fa-window-restore"></i> Website: <span v-html="hotel.website"></span></div>
                   <div class="card-text" :hidden="hotel.discount == null ||hotel.discount == ''">Discount: {{hotel.discount}}</div> <!-- .corpRates or .Discount -->
-
                 </div>
               </div>
             </div>
@@ -51,16 +51,12 @@
         </div>
       </div>
     </div>
-
-
-    
-
-
 </template>
 
 <script>
 import axios from 'axios'
 import * as apiMgr from '@/common/apiMgr.js';
+import * as textTransformer from '@/common/textTransformer.js';
 
 export default {
   data () {
@@ -113,7 +109,7 @@ export default {
             .then(res => {
                 console.log("getHotelsUrl return status: " + res.status);
 
-                vm.$store.state.hotels = res.data;
+                vm.$store.state.hotels = textTransformer.transformHotels(res.data);
                 vm.isFetchingHotels = false;                  
             })
             .catch((err) => {

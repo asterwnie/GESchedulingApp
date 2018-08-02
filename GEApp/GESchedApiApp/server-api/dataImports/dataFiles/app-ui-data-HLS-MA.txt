@@ -71,7 +71,7 @@ These recommended caterers who are reliable and deliver to the site and accept A
 Local Hotels
 
 --HotelsViewDescription 
-The local listing of hotels:
+Listing of local hotels.
 
 --GuestWifiViewTitle 
 Guest Wifi
