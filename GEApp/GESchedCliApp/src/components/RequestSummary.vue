@@ -114,8 +114,8 @@
           <div v-else>
             <button type="button" class="btn btn-primary btn-sm" 
               @click.prevent="onReturnHome">Return</button>
-            <button type="button" class="btn btn-primary btn-sm" 
-              @click.prevent="onPrint">Print</button>              
+            <button type="button" class="btn btn-primary btn-sm float-right" 
+              @click.prevent="onPrint"><span class="fas fa-print"></span>&nbsp;Print</button>              
           </div>         
           <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
           <br>
