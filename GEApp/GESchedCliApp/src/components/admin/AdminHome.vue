@@ -389,7 +389,7 @@ export default {
                         if (foundRequest.eventSchedule != null && 
                             foundRequest.eventSchedule.startDateTime != null &&
                             foundRequest.eventSchedule.endDateTime != null) {
-                        foundRequest.eventDateTimeDisp = util.makeEventDateTimeDisplay(foundRequest.eventSchedule.startDateTime, foundRequest.eventSchedule.endDateTime);
+                            foundRequest.eventDateTimeDisp = util.makeEventDateTimeDisplay(foundRequest.eventSchedule.startDateTime, foundRequest.eventSchedule.endDateTime);
                         }
 
                         vm.$store.state.currentRequestsPreview.push(foundRequest);

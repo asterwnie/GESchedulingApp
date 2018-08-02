@@ -69,8 +69,7 @@
                     </div>
                     <div v-else-if="requestReadOnlyProperty.value.isEventSchedule">
                       <span class="font-italic">
-                        <div>Start: {{requestReadOnlyProperty.value.startDateTime}}</div>
-                        <div>End: {{requestReadOnlyProperty.value.endDateTime}}</div>
+                        <div><i class="fas fa-calendar-check"></i>&nbsp;&nbsp;{{requestReadOnlyProperty.value.eventDateTimeDisp}}</div>
                       </span>
                     </div>
                     <div v-else>
@@ -305,9 +304,13 @@ export default {
           util.logDebugMsg("Preparing eventSchedule start & end time display for: " + requestPrompt.inputType.ctrlDataId);
 
           var schedValue = currentRequest[requestPrompt.inputType.ctrlDataId];
+
+          var eventDateTimeDisp = util.makeEventDateTimeDisplay(currentRequest.eventSchedule.startDateTime, currentRequest.eventSchedule.endDateTime);
+
           var schedDispValue = {
             startDateTime: null,
             endDateTime: null,
+            eventDateTimeDisp: eventDateTimeDisp,
             isEventSchedule: true
           };
 
