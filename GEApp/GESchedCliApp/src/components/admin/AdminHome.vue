@@ -69,7 +69,7 @@
     <div id="searchUI" class="col col-12 col-sm-10 col-md-4 col-lg-4 col-xl-2" style="margin-bottom:20px">
         <div class="card-header">
             <span>
-                Quick Filter:&nbsp;
+                Quick Filter:&nbsp;<br>
                 <button id="allRequest" @click.prevent="resetFilterView" class="btn btn-xs btn-info">All Requests</button>
                 <button id="underReview" @click.prevent="onQuickFilter" class="btn btn-xs btn-warning">{{underReviewLabel}}</button>
                 <button id="rejected" @click.prevent="onQuickFilter" class="btn btn-xs btn-danger" >{{rejectedLabel}}</button>                

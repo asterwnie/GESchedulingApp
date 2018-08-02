@@ -94,10 +94,10 @@
               <div v-if="!isApproved">
                 <button type="button" class="btn btn-primary btn-sm" 
                   :disabled="isSubmitting" 
-                  @click.prevent="onApproveRequest">Approve Request</button>
+                  @click.prevent="onApproveRequest">Approve</button>
                 <button type="button" class="btn btn-primary btn-sm" 
                   :disabled="isSubmitting" 
-                  @click.prevent="onRejectRequest">Need More Information</button>
+                  @click.prevent="onRejectRequest">{{rejectedLabel}}</button>
               </div>
               <div v-else>
                 <button type="button" class="btn btn-primary btn-sm" 
@@ -142,6 +142,8 @@ export default {
       hasFailure: false,
       failureMessage: "",
       requestReadOnlyProperties: [],
+      rejectedLabel: this.$store.state.appConfig.requestStatusTagRejected,
+      approvedLabel: this.$store.state.appConfig.requestStatusTagApproved
     }
   },
 

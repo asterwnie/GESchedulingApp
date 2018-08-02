@@ -102,7 +102,7 @@
             </div>
             <br>
             <div class="mb-3">
-              <button type="button" class="btn btn-primary btn-sm" @click.prevent="onContinue">Continue Request ></button>
+              <button type="button" class="btn btn-primary btn-sm" @click.prevent="onContinue">Continue&nbsp;<i class="fas fa-arrow-right"></i></button>
             </div>
             <p class="text-danger" :hidden="!hasValidationError">Please correct your input above.</p>
             <br>
