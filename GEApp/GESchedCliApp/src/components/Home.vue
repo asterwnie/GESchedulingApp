@@ -32,17 +32,18 @@
         <div class="card">
           <div class="card-body">
             <h6 class="card-title">{{requestItem.eventTitle}}</h6>
-            <div v-if="requestItem.eventDateTimeDisp != null" class="card-text">Date/Time:&nbsp;{{requestItem.eventDateTimeDisp}}</div>
-            <h6 class="card-title">Status:&nbsp;<span :class="requestItem.processingStatus">{{requestItem.processingStatusLabel}}</span></h6>
-            <p class="card-text font-italic">{{requestItem.processingStatusMessage}}</p>         
-            <div class="card-text text-muted">Last updated:&nbsp;{{requestItem.updatedAtDisp}}</div>
+                        <h6 class="card-title"><span :class="requestItem.processingStatus">{{requestItem.processingStatusLabel}}</span></h6>
+            <div class="card-text"><i class="fas fa-building"></i>&nbsp;&nbsp;<b>{{requestItem.locationOfEvent.name}}</b></div> 
+            <div v-if="requestItem.eventDateTimeDisp != null" class="card-text"><i class="fas fa-calendar-check"></i>&nbsp;&nbsp;{{requestItem.eventDateTimeDisp}}</div>
+            <div class="card-text"><i class="fas fa-user-circle"></i>&nbsp;&nbsp;{{requestItem.eventGEContactPersonName}}</div>                      
+            <div class="card-text text-muted" style="font-size:80%;margin-bottom: 8px;">Updated On:&nbsp;{{requestItem.updatedAtDisp}}</div>
             <div v-if="requestItem.userCanEdit">
               <button :id="requestItem._id" type="button" @click.prevent="onEditRequest" class="enableEdit btn btn-warning btn-sm float-right">Edit</button>
             </div>
             <div v-else>
               <button :id="requestItem._id" type="button" @click.prevent="onViewRequest" class="disableEdit btn btn-secondary btn-sm float-right">View</button>
             </div>
-            <button :id="requestItem._id" type="button" @click.prevent="onDeleteRequest" class="enableEdit btn btn-danger btn-sm float-left">Delete</button>
+            <button :id="requestItem._id" type="button" @click.prevent="onDeleteRequest" class="enableEdit btn btn-danger btn-sm float-left"><i class="fas fa-trash-alt"></i></button>
           </div>
       </div>
       </div>
