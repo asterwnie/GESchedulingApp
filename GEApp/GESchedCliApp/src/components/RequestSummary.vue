@@ -25,7 +25,7 @@
             <div class="card-body">
                 <div style="width:100%" v-for="(requestReadOnlyProperty, index) in requestReadOnlyProperties" :key="index">
                   <div v-if="(requestReadOnlyProperty.value != '' && requestReadOnlyProperty.value != null) || requestReadOnlyProperty.value === false">
-                    <span class="font-weight-light" style="">  <!--Convert to Sentence Case-->
+                    <span class="request-summary-label">  <!--Convert to Sentence Case-->
                       {{requestReadOnlyProperty.label}}
                     </span>
                     <br>
@@ -74,6 +74,7 @@
                     </div>
                     <div v-else>
                       {{requestReadOnlyProperty.value}}
+
                     </div>
                     <div v-if="requestReadOnlyProperty.adminComment != null">
                       <span class="font-italic" style="background-color:lightyellow">
@@ -680,6 +681,10 @@ export default {
 <style scoped>
 .label-icon {
     color: rgb(80, 80, 80);
+}
+.request-summary-label {
+  color:#17a2b8 !important;
+  font-size:110%;
 }
 /*div {
   display: inline-block;
