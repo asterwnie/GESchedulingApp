@@ -1,5 +1,52 @@
 <template>  
+<div>
+<!-- Modal -->
+  <div class="modal" id="deleteAdminUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteAdminUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Delete Admin User</h5>
+          <button @click.prevent="onDeleteAdminUserDeselect" type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div v-if="isAllowedToDeleteAdmin">
+            <div class="modal-body">
+                <p>Are you sure you want to delete this user? This action cannot be undone.</p>
+                <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
+            </div>
+        </div>
+        <div v-else>
+            <div class="modal-body">
+                <p class="text-danger" :hidden="!canShowDeleteAdminMessage">Error: {{deleteAdminMessage}}</p>
+                <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
+            </div>
+        </div>
 
+        <div :hidden="!isAllowedToDeleteAdmin" class="modal-body">
+            <div class="card">
+                <div class="card-body" id="selectedAdminUserUI">
+
+                </div>
+            </div>
+        </div>
+        
+        <div v-if="isAllowedToDeleteAdmin">
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @click.prevent="onDeleteAdminUserDeselect">Cancel</button>
+                <button type="button" class="btn btn-primary" @click.prevent="onDeleteAdminUserConfirm">Confirm Delete</button>
+            </div>
+        </div>
+        <div v-else>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @click.prevent="onDeleteAdminUserDeselect">Close</button>
+            </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- Page Contents -->
     <div class="container-fluid">
         <div class="row">
           <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
@@ -88,7 +135,7 @@
                             <div v-else>
                                 <button type="button" class="float-right btn btn-primary" disabled>Send Email</button>
                             </div>
-                            
+                            <button type="button" @click.prevent="onSendInviteDismiss" class="float-left btn btn-secondary">Dismiss</button>
                         </div>
                     </div>
                     </div>
@@ -113,9 +160,19 @@
 
         <div v-if="adminUsers != null" id="currentAdminUI">
           <div v-for="(admin, index) in adminUsers" :key="index" class="card">
-            <div class="card-body">
-                <div class="float-left"><h6>{{admin.name}}</h6></div>
-                <div class="float-right font-weight-light">{{admin.email}}</div>
+            <div :class="[admin._id, 'card-body']">
+                <div class="float-left">
+                    <h6>{{admin.name}}</h6>
+                    <span class="font-weight-light">{{admin.email}}</span>
+                    <div v-if="admin.phone != undefined">
+                        <span class="font-weight-light">{{admin.phone}}</span>
+                    </div>
+                </div>
+                <div class="float-right">
+                    <button :id="admin._id" class="close" type="button" @click.prevent="onDeleteAdminUserModal" aria-label="Close">
+                        <span :id="admin._id" aria-hidden="true">&times;</span>
+                    </button>
+                </div>
             </div>
           </div>
         </div> 
@@ -134,6 +191,7 @@
           <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
       </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -161,6 +219,12 @@ export default {
         adminUsers: [],
 
         canGenerateEmail: false,
+
+        isAllowedToDeleteAdmin: false,
+        selectedAdminUserToDelete: null,
+        canShowDeleteAdminMessage: false,
+        deleteAdminMessage: "",
+
     }
   },
 
@@ -359,7 +423,7 @@ export default {
             }
         },
 
-        onResetAdd(){
+        onResetAdd() {
 
             $("input").each(function(){
                 if(this.id.indexOf("AdminInput") > -1){
@@ -367,11 +431,102 @@ export default {
                 }
             });
 
+            this.hasSuccess = false;
             this.emailStringDataExport = "";
             this.emailStringDataDisplay = "";
             $("#collapseAddAdmin").collapse("show");
             $("#collapseSendNotification").removeClass("show");
             this.$forceUpdate();
+        },
+
+        onSendInviteDismiss(){
+            $("#collapseSendNotification").removeClass("show");
+            this.$forceUpdate();
+        },
+
+        onDeleteAdminUserModal: function(event) {
+            if(event){
+                console.log("onDeleteAdminUserModal activated.");
+                let vm = this;
+                let numAdmins = 0;
+
+                vm.hasFailure = false;
+                vm.isAllowedToDeleteAdmin = false;
+
+                //do query for num admins..
+                let url = apiMgr.getUsersUrl().replace("users", "userscount") + "&isAdmin=true";
+                axios.get(url)
+                    .then(res => {
+                        console.log("getNumAdmins return status: " + res.status);
+
+                        numAdmins = res.data.count;
+
+                        if(numAdmins > 1){
+
+                            vm.isAllowedToDeleteAdmin = true;
+                            vm.selectedAdminUserToDelete = event.target.id;
+
+                            //inject card into modal
+                            let currCard = document.getElementsByClassName(vm.selectedAdminUserToDelete)[0].innerHTML;
+                            currCard = currCard.replace(event.target.outerHTML, ""); //get rid of the button in modal
+                            if(document.getElementById("selectedAdminUserUI") != null){
+                                document.getElementById("selectedAdminUserUI").innerHTML = currCard;
+                            }
+                            
+
+                        } else {
+                            vm.canShowDeleteAdminMessage = true;
+                            vm.deleteAdminMessage = "Cannot delete (only one admin left in database)";         
+                        }
+
+                    })
+                    .catch((err) => {
+                        vm.hasFailure = true;
+                        vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                    })
+
+                
+                $("#deleteAdminUserModal").modal("show");
+                
+
+            }
+        },
+
+        onDeleteAdminUserConfirm() {
+
+            console.log("onDeleteAdminUserConfirm activated.");
+            let vm = this;
+
+                let siteCode = apiMgr.getUsersUrl().substring(apiMgr.getUsersUrl().indexOf("?"), apiMgr.getUsersUrl().length)
+                let url = apiMgr.getUsersUrl().substring(0, apiMgr.getUsersUrl().indexOf("?")) + `/${vm.selectedAdminUserToDelete}` + siteCode;
+
+                axios.delete(url)
+                .then(res => {
+                    console.log("onDeleteAdminUser return status: " + res.status);
+
+                    /* vm.canShowRequestResult = true;
+                    vm.requestResultMessage = `${res.data.deletedCount} requests successfully deleted.` */
+
+                    $("#deleteAdminUserModal").modal("hide");
+                    vm.refreshAdminUI();
+                    vm.$forceUpdate();
+                    //vm.isFetchingRequests = false;
+                })
+                .catch((err) => {
+                    vm.hasFailure = true;
+                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                })            
+
+        },
+
+        onDeleteAdminUserDeselect() {
+
+            console.log("onDeleteAdminUserDeselect activated. Selected admin user unset.")
+            let vm = this;
+
+            $("#deleteAdminUserModal").modal("hide");
+            vm.selectedAdminUserToDelete = null;
+
         }
 
     }

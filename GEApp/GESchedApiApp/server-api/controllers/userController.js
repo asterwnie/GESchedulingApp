@@ -27,6 +27,9 @@ exports.getUsers = function (req, res) {
     if (req.query.isAdmin != null) {    
         filterDirective.isAdmin = req.query.isAdmin;        
     }
+    if (req.query.emailContains != null) {    
+        filterDirective.email = req.query.emailContains;        
+    }
 
     User.find(filterDirective).sort(sortDirective)
         .then((users) => {
@@ -83,6 +86,30 @@ async function createNewUser(siteCode, newUser, callback) { //siteCode removed f
 };
 
 
+exports.getUsersCount = function (req, res) {
+    logger.verbose('userController.getUsersCount begin');
+
+    let siteCode = httpRequestHelper.getSite(req); 
+    let User = getUserType(siteCode);
+
+    var filterDirective = {}; //default, no filering
+    if (req.query.isAdmin != null) {    
+        filterDirective = { "isAdmin": req.query.isAdmin};        
+    }
+
+    User.count(filterDirective)
+        .then((count) => {
+            logger.info(`userController.getUsersCount success. About to send back http response with count ${count}`);
+    
+            res.status(200).json({ count: count }); // 200 - Sucess
+        })
+        .catch((err) => {
+            var errMsg = `userController.getUsersCount failed. Error: ${err}`
+            logger.error(errMsg);
+            res.status(500).json({ error: errMsg }); // 500 - INTERNAL SERVER ERROR
+        });
+
+};
 
 exports.createUser = async function (req, res) {
     logger.verbose('userController.createUser begin');
