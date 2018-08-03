@@ -26,7 +26,7 @@ This application is for scheduling meetings and events at a GE facility. It prov
 The success of this project would not be possible without the support and mentoring from the following people:
 Cynthia Blais (GE)
 Dave Sparata (GE)
-Manny (GE)
+Manny Hidalgo (GE)
 Mark Hamilton (Teacher)
 Megan Fenneuff (MHS Teacher)
 Laura Purutyan (MHS Teacher)

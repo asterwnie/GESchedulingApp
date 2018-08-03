@@ -484,13 +484,6 @@ export default {
             console.log("resetFilterView activated.");
             let vm = this;
             vm.requestResultCaption = "Requests - All"
-
-            if (util.detectIsInSmallWidthMode()) {
-                //collapse search menu
-                $("#filterPanel").removeClass("show");
-                $("#filterPanel").removeClass("hide");
-            }
-
             vm.requestsQueryString = null;
             vm.clearSearchUI();
             vm.updateRequests();
@@ -579,143 +572,143 @@ export default {
                     })
             }
 
-            },
+        },
 
-            onDeleteRequest(targetId){
-                console.log('AdminHome.vue - onDeleteRequest activate');
-                let vm = this;
+        onDeleteRequest(targetId){
+            console.log('AdminHome.vue - onDeleteRequest activate');
+            let vm = this;
 
-                //get request for deletion
-                let currId = targetId;                
-                var url = apiMgr.getRequestByIdUrl(currId);
-                console.log(`Home.vue - Query url: ${url}`);
-               
-                axios.delete(url) // send delete request
-                    .then(res => {
-                        console.log("getRequestsUrl return status: " + res.status);
+            //get request for deletion
+            let currId = targetId;                
+            var url = apiMgr.getRequestByIdUrl(currId);
+            console.log(`Home.vue - Query url: ${url}`);
+            
+            axios.delete(url) // send delete request
+                .then(res => {
+                    console.log("getRequestsUrl return status: " + res.status);
+                    vm.removeRequestPreviewFromLocalCollection(currId);
+                    vm.requestToDelete = null;
+                    $('#deleteModal').modal('hide');
+                })
+                .catch((err) => {
+                    if (err.response.status == 400) {
                         vm.removeRequestPreviewFromLocalCollection(currId);
-                        vm.requestToDelete = null;
-                        $('#deleteModal').modal('hide');
-                    })
-                    .catch((err) => {
-                        if (err.response.status == 400) {
-                            vm.removeRequestPreviewFromLocalCollection(currId);
-                        } else {
-                            console.log(err);
-                            vm.hasFailure = true;
-                            vm.failureMessage = "Server unavailable or not working at this time. Please try later.";       
-                        }                        
-                    })           
-            },
-
-            removeRequestPreviewFromLocalCollection: function(id) {
-                var indexToRemove = -1;
-                $.each(this.$store.state.currentRequestsPreview, function (index, reqPreview) {
-                    if (reqPreview._id == id) {
-                        indexToRemove = index;
-                    }
-                });      
-                if (indexToRemove > -1) {
-                    this.$store.state.currentRequestsPreview.splice(indexToRemove, 1);
-                } 
-            },
-
-            onQuickFilter: function(event) {
-                if (event) {
-                    console.log("onQuickFilter activate.");
-                    let vm = this;
-
-                    if (util.detectIsInSmallWidthMode()) {
-                        //collapse search menu
-                        $("#filterPanel").removeClass("show");
-                        $("#filterPanel").removeClass("hide");
-                    }
-
-                    vm.currentPageNumber = 1;
-                    vm.requestsQueryString = "";
-                    let statusToQuery = event.target.id;
-
-                    var filterLabel = util.getProcessingStatusOptionLabel(statusToQuery);
-
-                    vm.requestResultCaption = "Requests - " + filterLabel;
-                    
-
-                    vm.requestsQueryString += `&processingStatusContains=${statusToQuery}`;
-                    vm.updateRequests();
-                }
-            },
-
-            onDeleteModalSelect: function(event){
-                if(event){
-                    console.log("onDeleteModalSelect activate.");
-                    let vm = this;
-                   
-                    $('#deleteModal').modal('show');
-                    vm.requestToDelete = event.target.id;
-
-                    let currCard = document.getElementsByClassName(vm.requestToDelete)[0].innerHTML;
-                    currCard = currCard.replace(event.target.outerHTML, ""); //get rid of the button in modal
-                    document.getElementById("selectedRequestUI").innerHTML = currCard;
-                }
-            },
-
-            onDeleteModalDeselect(){
-                console.log('onDeleteModalDeselect activated. requestToDelete unset.');
-                let vm = this;
-                vm.requestToDelete = null;
-                $('#deleteModal').modal('hide');
-            },
-
-            onToggleDeleteMode: function(event){
-                if(event){
-                    console.log("onToggleDeleteMode activated.")
-                    let vm = this;
-                    let button = event.target;
-
-                    if($(button).hasClass("btn-outline-light")){
-                        $(button).removeClass("btn-outline-light");
-                        $(button).addClass("btn-danger");
-                        button.innerHTML = "Delete On";
-
-                        vm.deleteMode = true;
-
                     } else {
-                        $(button).removeClass("btn-danger");
-                        $(button).addClass("btn-outline-light");
-                        button.innerHTML = "Delete Off";
+                        console.log(err);
+                        vm.hasFailure = true;
+                        vm.failureMessage = "Server unavailable or not working at this time. Please try later.";       
+                    }                        
+                })           
+        },
 
-                        vm.deleteMode = false;
-                    }
-                    
+        removeRequestPreviewFromLocalCollection: function(id) {
+            var indexToRemove = -1;
+            $.each(this.$store.state.currentRequestsPreview, function (index, reqPreview) {
+                if (reqPreview._id == id) {
+                    indexToRemove = index;
                 }
-            },
+            });      
+            if (indexToRemove > -1) {
+                this.$store.state.currentRequestsPreview.splice(indexToRemove, 1);
+            } 
+        },
 
-            clearSearchUI(){
-                //clear all search UI to be blank
-                var inputs = $("input");
-                inputs.each(function(){
-                let inputType = this.type;
-                if (inputType == "text" || inputType == "number"){
-                    this.value = "";
-                } else if (inputType == "checkbox"){
-                    this.checked = false; //needs fixing
-                } 
-                });
+        onQuickFilter: function(event) {
+            if (event) {
+                console.log("onQuickFilter activate.");
+                let vm = this;
 
-                var selects = $('select');
-                selects.each(function(){
-                    if (this.id != null && this.id != "") {
-                        if (this.id.indexOf("default") > -1) {
-                            //if there is a default, reselect it
-                            this.value = this.id.replace("default-", "");
-                        } else {
-                            this.value = "";
-                        }
+                if (util.detectIsInSmallWidthMode()) {
+                    //collapse search menu
+                    $("#filterPanel").removeClass("show");
+                    $("#filterPanel").removeClass("hide");
+                }
+
+                vm.currentPageNumber = 1;
+                vm.requestsQueryString = "";
+                let statusToQuery = event.target.id;
+
+                var filterLabel = util.getProcessingStatusOptionLabel(statusToQuery);
+
+                vm.requestResultCaption = "Requests - " + filterLabel;
+                
+
+                vm.requestsQueryString += `&processingStatusContains=${statusToQuery}`;
+                vm.updateRequests();
+            }
+        },
+
+        onDeleteModalSelect: function(event){
+            if(event){
+                console.log("onDeleteModalSelect activate.");
+                let vm = this;
+                
+                $('#deleteModal').modal('show');
+                vm.requestToDelete = event.target.id;
+
+                let currCard = document.getElementsByClassName(vm.requestToDelete)[0].innerHTML;
+                currCard = currCard.replace(event.target.outerHTML, ""); //get rid of the button in modal
+                document.getElementById("selectedRequestUI").innerHTML = currCard;
+            }
+        },
+
+        onDeleteModalDeselect(){
+            console.log('onDeleteModalDeselect activated. requestToDelete unset.');
+            let vm = this;
+            vm.requestToDelete = null;
+            $('#deleteModal').modal('hide');
+        },
+
+        onToggleDeleteMode: function(event){
+            if(event){
+                console.log("onToggleDeleteMode activated.")
+                let vm = this;
+                let button = event.target;
+
+                if($(button).hasClass("btn-outline-light")){
+                    $(button).removeClass("btn-outline-light");
+                    $(button).addClass("btn-danger");
+                    button.innerHTML = "Delete On";
+
+                    vm.deleteMode = true;
+
+                } else {
+                    $(button).removeClass("btn-danger");
+                    $(button).addClass("btn-outline-light");
+                    button.innerHTML = "Delete Off";
+
+                    vm.deleteMode = false;
+                }
+                
+            }
+        },
+
+        clearSearchUI(){
+            //clear all search UI to be blank
+            var inputs = $("input");
+            inputs.each(function(){
+            let inputType = this.type;
+            if (inputType == "text" || inputType == "number"){
+                this.value = "";
+            } else if (inputType == "checkbox"){
+                this.checked = false; //needs fixing
+            } 
+            });
+
+            var selects = $('select');
+            selects.each(function(){
+                if (this.id != null && this.id != "") {
+                    if (this.id.indexOf("default") > -1) {
+                        //if there is a default, reselect it
+                        this.value = this.id.replace("default-", "");
                     } else {
                         this.value = "";
                     }
-                });
-            }
+                } else {
+                    this.value = "";
+                }
+            });
+        }
 
     }
 } 

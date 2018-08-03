@@ -102,6 +102,8 @@
                 <button type="button" class="btn btn-primary btn-sm" 
                   :disabled="isSubmitting" 
                   @click.prevent="onSubmitRequest">Update</button>
+                <button type="button" class="btn btn-primary btn-sm float-right" 
+                  @click.prevent="onPrint"><span class="fas fa-print"></span>&nbsp;Print</button>                  
               </div>
             </div>
             <div v-else>
