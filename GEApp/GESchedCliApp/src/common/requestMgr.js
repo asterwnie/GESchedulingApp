@@ -310,6 +310,10 @@ export const validateNumberPrompt = (ctrlDataId, inputVal) => {
         isValid = false;
     }
 
+    if (inVal < 0) {
+        isValid = false;
+    }
+
     if (!isValid) {
         var invalidMsg = $('#INVALID-MSG-FOR-' + ctrlDataId)
         if (invalidMsg != null) {

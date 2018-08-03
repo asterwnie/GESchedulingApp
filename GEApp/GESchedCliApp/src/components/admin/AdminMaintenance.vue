@@ -87,35 +87,37 @@
                   </div>
                   <div id="filterMenu" class="card-body" style="padding:10px; width:100%;">
 
-                    <div id="inputOlderThan" class="input-group input-group-sm mb-3">
+                    <div class="input-group input-group-sm mb-3">
                         <div class="input-group-prepend">
                         <span class="input-group-text" id="inputGroup-sizing-sm">Older Than</span>
                         </div>
-                        <input type="text" class="form-control" aria-label="Small" :value="deleteOlderThanNumDays" aria-describedby="inputGroup-sizing-sm">
+                        <input id="inputOlderThan" type="number" class="form-control" aria-label="Small" :value="deleteOlderThanNumDays" aria-describedby="inputGroup-sizing-sm">
                         <div class="input-group-append">
                         <span class="input-group-text" id="inputGroup-sizing-sm">days</span>
                         </div>
+                        <p class="text-danger validation-msg" style="display:none;" id="REQUIRED-MSG-FOR-inputOlderThan">A number is required.</p>
+                        <p class="text-danger" style="display:none;" id="INVALID-MSG-FOR-inputOlderThan">Only a positive number is allowed.</p>
                     </div>
 
-                    <div id="inputEventName" class="input-group input-group-sm mb-3">
+                    <div class="input-group input-group-sm mb-3">
                         <div class="input-group-prepend">
                         <span class="input-group-text" id="inputGroup-sizing-sm">Event Name</span>
                         </div>
-                        <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                        <input id="inputEventName" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                     </div>
 
-                    <div id="inputRequesterEmail" class="input-group input-group-sm mb-3">
+                    <div class="input-group input-group-sm mb-3">
                         <div class="input-group-prepend">
                         <span class="input-group-text" id="inputGroup-sizing-sm">Requester Email</span>
                         </div>
-                        <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                        <input id="inputRequesterEmail" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                     </div>
 
-                    <div id="inputStatus" class="input-group input-group-sm mb-3">
+                    <div class="input-group input-group-sm mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="inputGroup-sizing-sm">Status</span>
                         </div>
-                        <select class="custom-select" id="sizeTypeGroupSelect">
+                        <select class="custom-select" id="inputProcessingStatus">
                             <option selected></option>
                             <option v-bind:id="statusItem.statusValue" v-bind:value='statusItem.statusValue' v-for="(statusItem, index) in processingStatusOptions" :key="index">
                                 {{ statusItem.statusLabel }}
@@ -211,6 +213,7 @@ import axios from 'axios';
 import * as util from '@/common/util.js';
 import * as apiMgr from '@/common/apiMgr.js';
 import * as localCacheMgr from '@/common/localCacheMgr.js';
+import { validatePrompts } from '@/common/requestMgr.js'
 
 export default {
     data () {
@@ -298,33 +301,46 @@ export default {
         let vm = this;
         var requestsToQuery = "";
 
+        var prompts = [];
+
+        prompts.push({ isRequired: true, inputType: { ctrlType: "number", ctrlDataId: "inputOlderThan" } }); 
+
+        var isValid = validatePrompts(prompts);
+        if (!isValid) {
+          return;
+        }
+
         $('#deleteModal').modal('show');
         vm.modalUI = "onDeleteOldRequests";
 
         //get query to delete
 
         //gather days old to query
-        var daysOldInputLocation = $("#inputOlderThan input");
-        if(daysOldInputLocation.val() != "" && daysOldInputLocation.val() != null){
-          requestsToQuery += `&daysOld=${daysOldInputLocation.val()}`;
+        var daysOldInputLocation = $("#inputOlderThan");
+        var daysOldInputLocationVal = daysOldInputLocation.val();
+        if(daysOldInputLocationVal != "" && daysOldInputLocationVal != null){
+          requestsToQuery += `&daysOld=${daysOldInputLocationVal}`;
         }
 
         //gather eventName to query
-        var eventNameInputLocation = $("#inputEventName input");
-        if(eventNameInputLocation.val() != "" && eventNameInputLocation.val() != null){
-          requestsToQuery += `&eventName=${eventNameInputLocation.val()}`;
+        var eventNameInputLocation = $("#inputEventName");
+        var eventNameInputLocationVal = eventNameInputLocation.val();
+        if(eventNameInputLocationVal != "" && eventNameInputLocationVal != null){
+          requestsToQuery += `&eventName=${eventNameInputLocationVal}`;
         }
 
         //gather requesterEmail to query
-        var requesterEmailInputLocation = $("#inputRequesterEmail input");
-        if(requesterEmailInputLocation.val() != "" && requesterEmailInputLocation.val() != null){
-          requestsToQuery += `&requesterEmail=${requesterEmailInputLocation.val()}`;
+        var requesterEmailInputLocation = $("#inputRequesterEmail");
+        var requesterEmailInputLocationVal = requesterEmailInputLocation.val();
+        if(requesterEmailInputLocationVal != "" && requesterEmailInputLocationVal != null){
+          requestsToQuery += `&requesterEmail=${requesterEmailInputLocationVal}`;
         }
 
         //gather processingStatus to query
-        var processingStatusInputLocation = $("#inputStatus select");
-        if(processingStatusInputLocation.val() != "" && processingStatusInputLocation.val() != null){
-          requestsToQuery += `&processingStatus=${processingStatusInputLocation.val()}`;
+        var processingStatusInputLocation = $("#inputProcessingStatus");
+        var processingStatusInputLocationVal = processingStatusInputLocation.val();
+        if(processingStatusInputLocationVal != "" && processingStatusInputLocationVal != null){
+          requestsToQuery += `&processingStatus=${processingStatusInputLocationVal}`;
         }
         
 
