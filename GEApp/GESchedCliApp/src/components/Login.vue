@@ -61,8 +61,8 @@
 
                     <br>
                     <div style="color:gray">
-                        <h5 class="text-center" v-html="$store.state.appConfig.siteName"></h5>
-                        <h6 class="text-center" v-html="$store.state.appConfig.siteAddress"></h6>
+                        <div class="site-name-footer" v-html="$store.state.appConfig.siteName"></div>
+                        <div class="site-address-footer" v-html="$store.state.appConfig.siteAddress"></div>
                         <br>
                     </div>
                     <br><button class="btn btn-primary btn-sm btn-block" :hidden="!inDebugMode" @click.prevent="onDebug">Debug Info ></button><br><div id="debugOutput"></div>

@@ -255,6 +255,22 @@ body {
   background-color: #2c2c2c;
 }
 
+.site-name-footer {
+  font-weight: bold;
+  font-size  : .885rem;
+  line-height  : .5;
+  text-align:center; 
+  vertical-align:middle; 
+  padding:6px
+}
+.site-address-footer {
+  font-size  : .775rem;
+  line-height  : .5;
+  text-align:center; 
+  vertical-align:middle; 
+  padding:6px
+}
+
 .white-glyphicon {
   color: #fff;
 }

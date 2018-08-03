@@ -216,8 +216,8 @@
     <div class="row">
         <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
         <div class="col col-12 col-auto" style="color:gray">
-        <h5 class="text-center" v-html="$store.state.appConfig.siteName"></h5>
-        <h6 class="text-center" v-html="$store.state.appConfig.siteAddress"></h6>
+          <div class="site-name-footer" v-html="$store.state.appConfig.siteName"></div>
+          <div class="site-address-footer" v-html="$store.state.appConfig.siteAddress"></div>
         <br>
         </div>
         <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
