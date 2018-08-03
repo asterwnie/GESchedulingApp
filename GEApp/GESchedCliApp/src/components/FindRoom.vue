@@ -189,11 +189,10 @@
                 <span class="badge badge-info">
                   {{capability}}
                 </span>
-              </span>
-                <br>
-                <button v-bind:id="room._id" type="button" class="btn btn-sm btn-warning float-right" @click.prevent="onRoomSelectModal">Select</button>
-              
+              </span>     
             </div>
+            <br>
+            <button v-bind:id="room._id" type="button" class="btn btn-sm btn-warning float-right" @click.prevent="onRoomSelectModal">Select</button>
           </div>
         </div>
       </div>
