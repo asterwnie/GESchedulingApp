@@ -519,6 +519,7 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
                         $('#' + endDateCtrlId).val(dateValToSet);
                         $('#' + endTimeCtrlId).val(timeValToSet);
                     } else {
+                        //debugger;
                         util.logDebugMsg("bindUiValuesFromRequest - endDateTime value is null so default the time only!");
                         $('#' + endTimeCtrlId).val(centralStore.state.defaultTimeOption);
                     }
@@ -534,14 +535,13 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
             } else {
                 //debugger;
                 if (ctrl.attr('isEventDateTime') == "true") {
-                    //debugger;
-
                     let startDateCtrlId = inputCtrl.id + "StartDate";
                     let endDateCtrlId = inputCtrl.id + "EndDate";
                     let startTimeCtrlId = inputCtrl.id + "StartTime";
                     let endTimeCtrlId = inputCtrl.id + "EndTime";
                     $('#' + startDateCtrlId).val(null);
                     $('#' + endDateCtrlId).val(null);
+                    //debugger;
                     $('#' + startTimeCtrlId).val(centralStore.state.defaultTimeOption);
                     $('#' + endTimeCtrlId).val(centralStore.state.defaultTimeOption);
                 }

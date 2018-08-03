@@ -43,7 +43,12 @@
             <div v-else>
               <button :id="requestItem._id" type="button" @click.prevent="onViewRequest" class="disableEdit btn btn-secondary btn-sm float-right">View</button>
             </div>
-            <button :id="requestItem._id" type="button" @click.prevent="onDeleteRequest" class="enableEdit btn btn-danger btn-sm float-left"><i class="fas fa-trash-alt"></i></button>
+            <div v-if="requestItem.eventSchedule != null && requestItem.eventSchedule.startDateTime != null && isPassedDate(requestItem.eventSchedule.startDateTime)">
+              <button :id="requestItem._id" type="button" @click.prevent="onDeleteRequest" class="enableEdit btn btn-danger btn-sm float-left"><i class="fas fa-trash-alt"></i></button>
+            </div>
+            <div v-else>
+              <button :id="requestItem._id" type="button" @click.prevent="onCancelRequest" class="enableEdit btn btn-danger btn-sm float-left">Cancel</button>
+            </div>
           </div>
       </div>
       </div>
@@ -97,7 +102,6 @@ export default {
     hasWorkingNewRequestCached() {
       return this.$store.state.hasWorkingNewRequestCache;
     }
-
   },
 
   activated() {
@@ -173,6 +177,18 @@ export default {
   },
 
   methods:{
+
+    isPassedDate(startDateTime) {
+      var daysOld = 1;
+      var oneDateAgo = Date.now()+ -daysOld*24*3600*1000;
+      oneDateAgo = new Date(oneDateAgo);
+      var start = new Date(startDateTime);
+      if (start < oneDateAgo) {
+        return true;
+      } else {
+        return false;
+      }
+    },
 
     checkHasWorkingNewRequestCached() {
       let storeState = this.$store.state;
@@ -262,7 +278,11 @@ export default {
 
     },
 
-    onDeleteRequest: function (event){
+    onCancelRequest: function (event) {
+      alert('CANCEL NOT YET IMPLEMENTED');
+    },
+
+    onDeleteRequest: function (event) {
         console.log('Home.vue - onDeleteRequest activate');
         let vm = this;
 
