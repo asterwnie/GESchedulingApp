@@ -137,14 +137,14 @@ app.get('/api/appconfigs', async (req, res) => {
         }
     });
 
-    appConfigForSite.sites = appConfig.sites;
-    appConfigForSite.defaultSite = appConfig.defaultSite;
+    appConfigForSite._doc.sites = appConfig.sites;
+    appConfigForSite._doc.defaultSite = appConfig.defaultSite;
    
     // get distinct room capabilities
     await roomController.queryRoomCapabilities(siteCode, (result) => {
         if (result.success) {
             logger.info(`roomController.getCapabilities - Rooms.distinct success. About to send back http response with ${result.capabilities.length} capabilities`);
-            appConfigForSite.roomCapabilities = result.capabilities;
+            appConfigForSite._doc.roomCapabilities = result.capabilities;
         } else {
             logger.error(`roomController.getCapabilities failed. Error: ${result.errMsg}`);
             res.status(500).json({ error: result.errMsg });
@@ -158,7 +158,7 @@ app.get('/api/appconfigs', async (req, res) => {
         if (result.success) {
             logger.info(`roomController.queryMaxSeatingCapacityGrpBySizeType success. found ${result.minMaxSeatingCapacityItems.length} items.`);
             var minMaxSeatingCapacityItems = result.minMaxSeatingCapacityItems;
-            appConfigForSite.sizeTypes = minMaxSeatingCapacityItems;
+            appConfigForSite._doc.sizeTypes = minMaxSeatingCapacityItems;
         } else {
             logger.error(`roomController.queryMaxSeatingCapacityGrpBySizeType failed. Error: ${result.errMsg}`);
             res.status(500).json({ error: result.errMsg });
@@ -169,7 +169,7 @@ app.get('/api/appconfigs', async (req, res) => {
     await roomController.queryBuildings(siteCode, (result) => {
         if (result.success) {
             logger.info(`roomController.getBuildings - Rooms.distinct success. About to send back http response with ${result.buildings.length} buildings`);
-            appConfigForSite.buildings = result.buildings;
+            appConfigForSite._doc.buildings = result.buildings;
         } else {
             logger.error(`roomController.getBuildings failed. Error: ${result.errMsg}`);
             res.status(500).json({ error: result.errMsg });
