@@ -67,6 +67,7 @@ async function queryRequests (siteCode, req, callback) {
             processingStatusLabel: 1,
             processingStatusMessage: 1,
             eventTitle: 1,
+            eventSchedule: 1,
             eventGEContactPersonName: 1,
             eventGEContactPersonEmail: 1,
             eventDateTimeData: 1,
@@ -107,8 +108,25 @@ exports.getRequestsCount = function (req, res) {
     let Request = getRequestType(siteCode);
 
     var filterDirective = {}; //default, no filering
+    if (req.query.locationContains != null) {    
+        const locationName = new RegExp(`(${req.query.locationContains})`, "i");
+        filterDirective = {"locationOfEvent.name": locationName};
+    }
+    if (req.query.requestNameContains != null) {    
+        const regExpression = new RegExp(`(${req.query.requestNameContains})`, "i");
+        filterDirective.eventTitle = regExpression;      
+    }
+    if (req.query.requesterEmailContains != null) {    
+        const regExpression = new RegExp(`(${req.query.requesterEmailContains})`, "i");
+        filterDirective.eventGEContactPersonEmail = regExpression;       
+    }
+    if (req.query.requesterNameContains != null) {    
+        const regExpression = new RegExp(`(${req.query.requesterNameContains})`, "i");
+        filterDirective.eventGEContactPersonName = regExpression;       
+    }
     if (req.query.processingStatusContains != null) {    
-        filterDirective = { "processingStatus": req.query.processingStatusContains};        
+        const regExpression = new RegExp(`(${req.query.processingStatusContains})`);
+        filterDirective.processingStatus = regExpression;        
     }
 
     var numOfPages = 0;
@@ -135,7 +153,7 @@ exports.getRequestsCount = function (req, res) {
         if (numOfPages > 0) {
             res.status(200).json({ count: count, numOfPages: numOfPages }); // 200 - Sucess
         } else {
-            res.status(200).json({ count: count }); // 200 - Sucess
+            res.status(200).json({ count: count, numOfPages: 1 }); // 200 - Sucess
         }
     })
     .catch((err) => {

@@ -32,16 +32,23 @@
         <div class="card">
           <div class="card-body">
             <h6 class="card-title">{{requestItem.eventTitle}}</h6>
-            <h6 class="card-title">Status:&nbsp;<span :class="requestItem.processingStatus">{{requestItem.processingStatusLabel}}</span></h6>
-            <p class="card-text font-italic">{{requestItem.processingStatusMessage}}</p>
-            <div class="card-text text-muted">Last updated:&nbsp;{{requestItem.updatedAtDisp}}</div>
+                        <h6 class="card-title"><span :class="requestItem.processingStatus">{{requestItem.processingStatusLabel}}</span></h6>
+            <div class="card-text"><i class="label-icon fas fa-building"></i>&nbsp;&nbsp;<b>{{requestItem.locationOfEvent.name}}</b>,&nbsp;{{requestItem.locationOfEvent.building}}</div> 
+            <div v-if="requestItem.eventDateTimeDisp != null" class="card-text"><i class="label-icon fas fa-calendar-check"></i>&nbsp;&nbsp;{{requestItem.eventDateTimeDisp}}</div>
+            <div class="card-text"><i class="label-icon fas fa-user-circle"></i>&nbsp;&nbsp;{{requestItem.eventGEContactPersonName}}</div>                      
+            <div class="card-text text-muted" style="font-size:80%;margin-bottom: 8px;">Updated On:&nbsp;{{requestItem.updatedAtDisp}}</div>
             <div v-if="requestItem.userCanEdit">
               <button :id="requestItem._id" type="button" @click.prevent="onEditRequest" class="enableEdit btn btn-warning btn-sm float-right">Edit</button>
             </div>
             <div v-else>
               <button :id="requestItem._id" type="button" @click.prevent="onViewRequest" class="disableEdit btn btn-secondary btn-sm float-right">View</button>
             </div>
-            <button :id="requestItem._id" type="button" @click.prevent="onDeleteRequest" class="enableEdit btn btn-danger btn-sm float-left">Delete</button>
+            <div v-if="requestItem.eventSchedule != null && requestItem.eventSchedule.startDateTime != null && isPassedDate(requestItem.eventSchedule.startDateTime)">
+              <button :id="requestItem._id" type="button" @click.prevent="onDeleteRequest" class="enableEdit btn btn-danger btn-sm float-left"><i class="fas fa-trash-alt"></i></button>
+            </div>
+            <div v-else>
+              <button :id="requestItem._id" type="button" @click.prevent="onCancelRequest" class="enableEdit btn btn-danger btn-sm float-left">Cancel</button>
+            </div>
           </div>
       </div>
       </div>
@@ -95,7 +102,6 @@ export default {
     hasWorkingNewRequestCached() {
       return this.$store.state.hasWorkingNewRequestCache;
     }
-
   },
 
   activated() {
@@ -127,6 +133,13 @@ export default {
 
             $.each(foundRequests, function (index, request) {
               request.updatedAtDisp = util.getDateTimeDisplay(request.updatedAt);
+
+              if (request.eventSchedule != null && 
+                 request.eventSchedule.startDateTime != null &&
+                 request.eventSchedule.endDateTime != null) {
+                request.eventDateTimeDisp = util.makeEventDateTimeDisplay(request.eventSchedule.startDateTime, request.eventSchedule.endDateTime);
+              }
+
               vm.$store.state.currentUserRequests.push(request);
             });
             
@@ -164,6 +177,18 @@ export default {
   },
 
   methods:{
+
+    isPassedDate(startDateTime) {
+      var daysOld = 1;
+      var oneDateAgo = Date.now()+ -daysOld*24*3600*1000;
+      oneDateAgo = new Date(oneDateAgo);
+      var start = new Date(startDateTime);
+      if (start < oneDateAgo) {
+        return true;
+      } else {
+        return false;
+      }
+    },
 
     checkHasWorkingNewRequestCached() {
       let storeState = this.$store.state;
@@ -253,7 +278,11 @@ export default {
 
     },
 
-    onDeleteRequest: function (event){
+    onCancelRequest: function (event) {
+      alert('CANCEL NOT YET IMPLEMENTED');
+    },
+
+    onDeleteRequest: function (event) {
         console.log('Home.vue - onDeleteRequest activate');
         let vm = this;
 
@@ -312,5 +341,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+.label-icon {
+    color: rgb(80, 80, 80);
+}
 </style>

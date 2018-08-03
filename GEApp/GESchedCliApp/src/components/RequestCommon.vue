@@ -102,7 +102,7 @@
             </div>
             <br>
             <div class="mb-3">
-              <button type="button" class="btn btn-primary btn-sm" @click.prevent="onContinue">Continue Request ></button>
+              <button type="button" class="btn btn-primary btn-sm" @click.prevent="onContinue">Continue&nbsp;<i class="fas fa-arrow-right"></i></button>
             </div>
             <p class="text-danger" :hidden="!hasValidationError">Please correct your input above.</p>
             <br>
@@ -263,9 +263,7 @@ export default {
       } else {
         storeState.currentRequest = {};
         storeState.currentRequest.userCanEdit = true;
-        storeState.currentRequest.adminCanEdit = false;
-
-        util.logDebugMsg('Set startTimeCtrl and endTimeCtrl with defaultTimeOption: ' + this.$store.state.defaultTimeOption);   
+        storeState.currentRequest.adminCanEdit = false; 
       }
     } else {
       var revisingRequest = localCacheMgr.getCachedItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, storeState.currentRequest._id));
@@ -304,8 +302,10 @@ export default {
 
     this.$nextTick(function () {
       if (this.isNewRequest) {
-        $('#eventScheduleStartTime').val(this.$store.state.defaultTimeOption);
-        $('#eventScheduleEndTime').val(this.$store.state.defaultTimeOption); 
+        if (storeState.currentRequest.eventSchedule == null || storeState.currentRequest.eventSchedule.startDateTime == null) {
+          $('#eventScheduleStartTime').val(this.$store.state.defaultTimeOption);
+          $('#eventScheduleEndTime').val(this.$store.state.defaultTimeOption); 
+        }
       } else {
         try {
           var timeParts = util.getDateTimeParts(storeState.currentRequest.eventSchedule.startDateTime);

@@ -26,6 +26,7 @@ export const getDateTimeParts = (inDateTime) => {
         fullDateDisplayUsingSlashes: null, // e.g. 7/22/2018, for display use
         fullDateUsingSlashes: null, // e.g. 2018/07/22, for Date object init
         fullDateUsingDashes: null, // e.g. 2018-07-22, use for date input control
+        TimeDispLabel: null, // e.g. 9:30 AM
         timeOption: null // e.g. 09:30:00
     };
 
@@ -79,7 +80,10 @@ export const getDateTimeParts = (inDateTime) => {
     var minsStr = mins.toString();
     if (mins < 10) { minsStr = '0'+ minsStr; } 
 
-    var dispValue = dateDispVal + ' ' + hrsStr + ':' + minsStr + ' ' + ampm;
+    var dispTime = hrsStr + ':' + minsStr + ' ' + ampm;
+    var dispValue = dateDispVal + ',  ' + dispTime;
+
+    dateTimeParts.TimeDispLabel = dispTime;
     dateTimeParts.fullDateTimeDispLabel = dispValue;
 
     if (dd < 10) { dd = '0'+ dd; } 
@@ -148,4 +152,45 @@ export const getProcessingStatusOptions = () => {
     statusOptions.push({ statusValue: "rejected", statusLabel: centralStore.state.appConfig.requestStatusTagRejected });
 
     return statusOptions;
+}
+
+
+export const getProcessingStatusOptionLabel = (internalValue) => {
+    //debugger; // Uncomment to trigger breakpoint.
+
+    var foundLabel = null;
+    $.each(centralStore.state.processingStatusOptions, function (index, option) {
+        if (internalValue == option.statusValue) {
+            foundLabel = option.statusLabel;
+        }
+    });
+    return foundLabel;
+}
+
+
+export const makeEventDateTimeDisplay = (start, end) => {
+    //debugger; // Uncomment to trigger breakpoint.
+
+    var display = null;
+
+    try {
+    var startTimeParts = getDateTimeParts(start);
+    var startDate = startTimeParts.fullDateUsingSlashes;
+    var startTimeDispLabel = startTimeParts.TimeDispLabel;
+    var startDateDsip = startTimeParts.fullDateDisplayUsingSlashes;
+
+    var endTimeParts = getDateTimeParts(end);
+    var endtDate = endTimeParts.fullDateUsingSlashes;
+    var endTimeDispLabel = endTimeParts.TimeDispLabel;
+    var endDateDsip = endTimeParts.fullDateDisplayUsingSlashes;
+
+    if (startDate == endtDate) {
+        display = startDateDsip + ",  " + startTimeDispLabel + " - " + endTimeDispLabel;
+    } else {
+        display = startDateDsip + ",  " + startTimeDispLabel + "  -  " + endDateDsip + ",  " + endTimeDispLabel;
+    }
+
+    } catch (err) {}
+
+    return display;
 }

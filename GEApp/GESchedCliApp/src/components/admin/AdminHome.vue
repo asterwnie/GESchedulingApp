@@ -49,7 +49,7 @@
     
             <div class="card" style="width:100%">
                     <div class="card-header bg-info text-light">
-                        Requests
+                        {{requestResultCaption}}
                         <div class="float-right">
                             Mode:&nbsp;
                             <button type="button" @click.prevent="onToggleDeleteMode" cursor="pointer" class="btn btn-sm btn-outline-light">Delete Off</button>
@@ -69,7 +69,7 @@
     <div id="searchUI" class="col col-12 col-sm-10 col-md-4 col-lg-4 col-xl-2" style="margin-bottom:20px">
         <div class="card-header">
             <span>
-                Quick Filter:&nbsp;
+                Quick Filter:&nbsp;<br>
                 <button id="allRequest" @click.prevent="resetFilterView" class="btn btn-xs btn-info">All Requests</button>
                 <button id="underReview" @click.prevent="onQuickFilter" class="btn btn-xs btn-warning">{{underReviewLabel}}</button>
                 <button id="rejected" @click.prevent="onQuickFilter" class="btn btn-xs btn-danger" >{{rejectedLabel}}</button>                
@@ -78,10 +78,10 @@
         </div>
         <div style="height:10px"></div>
       <div class="card">
-      <div class="card-header bg-primary text-light" id="filterMenu" style="cursor:pointer;" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-      <i class="fa fa-search-plus" aria-hidden="true"></i>&nbsp;&nbsp;Filter By&nbsp;&nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i>
+      <div class="card-header bg-primary text-light" id="filterMenu" style="cursor:pointer;" data-toggle="collapse" data-target="#filterPanel" aria-expanded="true" aria-controls="filterPanel">
+      <i class="fa fa-search-plus" aria-hidden="true"></i>&nbsp;&nbsp;Custom Filter&nbsp;&nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i>
       </div>
-      <div id="collapseOne" class="collapse show" aria-labelledby="filterMenu" data-parent="#accordion">
+      <div id="filterPanel" class="collapse show" aria-labelledby="filterMenu" data-parent="#accordion">
           <div id="filterMenu" class="card-body" style="padding:10px; width:100%;">
 
             <div id="inputEventName" class="input-group input-group-sm mb-3">
@@ -158,12 +158,11 @@
                     <div :class="[requestItem._id, 'request-item', 'card', 'col-12', 'col-xl-6']" v-for="(requestItem, index) in requestsPreview" :key="index">
                         <div class="card-body">
                             <h6 class="card-title">{{requestItem.eventTitle}}</h6>
-                            <h6 class="card-title">Status:&nbsp;<span :class="requestItem.processingStatus">{{requestItem.processingStatusLabel}}</span></h6>
-                            <div class="card-text">{{requestItem.eventGEContactPersonName}}</div>
-                            <div class="card-text">{{requestItem.locationOfEvent.name}}</div>
-                            <div class="card-text">{{requestItem.eventSchedule}}</div>
-                            <br>
-                            <div class="card-text text-muted">Last updated:&nbsp;{{requestItem.updatedAtDisp}}</div>
+                            <h6 class="card-title"><span :class="requestItem.processingStatus">{{requestItem.processingStatusLabel}}</span></h6>
+                            <div class="card-text"><i class="label-icon fas fa-building"></i>&nbsp;&nbsp;<b>{{requestItem.locationOfEvent.name}}</b>,&nbsp;{{requestItem.locationOfEvent.building}}</div> 
+                            <div v-if="requestItem.eventDateTimeDisp != null" class="card-text"><i class="label-icon fas fa-calendar-check"></i>&nbsp;&nbsp;{{requestItem.eventDateTimeDisp}}</div>
+                            <div class="card-text"><i class="label-icon fas fa-user-circle"></i>&nbsp;&nbsp;{{requestItem.eventGEContactPersonName}}</div>                      
+                            <div class="card-text text-muted" style="font-size:80%;margin-bottom: 8px;">Updated On:&nbsp;{{requestItem.updatedAtDisp}}</div>
                             <div v-if="requestItem.adminCanEdit">
                                 <button :id="requestItem._id" cursor="pointer" type="button" @click.prevent="onEditViewRequest" class="enableEdit btn btn-warning btn-sm float-right">Edit</button>
                             </div>
@@ -171,7 +170,7 @@
                                 <button :id="requestItem._id" cursor="pointer" type="button" @click.prevent="onEditViewRequest" class="disableEdit btn btn-secondary btn-sm float-right">View</button>
                             </div>
                             <div v-if="deleteMode">
-                                <button :id="requestItem._id" type="button" @click.prevent="onDeleteModalSelect" class="btn btn-danger btn-sm float-left">Delete</button>
+                                <button :id="requestItem._id" type="button" @click.prevent="onDeleteModalSelect" class="btn btn-danger btn-sm float-left"><i class="fas fa-trash-alt"></i></button>
                             </div>
                         </div>
                     </div>
@@ -180,7 +179,7 @@
             <div style="height:10px;"></div>
             <div class="float-right" style="display:flex; flex-direction:horizontal">
                 <div class="input-group-prepend">
-                    <span class="input-group-text bg-secondary text-light">Page</span>
+                    Total: {{numRequests}}&nbsp;&nbsp;<span class="input-group-text bg-secondary text-light">Page</span>
                 </div>&nbsp;
                 <div v-if="currentPageNumber > 1">
                     <button @click.prevent="onPageDecrement" style="height:100%" type="button" class="btn btn-secondary btn-sm">
@@ -239,6 +238,7 @@ export default {
         previewPerPage: 6, //hardcoded for now
         numPages: 0,
         numRequests: 0,
+        requestResultCaption: "Requests - All",
         currentPageNumber: 1,
         requestsQueryString: "",
         requestToDelete: null,
@@ -274,10 +274,16 @@ export default {
         this.$store.state.currentViewTitle = this.title;
         this.$store.state.enableNavBar = true;
 
+        if (util.detectIsInSmallWidthMode()) {
+            //collapse search menu
+            $("#filterPanel").removeClass("show");
+            $("#filterPanel").removeClass("hide");
+        }
+
         vm.clearSearchUI();
-        vm.getNumPages();
         vm.updateRequests();
         vm.$forceUpdate();
+
 
         $('#allRequest').focus();
     },
@@ -350,6 +356,12 @@ export default {
             let pageNumber = vm.currentPageNumber;
             console.log(`Page number: ${pageNumber}`);
 
+            if (util.detectIsInSmallWidthMode()) {
+                //collapse search menu
+                $("#filterPanel").removeClass("show");
+                $("#filterPanel").removeClass("hide");
+            }
+
             //gather query string
             var url = apiMgr.getRequestsUrl() + `&numOfItemsToSkip=${vm.previewPerPage * (vm.currentPageNumber-1)}&summaryFieldsOnly=true&numOfItemsPerPage=${vm.previewPerPage}`;
             
@@ -357,8 +369,6 @@ export default {
                 url += vm.requestsQueryString;
             }
             console.log(url);
-
-
 
             //get requests
             axios.get(url)
@@ -372,16 +382,20 @@ export default {
                     }
                     var foundRequests = res.data;
 
-
                     $.each(foundRequests, function (index, foundRequest) {
+
                         foundRequest.updatedAtDisp = util.getDateTimeDisplay(foundRequest.updatedAt);
+
+                        if (foundRequest.eventSchedule != null && 
+                            foundRequest.eventSchedule.startDateTime != null &&
+                            foundRequest.eventSchedule.endDateTime != null) {
+                            foundRequest.eventDateTimeDisp = util.makeEventDateTimeDisplay(foundRequest.eventSchedule.startDateTime, foundRequest.eventSchedule.endDateTime);
+                        }
+
                         vm.$store.state.currentRequestsPreview.push(foundRequest);
                     });
-                    
-                    vm.requestsQueryString = "";
+                                       
                     vm.getNumPages();
-                    //vm.$forceUpdate();
-                    //vm.isFetchingRequests = false;
                 })
                 .catch((err) => {
                     vm.hasFailure = true;
@@ -395,10 +409,14 @@ export default {
             var vm = this;
 
             vm.currentPageNumber = 1;
+            vm.requestsQueryString = "";
+
+            vm.requestResultCaption = "Requests - custom filter"
 
             if (util.detectIsInSmallWidthMode()) {
                 //collapse search menu
-                $("#filterMenu").click();
+                $("#filterPanel").removeClass("show");
+                $("#filterPanel").removeClass("hide");
             }
 
             //get preview per page
@@ -414,7 +432,6 @@ export default {
                     vm.requestsQueryString += `&requestNameContains=${nameToQuery}`;
                 }
             });
-
 
             //gather requester email to query
             var requesterEmailToQuery = '';
@@ -438,7 +455,6 @@ export default {
                 }
             });
 
-
             //gather location to query
             var locationToQuery = '';
             var locationSet = $("#inputLocation input");
@@ -461,13 +477,19 @@ export default {
                 }
             });
             
-
             vm.updateRequests();
         },
 
         resetFilterView: function(event){
             console.log("resetFilterView activated.");
             let vm = this;
+            vm.requestResultCaption = "Requests - All"
+
+            if (util.detectIsInSmallWidthMode()) {
+                //collapse search menu
+                $("#filterPanel").removeClass("show");
+                $("#filterPanel").removeClass("hide");
+            }
 
             vm.requestsQueryString = null;
             vm.clearSearchUI();
@@ -481,7 +503,7 @@ export default {
             //get requests and pages count
             var url = apiMgr.getRequestsUrl().replace("requests", "requestscount") + `&numOfItemsPerPage=${vm.previewPerPage}`;
             if(vm.requestsQueryString != null && vm.requestsQueryString != ""){
-                url += `&processingStatusContains=${vm.requestsQueryString}`;
+                url += `${vm.requestsQueryString}`;
             }
 
             axios.get(url)
@@ -491,8 +513,18 @@ export default {
                     vm.numPages = res.data.numOfPages;
                     vm.numRequests = res.data.count;
 
-                    vm.$forceUpdate();
-                    //vm.isFetchingRequests = false;
+                    var newCountPart = " (" + vm.numRequests + ")";
+                    var beginCountPart = vm.requestResultCaption.indexOf("(");
+                    if (beginCountPart > -1) {
+                        // Need to remove the previous number part first.
+                        var requestResultCaptionSuffix = vm.requestResultCaption.substring(beginCountPart, vm.requestResultCaption.length);
+                        var requestResultCaptionPrefix = vm.requestResultCaption.replace(requestResultCaptionSuffix, '').trim();                     
+                        vm.requestResultCaption = requestResultCaptionPrefix + newCountPart;
+                    } else {
+                        vm.requestResultCaption = vm.requestResultCaption + newCountPart;
+                    }
+
+                    vm.$forceUpdate();                   
                 })
                 .catch((err) => {
                     vm.hasFailure = true;
@@ -595,10 +627,18 @@ export default {
 
                     if (util.detectIsInSmallWidthMode()) {
                         //collapse search menu
-                        $("#filterMenu").click();
+                        $("#filterPanel").removeClass("show");
+                        $("#filterPanel").removeClass("hide");
                     }
 
+                    vm.currentPageNumber = 1;
+                    vm.requestsQueryString = "";
                     let statusToQuery = event.target.id;
+
+                    var filterLabel = util.getProcessingStatusOptionLabel(statusToQuery);
+
+                    vm.requestResultCaption = "Requests - " + filterLabel;
+                    
 
                     vm.requestsQueryString += `&processingStatusContains=${statusToQuery}`;
                     vm.updateRequests();
@@ -688,6 +728,9 @@ export default {
 }
 a {
     margin:2px
+}
+.label-icon {
+    color: rgb(80, 80, 80);
 }
 .btn-xs {
   padding  : .25rem .4rem;

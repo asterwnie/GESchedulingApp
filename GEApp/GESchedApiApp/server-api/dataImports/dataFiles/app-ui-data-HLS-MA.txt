@@ -71,7 +71,7 @@ These recommended caterers who are reliable and deliver to the site and accept A
 Local Hotels
 
 --HotelsViewDescription 
-The local listing of hotels:
+Listing of local hotels.
 
 --GuestWifiViewTitle 
 Guest Wifi
@@ -131,6 +131,9 @@ Access Code: [ACCESSCODE]
 [LINEBREAK]
 To access the GE Scheduling Utility, paste this link into your browser:
 [APPLINK]
+
+--AddAdminEmailSubject 
+GE Scheduling Utility Administrator Access
 
 --AddAdminEmailTemplate 
 Hello, [RECIPIENTNAME]!

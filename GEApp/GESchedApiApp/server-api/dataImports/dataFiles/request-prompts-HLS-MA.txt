@@ -3,7 +3,7 @@
 --Prompt.Required
 --Prompt.OnScreen: 1
 
---Prompt.Label: Event date & Time:
+--Prompt.Label: Event date & time:
 --Prompt.InputType.EventSchedule[dataId=eventSchedule]
 --Prompt.Required
 --Prompt.OnScreen: 1

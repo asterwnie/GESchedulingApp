@@ -13,6 +13,7 @@ export const transformMetaTags = (text) => {
     }
 
     var htmlLinkTmpl = '<a href="{0}" target="_blank"><span class="far fa-paper-plane fa-sm"></span></a>';
+    var htmlPhoneTmpl = '<a href="tel:{0}">{1}</a>';
 
 
     // Uses Regular Expression to get all URLs in [] brackets. e.g. [http://www.ge.com], [LINEBREAK]
@@ -29,10 +30,21 @@ export const transformMetaTags = (text) => {
                 
                 var htmlLink = htmlLinkTmpl.replace("{0}", rawUrl);
                 transformedText = transformedText.replace(bracketedString, htmlLink);
-                console.log(`The transformed text: ${transformedText}`);
+                
             } else if (bracketedString != null && bracketedString.indexOf("[LINEBREAK]") > -1) {
+
                 transformedText = transformedText.replace("[LINEBREAK]", "<br>");
+
+            } else if (bracketedString != null && bracketedString.indexOf("[PHONE:") > -1) {
+
+                var rawPhNum = bracketedString.replace("[PHONE:", "").replace("]", "");
+                rawPhNum = rawPhNum.trim();
+                var htmlPh = htmlPhoneTmpl.replace("{0}", rawPhNum).replace("{1}", rawPhNum);
+                transformedText = transformedText.replace(bracketedString, htmlPh);
+
             }
+
+            console.log(`The transformed text: ${transformedText}`);
         });
     }
 
@@ -111,9 +123,29 @@ export const transformCaterers = (caterers) => {
         var text = caterer.website;
         var transfromedText = transformMetaTags(text);
         caterer.website = transfromedText;
+
+        var text = caterer.phone;
+        var transfromedText = transformMetaTags(text);
+        caterer.phone = transfromedText;
       });
 
     return caterers;
+}
+
+export const transformHotels = (hotels) => {
+    //debugger; // Uncomment to trigger breakpoint.
+
+    hotels.forEach((hotel, index) => {
+        var text = hotel.website;
+        var transfromedText = transformMetaTags(text);
+        hotel.website = transfromedText;
+
+        var text = hotel.phone;
+        var transfromedText = transformMetaTags(text);
+        hotel.phone = transfromedText;
+      });
+
+    return hotels;
 }
 
 

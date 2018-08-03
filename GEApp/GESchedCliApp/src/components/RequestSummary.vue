@@ -69,8 +69,7 @@
                     </div>
                     <div v-else-if="requestReadOnlyProperty.value.isEventSchedule">
                       <span class="font-italic">
-                        <div>Start: {{requestReadOnlyProperty.value.startDateTime}}</div>
-                        <div>End: {{requestReadOnlyProperty.value.endDateTime}}</div>
+                        <div><i class="label-icon fas fa-calendar-check"></i>&nbsp;&nbsp;{{requestReadOnlyProperty.value.eventDateTimeDisp}}</div>
                       </span>
                     </div>
                     <div v-else>
@@ -94,10 +93,10 @@
               <div v-if="!isApproved">
                 <button type="button" class="btn btn-primary btn-sm" 
                   :disabled="isSubmitting" 
-                  @click.prevent="onApproveRequest">Approve Request</button>
+                  @click.prevent="onApproveRequest">Approve</button>
                 <button type="button" class="btn btn-primary btn-sm" 
                   :disabled="isSubmitting" 
-                  @click.prevent="onRejectRequest">Need More Information</button>
+                  @click.prevent="onRejectRequest">{{rejectedLabel}}</button>
               </div>
               <div v-else>
                 <button type="button" class="btn btn-primary btn-sm" 
@@ -114,8 +113,11 @@
           <div v-else>
             <button type="button" class="btn btn-primary btn-sm" 
               @click.prevent="onReturnHome">Return</button>
-            <button type="button" class="btn btn-primary btn-sm" 
-              @click.prevent="onPrint">Print</button>              
+            <button type="button" class="btn btn-primary btn-sm float-right" 
+              @click.prevent="onPrint"><span class="fas fa-print"></span>&nbsp;Print</button>   
+            <span class="float-right">&nbsp;</span>
+            <button type="button" class="btn btn-primary btn-sm float-right" 
+              @click.prevent="$router.push('/attentionNotes')"><i class="fas fa-exclamation-circle"></i></button>           
           </div>         
           <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
           <br>
@@ -139,6 +141,8 @@ export default {
       hasFailure: false,
       failureMessage: "",
       requestReadOnlyProperties: [],
+      rejectedLabel: this.$store.state.appConfig.requestStatusTagRejected,
+      approvedLabel: this.$store.state.appConfig.requestStatusTagApproved
     }
   },
 
@@ -300,9 +304,13 @@ export default {
           util.logDebugMsg("Preparing eventSchedule start & end time display for: " + requestPrompt.inputType.ctrlDataId);
 
           var schedValue = currentRequest[requestPrompt.inputType.ctrlDataId];
+
+          var eventDateTimeDisp = util.makeEventDateTimeDisplay(currentRequest.eventSchedule.startDateTime, currentRequest.eventSchedule.endDateTime);
+
           var schedDispValue = {
             startDateTime: null,
             endDateTime: null,
+            eventDateTimeDisp: eventDateTimeDisp,
             isEventSchedule: true
           };
 
@@ -668,6 +676,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.label-icon {
+    color: rgb(80, 80, 80);
+}
 /*div {
   display: inline-block;
   margin: 16px;

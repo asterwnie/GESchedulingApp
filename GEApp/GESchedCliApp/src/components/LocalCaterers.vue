@@ -39,7 +39,7 @@
                       {{line}}
                     </div> 
                     <br>
-                    <div class="card-text" :hidden="caterer.phone == null || caterer.phone == ''"><i class="fas fa-phone"></i> {{caterer.phone}}</div>
+                    <div class="card-text" :hidden="caterer.phone == null || caterer.phone == ''"><i class="fas fa-phone"></i><span v-html="caterer.phone"></span></div>
                     <div class="card-text" :hidden="caterer.website == null || caterer.website == ''"><i class="far fa-window-restore"></i> Website: <span v-html="caterer.website"></span></div>
                     <div></div>
                     <div></div>
@@ -47,11 +47,7 @@
               </div>
             </div>
           </div>
-
       </div>
-
-    
-    
     </div>
   </div>
 </template>
