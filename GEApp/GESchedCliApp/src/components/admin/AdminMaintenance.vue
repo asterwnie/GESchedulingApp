@@ -4,19 +4,21 @@
   <div class="modal" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="deleteModalLabel">Delete Request</h5>
-          <button @click.prevent="onDeleteModalDeselect" type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>Are you sure you want to delete these requests? This action cannot be undone.</p>
-          <div class="card" id="selectedRequestsUI"></div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" @click.prevent="onDeleteModalDeselect">Cancel</button>
-          <button type="button" class="btn btn-primary" @click.prevent="onDeleteOldRequestsConfirm">Confirm Delete</button>
+        <div :hidden="!onDeleteOldRequests == 'onDeleteOldRequests'">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteModalLabel">Delete Request</h5>
+            <button @click.prevent="onDeleteModalDeselect" type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to delete these requests? This action cannot be undone.</p>
+            <div class="card" id="selectedRequestsUI"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" @click.prevent="onDeleteModalDeselect">Cancel</button>
+            <button type="button" class="btn btn-primary" @click.prevent="onDeleteOldRequestsConfirm">Confirm Delete</button>
+          </div>
         </div>
       </div>
     </div>
@@ -226,7 +228,9 @@ export default {
         previewRequestNum: 3,
         currentHeader: "Select a maintenance option.",
         requestsToDelete: null,
-        processingStatusOptions: this.$store.state.processingStatusOptions
+        processingStatusOptions: this.$store.state.processingStatusOptions,
+
+        modalUI: null,
     }
   },
 
@@ -295,6 +299,7 @@ export default {
         var requestsToQuery = "";
 
         $('#deleteModal').modal('show');
+        vm.modalUI = "onDeleteOldRequests";
 
         //get query to delete
 
@@ -324,6 +329,9 @@ export default {
         
 
         vm.requestsToDelete = requestsToQuery;
+
+        //TO DO: get numbers of requests that will be deleted...
+        //maybe not needed
         
       },
 

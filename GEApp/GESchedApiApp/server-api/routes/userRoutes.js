@@ -20,6 +20,9 @@ module.exports = function (app) {
             .put(userController.updateUser)
             .patch(userController.updateUser);
 
+        app.route('/api/userscount')
+            .get(userController.getUsersCount);
+
         app.route('/api/users/:id')
             .get(userController.getUser)
             .delete(userController.deleteUser);
