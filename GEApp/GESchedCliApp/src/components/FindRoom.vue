@@ -183,6 +183,7 @@
             <div class="card-text" :hidden="room.building == null || room.building == ''">Building: {{room.building}}</div>
             <div class="card-text" :hidden="room.sizeType == null || room.sizeType == ''">Size Type: {{room.sizeType}}</div>
             <div class="card-text" :hidden="room.seatingCapacity == null || room.seatingCapacity == ''">Seating Capacity: {{room.seatingCapacity}}</div>
+            <div class="card-text" :hidden="room.configurations == null || room.configurations.length == 0"><span class="badge badge-secondary">Has Custom Configurations</span></div>
             <div class="card-text" :hidden="room.capabilities == null || room.capabilities.length == 0">
               <hr>
               <span v-for="(capability, index) in room.capabilities" :key="index" style="padding:1px">
