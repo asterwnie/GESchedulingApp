@@ -23,7 +23,8 @@ export const prepareApiServerUrlSettings = () => {
 
     if (parser.port == '8080') {
         // Port 8080 denote debug environment so assume the API server is at port 9090.
-        defConfig.apiPort = '9090';
+        // defConfig.apiPort = '9090';
+        defConfig.apiPort = '80'; //NOTE: As of 8/4, in debug environment, it's also using port 80. 
     } else {
         // In production mode the client we UI will from the same web API server app. 
         defConfig.apiPort = parser.port;
