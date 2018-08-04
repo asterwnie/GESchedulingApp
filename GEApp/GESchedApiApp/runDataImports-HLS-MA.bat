@@ -18,3 +18,6 @@ node .\server-api\dataImports\importAdminUsers.js
 
 node .\server-api\dataImports\deleteAppConfig.js
 node .\server-api\dataImports\importAppConfig.js
+
+node .\server-api\dataImports\deleteAccessCodes.js
+node .\server-api\dataImports\importAccessCodes.js
