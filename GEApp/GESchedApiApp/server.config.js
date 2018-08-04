@@ -3,7 +3,8 @@ var appConfig = {}; // Start as a blank object and attach dynamic properties (se
 appConfig.devMode = true;
 
 appConfig.appServerName = 'GEMeetingRequestApiApp';
-appConfig.port = 9090;
+//appConfig.port = 9090; //Previously used for local development
+appConfig.port = 80;
 appConfig.noPageCaching = true;
 
 appConfig.dbUrlRefix = 'mongodb://localhost:27017/GEMeetingRequestDB';

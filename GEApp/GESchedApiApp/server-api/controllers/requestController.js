@@ -64,8 +64,6 @@ async function queryRequests (siteCode, req, callback) {
     if (req.query.summaryFieldsOnly != null && req.query.summaryFieldsOnly == "true") {
         selectedFields = { 
             processingStatus: 1,
-            processingStatusLabel: 1,
-            processingStatusMessage: 1,
             eventTitle: 1,
             eventSchedule: 1,
             eventGEContactPersonName: 1,

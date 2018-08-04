@@ -533,6 +533,17 @@ export default {
       vm.isSubmitting = true;
       const storeState = vm.$store.state;
 
+      if (request.processingStatusLabel != undefined && request.processingStatusLabel != null) {
+        delete request.processingStatusLabel;
+      }
+      if (request.processingStatusMessage != undefined && request.processingStatusMessage != null) {
+        delete request.processingStatusMessage;
+      }
+
+      var reqProps = Object.getOwnPropertyNames(request);
+      reqProps.forEach((prop, index) => {
+      });
+
       axios.post(requestsUrl, request)
       .then(res => {
           console.log("submitNewRequest response status: " + res.status);
@@ -576,6 +587,13 @@ export default {
       var vm = this;
       vm.isSubmitting = true;
       const storeState = vm.$store.state;
+
+      if (request.processingStatusLabel != undefined && request.processingStatusLabel != null) {
+        delete request.processingStatusLabel;
+      }
+      if (request.processingStatusMessage != undefined && request.processingStatusMessage != null) {
+        delete request.processingStatusMessage;
+      }
 
       axios.put(requestsUrl, request)
       .then(res => {

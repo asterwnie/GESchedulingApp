@@ -28,7 +28,7 @@ if (scriptParam == "-u" || scriptParam == "--uninstall") {
 const svc = new Service({
   name:'GE-MeetingRequestApp',
   description: 'The GE Meeting Request Web App.',
-  script: 'C:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\server.js',
+  script: 'D:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\server.js',
   nodeOptions: [
     '--harmony',
     '--max_old_space_size=4096'
