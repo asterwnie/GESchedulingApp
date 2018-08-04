@@ -13,6 +13,7 @@
 // npm link node-windows
 /////////////////////////////////////////////////////////////////////////////////////
 
+const fs = require('fs'); // File system.
 const Service = require('node-windows').Service;
 
 const args = process.argv; 
@@ -24,11 +25,24 @@ if (scriptParam == "-u" || scriptParam == "--uninstall") {
     doInstallation = false;
 }
 
+var serverExecPath = null;
+var serverExecPathSufix = ':\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\server.js';
+
+var drives = ['C','D','E','F','G','H','I','X','Y','Z'];
+
+var foundPath = false;
+drives.forEach((drive) => {
+    serverExecPath = drive + serverExecPathSufix;
+    if (!foundPath && fs.existsSync(serverExecPath)) {
+        foundPath = true;
+    }
+});
+
 // Create a new service object
 const svc = new Service({
   name:'GE-MeetingRequestApp',
   description: 'The GE Meeting Request Web App.',
-  script: 'D:\\GESchedulingApp\\GESchedulingApp\\GEApp\\GESchedApiApp\\server.js',
+  script: serverExecPath,
   nodeOptions: [
     '--harmony',
     '--max_old_space_size=4096'
