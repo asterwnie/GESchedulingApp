@@ -273,7 +273,7 @@ body {
 .welcome-back-msg {
   color: rgb(63, 63, 63);
   font-weight: bold;
-  font-size  : 95%;
+  font-size  : 92%;
   line-height  : .5; 
   text-align: right;
   vertical-align: middle; 

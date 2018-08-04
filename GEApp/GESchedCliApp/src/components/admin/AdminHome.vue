@@ -26,11 +26,9 @@
     <div class="row">
         <div class="col col-12 col-sm-1 col-md-1 col-lg-2"></div>
         <div class="col col-12 col-sm-10 col-md-10 col-lg-8" style="color:gray">
-
-
-        <div style="padding:20px;background-color:#ffb3b3;">
+        <div style="padding:18px;background-color:#ffb3b3;">
         <div class="float-left"><img src="@/assets/ge-monogram.svg" width="40" height="40" class="d-inline-block align-top" alt=""></div>
-        <div class="welcome-back-msg">Welcome back, {{$store.state.currentAdminUser.name}}</div>
+        <div class="welcome-back-msg">{{welcomeMessage}}</div>
         <div style="cursor:pointer;" class="logoff-label" @click.prevent="$router.push('/login')">Log Out&nbsp;<span class="fas fa-chevron-right"></span></div>
         </div>
         </div>
@@ -256,6 +254,21 @@ export default {
         requestsPreview() {
             return this.$store.state.currentRequestsPreview;
         },
+
+        welcomeMessage() {
+            var welcomeMsg = "Welcome";
+            try {               
+                var userFullName = this.$store.state.currentAdminUser.name;
+                var nameParts = userFullName.split(' ');
+                var firstName = nameParts[0];
+                welcomeMsg = "Welcome, " + firstName;
+                var maxLenGoodForSmallPhone = 28;
+                if (util.detectIsInSmallWidthMode() && welcomeMsg.length > maxLenGoodForSmallPhone) {
+                    welcomeMsg = firstName;
+                }
+            } catch (err) {}  
+            return welcomeMsg;      
+        }
     },
 
     activated() {
@@ -315,6 +328,7 @@ export default {
     },
 
     methods: {
+
         onPagePick: function(event){
             if (event){
                 console.log("onPagePick activate.");
@@ -712,7 +726,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.pad-bottom{
+.pad-bottom {
   padding-bottom:5px
 }
 a {
@@ -722,14 +736,14 @@ a {
     color: rgb(80, 80, 80);
 }
 .btn-xs {
-  padding  : .25rem .4rem;
+  padding: .25rem .4rem;
   font-weight: bold;
-  font-size  : .775rem;
-  line-height  : .5;
-  border-radius : .2rem;
-  cursor:pointer; 
-  text-align:center; 
-  vertical-align:middle; 
-  padding:8px
+  font-size: .775rem;
+  line-height: .5;
+  border-radius: .2rem;
+  cursor: pointer; 
+  text-align: center; 
+  vertical-align: middle; 
+  padding: 8px
 }
 </style>
