@@ -686,9 +686,4 @@ export default {
   color:#17a2b8 !important;
   font-size:110%;
 }
-/*div {
-  display: inline-block;
-  margin: 16px;
-  margin-right: 50px;
-}*/
 </style>

@@ -27,16 +27,12 @@
         <div class="col col-12 col-sm-1 col-md-1 col-lg-2"></div>
         <div class="col col-12 col-sm-10 col-md-10 col-lg-8" style="color:gray">
 
-        <nav class="navbar navbar-light" style="background-color:#ffb3b3">
-        <a class="navbar-brand text-dark">
-            <img src="@/assets/ge-monogram.svg" width="30" height="30" class="d-inline-block align-top" alt="">
-            Admin Home
-        </a>
-        </nav>
-        <br>
-        <div class="text-right font-italic">Welcome back, {{$store.state.currentAdminUser.name}}</div>
-        <div style="cursor:pointer;" class="text-right" @click.prevent="$router.push('/login')">Log Out&nbsp;<span class="fas fa-chevron-right"></span></div>
-        <hr>
+
+        <div style="padding:20px;background-color:#ffb3b3;">
+        <div class="float-left"><img src="@/assets/ge-monogram.svg" width="40" height="40" class="d-inline-block align-top" alt=""></div>
+        <div class="welcome-back-msg">Welcome back, {{$store.state.currentAdminUser.name}}</div>
+        <div style="cursor:pointer;" class="logoff-label" @click.prevent="$router.push('/login')">Log Out&nbsp;<span class="fas fa-chevron-right"></span></div>
+        </div>
         </div>
         <div class="col col-12 col-sm-1 col-md-1 col-lg-2"></div>
     </div>

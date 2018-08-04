@@ -259,16 +259,34 @@ body {
   font-weight: bold;
   font-size  : .885rem;
   line-height  : .5;
-  text-align:center; 
-  vertical-align:middle; 
-  padding:6px
+  text-align: center; 
+  vertical-align: middle; 
+  padding: 6px;
 }
 .site-address-footer {
   font-size  : .775rem;
   line-height  : .5;
-  text-align:center; 
-  vertical-align:middle; 
-  padding:6px
+  text-align: center; 
+  vertical-align: middle; 
+  padding: 6px;
+}
+.welcome-back-msg {
+  color: rgb(63, 63, 63);
+  font-weight: bold;
+  font-size  : 95%;
+  line-height  : .5; 
+  text-align: right;
+  vertical-align: middle; 
+  padding: 6px;
+}
+.logoff-label {
+  font-weight: bold;
+  color: rgb(219, 120, 120);
+  font-size  : 75%;
+  line-height  : .5; 
+  text-align: right;
+  vertical-align: middle; 
+  padding: 3px;
 }
 
 .white-glyphicon {
