@@ -2,10 +2,10 @@
 HLS-MA
 
 --SiteName 
-GE Health Life Science
+GE Health Life Sciences
 
 --SiteAddress 
-100 Results way, Marlborough, MA 01752
+100 Results Way, Marlborough, MA 01752
 
 --AppTitle
 Meeting & Event[LINEBREAK]Request
