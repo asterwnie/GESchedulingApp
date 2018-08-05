@@ -34,11 +34,7 @@ const store = new Vuex.Store({
         currentUserRequests: [],
         currentRequestsPreview: [],
 
-        selectedRequestForDelete: null,
-        selectedRequestForDeleteFromView: null,
-
         roomSearchResult: [],
-
 
         // These reference data Will be assigned during login page startup
         appConfig: {},      
@@ -50,6 +46,26 @@ const store = new Vuex.Store({
         caterers: null, 
 
         numOfRequestScreens: 0, // It will be inferred when the requestPrompts are retrieved.
+
+
+        
+        actionForSelectedRequest: {
+
+            forDelete: null,
+            forDeleteFromView: null,
+            forDeleteDlgTitle: "Delete Request",
+            forDeleteDlgMsg: "Are you sure you want to delete this request? This action cannot be undone.",
+            forDeleteConfirmBtnLabel: "Confirm Delete",
+            forDeleteDismissBtnLabel: "Cancel",
+
+            forCancel: null,
+            forCancelFromView: null,
+            forCancelDlgTitle: "Cancel Request",
+            forCancelDlgMsg: "Are you sure you want to cancel this meeting request? This action cannot be undone.",
+            forCancelConfirmBtnLabel: "Confirm Cancel",
+            forCancelDismissBtnLabel: "Don't Cancel"
+        },
+
 
 
         appDefConfig: {

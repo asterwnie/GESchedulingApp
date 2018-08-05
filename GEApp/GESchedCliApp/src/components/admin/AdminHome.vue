@@ -43,6 +43,7 @@
                 <button id="underReview" @click.prevent="onQuickFilter" class="btn btn-xs btn-warning">{{underReviewLabel}}</button>
                 <button id="rejected" @click.prevent="onQuickFilter" class="btn btn-xs btn-danger" >{{rejectedLabel}}</button>                
                 <button id="approved" @click.prevent="onQuickFilter" class="btn btn-xs btn-success">{{approvedLabel}}</button>
+                <button id="canceled" @click.prevent="onQuickFilter" class="btn btn-xs btn-success">{{cancelLabel}}</button>
             </span>
         </div>
         <div style="height:10px"></div>
@@ -198,7 +199,7 @@ import axios from 'axios';
 import * as util from '@/common/util.js';
 import * as apiMgr from '@/common/apiMgr.js';
 import * as localCacheMgr from '@/common/localCacheMgr.js';
-import { getLocalUserRequestById } from '@/common/requestMgr.js'
+import { getLocalUserRequestById, prepareRequestsForUI } from '@/common/requestMgr.js'
 
 export default {
     data () {
@@ -213,7 +214,8 @@ export default {
             processingStatusOptions: this.$store.state.processingStatusOptions,
             underReviewLabel: this.$store.state.appConfig.requestStatusTagUnderReview,
             rejectedLabel: this.$store.state.appConfig.requestStatusTagRejected,
-            approvedLabel: this.$store.state.appConfig.requestStatusTagApproved
+            approvedLabel: this.$store.state.appConfig.requestStatusTagApproved,
+            canceledLabel: this.$store.state.appConfig.requestStatusTagCanceled
         }
     },
 
@@ -230,7 +232,7 @@ export default {
         },
 
         selectedRequestForDelete() {
-            return this.$store.state.selectedRequestForDelete;
+            return this.$store.state.actionForSelectedRequest.forDelete;
         },
 
         welcomeMessage() {
@@ -255,7 +257,7 @@ export default {
         let vm = this;
 
         util.centralEvent.$on('onDeleteSelectedRequest', () => {
-            if (vm.$store.state.selectedRequestForDeleteFromView == "AdminHome.vue") {
+            if (vm.$store.state.actionForSelectedRequest.forDeleteFromView == "AdminHome.vue") {
                 vm.onDeleteRequest();
             }
         });
@@ -296,7 +298,7 @@ export default {
         $(".approved").addClass("badge badge-success");
         $(".rejected").addClass("badge badge-danger");
         $(".underReview").addClass("badge badge-warning");
-        $(".completed").addClass("badge badge-secondary"); //not yet implemented
+        $(".canceled").addClass("badge badge-danger"); 
         });
 
         //highlight current page num
@@ -395,7 +397,8 @@ export default {
 
                         vm.$store.state.currentRequestsPreview.push(foundRequest);
                     });
-                                       
+
+                    prepareRequestsForUI(vm.$store.state.currentRequestsPreview);         
                     vm.getNumPages();
                 })
                 .catch((err) => {
@@ -583,7 +586,7 @@ export default {
             console.log('AdminHome.vue - onDeleteRequest');
             let vm = this;
 
-            let currId = this.$store.state.selectedRequestForDelete._id;                
+            let currId = this.$store.state.actionForSelectedRequest.forDelete._id;                
             var url = apiMgr.getRequestByIdUrl(currId);
             console.log(`Home.vue - Query url: ${url}`);
             
@@ -592,9 +595,9 @@ export default {
                     console.log("getRequestsUrl return status: " + res.status);
                     vm.removeRequestPreviewFromLocalCollection(currId);
                     vm.isFetchingRequests = false;
-                    this.$store.state.selectedRequestForDelete = null;
-                    this.$store.state.selectedRequestForDeleteFromView = null;
-                    $('#deleteRequestConfirmDialog').modal('hide');
+                    this.$store.state.actionForSelectedRequest.forDelete = null;
+                    this.$store.state.actionForSelectedRequest.forDeleteFromView = null;
+                    $('#requestActionConfirmDialog').modal('hide');
                 })
                 .catch((err) => {
                     if (err.response.status == 400) {
@@ -650,10 +653,10 @@ export default {
                 let vm = this;
 
                 let currId = event.currentTarget.id;
-                this.$store.state.selectedRequestForDelete = getLocalUserRequestById(currId, true);
-                this.$store.state.selectedRequestForDeleteFromView = "AdminHome.vue";
+                this.$store.state.actionForSelectedRequest.forDelete = getLocalUserRequestById(currId, true);
+                this.$store.state.actionForSelectedRequest.forDeleteFromView = "AdminHome.vue";
                 
-                $('#deleteRequestConfirmDialog').modal('show');
+                $('#requestActionConfirmDialog').modal('show');
             }
         },
 

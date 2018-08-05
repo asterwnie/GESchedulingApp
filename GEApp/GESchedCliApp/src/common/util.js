@@ -154,6 +154,7 @@ export const getProcessingStatusOptions = () => {
     statusOptions.push({ statusValue: "underReview", statusLabel: centralStore.state.appConfig.requestStatusTagUnderReview });
     statusOptions.push({ statusValue: "approved", statusLabel: centralStore.state.appConfig.requestStatusTagApproved });
     statusOptions.push({ statusValue: "rejected", statusLabel: centralStore.state.appConfig.requestStatusTagRejected });
+    statusOptions.push({ statusValue: "canceled", statusLabel: centralStore.state.appConfig.requestStatusTagCanceled });
 
     return statusOptions;
 }

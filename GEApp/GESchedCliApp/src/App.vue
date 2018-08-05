@@ -107,31 +107,31 @@
 
 
   <!-- Modal -->
-  <div class="modal" id="deleteRequestConfirmDialog" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal" id="requestActionConfirmDialog" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="deleteModalLabel">Delete Request</h5>
+          <h5 class="modal-title" id="deleteModalLabel" style="color: red;">{{requestActionDialogTitle}}</h5>
           <button @click.prevent="onCancelDeleteRequest" type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <p>Are you sure you want to delete this request? This action cannot be undone.</p>
-          <div class="card" v-if="selectedRequestForDelete != null">
+          <p>{{requestActionDialogMessage}}</p>
+          <div class="card" v-if="selectedRequestForAction != null">
             <div class="card-body">
-              <h6 class="card-title">{{selectedRequestForDelete.eventTitle}}</h6>
-              <h6 class="card-title"><span :class="selectedRequestForDelete.processingStatus">{{selectedRequestForDelete.processingStatusLabel}}</span></h6>
-              <div class="card-text"><i class="label-icon fas fa-building"></i>&nbsp;&nbsp;<b>{{selectedRequestForDelete.locationOfEvent.name}}</b>,&nbsp;{{selectedRequestForDelete.locationOfEvent.building}}</div> 
-              <div v-if="selectedRequestForDelete.eventDateTimeDisp != null" class="card-text"><i class="label-icon fas fa-calendar-check"></i>&nbsp;&nbsp;{{selectedRequestForDelete.eventDateTimeDisp}}</div>
-              <div class="card-text"><i class="label-icon fas fa-user-circle"></i>&nbsp;&nbsp;{{selectedRequestForDelete.eventGEContactPersonName}}</div>                      
-              <div class="card-text text-muted" style="font-size:80%;margin-bottom: 8px;">Updated On:&nbsp;{{selectedRequestForDelete.updatedAtDisp}}</div>
+              <h6 class="card-title">{{selectedRequestForAction.eventTitle}}</h6>
+              <h6 class="card-title"><span :class="selectedRequestForAction.processingStatus">{{selectedRequestForAction.processingStatusLabel}}</span></h6>
+              <div class="card-text"><i class="label-icon fas fa-building"></i>&nbsp;&nbsp;<b>{{selectedRequestForAction.locationOfEvent.name}}</b>,&nbsp;{{selectedRequestForAction.locationOfEvent.building}}</div> 
+              <div v-if="selectedRequestForAction.eventDateTimeDisp != null" class="card-text"><i class="label-icon fas fa-calendar-check"></i>&nbsp;&nbsp;{{selectedRequestForAction.eventDateTimeDisp}}</div>
+              <div class="card-text"><i class="label-icon fas fa-user-circle"></i>&nbsp;&nbsp;{{selectedRequestForAction.eventGEContactPersonName}}</div>                      
+              <div class="card-text text-muted" style="font-size:80%;margin-bottom: 8px;">Updated On:&nbsp;{{selectedRequestForAction.updatedAtDisp}}</div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" @click.prevent="onCancelDeleteRequest">Cancel</button>
-          <button type="button" class="btn btn-primary" @click.prevent="onDeleteRequest">Confirm Delete</button>
+          <button type="button" class="btn btn-secondary" @click.prevent="onCancelActionOnRequest">{{requestActionDialogDismissBtnLabel}}</button>
+          <button type="button" class="btn btn-primary" @click.prevent="onConfirmedActionOnRequest">{{requestActionDialogConfirmBtnLabel}}</button>
         </div>
       </div>
     </div>
@@ -185,8 +185,54 @@ export default {
       return isInDebugModeVal;
     },
 
-  selectedRequestForDelete() {
-      return this.$store.state.selectedRequestForDelete;
+    selectedRequestForAction() {
+      var reqAction = this.$store.state.actionForSelectedRequest;
+      if (reqAction.forDelete != null) {
+        return reqAction.forDelete;
+      } else if (reqAction.forCancel != null) {
+        return reqAction.forCancel;
+      }
+      return null;
+    },
+
+    requestActionDialogTitle() {
+      var reqAction = this.$store.state.actionForSelectedRequest;
+      if (reqAction.forDelete != null) {
+        return reqAction.forDeleteDlgTitle;
+      } else if (reqAction.forCancel != null) {
+        return reqAction.forCancelDlgTitle;
+      }
+      return null;
+    },
+
+    requestActionDialogMessage() {
+      var reqAction = this.$store.state.actionForSelectedRequest;
+      if (reqAction.forDelete != null) {
+        return reqAction.forDeleteDlgMsg;
+      } else if (reqAction.forCancel != null) {
+        return reqAction.forCancelDlgMsg;
+      }
+      return null;
+    },
+
+    requestActionDialogDismissBtnLabel() {
+      var reqAction = this.$store.state.actionForSelectedRequest;
+      if (reqAction.forDelete != null) {
+        return reqAction.forDeleteDismissBtnLabel;
+      } else if (reqAction.forCancel != null) {
+        return reqAction.forCancelDismissBtnLabel;
+      }
+      return null;
+    },
+
+    requestActionDialogConfirmBtnLabel() {
+      var reqAction = this.$store.state.actionForSelectedRequest;
+      if (reqAction.forDelete != null) {
+        return reqAction.forDeleteConfirmBtnLabel;
+      } else if (reqAction.forCancel != null) {
+        return reqAction.forCancelConfirmBtnLabel;
+      }
+      return null;
     }
 
   },
@@ -233,15 +279,27 @@ export default {
       }
     },
     
-    onCancelDeleteRequest() {
-        console.log('App.vue - onCancelDeleteRequest');
-        this.$store.state.selectedRequestForDelete = null;
-        $('#deleteRequestConfirmDialog').modal('hide');
+    onCancelActionOnRequest() {
+        console.log('App.vue - onCancelActionOnRequest');
+
+        this.$store.state.actionForSelectedRequest.forDelete = null;
+        this.$store.state.actionForSelectedRequest.forDeleteFromView = null;
+
+        this.$store.state.actionForSelectedRequest.forCancel = null;
+        this.$store.state.actionForSelectedRequest.forCancelFromView = null;
+
+        $('#requestActionConfirmDialog').modal('hide');
     },
 
-    onDeleteRequest() {
-        console.log('App.vue - onDeleteRequest');
-        util.centralEvent.$emit('onDeleteSelectedRequest');
+    onConfirmedActionOnRequest() {
+        console.log('App.vue - onConfirmedActionOnRequest');
+
+        var reqAction = this.$store.state.actionForSelectedRequest;
+        if (reqAction.forDelete != null) {
+          util.centralEvent.$emit('onDeleteSelectedRequest');
+        } else if (reqAction.forCancel != null) {
+          util.centralEvent.$emit('onCancelSelectedRequest');
+        }
     },
 
 

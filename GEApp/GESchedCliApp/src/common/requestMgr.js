@@ -649,3 +649,46 @@ export const getLocalUserRequestById = (requestId, getfromPreviewRequests) => {
 
     return matchedRequest;
 }
+
+
+export const manageProcessingStatus = (request) => {
+    //debugger; // Uncomment to trigger breakpoint.
+
+    if (request.processingStatus == undefined || request.processingStatus == null) {
+        request.processingStatus = "underReview";
+      }
+
+      if (request.processingStatus == "rejected" && !this.inAdminMode) {
+        request.processingStatus = "underReview";
+      }
+
+      if (request.processingStatus == "underReview") {
+        request.userCanEdit = false;
+        request.adminCanEdit = true;
+        request.processingStatusLabel = centralStore.state.appConfig.requestStatusTagUnderReview;
+        request.processingStatusMessage = centralStore.state.appConfig.requestStatusMessageUnderReview;
+      } else if (request.processingStatus == "approved") {
+        request.userCanEdit = false;
+        request.adminCanEdit = true;
+        request.processingStatusLabel = centralStore.state.appConfig.requestStatusTagApproved;
+        request.processingStatusMessage = centralStore.state.appConfig.requestStatusMessageApproved;
+      } else if (request.processingStatus == "rejected") {
+        request.userCanEdit = true;
+        request.adminCanEdit = false;
+        request.processingStatusLabel = centralStore.state.appConfig.requestStatusTagRejected;
+        request.processingStatusMessage = centralStore.state.appConfig.requestStatusMessageRejected;
+      } else if (request.processingStatus == "canceled") {
+        request.userCanEdit = false;
+        request.adminCanEdit = true;
+        request.processingStatusLabel = centralStore.state.appConfig.requestStatusTagCanceled;
+        request.processingStatusMessage = centralStore.state.appConfig.requestStatusMessageCanceled;
+      }    
+}
+
+
+export const prepareRequestsForUI = (requests) => {
+    $.each(requests, function (index, request) {
+        manageProcessingStatus(request);
+    });
+}
+

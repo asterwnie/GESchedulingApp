@@ -136,6 +136,7 @@ import axios from 'axios'
 import * as util from '@/common/util.js';
 import * as apiMgr from '@/common/apiMgr.js';
 import * as localCacheMgr from '@/common/localCacheMgr.js';
+import { manageProcessingStatus } from '@/common/requestMgr.js'
 
 export default {
   data () {
@@ -488,7 +489,7 @@ export default {
 
       var requestsUrl = apiMgr.getRequestsUrl();
 
-      vm.manageProcessingStatus(storeState.currentRequest, vm.$store.state);
+      manageProcessingStatus(storeState.currentRequest);
 
       if (this.isNewRequest) {
 
@@ -597,7 +598,7 @@ export default {
 
       axios.put(requestsUrl, request)
       .then(res => {
-          console.log("submitUpdatedRequest response status: " + res.status);
+          console.log("submit request for update response status: " + res.status);
           vm.isSubmitting = false;
           vm.hasFailure = false;
           
@@ -612,17 +613,17 @@ export default {
 
           } else {
                 vm.hasFailure = true;
-                vm.failureMessage = "Unable to create the meeting request. Please try again.";
+                vm.failureMessage = "Unable to update the meeting request. Please try again.";
           }       
       })
       .catch((err) => {
-          console.log("Create request failed: " + err);
+          console.log("Update request failed: " + err);
           //prevent spam clicking
           vm.isSubmitting = false;
           vm.hasFailure = true;
 
           if (err.response != null && err.response.status == 401) { //401 - Unauthorized.                  
-              vm.failureMessage = "You're not authorized to create a meeting request.";
+              vm.failureMessage = "You're not authorized to update a meeting request.";
             
           } else if (err.response != null && err.response.status == 400) { //400 - Bad Request.                  
               vm.failureMessage = "The Meeting Request server received a bad request. Please contact your administrator if this problem persist.";
@@ -657,38 +658,7 @@ export default {
       } else {
         this.$router.push("/home");
       }
-    },
-
-    manageProcessingStatus(request, storeState) {request
-
-      if (request.processingStatus == undefined || request.processingStatus == null) {
-        request.processingStatus = "underReview";
-      }
-
-      if (request.processingStatus == "rejected" && !this.inAdminMode) {
-        request.processingStatus = "underReview";
-      }
-
-      if (request.processingStatus == "underReview") {
-        request.userCanEdit = false;
-        request.adminCanEdit = true;
-        request.processingStatusLabel = storeState.appConfig.requestStatusTagUnderReview;
-        request.processingStatusMessage = storeState.appConfig.requestStatusMessageUnderReview;
-      } else if (request.processingStatus == "approved") {
-        request.userCanEdit = false;
-        request.adminCanEdit = true;
-        request.processingStatusLabel = storeState.appConfig.requestStatusTagApproved;
-        request.processingStatusMessage = storeState.appConfig.requestStatusMessageApproved;
-      } else if (request.processingStatus == "rejected") {
-        request.userCanEdit = true;
-        request.adminCanEdit = false;
-        request.processingStatusLabel = storeState.appConfig.requestStatusTagRejected;
-        request.processingStatusMessage = storeState.appConfig.requestStatusMessageRejected;
-      }
-    },
-
-
-
+    }
 
   }
 }
