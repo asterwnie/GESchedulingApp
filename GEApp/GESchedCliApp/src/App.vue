@@ -255,6 +255,21 @@ body {
   background-color: #2c2c2c;
 }
 
+.label-icon {
+    color: rgb(80, 80, 80);
+}
+.btn-xs {
+  padding: .25rem .4rem;
+  font-weight: bold;
+  font-size: .775rem;
+  line-height: .5;
+  border-radius: .2rem;
+  cursor: pointer; 
+  text-align: center; 
+  vertical-align: middle; 
+  padding: 8px
+}
+
 .site-name-footer {
   font-weight: bold;
   font-size  : .885rem;

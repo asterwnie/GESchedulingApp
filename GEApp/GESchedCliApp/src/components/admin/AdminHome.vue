@@ -1,22 +1,33 @@
 <template>
 <div>
 <!-- Modal -->
-<div class="modal" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<div class="modal" id="deleteRequestModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="deleteModalLabel">Delete Request</h5>
-        <button @click.prevent="onDeleteModalDeselect" type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button @click.prevent="onCancelDeleteRequest" type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <p>Are you sure you want to delete this request? This action cannot be undone.</p>
-        <div class="card" id="selectedRequestUI"></div>
+
+        <div class="card" v-if="selectedRequestForDelete != null">
+        <div class="card-body">
+            <h6 class="card-title">{{selectedRequestForDelete.eventTitle}}</h6>
+            <h6 class="card-title"><span :class="selectedRequestForDelete.processingStatus">{{selectedRequestForDelete.processingStatusLabel}}</span></h6>
+            <div class="card-text"><i class="label-icon fas fa-building"></i>&nbsp;&nbsp;<b>{{selectedRequestForDelete.locationOfEvent.name}}</b>,&nbsp;{{selectedRequestForDelete.locationOfEvent.building}}</div> 
+            <div v-if="selectedRequestForDelete.eventDateTimeDisp != null" class="card-text"><i class="label-icon fas fa-calendar-check"></i>&nbsp;&nbsp;{{selectedRequestForDelete.eventDateTimeDisp}}</div>
+            <div class="card-text"><i class="label-icon fas fa-user-circle"></i>&nbsp;&nbsp;{{selectedRequestForDelete.eventGEContactPersonName}}</div>                      
+            <div class="card-text text-muted" style="font-size:80%;margin-bottom: 8px;">Updated On:&nbsp;{{selectedRequestForDelete.updatedAtDisp}}</div>
+        </div>
+        </div>       
+        
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" @click.prevent="onDeleteModalDeselect">Cancel</button>
-        <button type="button" class="btn btn-primary" @click.prevent="onDeleteRequest(requestToDelete)">Confirm Delete</button>
+        <button type="button" class="btn btn-secondary" @click.prevent="onCancelDeleteRequest">Cancel</button>
+        <button type="button" class="btn btn-primary" @click.prevent="onDeleteRequest">Confirm Delete</button>
       </div>
     </div>
   </div>
@@ -219,6 +230,7 @@ import axios from 'axios';
 import * as util from '@/common/util.js';
 import * as apiMgr from '@/common/apiMgr.js';
 import * as localCacheMgr from '@/common/localCacheMgr.js';
+import { getLocalUserRequestById } from '@/common/requestMgr.js'
 
 export default {
     data () {
@@ -229,7 +241,6 @@ export default {
         requestResultCaption: "Requests - All",
         currentPageNumber: 1,
         requestsQueryString: "",
-        requestToDelete: null,
         deleteMode: false,
         processingStatusOptions: this.$store.state.processingStatusOptions,
         underReviewLabel: this.$store.state.appConfig.requestStatusTagUnderReview,
@@ -247,6 +258,10 @@ export default {
         },
         requestsPreview() {
             return this.$store.state.currentRequestsPreview;
+        },
+
+        selectedRequestForDelete() {
+            return this.$store.state.selectedRequestForDelete;
         },
 
         welcomeMessage() {
@@ -287,7 +302,6 @@ export default {
         vm.updateRequests();
         vm.$forceUpdate();
 
-
         $('#allRequest').focus();
     },
 
@@ -317,8 +331,6 @@ export default {
 
     deactivated(){
         console.log("AdminHome.vue deactivated.");
-        let vm = this;
-        vm.requestToDelete = null;
     },
 
     methods: {
@@ -381,7 +393,7 @@ export default {
                     
                     if(vm.$store.state.currentRequestsPreview != null){
                         while(vm.$store.state.currentRequestsPreview.length > 0) {
-                        vm.$store.state.currentRequestsPreview.pop();
+                            vm.$store.state.currentRequestsPreview.pop();
                         }
                     }
                     var foundRequests = res.data;
@@ -578,12 +590,11 @@ export default {
 
         },
 
-        onDeleteRequest(targetId){
-            console.log('AdminHome.vue - onDeleteRequest activate');
+        onDeleteRequest() {
+            console.log('AdminHome.vue - onDeleteRequest');
             let vm = this;
 
-            //get request for deletion
-            let currId = targetId;                
+            let currId = this.$store.state.selectedRequestForDelete._id;                
             var url = apiMgr.getRequestByIdUrl(currId);
             console.log(`Home.vue - Query url: ${url}`);
             
@@ -591,8 +602,8 @@ export default {
                 .then(res => {
                     console.log("getRequestsUrl return status: " + res.status);
                     vm.removeRequestPreviewFromLocalCollection(currId);
-                    vm.requestToDelete = null;
-                    $('#deleteModal').modal('hide');
+                    this.$store.state.selectedRequestForDelete = null;
+                    $('#deleteRequestModal').modal('hide');
                 })
                 .catch((err) => {
                     if (err.response.status == 400) {
@@ -644,23 +655,21 @@ export default {
 
         onDeleteModalSelect: function(event){
             if(event){
-                console.log("onDeleteModalSelect activate.");
+                console.log("onDeleteModalSelect");
                 let vm = this;
-                
-                $('#deleteModal').modal('show');
-                vm.requestToDelete = event.target.id;
 
-                let currCard = document.getElementsByClassName(vm.requestToDelete)[0].innerHTML;
-                currCard = currCard.replace(event.target.outerHTML, ""); //get rid of the button in modal
-                document.getElementById("selectedRequestUI").innerHTML = currCard;
+                let currId = event.currentTarget.id;
+                this.$store.state.selectedRequestForDelete = getLocalUserRequestById(currId, true);
+                
+                $('#deleteRequestModal').modal('show');
             }
         },
 
-        onDeleteModalDeselect(){
-            console.log('onDeleteModalDeselect activated. requestToDelete unset.');
+        onCancelDeleteRequest(){
+            console.log('onCancelDeleteRequest');
             let vm = this;
-            vm.requestToDelete = null;
-            $('#deleteModal').modal('hide');
+            this.$store.state.selectedRequestForDelete = null;
+            $('#deleteRequestModal').modal('hide');
         },
 
         clearSearchUI(){
@@ -702,18 +711,5 @@ export default {
 a {
     margin:2px
 }
-.label-icon {
-    color: rgb(80, 80, 80);
-}
-.btn-xs {
-  padding: .25rem .4rem;
-  font-weight: bold;
-  font-size: .775rem;
-  line-height: .5;
-  border-radius: .2rem;
-  cursor: pointer; 
-  text-align: center; 
-  vertical-align: middle; 
-  padding: 8px
-}
+
 </style>
