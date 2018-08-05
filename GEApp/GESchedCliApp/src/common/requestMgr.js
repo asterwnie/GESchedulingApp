@@ -5,6 +5,7 @@
 import * as util from '@/common/util.js';
 const centralStore = require('@/common/centralStore.js').centralStore;
 
+
 export const inferNumOfRequestScreens = (prompts) => {
     //debugger; // Uncomment to trigger breakpoint.
     var highestScreenNum = 0;
@@ -625,4 +626,26 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
     });
 
     return assignmentCount;
+}
+
+
+export const getLocalUserRequestById = (requestId, getfromPreviewRequests) => {
+
+    var matchedRequest = null;
+
+    if (getfromPreviewRequests) {
+        $.each(centralStore.state.currentRequestsPreview, function (index, request) {
+            if (request._id == requestId) {
+                matchedRequest = request;
+            }
+        });
+    } else {
+        $.each(centralStore.state.currentUserRequests, function (index, request) {
+            if (request._id == requestId) {
+                matchedRequest = request;
+            }
+        });
+    }
+
+    return matchedRequest;
 }

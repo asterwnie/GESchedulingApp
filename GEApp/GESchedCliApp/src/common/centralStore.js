@@ -17,7 +17,7 @@ const store = new Vuex.Store({
         hasWorkingNewRequestCache: false,
         
         selectedRoom: null,
-        currentRequestsPreview: [],
+
 
         processingStatusOptions: null,
 
@@ -26,24 +26,28 @@ const store = new Vuex.Store({
             accessCode: null
         },
 
-        currentUser: null,          // Will be assigned after successful login.
-        currentAdminUser: null,     // Will be assigned after successful login as an admin
+        currentUser: null,
+        currentAdminUser: null,
         inAdminMode: false,
 
-        currentRequest: null,       // To be assigned a new or exiting request for editing.
-        currentUserRequests: [],    // Will be assigned when requests are queried.
+        currentRequest: null,
+        currentUserRequests: [],
+        currentRequestsPreview: [],
 
-        roomSearchResult: [],       // Will be assigned when rooms are queried.
+        selectedRequestForDelete: null,
+
+        roomSearchResult: [],
 
 
         // These reference data Will be assigned during login page startup
         appConfig: {},      
         notes: null,          
+        rooms: [],
+        requestPrompts: null,
+
         hotels: null,         
         caterers: null, 
-        rooms: [],
 
-        requestPrompts: null,
         numOfRequestScreens: 0, // It will be inferred when the requestPrompts are retrieved.
 
 

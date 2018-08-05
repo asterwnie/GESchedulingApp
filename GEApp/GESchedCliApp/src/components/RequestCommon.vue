@@ -87,7 +87,6 @@
                   :dataInvalidMsgId="'INVALID-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"></event-location-input>
               </template>
 
-              <!--WORK NEEDED-->
               <template v-if="(requestPrompt.inputType.ctrlType == 'eventSchedule' && requestPrompt.screenNum == currentScreenNum)"> 
                 <event-date-time-input 
                   :isRequired="requestPrompt.isRequired"
