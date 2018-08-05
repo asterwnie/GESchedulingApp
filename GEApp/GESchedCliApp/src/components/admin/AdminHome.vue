@@ -43,7 +43,7 @@
                 <button id="underReview" @click.prevent="onQuickFilter" class="btn btn-xs btn-warning">{{underReviewLabel}}</button>
                 <button id="rejected" @click.prevent="onQuickFilter" class="btn btn-xs btn-danger" >{{rejectedLabel}}</button>                
                 <button id="approved" @click.prevent="onQuickFilter" class="btn btn-xs btn-success">{{approvedLabel}}</button>
-                <button id="canceled" @click.prevent="onQuickFilter" class="btn btn-xs btn-success">{{canceledLabel}}</button>
+                <button id="canceled" @click.prevent="onQuickFilter" class="btn btn-xs btn-danger">{{canceledLabel}}</button>
             </span>
         </div>
         <div style="height:10px"></div>
