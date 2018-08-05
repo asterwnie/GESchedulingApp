@@ -76,7 +76,9 @@ const store = new Vuex.Store({
 
             requestPromptsUrlTmpl: 'http://{0}:{1}/api/requestPrompts',
 
-            requestsUrlTmpl: 'http://{0}:{1}/api/requests'
+            requestsUrlTmpl: 'http://{0}:{1}/api/requests',
+
+            accessCodesUrlTmpl: 'http://{0}:{1}/api/accessCodes'
 
         },
 

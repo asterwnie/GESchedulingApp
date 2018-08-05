@@ -36,8 +36,13 @@ exports.isAccessCodeExist = async function (req, res) {
     logger.verbose('accessCodeController.isAccessCodeExist begin');
 
     let siteCode = httpRequestHelper.getSite(req);
+    let isForAdmin = null;
     
-    await queryAccessCodes(siteCode, req.params.code, null, (result) => {
+    if (req.query.isForAdmin != null) {    
+        isForAdmin = req.query.isForAdmin;
+    }
+
+    await queryAccessCodes(siteCode, req.params.code, isForAdmin, (result) => {
         if (result.success) {
             logger.info(`accessCodeController.isAccessCodeExist - queryAccessCodes success. About to send back http response.`);
 

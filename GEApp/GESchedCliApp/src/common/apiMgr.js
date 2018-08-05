@@ -21,10 +21,10 @@ export const prepareApiServerUrlSettings = () => {
         }
     }
 
-    if (parser.port == '8080') {
+    if (parser.port == '8080') { 
         // Port 8080 denote debug environment so assume the API server is at port 9090.
         // defConfig.apiPort = '9090';
-        defConfig.apiPort = '80'; //NOTE: As of 8/4, in debug environment, it's also using port 80. 
+        defConfig.apiPort = '80'; //NOTE: As of 8/4/18, in debug environment, it's also using port 80.
     } else {
         // In production mode the client we UI will from the same web API server app. 
         defConfig.apiPort = parser.port;
@@ -129,6 +129,16 @@ export const getUsersUrl = () => {
 
     const appDefConfig = centralStore.state.appDefConfig;
     var url = appDefConfig.usersUrlTmpl.replace('{0}', appDefConfig.apiHost);
+    url = url.replace('{1}', appDefConfig.apiPort);
+    url = url + "?site=" + appDefConfig.site;
+    return url;
+}
+
+export const getAccessCodesUrl = () => {
+    //debugger; // Uncomment to trigger breakpoint.
+
+    const appDefConfig = centralStore.state.appDefConfig;
+    var url = appDefConfig.accessCodesUrlTmpl.replace('{0}', appDefConfig.apiHost);
     url = url.replace('{1}', appDefConfig.apiPort);
     url = url + "?site=" + appDefConfig.site;
     return url;

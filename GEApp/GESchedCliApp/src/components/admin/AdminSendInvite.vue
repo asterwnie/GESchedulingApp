@@ -46,11 +46,11 @@
             </div>
             <div v-if="canEmail">
                 <a :href="`mailto:${recipientEmail}?subject=${sendInviteEmailSubject}&body=${emailStringDataExport}`">
-                    <button type="button" class="float-right btn btn-primary">Send Email</button>
+                    <button type="button" class="float-right btn btn-primary">Launch Email</button>
                 </a>
             </div>
             <div v-else>
-                <button type="button" class="float-right btn btn-primary" disabled>Send Email</button>
+                <button type="button" class="float-right btn btn-primary" disabled>Launch Email</button>
             </div>
             
         </div>
@@ -75,6 +75,7 @@
 import axios from 'axios';
 import * as apiMgr from '@/common/apiMgr.js';
 import * as localCacheMgr from '@/common/localCacheMgr.js';
+import * as textTransformer from '@/common/textTransformer.js';
 
 export default {
     data () {
@@ -170,7 +171,11 @@ export default {
                     vm.hasFailure = false;
 
                     //replace email and name (and access code)
-                    vm.emailStringDataExport = vm.$store.state.appConfig.sendInviteEmailTemplate.replace('[RECIPIENTNAME]', vm.recipientName).replace('[RECIPIENTEMAIL]', vm.recipientEmail).replace('[ACCESSCODE]', vm.$store.state.tempAccessCode).replace('[ADMINNAME]', adminName);
+                    vm.emailStringDataExport = textTransformer.transformAsMailToBodyText(vm.$store.state.appConfig.sendInviteEmailTemplate)
+                        .replace('[RECIPIENTNAME]', vm.recipientName)
+                        .replace('[RECIPIENTEMAIL]', vm.recipientEmail)
+                        .replace('[ACCESSCODE]', vm.$store.state.tempAccessCode)
+                        .replace('[ADMINNAME]', adminName);
                     
                     //reformat for display in preview
                     vm.emailStringDataDisplay = vm.emailStringDataExport.replace(/%0D%0A/g, '\n').replace(/%20/g, ' ');
@@ -181,7 +186,7 @@ export default {
                 
             } else {
                 vm.hasFailure = true;
-                vm.failureMessage = "Fields cannot be empty."
+                vm.failureMessage = "Required fields cannot be empty."
             }
           
             vm.$forceUpdate();

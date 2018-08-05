@@ -105,7 +105,7 @@
             "type": "node",
             "request": "launch",
             "name": "ADMIN: Delete AccessCode",
-            "program": "${workspaceFolder}/server-api/dataImports/deleteAccessCode.js"
+            "program": "${workspaceFolder}/server-api/dataImports/deleteAccessCodes.js"
         },
         {
             "type": "node",

@@ -4,7 +4,7 @@
   <div class="modal" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <div :hidden="!onDeleteOldRequests == 'onDeleteOldRequests'">
+        <div :hidden="!modalUI == 'onDeleteOldRequests'">
           <div class="modal-header">
             <h5 class="modal-title" id="deleteModalLabel">Delete Request</h5>
             <button @click.prevent="onDeleteModalDeselect" type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -18,6 +18,22 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" @click.prevent="onDeleteModalDeselect">Cancel</button>
             <button type="button" class="btn btn-primary" @click.prevent="onDeleteOldRequestsConfirm">Confirm Delete</button>
+          </div>
+        </div>
+        <div :hidden="!modalUI == 'onDeleteAccessCode'">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteModalLabel">Delete Access Code</h5>
+            <button @click.prevent="onDeleteModalDeselect" type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to delete this access code? This action cannot be undone.</p>
+            <div class="card" id="selectedRequestsUI"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" @click.prevent="onDeleteModalDeselect">Cancel</button>
+            <button type="button" class="btn btn-primary" @click.prevent="onDeleteAccessCodeConfirm">Confirm Delete</button>
           </div>
         </div>
       </div>
@@ -38,19 +54,19 @@
 
           <div class="accordion" id="menuAccordian">
             <div @click.prevent="onExpandOption" class="card">
-              <div class="bg-info text-light card-header" id="flushOldRequestsHeader" cursor="pointer" data-toggle="collapse" data-target="#flushOldRequestsCollapse" aria-expanded="false" aria-controls="flushOldRequestsCollapse">
+              <div class="bg-info text-light card-header" id="flushOldRequestsHeader"  style="cursor:pointer" data-toggle="collapse" data-target="#flushOldRequestsCollapse" aria-expanded="false" aria-controls="flushOldRequestsCollapse">
                 Flush Old Requests&nbsp;&nbsp;<i class="fa fa-caret-right" aria-hidden="true"></i>
               </div>
             </div>
 
             <div class="card">
-              <div @click.prevent="onExpandOption" class="bg-info text-light card-header" id="manageAccessCodesHeader" cursor="pointer" data-toggle="collapse" data-target="#manageAccessCodesCollapse" aria-expanded="false" aria-controls="manageAccessCodesCollapse">
+              <div @click.prevent="onExpandOption" class="bg-info text-light card-header" id="manageAccessCodesHeader" style="cursor:pointer" data-toggle="collapse" data-target="#manageAccessCodesCollapse" aria-expanded="false" aria-controls="manageAccessCodesCollapse">
                 Manage Access Codes&nbsp;&nbsp;<i class="fa fa-caret-right" aria-hidden="true"></i>
               </div>
             </div>
 
             <div class="card">
-              <div @click.prevent="onExpandOption" class="bg-info text-light card-header" id="updateAppDataHeader" cursor="pointer" data-toggle="collapse" data-target="#updateAppDataCollapse" aria-expanded="false" aria-controls="updateAppDataCollapse">
+              <div @click.prevent="onExpandOption" class="bg-info text-light card-header" id="updateAppDataHeader" style="cursor:pointer" data-toggle="collapse" data-target="#updateAppDataCollapse" aria-expanded="false" aria-controls="updateAppDataCollapse">
                 Update App Data&nbsp;&nbsp;<i class="fa fa-caret-right" aria-hidden="true"></i>
               </div>
             </div>
@@ -157,33 +173,72 @@
               <div class="card-body">
 
                 <div class="alert alert-danger" role="alert">
-                  Note that this does NOT update the access code text file. Work in progress.
+                  <strong>Note</strong> This does NOT update the access code text file.
                 </div>
                 
-                <div class="form-group">
-                  <label for="createNewAccessCode">Create New Access Code</label>
-                  <input type="email" class="form-control" id="createNewAccessCode" aria-describedby="newAccessCode" placeholder="Enter New Code">
+                <div id="manageUserAccessCodes">
+                  <div class="form-group">
+                    <label for="createNewAccessCode">Create New Access Code</label>
+                    <input class="form-control" id="createNewAccessCode" aria-describedby="newAccessCode" placeholder="Enter New Code">
+                  </div>
+                  <div class="float-right">
+                    <input id="accessCodeCreateIsAdmin" type="checkbox" name="isAdmin">&nbsp;Is Admin<br>
+                    <button type="button" class="btn btn-sm btn-primary" @click.prevent="onAccessCodeCreate">Create</button>
+                  </div>
+                  
+                  <p class="text-success" :hidden="hasFailure || !canShowAccessCodeResultCreate">{{accessCodeResultMessageCreate}}</p>
+                  <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
+                  <div style="height:50px"></div>
+                  <hr>
+                  <div style="height:10px"></div>
+                  <div class="form-group">
+                    <label for="deleteAccessCode">Delete Access Code</label>
+                    <input class="form-control" id="deleteAccessCode" aria-describedby="deleteAccessCode" placeholder="Enter Existing Code">
+                    <small id="deleteAccessCodeHelp" class="form-text text-muted">If the code matches one in the database, it will be deleted.</small>
+                  </div>
+                  <div class="float-right">
+                    <input id="accessCodeDeleteIsAdmin" type="checkbox" name="isAdmin">&nbsp;Is Admin<br>
+                    <button type="button" class="btn btn-sm btn-danger" @click.prevent="onAccessCodeDelete">Delete</button>
+                  </div>
+                  <p class="text-success" :hidden="hasFailure || !canShowAccessCodeResultDelete">{{accessCodeResultMessageDelete}}</p>
+                  <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
                 </div>
-                <button type="button" class="float-right btn btn-sm btn-primary" @click.prevent="onAccessCodeCreate">Create</button>
 
-                <p class="text-success" :hidden="hasFailure || !canShowAccessCodeResultCreate">{{accessCodeResultMessageCreate}}</p>
-                <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
-
-
-                <div style="height:35px"></div>
+                <div style="height:50px"></div>
                 <hr>
-                <div style="height:10px"></div>
 
-                <div class="form-group">
-                  <label for="deleteAccessCode">Delete Access Code</label>
-                  <input type="email" class="form-control" id="deleteAccessCode" aria-describedby="deleteAccessCode" placeholder="Enter Existing Code">
-                  <small id="deleteAccessCodeHelp" class="form-text text-muted">If the code matches one in the database, it will be deleted.</small>
-                </div>
-                <button type="button" class="float-right btn btn-sm btn-danger" @click.prevent="onAccessCodeDelete">Delete</button>
+                <!-- <div id="manageUserAccessCodes">
+                  <div class="accordion" id="newAdminAccessCodeUI">
+                    <div class="card">
+                      <div class="card-header bg-danger text-light" style="cursor:pointer" id="adminCreateCodeHeader" data-toggle="collapse" data-target="#adminCreateCodeCollapse" aria-expanded="false" aria-controls="adminCreateCodeCollapse">
+                        Admin Access Codes&nbsp;&nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i>
+                      </div>
 
-                <p class="text-success" :hidden="hasFailure || !canShowAccessCodeResultDelete">{{accessCodeResultMessageDelete}}</p>
-                <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
-
+                      <div id="adminCreateCodeCollapse" class="collapse hide" aria-labelledby="adminCreateCodeHeader" data-parent="#newAdminAccessCodeUI">
+                        <div class="card-body">
+                          <div class="form-group">
+                            <label for="createNewAccessCode">Create New Admin Access Code</label>
+                            <input type="email" class="form-control" id="createNewAccessCode" aria-describedby="newAccessCode" placeholder="Enter New Code">
+                          </div>
+                          <button type="button" class="float-right btn btn-sm btn-primary" @click.prevent="onAdminAccessCodeCreate">Create</button>
+                          <p class="text-success" :hidden="hasFailure || !canShowAccessCodeResultCreate">{{accessCodeResultMessageCreate}}</p>
+                          <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
+                          <div style="height:35px"></div>
+                          <hr>
+                          <div style="height:10px"></div>
+                          <div class="form-group">
+                            <label for="deleteAccessCode">Delete Admin Access Code</label>
+                            <input type="email" class="form-control" id="deleteAccessCode" aria-describedby="deleteAccessCode" placeholder="Enter Existing Code">
+                            <small id="deleteAccessCodeHelp" class="form-text text-muted">If the code matches one in the database, it will be deleted.</small>
+                          </div>
+                          <button type="button" class="float-right btn btn-sm btn-danger" @click.prevent="onAdminAccessCodeDelete">Delete</button>
+                          <p class="text-success" :hidden="hasFailure || !canShowAccessCodeResultDelete">{{accessCodeResultMessageDelete}}</p>
+                          <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div> -->
 
               </div>
             </div>
@@ -384,14 +439,58 @@ export default {
         
       },
 
+      checkIfAccessCodeExists(isAdminCode, inputCode){
+        let vm = this;
+
+        if (inputCode != "" && inputCode != null){
+
+          let url = apiMgr.getAccessCodesUrl().replace("accessCodes", `isAccessCodeExist/${inputCode}`);
+
+          if(isAdminCode){
+            url += `&isForAdmin=true`;
+          }
+
+          axios.get(url)
+            .then(res => {
+                console.log("getRequestsUrl return status: " + res.status);
+                
+                return res.data.exist;
+            })
+            .catch((err) => {
+                vm.hasFailure = true;
+                if(isAdminCode){
+                  vm.failureMessage = "Error: Admin Code not found in database.";
+                } else {
+                  vm.failureMessage = "Error: User Code not found in database.";
+                }
+
+                return false;                       
+            })
+
+        } else {
+          vm.hasFailure = true;
+          vm.failureMessage = "Please fill out field.";  
+        }
+
+        return;
+      },
+
       onAccessCodeDelete() {
         console.log("onAccessCodeDelete activated.");
         let vm = this;
 
-        vm.canShowAccessCodeResultDelete = true;
-        vm.accessCodeResultMessageDelete = "This button does not work yet. Your code has been successfully deleted.";
+        vm.hasFailure = false;
 
+        let inputCode = $("#deleteAccessCode")[0].value;
+        let isAdminCode = $("#accessCodeDeleteIsAdmin")[0].checked;
 
+        if (vm.checkIfAccessCodeExists(isAdminCode, inputCode)){
+          //work in progress.
+
+          vm.canShowAccessCodeResultDelete = true;
+          vm.accessCodeResultMessageDelete = "This button does not work yet. Code found.";
+        }
+        
       },
 
       onAccessCodeCreate() {
@@ -399,7 +498,7 @@ export default {
         let vm = this;
 
         vm.canShowAccessCodeResultCreate = true;
-        vm.accessCodeResultMessageCreate = "This button does not work yet. Your code has been successfully created.";
+        vm.accessCodeResultMessageCreate = "This button does not work yet.";
 
       }
 
