@@ -3,8 +3,12 @@
 // General utility functions.
 //
 
+import Vue from 'vue'
 import * as util from '@/common/util.js';
 const centralStore = require('@/common/centralStore.js').centralStore;
+
+// Allow event dispatching and handling across views.
+export const centralEvent = new Vue();
 
 
 export const getDateTimeDisplay = (inDateTime) => {

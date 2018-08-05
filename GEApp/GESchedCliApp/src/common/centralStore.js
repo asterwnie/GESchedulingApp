@@ -35,6 +35,7 @@ const store = new Vuex.Store({
         currentRequestsPreview: [],
 
         selectedRequestForDelete: null,
+        selectedRequestForDeleteFromView: null,
 
         roomSearchResult: [],
 

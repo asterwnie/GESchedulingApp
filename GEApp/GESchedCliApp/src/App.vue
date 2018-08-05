@@ -105,6 +105,39 @@
     </nav>
 
 
+
+  <!-- Modal -->
+  <div class="modal" id="deleteRequestConfirmDialog" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Delete Request</h5>
+          <button @click.prevent="onCancelDeleteRequest" type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete this request? This action cannot be undone.</p>
+          <div class="card" v-if="selectedRequestForDelete != null">
+            <div class="card-body">
+              <h6 class="card-title">{{selectedRequestForDelete.eventTitle}}</h6>
+              <h6 class="card-title"><span :class="selectedRequestForDelete.processingStatus">{{selectedRequestForDelete.processingStatusLabel}}</span></h6>
+              <div class="card-text"><i class="label-icon fas fa-building"></i>&nbsp;&nbsp;<b>{{selectedRequestForDelete.locationOfEvent.name}}</b>,&nbsp;{{selectedRequestForDelete.locationOfEvent.building}}</div> 
+              <div v-if="selectedRequestForDelete.eventDateTimeDisp != null" class="card-text"><i class="label-icon fas fa-calendar-check"></i>&nbsp;&nbsp;{{selectedRequestForDelete.eventDateTimeDisp}}</div>
+              <div class="card-text"><i class="label-icon fas fa-user-circle"></i>&nbsp;&nbsp;{{selectedRequestForDelete.eventGEContactPersonName}}</div>                      
+              <div class="card-text text-muted" style="font-size:80%;margin-bottom: 8px;">Updated On:&nbsp;{{selectedRequestForDelete.updatedAtDisp}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" @click.prevent="onCancelDeleteRequest">Cancel</button>
+          <button type="button" class="btn btn-primary" @click.prevent="onDeleteRequest">Confirm Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
   </div>
 </template>
 
@@ -118,7 +151,6 @@ export default {
   name: 'app',
   created() {
     console.log('App.vue created.');
-
   },
 
   data () {
@@ -128,6 +160,7 @@ export default {
       windowHeight: 0
     }
   },
+
 
   computed: {
 
@@ -150,6 +183,10 @@ export default {
         isInDebugModeVal = true;
       }
       return isInDebugModeVal;
+    },
+
+  selectedRequestForDelete() {
+      return this.$store.state.selectedRequestForDelete;
     }
 
   },
@@ -195,6 +232,18 @@ export default {
         $("#menuButton").click();
       }
     },
+    
+    onCancelDeleteRequest() {
+        console.log('App.vue - onCancelDeleteRequest');
+        this.$store.state.selectedRequestForDelete = null;
+        $('#deleteRequestConfirmDialog').modal('hide');
+    },
+
+    onDeleteRequest() {
+        console.log('App.vue - onDeleteRequest');
+        util.centralEvent.$emit('onDeleteSelectedRequest');
+    },
+
 
     onClearDebug: function(event) {
       if (event) {

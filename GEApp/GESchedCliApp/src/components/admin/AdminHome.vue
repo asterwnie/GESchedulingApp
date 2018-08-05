@@ -1,37 +1,5 @@
 <template>
 <div>
-<!-- Modal -->
-<div class="modal" id="deleteRequestModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="deleteModalLabel">Delete Request</h5>
-        <button @click.prevent="onCancelDeleteRequest" type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>Are you sure you want to delete this request? This action cannot be undone.</p>
-
-        <div class="card" v-if="selectedRequestForDelete != null">
-        <div class="card-body">
-            <h6 class="card-title">{{selectedRequestForDelete.eventTitle}}</h6>
-            <h6 class="card-title"><span :class="selectedRequestForDelete.processingStatus">{{selectedRequestForDelete.processingStatusLabel}}</span></h6>
-            <div class="card-text"><i class="label-icon fas fa-building"></i>&nbsp;&nbsp;<b>{{selectedRequestForDelete.locationOfEvent.name}}</b>,&nbsp;{{selectedRequestForDelete.locationOfEvent.building}}</div> 
-            <div v-if="selectedRequestForDelete.eventDateTimeDisp != null" class="card-text"><i class="label-icon fas fa-calendar-check"></i>&nbsp;&nbsp;{{selectedRequestForDelete.eventDateTimeDisp}}</div>
-            <div class="card-text"><i class="label-icon fas fa-user-circle"></i>&nbsp;&nbsp;{{selectedRequestForDelete.eventGEContactPersonName}}</div>                      
-            <div class="card-text text-muted" style="font-size:80%;margin-bottom: 8px;">Updated On:&nbsp;{{selectedRequestForDelete.updatedAtDisp}}</div>
-        </div>
-        </div>       
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" @click.prevent="onCancelDeleteRequest">Cancel</button>
-        <button type="button" class="btn btn-primary" @click.prevent="onDeleteRequest">Confirm Delete</button>
-      </div>
-    </div>
-  </div>
-</div>
 <!--Page Contents-->
 <div class="container-fluid">
     <div class="row">
@@ -170,7 +138,7 @@
                             <div v-else>
                                 <button :id="requestItem._id" style="cursor:pointer" type="button" @click.prevent="onEditViewRequest" class="disableEdit btn btn-secondary btn-sm float-right">View</button>
                             </div>
-                            <button :id="requestItem._id" type="button" @click.prevent="onDeleteModalSelect" class="btn btn-danger btn-sm float-left"><i class="fas fa-trash-alt"></i></button>
+                            <button :id="requestItem._id" type="button" @click.prevent="onDeleteRequestConfirm" class="btn btn-danger btn-sm float-left"><i class="fas fa-trash-alt"></i></button>
                         </div>
                     </div>
                 </div>
@@ -234,22 +202,23 @@ import { getLocalUserRequestById } from '@/common/requestMgr.js'
 
 export default {
     data () {
-    return {
-        previewPerPage: 6, //hardcoded for now
-        numPages: 0,
-        numRequests: 0,
-        requestResultCaption: "Requests - All",
-        currentPageNumber: 1,
-        requestsQueryString: "",
-        deleteMode: false,
-        processingStatusOptions: this.$store.state.processingStatusOptions,
-        underReviewLabel: this.$store.state.appConfig.requestStatusTagUnderReview,
-        rejectedLabel: this.$store.state.appConfig.requestStatusTagRejected,
-        approvedLabel: this.$store.state.appConfig.requestStatusTagApproved
-    }
-  },
-  
-  computed: {
+        return {
+            previewPerPage: 6, //hardcoded for now
+            numPages: 0,
+            numRequests: 0,
+            requestResultCaption: "Requests - All",
+            currentPageNumber: 1,
+            requestsQueryString: "",
+            deleteMode: false,
+            processingStatusOptions: this.$store.state.processingStatusOptions,
+            underReviewLabel: this.$store.state.appConfig.requestStatusTagUnderReview,
+            rejectedLabel: this.$store.state.appConfig.requestStatusTagRejected,
+            approvedLabel: this.$store.state.appConfig.requestStatusTagApproved
+        }
+    },
+
+
+    computed: {
         title() {
             return this.$store.state.appConfig.adminHomeViewTitle; 
         },
@@ -280,6 +249,19 @@ export default {
         }
     },
 
+
+    created() {
+        console.log('AdminHome.vue created.');
+        let vm = this;
+
+        util.centralEvent.$on('onDeleteSelectedRequest', () => {
+            if (vm.$store.state.selectedRequestForDeleteFromView == "AdminHome.vue") {
+                vm.onDeleteRequest();
+            }
+        });
+    },
+  
+
     activated() {
         console.log('AdminHome.vue activated.');
         let vm = this;
@@ -306,7 +288,7 @@ export default {
     },
 
 
-    updated(){
+    updated() {
         let vm = this;
 
         //color badge based on status
@@ -345,6 +327,7 @@ export default {
             }
         },
 
+
         onPageIncrement: function(event){
             if(event){
                 console.log("onPageIncrement activate.")
@@ -354,6 +337,7 @@ export default {
                 vm.updateRequests();
             }
         },
+
 
         onPageDecrement: function(event){
             if(event){
@@ -365,7 +349,8 @@ export default {
             }
         },
 
-        updateRequests(){
+
+        updateRequests() {
             console.log("updateRequests activate.");
             let vm = this;
 
@@ -419,7 +404,8 @@ export default {
                 })
         },
 
-        filterView: function(event){
+
+        filterView: function(event) {
             console.log("filterView activated.");
             var queryString = '';
             var vm = this;
@@ -496,6 +482,7 @@ export default {
             vm.updateRequests();
         },
 
+
         resetFilterView: function(event){
             console.log("resetFilterView activated.");
             let vm = this;
@@ -504,6 +491,7 @@ export default {
             vm.clearSearchUI();
             vm.updateRequests();
         },
+
 
         getNumPages(){
             console.log("getNumPages activated.");
@@ -590,6 +578,7 @@ export default {
 
         },
 
+
         onDeleteRequest() {
             console.log('AdminHome.vue - onDeleteRequest');
             let vm = this;
@@ -602,8 +591,10 @@ export default {
                 .then(res => {
                     console.log("getRequestsUrl return status: " + res.status);
                     vm.removeRequestPreviewFromLocalCollection(currId);
+                    vm.isFetchingRequests = false;
                     this.$store.state.selectedRequestForDelete = null;
-                    $('#deleteRequestModal').modal('hide');
+                    this.$store.state.selectedRequestForDeleteFromView = null;
+                    $('#deleteRequestConfirmDialog').modal('hide');
                 })
                 .catch((err) => {
                     if (err.response.status == 400) {
@@ -653,24 +644,19 @@ export default {
             }
         },
 
-        onDeleteModalSelect: function(event){
+        onDeleteRequestConfirm: function(event){
             if(event){
-                console.log("onDeleteModalSelect");
+                console.log("onDeleteRequestConfirm");
                 let vm = this;
 
                 let currId = event.currentTarget.id;
                 this.$store.state.selectedRequestForDelete = getLocalUserRequestById(currId, true);
+                this.$store.state.selectedRequestForDeleteFromView = "AdminHome.vue";
                 
-                $('#deleteRequestModal').modal('show');
+                $('#deleteRequestConfirmDialog').modal('show');
             }
         },
 
-        onCancelDeleteRequest(){
-            console.log('onCancelDeleteRequest');
-            let vm = this;
-            this.$store.state.selectedRequestForDelete = null;
-            $('#deleteRequestModal').modal('hide');
-        },
 
         clearSearchUI(){
             //clear all search UI to be blank
