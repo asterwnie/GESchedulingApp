@@ -16,7 +16,7 @@ const args = process.argv;
 var siteCode = appConfig.defaultSite; // The current default in HLS-MA in server.config.js
 
 // if a site code is passed in on the command-line then use it. For example:
-// node ./server-api/dataImports/importaccessCodes.js HLS-MA
+// node ./server-api/dataImports/importAccessCodes.js HLS-MA
 // Note: currently in VS Code debug mode you have to rely on using the appConfig.defaultSite setting.
 if (args.length == 3 && args[2] != null) { siteCode = args[2]; }
 

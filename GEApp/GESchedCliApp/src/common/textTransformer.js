@@ -66,7 +66,7 @@ export const transformAsMailToBodyText = (text) => {
         return transformedText;
     }
 
-    if ((typeof inputVal) != "string") {
+    if ((typeof text) != "string") {
         return transformedText;
     }
 

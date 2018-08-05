@@ -43,11 +43,7 @@
     
             <div class="card" style="width:100%">
                     <div class="card-header bg-info text-light">
-                        {{requestResultCaption}}
-                        <div class="float-right">
-                            Mode:&nbsp;
-                            <button type="button" @click.prevent="onToggleDeleteMode" cursor="pointer" class="btn btn-sm btn-outline-light">Delete Off</button>
-                        </div>   
+                        {{requestResultCaption}} 
                     </div>
             </div>
 
@@ -158,14 +154,12 @@
                             <div class="card-text"><i class="label-icon fas fa-user-circle"></i>&nbsp;&nbsp;{{requestItem.eventGEContactPersonName}}</div>                      
                             <div class="card-text text-muted" style="font-size:80%;margin-bottom: 8px;">Updated On:&nbsp;{{requestItem.updatedAtDisp}}</div>
                             <div v-if="requestItem.adminCanEdit">
-                                <button :id="requestItem._id" cursor="pointer" type="button" @click.prevent="onEditViewRequest" class="enableEdit btn btn-warning btn-sm float-right">Edit</button>
+                                <button :id="requestItem._id" style="cursor:pointer" type="button" @click.prevent="onEditViewRequest" class="enableEdit btn btn-warning btn-sm float-right">Edit</button>
                             </div>
                             <div v-else>
-                                <button :id="requestItem._id" cursor="pointer" type="button" @click.prevent="onEditViewRequest" class="disableEdit btn btn-secondary btn-sm float-right">View</button>
+                                <button :id="requestItem._id" style="cursor:pointer" type="button" @click.prevent="onEditViewRequest" class="disableEdit btn btn-secondary btn-sm float-right">View</button>
                             </div>
-                            <div v-if="deleteMode">
-                                <button :id="requestItem._id" type="button" @click.prevent="onDeleteModalSelect" class="btn btn-danger btn-sm float-left"><i class="fas fa-trash-alt"></i></button>
-                            </div>
+                            <button :id="requestItem._id" type="button" @click.prevent="onDeleteModalSelect" class="btn btn-danger btn-sm float-left"><i class="fas fa-trash-alt"></i></button>
                         </div>
                     </div>
                 </div>
@@ -667,30 +661,6 @@ export default {
             let vm = this;
             vm.requestToDelete = null;
             $('#deleteModal').modal('hide');
-        },
-
-        onToggleDeleteMode: function(event){
-            if(event){
-                console.log("onToggleDeleteMode activated.")
-                let vm = this;
-                let button = event.target;
-
-                if($(button).hasClass("btn-outline-light")){
-                    $(button).removeClass("btn-outline-light");
-                    $(button).addClass("btn-danger");
-                    button.innerHTML = "Delete On";
-
-                    vm.deleteMode = true;
-
-                } else {
-                    $(button).removeClass("btn-danger");
-                    $(button).addClass("btn-outline-light");
-                    button.innerHTML = "Delete Off";
-
-                    vm.deleteMode = false;
-                }
-                
-            }
         },
 
         clearSearchUI(){

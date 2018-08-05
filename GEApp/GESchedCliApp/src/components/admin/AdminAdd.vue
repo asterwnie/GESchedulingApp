@@ -129,13 +129,13 @@
                             </div>
                             <div v-if="canEmail">
                                 <a :href="`mailto:${recipientEmail}?subject=${addAdminEmailSubject}&body=${emailStringDataExport}`">
-                                    <button type="button" class="float-right btn btn-primary">Send Email</button>
+                                    <button type="button" class="float-right btn btn-primary">Launch Email</button>
                                 </a>
                             </div>
                             <div v-else>
-                                <button type="button" class="float-right btn btn-primary" disabled>Send Email</button>
+                                <button type="button" class="float-right btn btn-primary" disabled>Launch Email</button>
                             </div>
-                            <button type="button" @click.prevent="onSendInviteDismiss" class="float-left btn btn-secondary">Dismiss</button>
+                            <button type="button" @click.prevent="onSendInviteDismiss" class="float-left btn btn-secondary">Skip</button>
                         </div>
                     </div>
                     </div>
@@ -198,6 +198,7 @@
 import axios from 'axios';
 import * as apiMgr from '@/common/apiMgr.js';
 import * as localCacheMgr from '@/common/localCacheMgr.js';
+import * as textTransformer from '@/common/textTransformer.js';
 
 export default {
     data () {
@@ -339,7 +340,11 @@ export default {
                     vm.hasFailure = false;
 
                     //replace email and name (and access code)
-                    vm.emailStringDataExport = vm.$store.state.appConfig.addAdminEmailTemplate.replace('[RECIPIENTNAME]', vm.recipientName).replace('[RECIPIENTEMAIL]', vm.recipientEmail).replace('[ACCESSCODE]', vm.$store.state.tempAccessCode).replace('[ADMINNAME]', adminName);
+                    vm.emailStringDataExport = textTransformer.transformAsMailToBodyText(vm.$store.state.appConfig.addAdminEmailTemplate)
+                    .replace('[RECIPIENTNAME]', vm.recipientName)
+                    .replace('[RECIPIENTEMAIL]', vm.recipientEmail)
+                    .replace('[ACCESSCODE]', vm.$store.state.tempAccessCode)
+                    .replace('[ADMINNAME]', adminName);
                     
                     //reformat for display in preview
                     vm.emailStringDataDisplay = vm.emailStringDataExport.replace(/%0D%0A/g, '\n').replace(/%20/g, ' ');
@@ -350,7 +355,7 @@ export default {
                 
             } else {
                 vm.hasFailure = true;
-                vm.failureMessage = "Fields cannot be empty."
+                vm.failureMessage = "Required fields cannot be empty."
             }
           
             vm.$forceUpdate();
@@ -365,61 +370,90 @@ export default {
             vm.recipientEmail = $("#recipientEmailAdminInput")[0].value;
             vm.recipientPhone = $("#recipientPhoneAdminInput")[0].value;
             
+            vm.hasFailure = false;
+
             if(vm.recipientName != "" && vm.recipientEmail != ""){
 
                 let isValid = vm.validateEmailString(vm.recipientEmail);
 
-                 if(isValid){
+                var checkIfDupe = new Promise(function(resolve, reject) {
+                    //check if it is a duplicate
+                    let emailUrl = apiMgr.getUsersUrl().replace("users", "userscount") + `&emailContains=${vm.recipientEmail}`;
 
-                    //gather new user
-                    let newUser = {
-                        email: vm.recipientEmail,
-                        name: vm.recipientName,
-                        isAdmin: true,
-                    };
-                    if(vm.recipientPhone != ""){
-                        newUser.phone = vm.recipientPhone;
-                    }
-
-                    //get url
-                    let url = apiMgr.getUsersUrl();
-                    
-                    //create (post) new user
-                    axios.post(url, newUser)
+                    axios.get(emailUrl)
                         .then(res => {
-                            console.log("onAddAdmin return status: " + res.status);
-                            
-                            vm.hasFailure = false;
-                            vm.hasSuccess = true;
+                                console.log("onAddAdmin: get users return status: " + res.status);
+                                
+                                if(res.data.count >= 1){
+                                    isValid = false;
 
-                            vm.successMessage = "Success!"
+                                    vm.hasFailure = true;
+                                    vm.failureMessage = "Error: A user with this email already exists!";      
+                                }
 
-                            //replace email and name in UI
-                            $("#recipientNameAdmin")[0].value = vm.recipientName;
-                            $("#recipientEmailAdmin")[0].value = vm.recipientEmail;
+                                resolve();
 
-                            $("#recipientNameAdmin")[0].disabled = false;
-                            $("#recipientEmailAdmin")[0].disabled = false;
-                            vm.canGenerateEmail = true;
+                            })
+                            .catch((err) => {
+                                vm.hasFailure = true;
+                                vm.failureMessage = `An error has occured. ${err}`;                               
+                            });
+                });
 
-                            $("#collapseAddAdmin").collapse("hide");
-                            //$("#collapseSendNotification").collapse("show");
-                            $("#collapseSendNotification").addClass('show');
+                checkIfDupe.then(function() {
+                    if(isValid){
 
-                            vm.refreshAdminUI();
-                            vm.$forceUpdate();
+                        //gather new user
+                        let newUser = {
+                            email: vm.recipientEmail,
+                            name: vm.recipientName,
+                            isAdmin: true,
+                        };
+                        if(vm.recipientPhone != ""){
+                            newUser.phone = vm.recipientPhone;
+                        }
 
-                        })
-                        .catch((err) => {
-                            vm.hasFailure = true;
-                            vm.failureMessage = `An error has occured. ${err}`;                               
-                        })
-                    
-                }
+                        //get url
+                        let url = apiMgr.getUsersUrl();
+                        
+                        //create (post) new user
+                        axios.post(url, newUser)
+                            .then(res => {
+                                console.log("onAddAdmin return status: " + res.status);
+                                
+                                vm.hasFailure = false;
+                                vm.hasSuccess = true;
+
+                                vm.successMessage = "Success!"
+
+                                //replace email and name in UI
+                                $("#recipientNameAdmin")[0].value = vm.recipientName;
+                                $("#recipientEmailAdmin")[0].value = vm.recipientEmail;
+
+                                $("#recipientNameAdmin")[0].disabled = false;
+                                $("#recipientEmailAdmin")[0].disabled = false;
+                                vm.canGenerateEmail = true;
+
+                                $("#collapseAddAdmin").collapse("hide");
+                                //$("#collapseSendNotification").collapse("show");
+                                $("#collapseSendNotification").addClass('show');
+
+                                vm.refreshAdminUI();
+                                vm.$forceUpdate();
+
+                            })
+                            .catch((err) => {
+                                vm.hasFailure = true;
+                                vm.failureMessage = `An error has occured. ${err}`;                               
+                            });
+                        
+                    }
+                });
+
 
             } else {
                 vm.hasFailure = true;
-                vm.failureMessage = "Fields cannot be empty."
+                vm.failureMessage = "Required fields cannot be empty."
             }
         },
 
@@ -453,7 +487,7 @@ export default {
                 vm.hasFailure = false;
                 vm.isAllowedToDeleteAdmin = false;
 
-                //do query for num admins..
+                //query for num admins
                 let url = apiMgr.getUsersUrl().replace("users", "userscount") + "&isAdmin=true";
                 axios.get(url)
                     .then(res => {

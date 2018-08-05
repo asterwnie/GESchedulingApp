@@ -94,7 +94,10 @@ exports.getUsersCount = function (req, res) {
 
     var filterDirective = {}; //default, no filering
     if (req.query.isAdmin != null) {    
-        filterDirective = { "isAdmin": req.query.isAdmin};        
+        filterDirective.isAdmin = req.query.isAdmin;        
+    }
+    if (req.query.emailContains != null) {    
+        filterDirective.email = req.query.emailContains;        
     }
 
     User.count(filterDirective)
