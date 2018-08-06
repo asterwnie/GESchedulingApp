@@ -372,15 +372,15 @@ body {
     color: rgb(80, 80, 80);
 }
 .btn-xs {
-  padding: .25rem .4rem;
+  padding: .55rem .3rem;
   font-weight: bold;
   font-size: .775rem;
   line-height: .5;
   border-radius: .2rem;
   cursor: pointer; 
   text-align: center; 
-  vertical-align: middle; 
-  padding: 10px
+  vertical-align: middle;
+  margin: 3px;
 }
 
 .site-name-footer {

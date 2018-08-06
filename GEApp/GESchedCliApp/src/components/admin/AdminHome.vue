@@ -137,7 +137,7 @@
                                 <button :id="requestItem._id" style="cursor:pointer" type="button" @click.prevent="onEditViewRequest" class="enableEdit btn btn-warning btn-sm float-right">Edit</button>
                             </div>
                             <div v-else>
-                                <button :id="requestItem._id" style="cursor:pointer" type="button" @click.prevent="onEditViewRequest" class="disableEdit btn btn-secondary btn-sm float-right">View</button>
+                                <button :id="requestItem._id" style="cursor:pointer" type="button" @click.prevent="onEditViewRequest" class="disableEdit btn btn-primary btn-sm float-right">View</button>
                             </div>
                             <button :id="requestItem._id" type="button" @click.prevent="onDeleteRequestConfirm" class="btn btn-danger btn-sm float-left"><i class="fas fa-trash-alt"></i></button>
                         </div>
