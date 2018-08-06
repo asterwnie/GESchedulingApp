@@ -102,9 +102,9 @@
             </div>
             <br>
             <div class="mb-3">
-              <button type="button" class="btn btn-primary btn-sm" @click.prevent="onContinue">Continue&nbsp;<i class="fas fa-arrow-right"></i></button>
+              <button type="button" id="continueBtn" class="btn btn-primary btn-sm" @click.prevent="onContinue">Continue&nbsp;<i class="fas fa-arrow-right"></i></button>
             </div>
-            <p class="text-danger" :hidden="!hasValidationError">Please correct your input above.</p>
+            <p class="text-danger" id="viewLevelErrorMsg" :hidden="!hasValidationError">Please correct your input above.</p>
             <br>
             <br>
           </form>
@@ -417,6 +417,8 @@ export default {
         
       } else {
         this.hasValidationError = true;
+        //Ensures the view is at the bottom to show the view-level validation error message.
+        document.body.scrollIntoView({block: "end"});
       }
     },
 

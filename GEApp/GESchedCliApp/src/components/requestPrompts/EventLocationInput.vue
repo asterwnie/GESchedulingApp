@@ -1,7 +1,7 @@
 <template>
 
   <div :id="ctrlContainerId">
-    <label :for="ctrlId">{{ promptLabel }}</label>&nbsp;<i v-if="isRequired" class="required-star">*</i>&nbsp;&nbsp;<span v-if="inAdminMode" class="badge badge-warning" :adminCommentCtrlId="adminCommentCtrlId" @click.prevent="onAddAdminComment"><span class="far fa-comment-dots"></span></span><button type="button" class="btn btn-secondary btn-sm float-right" v-if="!inAdminMode" @click.prevent="$router.push('/findroom')">Find</button>
+    <label :for="ctrlId">{{ promptLabel }}</label>&nbsp;<i v-if="isRequired" class="required-star">*</i>&nbsp;&nbsp;<span v-if="inAdminMode" class="badge badge-warning" :adminCommentCtrlId="adminCommentCtrlId" @click.prevent="onAddAdminComment"><span class="far fa-comment-dots"></span></span><button type="button" class="btn btn-primary btn-sm float-right" v-if="!inAdminMode" @click.prevent="$router.push('/findroom')">Find</button>
     <div :id="ctrlId" :screenNum="screenNum" isRoom="true" class="is-request-data">
       <div v-if="selectedRoom != undefined && selectedRoom != null">
         <div class="card" v-bind:class="[selectedRoom._id, 'is-request-data-part']">
@@ -13,7 +13,7 @@
             <div class="card-text" :hidden="selectedRoom.capabilities == null || selectedRoom.capabilities.length == 0">
               <hr>
               <span v-for="(capability, index) in selectedRoom.capabilities" :key="index" style="padding:1px">
-              <span class="badge badge-info">
+              <span class="badge badge-secondary">
                 {{capability}}
               </span>
               </span>
