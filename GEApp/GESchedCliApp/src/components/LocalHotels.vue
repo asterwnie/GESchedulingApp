@@ -14,7 +14,7 @@
         <div class="col col-sm-1 col-md-2 col-lg-4"></div>
         <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%;">
           <div class="alert alert-info">{{ viewDescription }}</div>
-          <h4>Location:</h4>
+          <h6>Location:</h6>
           <div class="font-weight-light">
             <div class="text-left" v-html="$store.state.appConfig.siteName"></div>
             <div class="text-left" v-html="$store.state.appConfig.siteAddress"></div>
@@ -30,9 +30,9 @@
           </div>
           <div v-else>
             <div v-for="(hotel, index) in hotelItems" :key="index" width="100%">
-              <div class="card" style="margin-bottom:7px">
+              <div class="card" style="margin-bottom:6px">
                 <div class="card-header" style="background-color:#a9d7eb">
-                  <h6 class="card-title">{{hotel.name}}</h6>
+                  <h6 class="card-title" style="margin-top:10px">{{hotel.name}}</h6>
                 </div>
                 <div class="card-body" style="background-color:#d5eff2">
                   <div class="card-text" v-for="(line, index) in hotel.address" :key="index">
@@ -43,6 +43,7 @@
                   <div class="card-text" :hidden="hotel.fax == null ||hotel.fax == ''">Fax: {{hotel.fax}}</div>
                   <div class="card-text" :hidden="hotel.website == null || hotel.website == ''"><i class="far fa-window-restore"></i> Website: <span v-html="hotel.website"></span></div>
                   <div class="card-text" :hidden="hotel.discount == null ||hotel.discount == ''">Discount: {{hotel.discount}}</div> <!-- .corpRates or .Discount -->
+                  <br>
                 </div>
               </div>
             </div>

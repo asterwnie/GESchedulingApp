@@ -13,7 +13,7 @@
       <div class="col col-sm-1 col-md-2 col-lg-4"></div>
       <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%;">
           <div class="alert alert-info">{{ viewDescription }}</div>
-          <h4>Location:</h4>
+          <h6>Location:</h6>
           <div class="font-weight-light">
             <div class="text-left" v-html="$store.state.appConfig.siteName"></div>
             <div class="text-left" v-html="$store.state.appConfig.siteAddress"></div>
@@ -29,9 +29,9 @@
           </div>
           <div v-else>
             <div class="LocalCaterers text-white">
-              <div class="card" style="color:black; margin-bottom:7px" v-for="(caterer, index) in catererItems" :key="index">
+              <div class="card" style="color:black; margin-bottom:8px" v-for="(caterer, index) in catererItems" :key="index">
                   <div class="card-header" style="background-color:#76cf99">
-                    <h6 class="card-title">{{ caterer.name }}</h6>
+                    <h6 class="card-title" style="margin-top:10px">{{ caterer.name }}</h6>
                   </div>
                   <div class="card-body" style="background-color:#afffce">
                     <div class="card-text" v-for="(line, index) in caterer.address" :key="index">
@@ -40,6 +40,7 @@
                     <br>
                     <div class="card-text" :hidden="caterer.phone == null || caterer.phone == ''"><i class="fas fa-phone"></i><span v-html="caterer.phone"></span></div>
                     <div class="card-text" :hidden="caterer.website == null || caterer.website == ''"><i class="far fa-window-restore"></i> Website: <span v-html="caterer.website"></span></div>
+                    <br>
                     <div></div>
                     <div></div>
                   </div>
