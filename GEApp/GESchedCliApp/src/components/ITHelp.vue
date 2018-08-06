@@ -1,8 +1,11 @@
 <template>
-  <div>
-    <div v-html="viewDescription"></div>
-    <br>
-  </div>
+  <div class="container-fluid" style="width:100%">
+    <div> 
+        <div style="padding:20px; width:100%" class="alert alert-info card">
+          <div v-html="viewDescription"></div>
+        </div>     
+    </div> 
+  </div> 
 </template>
 
 
@@ -43,9 +46,4 @@ export default {
 
 <!-- Style scoped to the html template define in this file only -->
 <style scoped>
-div {
-  display: inline-block;
-  margin: 16px;
-
-}
 </style>

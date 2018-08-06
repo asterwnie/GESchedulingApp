@@ -1,6 +1,11 @@
 <template>
-  <div v-html="viewDescription">
-  </div>
+  <div class="container-fluid" style="width:100%">
+    <div> 
+        <div style="padding:20px; width:100%" class="alert alert-info card">
+          <div v-html="viewDescription"></div>
+        </div>     
+    </div> 
+  </div>   
 </template>
 
 <script>
@@ -35,9 +40,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-div {
-  display: inline-block;
-  margin: 20px 20px;
-}
-
 </style>
