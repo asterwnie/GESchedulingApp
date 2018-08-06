@@ -147,7 +147,7 @@
             <div style="height:10px;"></div>
             <div class="float-right" style="display:flex; flex-direction:horizontal">
                 <div class="input-group-prepend">
-                    Total: {{numRequests}}&nbsp;&nbsp;<span class="input-group-text bg-secondary text-light">Page</span>
+                    Total Requests: {{numRequests}}&nbsp;&nbsp;<span class="input-group-text bg-secondary text-light">Page</span>
                 </div>&nbsp;
                 <div v-if="currentPageNumber > 1">
                     <button @click.prevent="onPageDecrement" style="height:100%" type="button" class="btn btn-secondary btn-sm">

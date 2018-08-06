@@ -52,7 +52,7 @@
           <div style="width:100%;" class="btn-group-vertical">
             <form style="width:100%">
               <div class="form-group">
-                <button type="button" width="100%" v-on:click="collapseMenu" class="btn btn-secondary" data-dismiss="modal" @click="$router.push('/login')">Login</button>
+                <button type="button" width="100%" v-on:click="collapseMenu" class="btn btn-secondary" data-dismiss="modal" @click="$router.push('/login')">Log Out</button>
               </div>
               <hr>
               <div v-if="$store.state.inAdminMode">
@@ -380,7 +380,7 @@ body {
   cursor: pointer; 
   text-align: center; 
   vertical-align: middle; 
-  padding: 8px
+  padding: 10px
 }
 
 .site-name-footer {
