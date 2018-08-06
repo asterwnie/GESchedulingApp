@@ -112,6 +112,9 @@ Your request is not complete. More Information is required. Please review, updat
 --RequestStatusMessageRejectedViewDescription
 More information is needed. Please review the comments in this request.
 
+--MaxNumOfAttendeesAllowed
+500
+
 --DeleteOlderThanNumDays 
 14
 
