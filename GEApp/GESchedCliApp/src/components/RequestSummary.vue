@@ -39,7 +39,7 @@
                           <div class="card-text" :hidden="requestReadOnlyProperty.value.capabilities == null || requestReadOnlyProperty.value.capabilities.length == 0">
                             <hr>
                             <span v-for="(capability, index) in requestReadOnlyProperty.value.capabilities" :key="index" style="padding:1px">
-                              <span class="badge badge-info">
+                              <span class="badge badge-secondary">
                                 {{capability}}
                               </span>
                             </span>

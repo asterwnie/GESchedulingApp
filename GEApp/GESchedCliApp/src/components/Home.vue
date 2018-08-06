@@ -43,7 +43,7 @@
                   <button :id="requestItem._id" type="button" @click.prevent="onEditRequest" class="enableEdit btn btn-warning btn-sm float-right">Edit</button>
                 </div>
                 <div v-else>
-                  <button :id="requestItem._id" type="button" @click.prevent="onViewRequest" class="disableEdit btn btn-secondary btn-sm float-right">View</button>
+                  <button :id="requestItem._id" type="button" @click.prevent="onViewRequest" class="disableEdit btn btn-primary btn-sm float-right">View</button>
                 </div>
                 <div v-if="requestItem.eventSchedule != null && requestItem.eventSchedule.startDateTime != null && isPassedDate(requestItem.eventSchedule.startDateTime)">
                   <button :id="requestItem._id" type="button" @click.prevent="onDeleteRequestConfirm" class="enableEdit btn btn-danger btn-sm float-left"><i class="fas fa-trash-alt"></i></button>
