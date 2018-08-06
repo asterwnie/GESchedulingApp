@@ -67,6 +67,15 @@ export const getDateTimeParts = (inDateTime) => {
     } catch (err) {
         util.logDebugMsg("getDateTimeParts - get Date parts failed - Error: " + err);
     }
+
+
+    var hrs24Str = hrs.toString();
+    if (hrs == 0) { 
+        hrs24Str = "00"; 
+    } else if (hrs < 10) { 
+        hrs24Str = '0'+ hrs24Str; 
+    } 
+
     var ampm = "AM";
     if (hrs > 12) {
         hrs -= 12;
@@ -105,7 +114,7 @@ export const getDateTimeParts = (inDateTime) => {
     if (hrs < 10) { hrsStr = '0'+ hrsStr; } 
     if (mins < 10) { minsStr = '0'+ minsStr; }  
 
-    var timeValue = hrsStr + ':' + minsStr + ':00';
+    var timeValue = hrs24Str + ':' + minsStr + ':00';
     dateTimeParts.timeOption = timeValue;
 
     return dateTimeParts;
@@ -143,6 +152,19 @@ export const detectIsInSmallWidthMode  = () => {
         centralStore.state.isInSmallWidthMode = false;
     }
     return centralStore.state.isInSmallWidthMode;
+}
+
+export const launchPrint = () => {
+    var topBar = $('#headerBar');
+    var buttons = $(':button');
+
+    topBar.hide();
+    buttons.hide();
+
+    window.print();
+
+    topBar.show();
+    buttons.show();
 }
 
 

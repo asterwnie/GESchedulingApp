@@ -59,6 +59,7 @@
 
 <script>
 import axios from 'axios'
+import * as util from '@/common/util.js';
 import * as apiMgr from '@/common/apiMgr.js';
 import * as textTransformer from '@/common/textTransformer.js';
 
@@ -124,18 +125,7 @@ export default {
 
     
     onPrint(evt) {
-
-      var topBar = $('#headerBar');
-      var buttons = $(':button');
-
-      topBar.hide();
-      buttons.hide();
-
-      window.print();
-
-      topBar.show();
-      buttons.show();
-      return false;
+      util.launchPrint();
     }
 
   }

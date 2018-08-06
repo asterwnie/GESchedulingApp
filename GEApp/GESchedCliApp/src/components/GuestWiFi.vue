@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import * as util from '@/common/util.js';
+
 export default {
   data () {
     return {
@@ -49,18 +51,7 @@ export default {
   methods: {
      
     onPrint(evt) {
-
-      var topBar = $('#headerBar');
-      var buttons = $(':button');
-
-      topBar.hide();
-      buttons.hide();
-
-      window.print();
-
-      topBar.show();
-      buttons.show();
-      return false;
+      util.launchPrint();
     }   
   },
 
