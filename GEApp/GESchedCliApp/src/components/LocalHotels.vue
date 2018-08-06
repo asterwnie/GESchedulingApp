@@ -48,7 +48,11 @@
               </div>
             </div>
           </div>
-
+          <button type="button" class="btn btn-primary btn-sm float-right" 
+            @click.prevent="onPrint"><span class="fas fa-print"></span>&nbsp;Print</button>
+          <br>
+          <br>
+          <br>
         </div>
       </div>
     </div>
@@ -118,8 +122,24 @@ export default {
                 vm.failureMessage = "Server unavailable or not working at this time. Please try later.  [error code: 4]";   
                 vm.isFetchingHotels = false;                            
             })
-
     },
+
+    
+    onPrint(evt) {
+
+      var topBar = $('#headerBar');
+      var buttons = $(':button');
+
+      topBar.hide();
+      buttons.hide();
+
+      window.print();
+
+      topBar.show();
+      buttons.show();
+      return false;
+    }
+
   }
 }
 </script>

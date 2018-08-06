@@ -47,6 +47,11 @@
               </div>
             </div>
           </div>
+          <button type="button" class="btn btn-primary btn-sm float-right" 
+            @click.prevent="onPrint"><span class="fas fa-print"></span>&nbsp;Print</button>
+          <br>
+          <br>
+          <br>
       </div>
     </div>
   </div>
@@ -98,7 +103,7 @@ export default {
   },
 
   methods: {
-      getCaterers() {
+    getCaterers() {
 
       var vm = this;
       var url = apiMgr.getCaterersUrl() + '&orderBy=seqNum:1'; 
@@ -115,16 +120,28 @@ export default {
               vm.failureMessage = "Server unavailable or not working at this time. Please try later. [error code: 5]";  
               vm.isFetchingCaterers = false;                             
           })
+    },
 
-  },
+    
+    onPrint(evt) {
+
+      var topBar = $('#headerBar');
+      var buttons = $(':button');
+
+      topBar.hide();
+      buttons.hide();
+
+      window.print();
+
+      topBar.show();
+      buttons.show();
+      return false;
+    }
+
   }
 }
-
-
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-
 </style>

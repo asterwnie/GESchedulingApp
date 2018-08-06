@@ -146,6 +146,7 @@ import Router from 'vue-router'
 import * as util from '@/common/util.js';
 import { centralStore } from '@/common/centralStore.js'
 import * as localCacheMgr from '@/common/localCacheMgr.js';
+import { applyBadgeColorBasedOnProcessingStatus } from '@/common/requestMgr.js'
 
 export default {
   name: 'app',
@@ -159,6 +160,11 @@ export default {
       windowWidth: 0,
       windowHeight: 0
     }
+  },
+
+  updated(){
+    console.log('Home.vue updated.');
+    applyBadgeColorBasedOnProcessingStatus();
   },
 
 

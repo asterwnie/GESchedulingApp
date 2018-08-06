@@ -7,6 +7,9 @@ GE Health Life Sciences
 --SiteAddress 
 100 Results Way, Marlborough, MA 01752
 
+--AppLink
+http://localhost
+
 --AppTitle
 Meeting & Event[LINEBREAK]Request
 
@@ -104,7 +107,10 @@ This meeting has been canceled!
 More Info Required
 
 --RequestStatusMessageRejected 
-Your request is not complete. More Information is required. Please review and update your request before resubmitting it.
+Your request is not complete. More Information is required. Please review, update and resubmit your request.
+
+--RequestStatusMessageRejectedViewDescription
+More information is needed. Please review the comments in this request.
 
 --DeleteOlderThanNumDays 
 14
