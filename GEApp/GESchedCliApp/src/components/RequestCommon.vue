@@ -1,11 +1,12 @@
 <template>
     <div class="container-fluid">
+ 
       <div class="row">
         <div class="col col-sm-1 col-md-2 col-lg-3 col-xl-4"></div>
         <div class="col col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4" style="width:100%;">
+          <div align="center" style="padding-bottom:10px;"><span v-if="requestProcessingStatus != null" :class="requestProcessingStatus">{{requestProcessingStatusLabel}}</span></div>
 
           <form class="needs-validation" novalidate>
-
             <p class="text-danger" :hidden="!showPleaseReviewCommentsMsg">More information is needed. Please review the comments in this request.</p>
 
             <div class="mb-3" v-for="(requestPrompt, index) in requestPrompts" :key="index">
@@ -122,7 +123,7 @@ import * as localCacheMgr from '@/common/localCacheMgr.js';
 
 //import Room from '@/../GESchedApiApp/server-api/models/roomModel.js'
 
-import { clearValidationMessages, validateRequest, bindUiValuesFromRequest } from '@/common/requestMgr.js'
+import { clearValidationMessages, validateRequest, manageProcessingStatus, bindUiValuesFromRequest, applyBadgeColorBasedOnProcessingStatus } from '@/common/requestMgr.js'
 
 import textInputCtrl from '@/components/requestPrompts/TextInput.vue'
 import textAreaInputCtrl from '@/components/requestPrompts/TextAreaInput.vue'
@@ -193,6 +194,24 @@ export default {
       return canEdit;
     },
 
+    requestProcessingStatus() {
+      var status = null;
+      var storeState = this.$store.state;
+      if (storeState.currentRequest != null && storeState.currentRequest.processingStatus != null) {
+        status = storeState.currentRequest.processingStatus;
+      }
+      return status;
+    },
+
+    requestProcessingStatusLabel() {
+      var label = null;
+      var storeState = this.$store.state;
+      if (storeState.currentRequest != null && storeState.currentRequest.processingStatusLabel != null) {
+        label = storeState.currentRequest.processingStatusLabel;
+      }
+      return label;
+    },
+
     isNewRequest() {
       var isNew = true;
       var storeState = this.$store.state;
@@ -224,6 +243,12 @@ export default {
     }
 
   },
+
+  
+  updated() {
+      applyBadgeColorBasedOnProcessingStatus();
+  },
+
 
   activated() {
     util.logDebugMsg('RequestCommon.vue activated.');

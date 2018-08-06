@@ -3,7 +3,7 @@
       <div class="row">
         <div class="col col-sm-1 col-md-2 col-lg-4"></div>
         <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%;">
-
+          
           <div class="card">
             <div class="card-header bg-info text-light">
               Request Summary &nbsp;&nbsp;
@@ -21,7 +21,7 @@
               <label id="generalPreparationNotesLabel" for="generalPreparationNotes" style="display:none;">&nbsp;&nbsp;Preparation Notes:</label>
               <textarea id="generalPreparationNotes" style="display:none; border: 2px solid orange;" placeholder="Add Preparation Notes" class="is-admin-comment form-control form-control-sm"></textarea>
             </div>            
-
+            <div align="center" style="padding-top:6px;"><span v-if="requestProcessingStatus != null" :class="requestProcessingStatus">{{requestProcessingStatusLabel}}</span></div>
             <div class="card-body">
                 <div style="width:100%" v-for="(requestReadOnlyProperty, index) in requestReadOnlyProperties" :key="index">
                   <div v-if="(requestReadOnlyProperty.value != '' && requestReadOnlyProperty.value != null) || requestReadOnlyProperty.value === false">
@@ -136,7 +136,7 @@ import axios from 'axios'
 import * as util from '@/common/util.js';
 import * as apiMgr from '@/common/apiMgr.js';
 import * as localCacheMgr from '@/common/localCacheMgr.js';
-import { manageProcessingStatus } from '@/common/requestMgr.js'
+import { manageProcessingStatus, applyBadgeColorBasedOnProcessingStatus } from '@/common/requestMgr.js'
 
 export default {
   data () {
@@ -164,6 +164,26 @@ export default {
     inAdminMode() {
       return this.$store.state.inAdminMode;
     },
+
+    
+    requestProcessingStatus() {
+      var status = null;
+      var storeState = this.$store.state;
+      if (storeState.currentRequest != null && storeState.currentRequest.processingStatus != null) {
+        status = storeState.currentRequest.processingStatus;
+      }
+      return status;
+    },
+
+    requestProcessingStatusLabel() {
+      var label = null;
+      var storeState = this.$store.state;
+      if (storeState.currentRequest != null && storeState.currentRequest.processingStatusLabel != null) {
+        label = storeState.currentRequest.processingStatusLabel;
+      }
+      return label;
+    },
+
 
     canEditPreparationInfo() {
       var storeState = this.$store.state;
@@ -237,6 +257,10 @@ export default {
       return this.ctrlId + "PreparationInfo";
     }
 
+  },
+
+  updated() {
+      applyBadgeColorBasedOnProcessingStatus();
   },
 
   activated() {
@@ -534,6 +558,10 @@ export default {
       vm.isSubmitting = true;
       const storeState = vm.$store.state;
 
+      if (request.processingStatus == undefined || request.processingStatus == null) {
+        request.processingStatus = "underReview";
+      }
+
       if (request.processingStatusLabel != undefined && request.processingStatusLabel != null) {
         delete request.processingStatusLabel;
       }
@@ -588,6 +616,10 @@ export default {
       var vm = this;
       vm.isSubmitting = true;
       const storeState = vm.$store.state;
+
+      if (request.processingStatus == "rejected" && !this.inAdminMode) {
+        request.processingStatus = "underReview";
+      }
 
       if (request.processingStatusLabel != undefined && request.processingStatusLabel != null) {
         delete request.processingStatusLabel;

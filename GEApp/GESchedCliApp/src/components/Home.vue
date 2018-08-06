@@ -68,7 +68,7 @@ import axios from 'axios';
 import * as util from '@/common/util.js';
 import * as apiMgr from '@/common/apiMgr.js';
 import * as localCacheMgr from '@/common/localCacheMgr.js';
-import { getLocalUserRequestById, manageProcessingStatus, prepareRequestsForUI } from '@/common/requestMgr.js'
+import { getLocalUserRequestById, manageProcessingStatus, prepareRequestsForUI, applyBadgeColorBasedOnProcessingStatus } from '@/common/requestMgr.js'
 
 export default {
   data () {
@@ -114,6 +114,7 @@ export default {
       return this.$store.state.actionForSelectedRequest.forDelete;
     }
   },
+
 
   activated() {
     console.log('Home.vue activated.');
@@ -164,17 +165,12 @@ export default {
 
   },
 
+
   created() {
     console.log('Home.vue created.');
     let vm = this;
-    
-    //color badge based on status
-    $(function() {
-      $(".approved").addClass("badge badge-success");
-      $(".rejected").addClass("badge badge-danger");
-      $(".underReview").addClass("badge badge-info");
-      $(".canceled").addClass("badge badge-danger"); 
-    });
+
+    applyBadgeColorBasedOnProcessingStatus();
 
     util.centralEvent.$on('onDeleteSelectedRequest', () => {
       if (vm.$store.state.actionForSelectedRequest.forDeleteFromView == "Home.vue") {
@@ -189,17 +185,12 @@ export default {
     });
   },
 
+
   updated(){
     console.log('Home.vue updated.');
-
-    //color badge based on status
-    $(function() {
-      $(".approved").addClass("badge badge-success");
-      $(".rejected").addClass("badge badge-danger");
-      $(".underReview").addClass("badge badge-warning");
-      $(".canceled").addClass("badge badge-danger"); 
-    });
+    applyBadgeColorBasedOnProcessingStatus();
   },
+
 
   methods:{
 

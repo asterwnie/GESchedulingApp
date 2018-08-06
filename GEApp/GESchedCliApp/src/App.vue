@@ -352,7 +352,7 @@ export default {
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  margin-top: 60px;
+  margin-top: 50px;
   margin-bottom: 12px;
   background-color: rgb(248, 248, 248);
 }

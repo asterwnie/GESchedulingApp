@@ -199,7 +199,7 @@ import axios from 'axios';
 import * as util from '@/common/util.js';
 import * as apiMgr from '@/common/apiMgr.js';
 import * as localCacheMgr from '@/common/localCacheMgr.js';
-import { getLocalUserRequestById, prepareRequestsForUI } from '@/common/requestMgr.js'
+import { getLocalUserRequestById, manageProcessingStatus, prepareRequestsForUI, applyBadgeColorBasedOnProcessingStatus } from '@/common/requestMgr.js'
 
 export default {
     data () {
@@ -293,13 +293,7 @@ export default {
     updated() {
         let vm = this;
 
-        //color badge based on status
-        $(function() {
-        $(".approved").addClass("badge badge-success");
-        $(".rejected").addClass("badge badge-danger");
-        $(".underReview").addClass("badge badge-warning");
-        $(".canceled").addClass("badge badge-danger"); 
-        });
+        applyBadgeColorBasedOnProcessingStatus();
 
         //highlight current page num
         $('.pageNumberButton').each(function(index){
@@ -544,6 +538,7 @@ export default {
             if (revisingRequest != undefined && revisingRequest != null) {
 
                 storeState.currentRequest = revisingRequest;
+                manageProcessingStatus(storeState.currentRequest);
                 storeState.selectedRoom = storeState.currentRequest.locationOfEvent;
                     
                 //check if it is an edit or a view; if edit, go to request/1, if view, go to summary
@@ -564,6 +559,7 @@ export default {
                         console.log("getRequestByIdUrl return status: " + res.status);
  
                         storeState.currentRequest = res.data;
+                        manageProcessingStatus(storeState.currentRequest);
                         storeState.selectedRoom = storeState.currentRequest.locationOfEvent;
                     
                         //check if it is an edit or a view; if edit, go to request/1, if view, go to summary
