@@ -19,6 +19,7 @@ module.exports = function (app) {
             .post(accessCodeController.createAccessCode)
             .put(accessCodeController.updateAccessCode)
             .patch(accessCodeController.updateAccessCode);
+            //to do: .delete (take in a query codeContains)
 
         app.route('/api/accessCodes/:id')
             .get(accessCodeController.getAccessCode)

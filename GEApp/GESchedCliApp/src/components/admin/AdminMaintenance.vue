@@ -207,39 +207,6 @@
                 <div style="height:50px"></div>
                 <hr>
 
-                <!-- <div id="manageUserAccessCodes">
-                  <div class="accordion" id="newAdminAccessCodeUI">
-                    <div class="card">
-                      <div class="card-header bg-danger text-light" style="cursor:pointer" id="adminCreateCodeHeader" data-toggle="collapse" data-target="#adminCreateCodeCollapse" aria-expanded="false" aria-controls="adminCreateCodeCollapse">
-                        Admin Access Codes&nbsp;&nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i>
-                      </div>
-
-                      <div id="adminCreateCodeCollapse" class="collapse hide" aria-labelledby="adminCreateCodeHeader" data-parent="#newAdminAccessCodeUI">
-                        <div class="card-body">
-                          <div class="form-group">
-                            <label for="createNewAccessCode">Create New Admin Access Code</label>
-                            <input type="email" class="form-control" id="createNewAccessCode" aria-describedby="newAccessCode" placeholder="Enter New Code">
-                          </div>
-                          <button type="button" class="float-right btn btn-sm btn-primary" @click.prevent="onAdminAccessCodeCreate">Create</button>
-                          <p class="text-success" :hidden="hasFailure || !canShowAccessCodeResultCreate">{{accessCodeResultMessageCreate}}</p>
-                          <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
-                          <div style="height:35px"></div>
-                          <hr>
-                          <div style="height:10px"></div>
-                          <div class="form-group">
-                            <label for="deleteAccessCode">Delete Admin Access Code</label>
-                            <input type="email" class="form-control" id="deleteAccessCode" aria-describedby="deleteAccessCode" placeholder="Enter Existing Code">
-                            <small id="deleteAccessCodeHelp" class="form-text text-muted">If the code matches one in the database, it will be deleted.</small>
-                          </div>
-                          <button type="button" class="float-right btn btn-sm btn-danger" @click.prevent="onAdminAccessCodeDelete">Delete</button>
-                          <p class="text-success" :hidden="hasFailure || !canShowAccessCodeResultDelete">{{accessCodeResultMessageDelete}}</p>
-                          <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div> -->
-
               </div>
             </div>
             <div style="height:30px"></div>
