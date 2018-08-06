@@ -44,8 +44,8 @@
 --Prompt.InputType.YesNo[dataId=siteTourRequested]
 --Prompt.OnScreen: 2
 
---Prompt.Label: If yes, subject matter expert needed?
---Prompt.InputType.YesNo[dataId=subjectMatterExpertNeeded|dependsOn=siteTourRequested]
+--Prompt.Label: Subject matter expert needed for the site tour?
+--Prompt.InputType.YesNoWithComment[dataId=subjectMatterExpertNeeded|dependsOn=siteTourRequested]
 --Prompt.OnScreen: 2
 
 --Prompt.Label: Need monitor(s)?
