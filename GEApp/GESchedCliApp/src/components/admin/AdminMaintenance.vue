@@ -4,7 +4,7 @@
   <div class="modal" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <div :hidden="!modalUI == 'onDeleteOldRequests'">
+        <div :hidden="modalUI != 'onDeleteOldRequests'">
           <div class="modal-header">
             <h5 class="modal-title" id="deleteModalLabel">Delete Request</h5>
             <button @click.prevent="onDeleteModalDeselect" type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -20,7 +20,7 @@
             <button type="button" class="btn btn-primary" @click.prevent="onDeleteOldRequestsConfirm">Confirm Delete</button>
           </div>
         </div>
-        <div :hidden="!modalUI == 'onDeleteAccessCode'">
+        <div :hidden="modalUI != 'onDeleteAccessCode'">
           <div class="modal-header">
             <h5 class="modal-title" id="deleteModalLabel">Delete Access Code</h5>
             <button @click.prevent="onDeleteModalDeselect" type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -93,13 +93,13 @@
             <div id="flushOldRequestsCollapse" class="collapse" aria-labelledby="flushOldRequests" data-parent="#menuAccordian">
               <div class="card-body">
                 <div class="alert alert-danger" role="alert">
-                  <strong>Warning</strong> This will permanently delete old requests. (Archiving will be implemented at a later time.)
+                  <strong>Warning</strong> This will permanently delete past older requests. (Archiving will be implemented at a later time.)
                 </div>
-                <p>Flushing old requests will delete all requests that fit the criteria. Note that this action cannot be reversed.</p>
+                <p>Flushing old requests will delete all past requests that fit the criteria. Note that this action cannot be reversed.</p>
 
                 <div class="card">
                   <div class="card-header bg-danger text-light" id="filterMenu">
-                        Delete By
+                        Delete Past Request By
                   </div>
                   <div id="filterMenu" class="card-body" style="padding:10px; width:100%;">
 
@@ -143,7 +143,7 @@
                     </div>
                     
                     <br>
-                    <button type="button" class="float-right btn btn-sm btn-danger" @click.prevent="onDeleteOldRequestsModal">Delete Old Requests</button>
+                    <button type="button" class="float-right btn btn-sm btn-danger" @click.prevent="onDeleteOldRequestsModal">Delete Past Requests</button>
                     <button type="button" class="btn btn-sm btn-secondary" @click.prevent="resetFilterView">Reset</button>
                     
                   </div>
