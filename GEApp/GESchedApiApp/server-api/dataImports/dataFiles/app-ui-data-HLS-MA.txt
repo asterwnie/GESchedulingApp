@@ -141,6 +141,7 @@ GE Scheduling Utility Access
 
 --SendInviteEmailTemplate 
 Hello, [RECIPIENTNAME]!
+[LINEBREAK]
 [ADMINNAME] would like to invite you to access the GE Scheduling Utility.
 Access Code: [ACCESSCODE]
 [LINEBREAK]
@@ -152,8 +153,10 @@ GE Scheduling Utility Administrator Access
 
 --AddAdminEmailTemplate 
 Hello, [RECIPIENTNAME]!
+[LINEBREAK]
 [ADMINNAME] would like to invite you to become an administrator on the GE Scheduling Utility.
 [LINEBREAK]
-Admin Access Code: [ADMINACCESSCODE][LINEBREAK]
+Admin Access Code: [ADMINACCESSCODE]
+[LINEBREAK]
 To access the GE Scheduling Utility, paste this link into your browser:
 [APPLINK]

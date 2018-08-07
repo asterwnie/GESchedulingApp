@@ -47,6 +47,8 @@ const store = new Vuex.Store({
 
         numOfRequestScreens: 0, // It will be inferred when the requestPrompts are retrieved.
 
+        mostRecentUserAccessCode: null,
+        mostRecentAdminAccessCode: null,
 
         
         actionForSelectedRequest: {
@@ -97,10 +99,7 @@ const store = new Vuex.Store({
 
             accessCodesUrlTmpl: 'http://{0}:{1}/api/accessCodes'
 
-        },
-
-        //temp variables for sending invites
-        tempAccessCode: "ge123",
+        }
     }
 })
 
