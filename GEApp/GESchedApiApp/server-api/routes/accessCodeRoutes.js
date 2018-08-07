@@ -19,14 +19,15 @@ module.exports = function (app) {
             .post(accessCodeController.createAccessCode)
             .put(accessCodeController.updateAccessCode)
             .patch(accessCodeController.updateAccessCode);
-            //to do: .delete (take in a query codeContains)
+
 
         app.route('/api/accessCodes/:id')
             .get(accessCodeController.getAccessCode)
             .delete(accessCodeController.deleteAccessCode);
             
         app.route('/api/isAccessCodeExist/:code')
-            .get(accessCodeController.isAccessCodeExist);
+            .get(accessCodeController.isAccessCodeExist)
+            .delete(accessCodeController.deleteAccessCodeByLookup);
 
     } catch (err) {
         logger.error(`Set up API routes for the accessCode entity failed. Error: ${err}`);

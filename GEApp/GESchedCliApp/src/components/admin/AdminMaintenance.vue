@@ -186,7 +186,7 @@
                   </div>
                   
                   <p class="text-success" :hidden="hasFailure || !canShowAccessCodeResultCreate">{{accessCodeResultMessageCreate}}</p>
-                  <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
+                  <p class="text-danger" :hidden="!hasFailure || !isAccessCodeCreateFailure">{{failureMessage}}</p>
                   <div style="height:50px"></div>
                   <hr>
                   <div style="height:10px"></div>
@@ -200,11 +200,25 @@
                     <button type="button" class="btn btn-sm btn-danger" @click.prevent="onAccessCodeDelete">Delete</button>
                   </div>
                   <p class="text-success" :hidden="hasFailure || !canShowAccessCodeResultDelete">{{accessCodeResultMessageDelete}}</p>
-                  <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
+                  <p class="text-danger" :hidden="!hasFailure || !isAccessCodeDeleteFailure">{{failureMessage}}</p>
                 </div>
 
                 <div style="height:50px"></div>
                 <hr>
+
+                <div class="card">
+                  <div class="card-body">
+                    <h6 class="card-title">
+                      Existing User Codes
+                    </h6>
+                    <div v-if="accessCodesList != null">
+                      <div v-for="(code, index) in accessCodesList" :key="index">
+                        {{code.code}}<br>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <small>Contact your app manager for a list of Admin codes.</small>
 
               </div>
             </div>
@@ -247,6 +261,7 @@ export default {
         accessCodeResultMessageCreate: "",
         canShowAccessCodeResultDelete: false,
         accessCodeResultMessageDelete: "",
+
         canShowRequestResult: false,
         requestResultMessage: "",
         previewRequestNum: 3,
@@ -255,6 +270,10 @@ export default {
         processingStatusOptions: this.$store.state.processingStatusOptions,
 
         modalUI: null,
+        isAccessCodeDeleteFailure: false,
+        isAccessCodeCreateFailure: false,
+
+        accessCodesList: null,
     }
   },
 
@@ -279,12 +298,42 @@ export default {
         return;
         }
 
+        vm.getUserAccessCodes();
+
         this.$store.state.currentViewTitle = this.title;
         this.$store.state.enableNavBar = true;
     },
 
 
     methods: {
+
+      getUserAccessCodes(){
+        console.log("getUserAccessCodes activate.");
+        let vm = this;
+
+        vm.hasFailure = false;
+
+        let url = apiMgr.getAccessCodesUrl();
+        axios.get(url)
+              .then(res => {
+                console.log("deleteAccessCode return status: " + res.status);                
+                
+                vm.accessCodesList = [];
+                var foundCodes = res.data;
+
+                $.each(foundCodes, function (index, foundCode) {
+                   vm.accessCodesList.push(foundCode);
+                });
+
+                vm.$forceUpdate();
+                
+              })
+              .catch((err) => {
+                vm.hasFailure = true;
+                vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                 
+              })
+        
+      },
 
       onExpandOption: function(event) {
         if (event){
@@ -413,26 +462,20 @@ export default {
 
           axios.get(url)
             .then(res => {
-              console.log("getRequestsUrl return status: " + res.status);                
+              console.log("checkIfAccessCodeExists return status: " + res.status);                
               return res.data.exist;
             })
             .catch((err) => {
-              vm.hasFailure = true;
-              if(isAdminCode){
-                vm.failureMessage = "Error: Admin Code not found in database.";
-              } else {
-                vm.failureMessage = "Error: User Code not found in database.";
-              }
-
               return false;                       
             })
 
         } else {
           vm.hasFailure = true;
           vm.failureMessage = "Please fill out field.";  
+          return null;
         }
 
-        return;
+        
       },
 
 
@@ -441,25 +484,159 @@ export default {
         let vm = this;
 
         vm.hasFailure = false;
+        vm.isAccessCodeDeleteFailure = false;
+        vm.isAccessCodeCreateFailure = false;
+        vm.canShowAccessCodeResultCreate = false;
+        vm.canShowAccessCodeResultDelete = false;
 
         let inputCode = $("#deleteAccessCode")[0].value;
         let isAdminCode = $("#accessCodeDeleteIsAdmin")[0].checked;
 
-        if (vm.checkIfAccessCodeExists(isAdminCode, inputCode)){
-          //work in progress.
 
-          vm.canShowAccessCodeResultDelete = true;
-          vm.accessCodeResultMessageDelete = "This button does not work yet. Code found.";
-        }
-        
+        var doesAccessCodeExist = new Promise(function(resolve, reject) {
+          if (inputCode != "" && inputCode != null){
+
+            let url = apiMgr.getAccessCodesUrl().replace("accessCodes", `isAccessCodeExist/${inputCode}`);
+
+            if(isAdminCode){
+              url += `&isForAdmin=true`;
+            }
+
+            axios.get(url)
+              .then(res => {
+                console.log("checkIfAccessCodeExists return status: " + res.status);                
+                resolve(res.data.exist);
+              })
+              .catch((err) => {
+                resolve(false);                       
+              })
+
+          } else {
+            vm.hasFailure = true;
+            vm.isAccessCodeDeleteFailure = true;
+            vm.failureMessage = "Please fill out field.";  
+            resolve(null);
+          }
+        });
+
+        doesAccessCodeExist.then(function(value) {
+          if (value){
+
+            let url = apiMgr.getAccessCodesUrl().replace("accessCodes", `isAccessCodeExist/${inputCode}`);
+            if (isAdminCode){
+              url += `&isForAdmin=${isAdminCode}`;
+            }
+
+            axios.delete(url)
+              .then(res => {
+                console.log("deleteAccessCode return status: " + res.status);                
+                
+                vm.hasFailure = false;
+
+                vm.getUserAccessCodes();
+
+                vm.canShowAccessCodeResultDelete = true;
+                vm.accessCodeResultMessageDelete = "Code successfully deleted.";
+
+              })
+              .catch((err) => {
+                vm.hasFailure = true;
+                vm.isAccessCodeDeleteFailure = true;
+                vm.failureMessage = `An error has occured. ${err}`;                 
+              })
+            
+          } else if (value === false){
+            vm.hasFailure = true;
+            vm.isAccessCodeDeleteFailure = true;
+            if(isAdminCode){
+              vm.failureMessage = "Error: Admin Code not found in database.";
+            } else {
+              vm.failureMessage = "Error: User Code not found in database.";
+            }
+          }
+        });
+
       },
 
       onAccessCodeCreate() {
         console.log("onAccessCodeCreate activated.");
         let vm = this;
 
-        vm.canShowAccessCodeResultCreate = true;
-        vm.accessCodeResultMessageCreate = "This button does not work yet.";
+        vm.hasFailure = false;
+        vm.isAccessCodeCreateFailure = false;
+        vm.isAccessCodeDeleteFailure = false;
+        vm.canShowAccessCodeResultCreate = false;
+        vm.canShowAccessCodeResultDelete = false;
+
+        let inputCode = $("#createNewAccessCode")[0].value;
+        let isAdminCode = $("#accessCodeCreateIsAdmin")[0].checked;
+
+        var doesAccessCodeExist = new Promise(function(resolve, reject) {
+          if (inputCode != "" && inputCode != null){
+
+            let url = apiMgr.getAccessCodesUrl().replace("accessCodes", `isAccessCodeExist/${inputCode}`);
+
+            if(isAdminCode){
+              url += `&isForAdmin=true`;
+            }
+
+            axios.get(url)
+              .then(res => {
+                console.log("checkIfAccessCodeExists return status: " + res.status);                
+                resolve(res.data.exist);
+              })
+              .catch((err) => {
+                resolve(false);                       
+              })
+
+          } else {
+            vm.hasFailure = true;
+            vm.isAccessCodeCreateFailure = true;
+            vm.failureMessage = "Please fill out field.";  
+            resolve(null);
+          }
+        });
+
+        doesAccessCodeExist.then(function(value) {
+          if (value === false){
+
+            let url = apiMgr.getAccessCodesUrl();
+
+            let newAccessCode = {
+              code: inputCode,
+            };
+            if (isAdminCode){
+              newAccessCode.isForAdmin = isAdminCode;
+            }
+
+            axios.post(url, newAccessCode)
+              .then(res => {
+                console.log("postAccessCode return status: " + res.status);                
+                
+                vm.hasFailure = false;
+
+                vm.getUserAccessCodes();
+
+                vm.canShowAccessCodeResultCreate = true;
+                vm.accessCodeResultMessageCreate = "Code successfully created.";
+              })
+              .catch((err) => {
+                vm.hasFailure = true;
+                vm.isAccessCodeCreateFailure = true;
+                vm.failureMessage = `An error has occured. ${err}`;
+
+              })
+            
+          } else if (value === true){
+            vm.hasFailure = true;
+            vm.isAccessCodeCreateFailure = true;
+            if(isAdminCode){
+              vm.failureMessage = "Error: Admin Code already exists.";
+            } else {
+              vm.failureMessage = "Error: User Code already exists.";
+            }
+          }
+        });
 
       }
 

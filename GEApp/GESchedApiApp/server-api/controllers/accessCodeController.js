@@ -91,7 +91,7 @@ async function queryAccessCodes (siteCode, code, isForAdmin, callback) {
     if (isForAdmin != null) {    
         filterDirective.isForAdmin = (isForAdmin == "true");        
     } else {
-        filterDirective.isForAdmin = null;
+        filterDirective.isForAdmin = { "$exists": false };
     }
 
     await AccessCode.find(filterDirective).sort(sortDirective)
@@ -282,6 +282,54 @@ exports.deleteAccessCode = function (req, res) {
     })
     .catch((err) => {
         var errMsg = `accessCodeController.deleteAccessCode - AccessCode.findByIdAndRemove ${req.params.id} failed. Error: ${err}`;
+        logger.error(errMsg);
+        res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
+    });
+};
+
+//delete access code by matching Access Code
+exports.deleteAccessCodeByLookup = function (req, res) {
+    logger.verbose('AccessCodeController.deleteAccessCodeByLookup begin');
+
+    let siteCode = httpRequestHelper.getSite(req);
+    let AccessCode = getAccessCodeType(siteCode);
+   
+    let filterDirective = {}
+    var hasFilter = false;
+
+    let accessCodeToQuery = req.params.code;
+    if (accessCodeToQuery != null && accessCodeToQuery != "") {
+        filterDirective.code = accessCodeToQuery;
+        hasFilter = true;
+    }
+
+    let isForAdmin = req.query.isForAdmin;
+    if (isForAdmin != null && isForAdmin != "") {
+        filterDirective.isForAdmin = isForAdmin;
+    } else {
+        //only delete if isForAdmin field does not exist (prevents deleting admin code of matching name)
+        filterDirective.isForAdmin = { "$exists": false };
+    }
+
+    if (!hasFilter) {
+        var errMsg = `AccessCodeController.deleteAccessCodeByLookup error. Error: missing filter(s).`;
+        logger.error(errMsg);
+        res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
+        return;
+    }
+
+    AccessCode.remove(filterDirective)
+    .then((status) => {
+        if (status.ok == 1) {
+            res.status(200).json({ deletedCount: status.n });
+        } else {
+            var errMsg = "AccessCodeController.deleteAccessCodeByLookup - Remove requests failed.";
+            logger.error(errMsg);
+            res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
+        }
+    })
+    .catch((err) => {
+        var errMsg = `AccessCodeController.deleteAccessCodeByLookup - Remove requests failed. Error: ${err}`;
         logger.error(errMsg);
         res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST 
     });
