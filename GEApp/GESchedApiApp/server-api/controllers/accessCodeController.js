@@ -17,16 +17,32 @@ exports.getAccessCodes = async function (req, res) {
     logger.verbose('accessCodeController.getAccessCodes begin');
 
     let siteCode = httpRequestHelper.getSite(req);
+
+    if (req.query.findOne == "true") {
+
+        await findOneAccessCode (siteCode, req.query.isForAdmin, (result) => {
+            if (result.success) {
+                logger.info(`accessCodeController.getaccessCodes - findOneAccessCode success. About to send back http response with an accessCodes`);
+                res.status(200).json([ result.accessCode ]);
+            } else {
+                logger.error(`accessCodeController.getAccessCodes - findOneAccessCode failed. Error: ${result.errMsg}`);
+                res.status(500).json({ error: result.errMsg });
+            }
+        });
+
+    } else {
     
-    await queryAccessCodes(siteCode, req.query.code, req.query.isForAdmin, (result) => {
-        if (result.success) {
-            logger.info(`accessCodeController.getaccessCodes - queryAccessCodes success. About to send back http response with ${result.accessCodes.length} accessCodes`);
-            res.status(200).json(result.accessCodes);
-        } else {
-            logger.error(`accessCodeController.getAccessCodes failed. Error: ${result.errMsg}`);
-            res.status(500).json({ error: result.errMsg });
-        }
-    });
+        await queryAccessCodes(siteCode, req.query.code, req.query.isForAdmin, (result) => {
+            if (result.success) {
+                logger.info(`accessCodeController.getaccessCodes - queryAccessCodes success. About to send back http response with ${result.accessCodes.length} accessCodes`);
+                res.status(200).json(result.accessCodes);
+            } else {
+                logger.error(`accessCodeController.getAccessCodes failed. Error: ${result.errMsg}`);
+                res.status(500).json({ error: result.errMsg });
+            }
+        });
+
+    }
 
     logger.verbose('accessCodeController.getAccessCodes ends.');        
 };
@@ -66,6 +82,8 @@ async function queryAccessCodes (siteCode, code, isForAdmin, callback) {
 
     let AccessCode = getAccessCodeType(siteCode);
 
+    var sortDirective = { "updatedAt": -1 };
+
     var filterDirective = {}; //default, no filering
     if (code != null) {    
         filterDirective.code = code;        
@@ -76,13 +94,39 @@ async function queryAccessCodes (siteCode, code, isForAdmin, callback) {
         filterDirective.isForAdmin = null;
     }
 
-    await AccessCode.find(filterDirective)
+    await AccessCode.find(filterDirective).sort(sortDirective)
         .then((accessCodes) => {
             logger.info(`accessCodeController.queryAccessCodes - AccessCode.find success. Got back ${accessCodes.length} accessCodes`);           
             callback({ success: true, accessCodes: accessCodes });
         })
         .catch((err) => {
             var errMsg = `accessCodeController.queryAccessCodes - AccessCode.find failed. Error: ${err}`;
+            logger.error(errMsg);
+            callback({ success: false, errMsg: errMsg });
+        });
+}
+
+
+async function findOneAccessCode (siteCode, isForAdmin, callback) {
+
+    let AccessCode = getAccessCodeType(siteCode);
+
+    var sortDirective = { "updatedAt": -1 };
+
+    var filterDirective = {}; //default, no filering
+    if (isForAdmin != null) {    
+        filterDirective.isForAdmin = (isForAdmin == "true");        
+    } else {
+        filterDirective.isForAdmin = null;
+    }
+
+    await AccessCode.findOne(filterDirective).sort(sortDirective)
+        .then((accessCode) => {
+            logger.info(`accessCodeController.findOneAccessCode success. Got back an accessCode`);           
+            callback({ success: true, accessCode: accessCode });
+        })
+        .catch((err) => {
+            var errMsg = `accessCodeController.findOneAccessCode failed. Error: ${err}`;
             logger.error(errMsg);
             callback({ success: false, errMsg: errMsg });
         });

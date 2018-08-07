@@ -107,7 +107,7 @@ export default {
     },
 
     activated() {
-        console.log('AdminHome.vue activated.');
+        console.log('AdminSendInvite.vue activated.');
         let vm = this;
 
         if (this.$store.state.appConfig.adminSendInviteViewTitle == null) {
@@ -121,6 +121,8 @@ export default {
         vm.hasBeenActivated = true;
         vm.recipientName = "";
         vm.recipientEmail = "";
+
+        this.getMostRecentUserAccessCode();
     },
 
     updated(){
@@ -131,6 +133,29 @@ export default {
     },
 
     methods: {
+
+        getMostRecentUserAccessCode() {
+
+            var vm = this;
+            let url = apiMgr.getAccessCodesUrl() + "&findOne=true";
+
+            axios.get(url)
+                .then(res => {
+                    console.log("getAccessCodesUrl return status: " + res.status);
+
+                    if (res.status == 200 && res.data != null && res.data.length >= 1) {
+                        vm.$store.state.mostRecentUserAccessCode = res.data[0].code;
+                    } else {
+                        vm.hasFailure = true;
+                        vm.failureMessage = "No user access code available. Please try later.";                         
+                    }
+                    
+                })
+                .catch((err) => {
+                    vm.hasFailure = true;
+                    vm.failureMessage = "Server unavailable or not working at this time. Please try later. [error code: 8]";                               
+                })
+        },
 
         validateEmailString (inputVal) {
             let vm = this;
@@ -174,7 +199,8 @@ export default {
                     vm.emailStringDataExport = textTransformer.transformAsMailToBodyText(vm.$store.state.appConfig.sendInviteEmailTemplate)
                         .replace('[RECIPIENTNAME]', vm.recipientName)
                         .replace('[RECIPIENTEMAIL]', vm.recipientEmail)
-                        .replace('[ACCESSCODE]', vm.$store.state.tempAccessCode)
+                        .replace('[APPLINK]', vm.$store.state.appConfig.appLink)
+                        .replace('[ACCESSCODE]', vm.$store.state.mostRecentUserAccessCode)
                         .replace('[ADMINNAME]', adminName);
                     
                     //reformat for display in preview

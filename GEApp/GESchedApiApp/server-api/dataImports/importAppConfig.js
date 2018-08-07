@@ -90,7 +90,11 @@ function extractAppConfig(fileData) {
             if (alreadyAssignedValue == undefined || alreadyAssignedValue == null) {
                 newAppConfig.set(currentPropName, line);
             } else {
-                newAppConfig.set(currentPropName, alreadyAssignedValue + '[LINEBREAK]' + line);
+                if (line == '[LINEBREAK]') {
+                    newAppConfig.set(currentPropName, alreadyAssignedValue  + line);
+                } else {
+                    newAppConfig.set(currentPropName, alreadyAssignedValue + '[LINEBREAK]' + line);
+                }
             }
 
         }

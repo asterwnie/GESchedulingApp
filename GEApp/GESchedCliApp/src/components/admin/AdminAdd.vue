@@ -153,8 +153,7 @@
   
         <div class="card" style="width:100%">
           <div class="card-header bg-danger text-light">
-              Current Admins
-              
+              Current Admins            
           </div>
         </div> 
 
@@ -169,8 +168,8 @@
                     </div>
                 </div>
                 <div class="float-right">
-                    <button :id="admin._id" class="close" type="button" @click.prevent="onDeleteAdminUserModal" aria-label="Close">
-                        <span :id="admin._id" aria-hidden="true">&times;</span>
+                    <button :id="admin._id" class="btn btn-danger btn-sm float-left" type="button" @click.prevent="onDeleteAdminUserModal">
+                        <span :id="admin._id" aria-hidden="true"><i class="fas fa-trash-alt"></i></span>
                     </button>
                 </div>
             </div>
@@ -257,6 +256,8 @@ export default {
         vm.recipientName = "";
         vm.recipientEmail = "";
 
+        this.getMostRecentAdminAccessCode();
+
         $("#collapseSendNotification").removeClass("show");
         vm.refreshAdminUI();
     },
@@ -269,6 +270,30 @@ export default {
     },
 
     methods: {
+
+        getMostRecentAdminAccessCode() {
+
+            var vm = this;
+            let url = apiMgr.getAccessCodesUrl() + "&findOne=true&isForAdmin=true";
+
+            axios.get(url)
+                .then(res => {
+                    console.log("getAccessCodesUrl return status: " + res.status);
+
+                    if (res.status == 200 && res.data != null && res.data.length >= 1) {
+                        vm.$store.state.mostRecentAdminAccessCode = res.data[0].code;
+                    } else {
+                        vm.hasFailure = true;
+                        vm.failureMessage = "No user access code available. Please try later.";                         
+                    }
+                    
+                })
+                .catch((err) => {
+                    vm.hasFailure = true;
+                    vm.failureMessage = "Server unavailable or not working at this time. Please try later. [error code: 9]";                               
+                })
+        },
+
 
         validateEmailString (inputVal) {
             let vm = this;
@@ -286,6 +311,8 @@ export default {
                 isValid = false;
                 vm.hasFailure = true;
                 vm.failureMessage = "Invalid email.";
+            } else {
+                vm.hasFailure = false;
             }
 
             return isValid;
@@ -343,7 +370,8 @@ export default {
                     vm.emailStringDataExport = textTransformer.transformAsMailToBodyText(vm.$store.state.appConfig.addAdminEmailTemplate)
                     .replace('[RECIPIENTNAME]', vm.recipientName)
                     .replace('[RECIPIENTEMAIL]', vm.recipientEmail)
-                    .replace('[ACCESSCODE]', vm.$store.state.tempAccessCode)
+                    .replace('[APPLINK]', vm.$store.state.appConfig.appLink)
+                    .replace('[ADMINACCESSCODE]', vm.$store.state.mostRecentAdminAccessCode)
                     .replace('[ADMINNAME]', adminName);
                     
                     //reformat for display in preview
@@ -389,6 +417,8 @@ export default {
 
                                     vm.hasFailure = true;
                                     vm.failureMessage = "Error: A user with this email already exists!";      
+                                } else {
+                                    vm.hasFailure = false;
                                 }
 
                                 resolve();

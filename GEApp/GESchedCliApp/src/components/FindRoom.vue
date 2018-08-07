@@ -98,6 +98,10 @@
       <div class="card">
       <div class="dropdownMenu card-header bg-primary text-light" id="searchHeader" style="cursor:pointer;" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
       <i class="fa fa-search-plus" aria-hidden="true"></i>&nbsp;&nbsp;Search Menu&nbsp;&nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i>
+      <div class="custom-control custom-checkbox float-right">
+          <input type="checkbox" class="custom-control-input" id="show-names-only" value="show-names-only" v-model="showNamesOnly">
+          <label class="custom-control-label" for="show-names-only">Names Only</label>
+      </div>      
       </div>
       <div id="collapseOne" class="collapse show" aria-labelledby="searchHeader" data-parent="#accordion">
           <div id="filterMenu" class="card-body" style="padding:10px; width:100%;">
@@ -179,12 +183,16 @@
       <div v-for="(room, index) in rooms" :key="index">
         <div class="card" v-bind:class="room._id">
           <div class="card-body">
-            <h6 class="card-title">{{room.name}}</h6>
-            <div class="card-text" :hidden="room.building == null || room.building == ''">Building: {{room.building}}</div>
-            <div class="card-text" :hidden="room.sizeType == null || room.sizeType == ''">Size Type: {{room.sizeType}}</div>
-            <div class="card-text" :hidden="room.seatingCapacity == null || room.seatingCapacity == ''">Seating Capacity: {{room.seatingCapacity}}</div>
-            <div class="card-text" :hidden="room.configurations == null || room.configurations.length == 0"><span class="badge badge-secondary">Has Custom Configurations</span></div>
-            <div class="card-text" :hidden="room.capabilities == null || room.capabilities.length == 0">
+            <h6 :hidden="showNamesOnly" class="card-title">{{room.name}}</h6>
+            <h6 :hidden="!showNamesOnly" class="card-title">{{room.name}}&nbsp;-&nbsp;(seats: {{room.seatingCapacity}}),&nbsp;{{room.building}}
+            <button :hidden="!showNamesOnly" v-bind:id="room._id" type="button" class="btn btn-sm btn-warning float-right" @click.prevent="onRoomSelectModal">Select</button>
+            </h6>
+            <div :hidden="showNamesOnly">
+            <div class="card-text" :hidden="showNamesOnly || room.building == null || room.building == ''">Building: {{room.building}}</div>
+            <div class="card-text" :hidden="showNamesOnly || room.sizeType == null || room.sizeType == ''">Size Type: {{room.sizeType}}</div>
+            <div class="card-text" :hidden="showNamesOnly || room.seatingCapacity == null || room.seatingCapacity == ''">Seating Capacity: {{room.seatingCapacity}}</div>
+            <div class="card-text" :hidden="showNamesOnly || room.configurations == null || room.configurations.length == 0"><span class="badge badge-secondary">Has Custom Configurations</span></div>
+            <div class="card-text" :hidden="showNamesOnly || room.capabilities == null || room.capabilities.length == 0">
               <hr>
               <span v-for="(capability, index) in room.capabilities" :key="index" style="padding:1px">
                 <span class="badge text-light" style="background-color:#bdbdbd">
@@ -193,7 +201,8 @@
               </span>     
             </div>
             <br>
-            <button v-bind:id="room._id" type="button" class="btn btn-sm btn-warning float-right" @click.prevent="onRoomSelectModal">Select</button>
+            </div>
+            <button :hidden="showNamesOnly" v-bind:id="room._id" type="button" class="btn btn-sm btn-warning float-right" @click.prevent="onRoomSelectModal">Select</button>
           </div>
         </div>
       </div>
@@ -215,6 +224,7 @@ export default {
   data () {
     return {
       isSelectingRoom: false,
+      showNamesOnly: false
     }
   },
 
@@ -445,6 +455,7 @@ export default {
       if(event){
           let vm = this;
           console.log("onRoomSelectModal activate.");
+
           $('#findRoomModal').modal('show');
           let currId = event.target.id;
 
