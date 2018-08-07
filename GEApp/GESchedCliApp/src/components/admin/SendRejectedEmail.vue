@@ -41,14 +41,14 @@ import sendEmailComponent from '@/components/admin/SendEmailCommon.vue'
 export default {
     data () {
         return {
-            title: this.$store.state.appConfig.adminSendInviteViewTitle,
-            viewDescription: this.$store.state.appConfig.adminSendInviteViewDescription,
-            emailSubject: this.$store.state.appConfig.adminSendInviteEmailSubject,
-            emailTemplate: this.$store.state.appConfig.adminSendInviteEmailTemplate,
+            title: this.$store.state.appConfig.requestNeedMoreInfoEmailViewTitle,
+            viewDescription: this.$store.state.appConfig.requestNeedMoreInfoEmailViewDescription,
+            emailSubject: this.$store.state.appConfig.requestNeedMoreInfoEmailSubject,
+            emailTemplate: this.$store.state.appConfig.requestNeedMoreInfoEmailTemplate,
             navOutButtonLabel: "Done",
             navOutRoutePath: "/admin/home",
-            supportDoAnother: true,
-            needMostRecentUserAccessCode: true,
+            supportDoAnother: false,
+            needMostRecentUserAccessCode: false,
             needMostRecentAdminAccessCode: false
         }
     },
@@ -61,10 +61,10 @@ export default {
     computed: {
 
         defRecipientName() {
-            return null; 
+            return this.$store.state.defRecipientNameForSendEmail; 
         },
         defRecipientEmail() {
-            return null; 
+            return this.$store.state.defRecipientEmailForSendEmail; 
         },
     },
 

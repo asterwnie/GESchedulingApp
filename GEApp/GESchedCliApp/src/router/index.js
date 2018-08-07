@@ -22,6 +22,8 @@ import AdminMaintenance from '@/components/admin/AdminMaintenance.vue'
 import AdminAdd from '@/components/admin/AdminAdd.vue'
 import AdminUpdate from '@/components/admin/AdminUpdate.vue'
 import AdminSendInvite from '@/components/admin/AdminSendInvite.vue'
+import AdminSendApprovedEmail from '@/components/admin/SendApprovedEmail.vue'
+import AdminSendNeedMoreInfoEmail from '@/components/admin/SendRejectedEmail.vue'
 
 Vue.use(Router)
 
@@ -122,6 +124,16 @@ export default new Router({
       path: '/admin/sendinvite',
       name: 'AdminSendInvite',
       component: AdminSendInvite
+    },
+    {
+      path: '/admin/sendapprovedemail',
+      name: 'AdminSendApprovedEmail',
+      component: AdminSendApprovedEmail
+    },
+    {
+      path: '/admin/sendneedmoreinfoemail',
+      name: 'AdminSendNeedMoreInfoEmail',
+      component: AdminSendNeedMoreInfoEmail
     },
   ]
 })

@@ -7,7 +7,7 @@
           <div align="center" style="padding-bottom:10px;"><span v-if="requestProcessingStatus != null" :class="requestProcessingStatus">{{requestProcessingStatusLabel}}</span></div>
 
           <form class="needs-validation" novalidate>
-            <p class="text-danger" :hidden="!showPleaseReviewCommentsMsg">More information is needed. Please review the comments in this request.</p>
+            <p class="text-danger" :hidden="!showPleaseReviewCommentsMsg">{{requestStatusMessageRejectedViewDescription}}</p>
 
             <div class="mb-3" v-for="(requestPrompt, index) in requestPrompts" :key="index">
 
@@ -152,7 +152,8 @@ export default {
     data () {
     return {  
       hasValidationError: false,
-      showPleaseReviewCommentsMsg: false
+      showPleaseReviewCommentsMsg: false,
+      requestStatusMessageRejectedViewDescription: this.$store.state.appConfig.RequestStatusMessageRejectedViewDescription
     }
   },
 

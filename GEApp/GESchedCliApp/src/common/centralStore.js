@@ -47,6 +47,9 @@ const store = new Vuex.Store({
 
         numOfRequestScreens: 0, // It will be inferred when the requestPrompts are retrieved.
 
+        defRecipientNameForSendEmail: null,
+        defRecipientEmailForSendEmail: null,
+
         mostRecentUserAccessCode: null,
         mostRecentAdminAccessCode: null,
 

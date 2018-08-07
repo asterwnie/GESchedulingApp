@@ -1,4 +1,5 @@
 <template>
+<div>
   <div class="container-fluid" style="width:100%">
       <div class="row">
         <div class="col col-sm-1 col-md-2 col-lg-4"></div>
@@ -95,6 +96,7 @@
                 <button type="button" class="btn btn-primary btn-sm" 
                   :disabled="isSubmitting" 
                   @click.prevent="onApproveRequest">Approve</button>
+
                 <button type="button" class="btn btn-primary btn-sm" 
                   :disabled="isSubmitting" 
                   @click.prevent="onRejectRequest">{{rejectedLabel}}</button>
@@ -129,6 +131,28 @@
     </div>
   </div>
 
+  <!-- Modal -->
+  <div class="modal" id="sendEmailConfirmDialog" tabindex="-1" role="dialog" aria-labelledby="sendEmailConfirmLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="sendEmailConfirmLabel">{{sendEmailConfirmDialogTitle}}</h5>
+          <button @click.prevent="onDontSendEmail" type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>{{sendEmailConfirmDialogMessage}}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" @click.prevent="onDontSendEmail">No</button>
+          <button type="button" class="btn btn-primary" @click.prevent="onSendEmailToNotifyStatus">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
 </template>
 
 <script>
@@ -143,7 +167,9 @@ export default {
     return {  
       isSubmitting: false,
       hasFailure: false,
-      failureMessage: "",
+      failureMessage: null,
+      sendEmailConfirmDialogTitle: null,
+      sendEmailConfirmDialogMessage: null,
       requestReadOnlyProperties: [],
       rejectedLabel: this.$store.state.appConfig.requestStatusTagRejected,
       approvedLabel: this.$store.state.appConfig.requestStatusTagApproved
@@ -165,7 +191,6 @@ export default {
       return this.$store.state.inAdminMode;
     },
 
-    
     requestProcessingStatus() {
       var status = null;
       var storeState = this.$store.state;
@@ -376,6 +401,69 @@ export default {
 
   methods: {
 
+    updateSendEmailConfirmDialogTitle(request) {
+      if (request.processingStatus == "approved") {
+        this.sendEmailConfirmDialogTitle = this.$store.state.appConfig.requestApprovedEmailViewTitle;
+      } else if (request.processingStatus == "rejected") {
+        this.sendEmailConfirmDialogTitle = this.$store.state.appConfig.requestNeedMoreInfoEmailViewTitle;
+      }
+    },
+
+
+    updateSendEmailConfirmDialogMessage(request) {
+      if (request.processingStatus == "approved") {
+        this.sendEmailConfirmDialogMessage = this.$store.state.appConfig.requestApprovedEmailAsk;
+      } else if (request.processingStatus == "rejected") {
+        this.sendEmailConfirmDialogMessage = this.$store.state.appConfig.requestNeedMoreInfoEmailAsk;
+      }
+    },
+
+
+    onDontSendEmail() {
+      $('#sendEmailConfirmDialog').modal('hide');
+      this.$store.state.currentRequest = null;
+      this.$store.state.selectedRoom = null;
+      this.onReturnHome();
+    },
+
+
+    onSendEmailToNotifyStatus() {
+      let currentRequest = this.$store.state.currentRequest;
+      if (currentRequest == null) { return; }
+
+      $('#sendEmailConfirmDialog').modal('hide');
+      if (currentRequest.processingStatus == "approved") {
+        this.onEmailOutApproval();
+      } else if (currentRequest.processingStatus == "rejected") {
+        this.onEmailOutNeedMoreInfo();
+      }
+    },
+
+
+    onEmailOutApproval() {
+
+      var storeState = this.$store.state;
+      let currentRequest = this.$store.state.currentRequest;
+      storeState.defRecipientNameForSendEmail = currentRequest.eventGEContactPersonName;
+      storeState.defRecipientEmailForSendEmail = currentRequest.eventGEContactPersonEmail;
+      storeState.currentRequest = null;
+      storeState.selectedRoom = null;
+      this.$router.push('/admin/sendapprovedemail'); 
+    },
+
+
+    onEmailOutNeedMoreInfo() {
+
+      var storeState = this.$store.state;
+      let currentRequest = this.$store.state.currentRequest;
+      storeState.defRecipientNameForSendEmail = currentRequest.eventGEContactPersonName;
+      storeState.defRecipientEmailForSendEmail = currentRequest.eventGEContactPersonEmail;
+      storeState.currentRequest = null;
+      storeState.selectedRoom = null;
+      this.$router.push('/admin/sendneedmoreinfoemail'); 
+    },
+
+
     showHideLabeledTextArea(canEditRequest, ctrlId) {
 
       var adminCtrlLabel = $("#" + ctrlId + "Label");
@@ -441,6 +529,7 @@ export default {
       }
     },
 
+
     onAddPreparationNotes(evt) {  
 
       var storeState = this.$store.state;
@@ -461,6 +550,7 @@ export default {
       }
     },
 
+
     onApproveRequest(evt) {
 
       var storeState = this.$store.state;
@@ -471,6 +561,7 @@ export default {
       this.onSubmitRequest(evt);
     },
 
+
     onRejectRequest(evt) {
 
       var storeState = this.$store.state;
@@ -480,6 +571,7 @@ export default {
       }
       this.onSubmitRequest(evt);
     },
+
 
     onSubmitRequest(evt) {
       
@@ -635,13 +727,23 @@ export default {
           vm.hasFailure = false;
           
           if (res.status == 200 && res.data != null) {
-              var requestUdated = res.data;
+              var requestUpdated = res.data;
 
-              localCacheMgr.uncacheItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, requestUdated._id));          
-              storeState.currentRequest = null;
-              storeState.selectedRoom = null;
+              localCacheMgr.uncacheItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, requestUpdated._id));          
 
-              vm.onReturnHome();
+              if (vm.inAdminMode && (requestUpdated.processingStatus == "approved" || requestUpdated.processingStatus == "rejected")) {
+ 
+                this.updateSendEmailConfirmDialogTitle(requestUpdated);
+                this.updateSendEmailConfirmDialogMessage(requestUpdated);
+                this.$forceUpdate();
+
+                $('#sendEmailConfirmDialog').modal('show');
+
+              } else {
+                storeState.currentRequest = null;
+                storeState.selectedRoom = null;
+                vm.onReturnHome();
+              }         
 
           } else {
                 vm.hasFailure = true;
@@ -667,18 +769,7 @@ export default {
     },
 
     onPrint(evt) {
-
-      var topBar = $('#headerBar');
-      var buttons = $(':button');
-
-      topBar.hide();
-      buttons.hide();
-
-      window.print();
-
-      topBar.show();
-      buttons.show();
-      return false;
+      util.launchPrint();
     },
 
     onReturnHome() {

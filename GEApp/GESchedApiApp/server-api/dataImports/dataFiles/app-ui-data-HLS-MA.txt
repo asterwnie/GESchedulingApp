@@ -136,10 +136,10 @@ Send Invite
 --AdminSendInviteViewDescription 
 Invite a requester to use this booking utility.
 
---SendInviteEmailSubject 
+--AdminSendInviteEmailSubject 
 GE Scheduling Utility Access
 
---SendInviteEmailTemplate 
+--AdminSendInviteEmailTemplate
 Hello, [RECIPIENTNAME]!
 [LINEBREAK]
 [ADMINNAME] would like to invite you to access the GE Scheduling Utility.
@@ -161,6 +161,9 @@ Admin Access Code: [ADMINACCESSCODE]
 To access the GE Scheduling Utility, use the following link on your browser:
 [APPLINK]
 
+--RequestApprovedEmailAsk
+Do you want to create an email to notify the requester that this meeting request has been approved? 
+
 --RequestApprovedEmailViewTitle
 Notify Approval
 
@@ -177,6 +180,9 @@ Your meeting request has been approved! Please review.
 [LINEBREAK]
 To access the GE Scheduling Utility, use the following link on your browser:
 [APPLINK]
+
+--RequestNeedMoreInfoEmailAsk
+Do you want to create an email to notify the requester that more information is needed? 
 
 --RequestNeedMoreInfoEmailViewTitle
 Notify Need More Info
