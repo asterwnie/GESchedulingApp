@@ -327,7 +327,7 @@ exports.deleteMultipleRequests = function (req, res) {
     try {
         let daysOld = parseInt(req.query.daysOld);
         let dateForFilter = new Date(Date.now() - (daysOld * 24*60*60*1000));
-        filterDirective.updatedAt = {$lt: dateForFilter};
+        filterDirective = { "eventSchedule.startDateTime": { $lt: dateForFilter } };
         hasFilter = true;
     } catch (err) {}
 

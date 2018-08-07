@@ -6,14 +6,13 @@
       <div class="modal-content">
         <div :hidden="modalUI != 'onDeleteOldRequests'">
           <div class="modal-header">
-            <h5 class="modal-title" id="deleteModalLabel">Delete Request</h5>
+            <h5 class="modal-title" id="deleteModalLabel" style="color:red;">Delete Requests</h5>
             <button @click.prevent="onDeleteModalDeselect" type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
             <p>Are you sure you want to delete these requests? This action cannot be undone.</p>
-            <div class="card" id="selectedRequestsUI"></div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" @click.prevent="onDeleteModalDeselect">Cancel</button>
@@ -355,9 +354,9 @@ export default {
         console.log("onDeleteOldRequestsModal activated.");
         let vm = this;
         var requestsToQuery = "";
+        vm.hasFailure = false;
 
         var prompts = [];
-
         prompts.push({ isRequired: true, inputType: { ctrlType: "number", ctrlDataId: "inputOlderThan" } }); 
 
         var isValid = validatePrompts(prompts);
@@ -368,9 +367,7 @@ export default {
         $('#deleteModal').modal('show');
         vm.modalUI = "onDeleteOldRequests";
 
-        //get query to delete
-
-        //gather days old to query
+        //get query to delete. Gather days old to query
         var daysOldInputLocation = $("#inputOlderThan");
         var daysOldInputLocationVal = daysOldInputLocation.val();
         if(daysOldInputLocationVal != "" && daysOldInputLocationVal != null){
@@ -398,11 +395,9 @@ export default {
           requestsToQuery += `&processingStatus=${processingStatusInputLocationVal}`;
         }
         
-
         vm.requestsToDelete = requestsToQuery;
 
-        //TO DO: get numbers of requests that will be deleted...
-        //maybe not needed
+        //Note: for future enhancement, get numbers of requests that will be deleted to confirm.
         
       },
 
@@ -421,23 +416,22 @@ export default {
         let url = apiMgr.getRequestsUrl().replace("requests", "deleterequests") + vm.requestsToDelete;
 
         axios.get(url)
-                .then(res => {
-                    console.log("onDeleteOldRequests return status: " + res.status);
+          .then(res => {
+              console.log("onDeleteOldRequests return status: " + res.status);
 
-                    vm.canShowRequestResult = true;
-                    vm.requestResultMessage = `${res.data.deletedCount} requests successfully deleted.`
+              vm.canShowRequestResult = true;
+              vm.requestResultMessage = `${res.data.deletedCount} requests successfully deleted.`
 
-                    $('#deleteModal').modal('hide');
-                    vm.$forceUpdate();
-                    //vm.isFetchingRequests = false;
-                })
-                .catch((err) => {
-                    vm.hasFailure = true;
-                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
-                })
-
+              $('#deleteModal').modal('hide');
+              vm.$forceUpdate();
+          })
+          .catch((err) => {
+              vm.hasFailure = true;
+              vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+          })
         
       },
+
 
       checkIfAccessCodeExists(isAdminCode, inputCode){
         let vm = this;
@@ -452,19 +446,18 @@ export default {
 
           axios.get(url)
             .then(res => {
-                console.log("getRequestsUrl return status: " + res.status);
-                
-                return res.data.exist;
+              console.log("getRequestsUrl return status: " + res.status);                
+              return res.data.exist;
             })
             .catch((err) => {
-                vm.hasFailure = true;
-                if(isAdminCode){
-                  vm.failureMessage = "Error: Admin Code not found in database.";
-                } else {
-                  vm.failureMessage = "Error: User Code not found in database.";
-                }
+              vm.hasFailure = true;
+              if(isAdminCode){
+                vm.failureMessage = "Error: Admin Code not found in database.";
+              } else {
+                vm.failureMessage = "Error: User Code not found in database.";
+              }
 
-                return false;                       
+              return false;                       
             })
 
         } else {
@@ -474,6 +467,7 @@ export default {
 
         return;
       },
+
 
       onAccessCodeDelete() {
         console.log("onAccessCodeDelete activated.");
