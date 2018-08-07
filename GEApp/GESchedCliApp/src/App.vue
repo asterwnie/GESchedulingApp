@@ -380,7 +380,7 @@ body {
   cursor: pointer; 
   text-align: center; 
   vertical-align: middle;
-  margin: 3px;
+  margin: 2px;
 }
 
 .site-name-footer {

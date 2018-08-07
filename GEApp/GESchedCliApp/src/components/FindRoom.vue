@@ -467,19 +467,20 @@ export default {
           let siteCode = apiMgr.getRoomsUrl().substring(apiMgr.getRoomsUrl().indexOf('?'), apiMgr.getRoomsUrl().length);
           var url = apiMgr.getRoomsUrl().substring(0, apiMgr.getRoomsUrl().indexOf('?')) + `/${currId}${siteCode}`;
 
-            axios.get(url)
-                .then(res => {
-                    console.log("getRoomsUrl return status: " + res.status);
-                    
-                    console.log('onRoomSelectModal - selectedRoom set.');
-                    vm.$store.state.selectedRoom = res.data;
-                })
-                .catch((err) => {
-                    vm.hasFailure = true;
-                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
-                })
+          axios.get(url)
+              .then(res => {
+                  console.log("getRoomsUrl return status: " + res.status);
+                  
+                  console.log('onRoomSelectModal - selectedRoom set.');
+                  vm.$store.state.selectedRoom = res.data;
+              })
+              .catch((err) => {
+                  vm.hasFailure = true;
+                  vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+              })
       }
     },
+
 
     onRoomSelectConfirm() {
       console.log('onRoomSelectConfirm activated.');

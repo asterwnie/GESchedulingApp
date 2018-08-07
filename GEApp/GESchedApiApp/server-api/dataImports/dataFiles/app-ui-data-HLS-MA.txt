@@ -112,7 +112,7 @@ Your request is not complete. More Information is required. Please review, updat
 --RequestStatusMessageRejectedViewDescription
 More information is needed. Please review the comments in this request.
 
---MaxNumOfAttendeesAllowed
+--MaxNumberValueInput
 500
 
 --DeleteOlderThanNumDays 
@@ -145,7 +145,7 @@ Hello, [RECIPIENTNAME]!
 [ADMINNAME] would like to invite you to access the GE Scheduling Utility.
 Access Code: [ACCESSCODE]
 [LINEBREAK]
-To access the GE Scheduling Utility, paste this link into your browser:
+To access the GE Scheduling Utility, use the following link on your browser:
 [APPLINK]
 
 --AddAdminEmailSubject 
@@ -158,5 +158,39 @@ Hello, [RECIPIENTNAME]!
 [LINEBREAK]
 Admin Access Code: [ADMINACCESSCODE]
 [LINEBREAK]
-To access the GE Scheduling Utility, paste this link into your browser:
+To access the GE Scheduling Utility, use the following link on your browser:
+[APPLINK]
+
+--RequestApprovedEmailViewTitle
+Notify Approval
+
+--RequestApprovedEmailViewDescription
+Create request approval notification email.
+
+--RequestApprovedEmailSubject 
+Your Meeting Request Has Been Approved
+
+--RequestApprovedEmailTemplate 
+Hello, [RECIPIENTNAME]!
+[LINEBREAK]
+Your meeting request has been approved! Please review.
+[LINEBREAK]
+To access the GE Scheduling Utility, use the following link on your browser:
+[APPLINK]
+
+--RequestNeedMoreInfoEmailViewTitle
+Notify Need More Info
+
+--RequestNeedMoreInfoEmailViewDescription
+Create notification email to get more information.
+
+--RequestNeedMoreInfoEmailSubject 
+Your Meeting Request Needs More Information
+
+--RequestNeedMoreInfoEmailTemplate 
+Hello, [RECIPIENTNAME]!
+[LINEBREAK]
+Your meeting request has not yet been approved. Please review and update your request to provide the additional information needed.
+[LINEBREAK]
+To access the GE Scheduling Utility, use the following link on your browser:
 [APPLINK]
