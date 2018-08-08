@@ -114,8 +114,6 @@ accessCodeRoutes(app);
 
 
 
-// Temporary for returning mock data:
-
 app.get('/api/appconfigs', async (req, res) => {
  
     var appConfigForSite = {};
