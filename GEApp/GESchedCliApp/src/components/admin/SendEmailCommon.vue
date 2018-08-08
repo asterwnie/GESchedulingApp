@@ -19,17 +19,16 @@
                     <span class="input-group-text" id="basic-addon1">Recipient Name</span>
                 </div>
                 <input id="recipientName" type="text" class="form-control" aria-label="recipient-name" aria-describedby="basic-addon1">
-                <p class="text-danger validation-msg" style="display:none;" id="REQUIRED-MSG-FOR-recipientName">The recipient name is required.</p>
             </div>
+            <p class="text-danger validation-msg" style="display:none;" id="REQUIRED-MSG-FOR-recipientName">The recipient name is required.</p>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon2">Recipient Email</span>
                 </div>
                 <input id="recipientEmail" type="text" class="form-control" aria-label="recipient-email" aria-describedby="basic-addon2">
-                <p class="text-danger validation-msg" style="display:none;" id="INVALID-MSG-FOR-recipientEmail">Please enter a valid email address.</p>
-                <p class="text-danger validation-msg" style="display:none;" id="REQUIRED-MSG-FOR-recipientEmail">A email address is required.</p>
             </div>
-
+            <p class="text-danger validation-msg" style="display:none;" id="INVALID-MSG-FOR-recipientEmail">Please enter a valid email address.</p>
+            <p class="text-danger validation-msg" style="display:none;" id="REQUIRED-MSG-FOR-recipientEmail">A email address is required.</p>
             <button @click.prevent="onGenerateEmail" type="button" class="float-right btn btn-sm btn-primary">Generate Email</button>
             <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
             </div>
@@ -42,7 +41,7 @@
             
             <div v-if="canEmail">
                 <button type="button" @click.prevent="onNavOut" class="btn btn-sm btn-primary">{{navOutButtonLabel}}</button>
-                <a :href="`mailto:${recipientEmail}?subject=${sendInviteEmailSubject}&body=${emailStringDataExport}`">
+                <a :href="`mailto:${recipientEmail}?subject=${emailSubject}&body=${emailStringDataExport}`">
                     <button type="button" class="float-right btn btn-sm btn-primary">Launch Email</button>
                 </a>
             </div>
@@ -96,15 +95,13 @@ export default {
         console.log('SendEmailCommon.vue activated.');
         let vm = this;
 
-        if (this.$store.state.appConfig == null) {
+        if (this.$store.state.appConfig.siteCode == null) {
             this.$router.push('/login'); // Config data lost, force back to login to refetch data.
             return;
         }
 
         this.$store.state.currentViewTitle = this.title;
         this.$store.state.enableNavBar = true;
-
-        $(".validation-msg").hide();
         
         if (this.needMostRecentUserAccessCode) {
             this.getMostRecentUserAccessCode();
@@ -215,6 +212,7 @@ export default {
 
         onReset() {
 
+            $(".validation-msg").hide();    
             $("#recipientEmail").val(this.defRecipientEmail);
             $("#recipientName").val(this.defRecipientName);
             $("#emailPreview").val(null);  
@@ -224,7 +222,6 @@ export default {
             
             this.$forceUpdate();
         }
-
 
     }
 }

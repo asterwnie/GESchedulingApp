@@ -70,7 +70,7 @@
                     </div>
                     <div v-else-if="requestReadOnlyProperty.value.isEventSchedule">
                       <span class="font-italic">
-                        <div><i class="label-icon fas fa-calendar-check"></i>&nbsp;&nbsp;{{requestReadOnlyProperty.value.eventDateTimeDisp}}</div>
+                        <div><i class="label-icon fas fa-calendar-check" style="margin-left:6px;"></i>&nbsp;&nbsp;{{requestReadOnlyProperty.value.eventDateTimeDisp}}</div>
                       </span>
                     </div>
                     <div v-else>
@@ -303,11 +303,15 @@ export default {
       var commentCtrl = $("#generalAdminComment");
       if (storeState.currentRequest.generalAdminComment != undefined && storeState.currentRequest.generalAdminComment != "") {
         commentCtrl.val(storeState.currentRequest.generalAdminComment);
+      } else {
+        commentCtrl.val(null);
       }
 
       var notesCtrl = $("#generalPreparationNotes");
       if (storeState.currentRequest.generalPreparationNotes != undefined && storeState.currentRequest.generalPreparationNotes != "") {
         notesCtrl.val(storeState.currentRequest.generalPreparationNotes);
+      } else {
+        notesCtrl.val(null);
       }
 
     }

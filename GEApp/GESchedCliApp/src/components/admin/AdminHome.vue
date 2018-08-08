@@ -151,25 +151,25 @@
                 </div>&nbsp;
                 <div v-if="currentPageNumber > 1">
                     <button @click.prevent="onPageDecrement" style="height:100%" type="button" class="btn btn-secondary btn-sm">
-                        <span class="fas fa-chevron-left"></span>
+                        &nbsp;<span class="fas fa-chevron-left"></span>&nbsp;
                     </button>
                 </div>
                 <div v-else>
                     <button style="height:100%" type="button" class="btn btn-secondary btn-sm" disabled>
-                        <span class="fas fa-chevron-left"></span>
+                        &nbsp;<span class="fas fa-chevron-left"></span>&nbsp;
                     </button>
                 </div>
                 <div v-for="number in numPages" :key="number">
-                    <button @click.prevent="onPagePick" v-bind:id="`page${number}Button`" style="height:100%;" type="button" class="pageNumberButton btn btn-sm">{{ number }}</button>
+                    <button @click.prevent="onPagePick" v-bind:id="`page${number}Button`" style="height:100%;" type="button" class="pageNumberButton btn btn-sm">&nbsp;{{number}}&nbsp;</button>
                 </div>
                 <div v-if="currentPageNumber != numPages">
                     <button @click.prevent="onPageIncrement" style="height:100%" type="button" class="btn btn-secondary btn-sm">
-                        <span class="fas fa-chevron-right"></span>
+                        &nbsp;<span class="fas fa-chevron-right"></span>&nbsp;
                     </button>
                 </div>
                 <div v-else>
                     <button style="height:100%" type="button" class="btn btn-secondary btn-sm" disabled>
-                        <span class="fas fa-chevron-right"></span>
+                        &nbsp;<span class="fas fa-chevron-right"></span>&nbsp;
                     </button>
                 </div>
             </div>
@@ -210,17 +210,34 @@ export default {
             requestResultCaption: "Requests - All",
             currentPageNumber: 1,
             requestsQueryString: "",
-            deleteMode: false,
-            processingStatusOptions: this.$store.state.processingStatusOptions,
-            underReviewLabel: this.$store.state.appConfig.requestStatusTagUnderReview,
-            rejectedLabel: this.$store.state.appConfig.requestStatusTagRejected,
-            approvedLabel: this.$store.state.appConfig.requestStatusTagApproved,
-            canceledLabel: this.$store.state.appConfig.requestStatusTagCanceled
+            deleteMode: false
         }
     },
 
 
     computed: {
+
+        processingStatusOptions() {
+            return this.$store.state.processingStatusOptions; 
+        },
+
+        underReviewLabel() {
+            return this.$store.state.appConfig.requestStatusTagUnderReview; 
+        },
+
+        rejectedLabel() {
+            return this.$store.state.appConfig.requestStatusTagRejected; 
+        },
+
+        approvedLabel() {
+            return this.$store.state.appConfig.requestStatusTagApproved; 
+        },
+
+        canceledLabel() {
+            return this.$store.state.appConfig.requestStatusTagCanceled; 
+        },
+
+
         title() {
             return this.$store.state.appConfig.adminHomeViewTitle; 
         },

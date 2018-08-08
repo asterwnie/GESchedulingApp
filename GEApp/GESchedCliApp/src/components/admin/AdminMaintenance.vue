@@ -110,6 +110,8 @@
                         <div class="input-group-append">
                         <span class="input-group-text" id="inputGroup-sizing-sm">days</span>
                         </div>
+                    </div>
+                    <div>
                         <p class="text-danger validation-msg" style="display:none;" id="REQUIRED-MSG-FOR-inputOlderThan">A number is required.</p>
                         <p class="text-danger" style="display:none;" id="INVALID-MSG-FOR-inputOlderThan">Only a positive number is allowed.</p>
                     </div>

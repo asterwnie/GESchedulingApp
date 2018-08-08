@@ -41,10 +41,6 @@ import sendEmailComponent from '@/components/admin/SendEmailCommon.vue'
 export default {
     data () {
         return {
-            title: this.$store.state.appConfig.requestApprovedEmailViewTitle,
-            viewDescription: this.$store.state.appConfig.requestApprovedEmailViewDescription,
-            emailSubject: this.$store.state.appConfig.requestApprovedEmailSubject,
-            emailTemplate: this.$store.state.appConfig.requestApprovedEmailTemplate,
             navOutButtonLabel: "Done",
             navOutRoutePath: "/admin/home",
             supportDoAnother: false,
@@ -59,6 +55,22 @@ export default {
 
     
     computed: {
+ 
+        title() {
+            return this.$store.state.appConfig.requestApprovedEmailViewTitle; 
+        },
+
+        viewDescription() {
+            return this.$store.state.appConfig.requestApprovedEmailViewDescription; 
+        },
+        
+        emailSubject() {
+            return this.$store.state.appConfig.requestApprovedEmailSubject; 
+        },
+
+        emailTemplate() {
+            return this.$store.state.appConfig.requestApprovedEmailTemplate; 
+        },
 
         defRecipientName() {
             return this.$store.state.defRecipientNameForSendEmail; 
