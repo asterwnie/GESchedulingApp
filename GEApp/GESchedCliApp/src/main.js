@@ -6,7 +6,7 @@
 
 import Vue from 'vue'
 import router from './router' // The client-side routes are defined in the index.js file under the client-src/router folder.
-import Promise from 'promise-polyfill'
+import Promise from 'promise-polyfill' // If the browser do not support promise programming, use this one.
 
 import App from './App.vue'   // The main view for this SPA.
 import { centralStore } from '@/common/centralStore.js'
