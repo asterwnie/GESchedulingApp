@@ -151,25 +151,25 @@
                 </div>&nbsp;
                 <div v-if="currentPageNumber > 1">
                     <button @click.prevent="onPageDecrement" style="height:100%" type="button" class="btn btn-secondary btn-sm">
-                        <span class="fas fa-chevron-left"></span>
+                        &nbsp;<span class="fas fa-chevron-left"></span>&nbsp;
                     </button>
                 </div>
                 <div v-else>
                     <button style="height:100%" type="button" class="btn btn-secondary btn-sm" disabled>
-                        <span class="fas fa-chevron-left"></span>
+                        &nbsp;<span class="fas fa-chevron-left"></span>&nbsp;
                     </button>
                 </div>
                 <div v-for="number in numPages" :key="number">
-                    <button @click.prevent="onPagePick" v-bind:id="`page${number}Button`" style="height:100%;" type="button" class="pageNumberButton btn btn-sm">{{ number }}</button>
+                    <button @click.prevent="onPagePick" v-bind:id="`page${number}Button`" style="height:100%;" type="button" class="pageNumberButton btn btn-sm">&nbsp;{{number}}&nbsp;</button>
                 </div>
                 <div v-if="currentPageNumber != numPages">
                     <button @click.prevent="onPageIncrement" style="height:100%" type="button" class="btn btn-secondary btn-sm">
-                        <span class="fas fa-chevron-right"></span>
+                        &nbsp;<span class="fas fa-chevron-right"></span>&nbsp;
                     </button>
                 </div>
                 <div v-else>
                     <button style="height:100%" type="button" class="btn btn-secondary btn-sm" disabled>
-                        <span class="fas fa-chevron-right"></span>
+                        &nbsp;<span class="fas fa-chevron-right"></span>&nbsp;
                     </button>
                 </div>
             </div>
