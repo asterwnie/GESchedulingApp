@@ -55,28 +55,23 @@
   <div class="row">
     <div class="col col-12 col-md-1 col-lg-2"></div>
     <div class="col col-12 col-md-10 col-lg-8" style="color:gray">
-
-      
-      
-      <h5 class="text-center" v-html="$store.state.appConfig.siteName"></h5>
-      <h6 class="text-center" v-html="$store.state.appConfig.siteAddress"></h6>
-      <br>
-
+    <div class="site-name-footer" v-html="$store.state.appConfig.siteName"></div>
+    <div class="site-address-footer" v-html="$store.state.appConfig.siteAddress"></div>      
+    <div style="height:8px;"></div>
       <div class="alert alert-warning" role="alert">
           <h5 class="alert-heading">Select Room</h5>
-          <hr>
+          <div style="height:2px;"></div>
           <div v-if="isSelectingRoom">
             <p>Select a location below. Return to the request page by hitting the back button.</p>
           </div>
           <div v-else>
               <p>To save a room to appear on your next new request, select it below.</p>
               <p>
-                <span>
-                Current saved room:
+                <span>Current saved room:
                 <div v-if="selectedRoom != null">
-                  {{selectedRoom.name}}&nbsp;
+                  <b>{{selectedRoom.name}}</b>&nbsp;
                   <div v-if="selectedRoom['selectedConfig'] != null">
-                    <i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;{{selectedRoom['selectedConfig'].replace(/\-/g, " ")}}
+                  <i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;{{selectedRoom['selectedConfig'].replace(/\-/g, " ")}}
                   </div>
                 </div>
                 <div v-else class="font-italic">
