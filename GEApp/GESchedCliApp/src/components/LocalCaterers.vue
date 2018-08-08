@@ -33,7 +33,7 @@
                   <div class="card-header" style="background-color:#76cf99">
                     <h6 class="card-title" style="margin-top:10px">{{ caterer.name }}</h6>
                   </div>
-                  <div class="card-body" style="background-color:#afffce">
+                  <div class="card-body" style="background-color:#c3e3cb">
                     <div class="card-text" v-for="(line, index) in caterer.address" :key="index">
                       {{line}}
                     </div> 
