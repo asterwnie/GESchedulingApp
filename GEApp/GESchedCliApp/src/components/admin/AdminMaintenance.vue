@@ -468,11 +468,17 @@ export default {
             if (this.id.indexOf("default") > -1) {
               //if there is a default, reselect it
               this.value = this.id.replace("default-", "");
+            } else {
+              this.value = "";
             }
           } else {
             this.value = "";
           }
         });
+
+        //special default for this view
+        $("#inputOlderThan")[0].value = this.deleteOlderThanNumDays;
+
       },
 
 

@@ -52,7 +52,8 @@
                   :ctrlId="requestPrompt.inputType.ctrlDataId" 
                   :promptLabel="requestPrompt.label" 
                   :dataRequiredMsgId="'REQUIRED-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"
-                  :dataInvalidMsgId="'INVALID-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"></number-input>
+                  :dataInvalidMsgId="'INVALID-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"
+                  :dataOutOfBoundsMsgId="'OUTOFBOUNDS-MSG-FOR-'+requestPrompt.inputType.ctrlDataId"></number-input>
               </template>
 
               <template v-if="(requestPrompt.inputType.ctrlType == 'yesNoWithComment' && requestPrompt.screenNum == currentScreenNum)"> 

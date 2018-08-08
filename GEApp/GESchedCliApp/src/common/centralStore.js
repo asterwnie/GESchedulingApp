@@ -10,6 +10,7 @@ const store = new Vuex.Store({
         previousPage: null,
 
         defaultTimeOption: "09:00:00",
+        maxSeatingCapacityInputVal: 500,
 
         isInSmallWidthMode: false,
         smallWidthModeMax: 768,

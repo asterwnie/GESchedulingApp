@@ -311,11 +311,14 @@ export const validateNumberPrompt = (ctrlDataId, inputVal) => {
         isValid = false;
     }
 
-    if (inVal < 0) {
+    let maxSeatingCapacityInputVal = centralStore.state.maxSeatingCapacityInputVal;
+    if (inVal < 0 || inVal > maxSeatingCapacityInputVal) {
         isValid = false;
-    }
-
-    if (!isValid) {
+        var invalidMsg = $('#OUTOFBOUNDS-MSG-FOR-' + ctrlDataId)
+        if (invalidMsg != null) {
+            invalidMsg.show();
+        }
+    } else if (!isValid) {
         var invalidMsg = $('#INVALID-MSG-FOR-' + ctrlDataId)
         if (invalidMsg != null) {
             invalidMsg.show();
