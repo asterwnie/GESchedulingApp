@@ -1,7 +1,8 @@
 cd ./
-git add -A
-git commit -m "GE SERVER MODIFICATION"
-git pull
+git status
+git fetch --all
+git reset --hard origin/master
 
-cd ./GESchedApiApp
+
+cd ./GEApp/GESchedApiApp
 CALL runDataImports-HLS-MA.bat
