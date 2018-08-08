@@ -1,3 +1,14 @@
+--Room.Name: Forum
+--Room.SizeType: Forum
+--Room.SeatingCapacity: 9999999
+--Room.Floor: 1
+--Room.Building: Health MBO
+--Room.RoomNumber: 
+--Room.RoomPhone: 
+--Room.AddressGAL: 
+--Room.SpecialNote: 
+--Room.Capability: 
+
 --Room.Name: Wellfleet
 --Room.SizeType: Medium Conference
 --Room.SeatingCapacity: 16

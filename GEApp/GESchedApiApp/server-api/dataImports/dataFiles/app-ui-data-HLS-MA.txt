@@ -98,10 +98,10 @@ Approved
 Your request has been approved.
 
 --RequestStatusTagCanceled 
-Canceled
+Cancelled
 
 --RequestStatusMessageCanceled 
-This meeting has been canceled! 
+This meeting has been cancelled! 
 
 --RequestStatusTagRejected 
 More Info Required

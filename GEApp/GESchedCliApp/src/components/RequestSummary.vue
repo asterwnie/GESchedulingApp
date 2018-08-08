@@ -10,7 +10,7 @@
               Request Summary &nbsp;&nbsp;
               <span class="badge badge-warning" v-if="canEditAdminGeneralComment" @click.prevent="onAddAdminComment"><span class="far fa-comment-dots"></span></span>
               &nbsp;
-              <span class="badge badge-warning" v-if="canEditPreparationInfo" @click.prevent="onAddPreparationNotes">Preparation Notes</span>
+              <span class="badge badge-warning" v-if="canEditPreparationInfo" @click.prevent="onAddPreparationNotes">Preparation Notes&nbsp;<span class="far fa-comment-dots"></span></span>
             </div>
 
             <div>  

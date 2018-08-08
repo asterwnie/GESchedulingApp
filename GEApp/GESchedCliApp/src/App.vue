@@ -518,4 +518,8 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
+.capability-badge-style{
+  background-color:#919191;
+}
+ 
 </style>

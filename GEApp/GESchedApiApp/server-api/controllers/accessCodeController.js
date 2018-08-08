@@ -262,6 +262,34 @@ exports.getAccessCode = function (req, res) {
 };
 
 
+exports.getAccessCodesCount = function (req, res) {
+    logger.verbose('requestController.getRequestsCount begin');
+
+    let siteCode = httpRequestHelper.getSite(req); 
+    let AccessCode = getAccessCodeType(siteCode);
+
+    var filterDirective = {}; //default, no filering
+    if (req.query.isForAdmin) {
+        filterDirective.isForAdmin = req.query.isForAdmin;      
+    } else {
+        filterDirective.isForAdmin = { "$exists": false };
+    }
+
+    AccessCode.count(filterDirective)
+    .then((count) => {
+        logger.info(`accessCodeController.getAccessCodesCount success. About to send back http response with count ${count}`);
+ 
+        res.status(200).json({ count: count }); // 200 - Sucess
+    })
+    .catch((err) => {
+        var errMsg = `accessCodeController.getAccessCodesCount failed. Error: ${err}`
+        logger.error(errMsg);
+        res.status(500).json({ error: errMsg }); // 500 - INTERNAL SERVER ERROR
+    });
+
+}
+
+
 // DELETE a accessCode by id.
 exports.deleteAccessCode = function (req, res) {
     logger.verbose('AccessCodeController.deleteAccessCode begin');

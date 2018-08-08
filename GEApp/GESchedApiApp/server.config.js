@@ -7,6 +7,7 @@ appConfig.appServerName = 'GEMeetingRequestApiApp';
 appConfig.port = 80;
 appConfig.noPageCaching = true;
 
+// If database is held on a different server, then this location can be changed.
 appConfig.dbUrlRefix = 'mongodb://localhost:27017/GEMeetingRequestDB';
 
 appConfig.defaultSite = 'HLS-MA';

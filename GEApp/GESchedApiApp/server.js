@@ -7,7 +7,7 @@ const mongoose = require('mongoose');           // Helper libray for MongoDB. ht
 const bodyParser = require('body-parser');      // Help convert JSON data in the http request body into a Javascript object.
 const cookieParser = require('cookie-parser')   // Help parse name/value pairs in request cookie. https://www.npmjs.com/package/cookie-parser
 const appConfig = require('./server.config');   // Load app configuration settings.
-const logger = require('./server-api/logger');  // Create logging helper
+const logger = require('./server-api/logger');  // Create logging helper for morgan
 const cors = require('cors');                     // Enables Cross-origin resource sharing. https://github.com/expressjs/cors#enabling-cors-pre-flight
 const fs = require('fs');                       // File system.
 

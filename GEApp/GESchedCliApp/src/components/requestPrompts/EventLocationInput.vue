@@ -13,7 +13,7 @@
             <div class="card-text" :hidden="selectedRoom.capabilities == null || selectedRoom.capabilities.length == 0">
               <hr>
               <span v-for="(capability, index) in selectedRoom.capabilities" :key="index" style="padding:1px">
-              <span class="badge badge-secondary">
+              <span class="badge badge-secondary capability-badge-style">
                 {{capability}}
               </span>
               </span>

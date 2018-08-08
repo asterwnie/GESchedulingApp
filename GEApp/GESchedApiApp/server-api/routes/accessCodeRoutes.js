@@ -20,6 +20,8 @@ module.exports = function (app) {
             .put(accessCodeController.updateAccessCode)
             .patch(accessCodeController.updateAccessCode);
 
+        app.route('/api/accessCodesCount')
+            .get(accessCodeController.getAccessCodesCount);
 
         app.route('/api/accessCodes/:id')
             .get(accessCodeController.getAccessCode)

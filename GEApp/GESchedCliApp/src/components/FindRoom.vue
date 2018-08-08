@@ -195,7 +195,7 @@
             <div class="card-text" :hidden="showNamesOnly || room.capabilities == null || room.capabilities.length == 0">
               <hr>
               <span v-for="(capability, index) in room.capabilities" :key="index" style="padding:1px">
-                <span class="badge text-light" style="background-color:#bdbdbd">
+                <span class="badge text-light capability-badge-style">
                   {{capability}}
                 </span>
               </span>     

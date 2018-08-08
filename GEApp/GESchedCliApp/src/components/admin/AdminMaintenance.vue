@@ -492,6 +492,35 @@ export default {
         let inputCode = $("#deleteAccessCode")[0].value;
         let isAdminCode = $("#accessCodeDeleteIsAdmin")[0].checked;
 
+/* 
+        let getCountUrl = apiMgr.getAccessCodesUrl().replace("accessCodes", "accessCodesCount");
+        if (isAdminCode){
+          getCountUrl += `&isForAdmin=${isAdminCode}`;
+        }
+
+        axios.get(url)
+          .then(res => {
+            console.log("getAccessCodesCount return status: " + res.status);                
+            
+            if(count > 1){
+              //put code here
+
+            } else {
+              vm.hasFailure = true;
+              vm.isAccessCodeDeleteFailure = true;
+              vm.failureMessage = "Error: Cannot delete (One access code of type left)";  
+            }
+
+          })
+          .catch((err) => {
+            vm.hasFailure = true;
+            vm.isAccessCodeDeleteFailure = true;
+            vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                 
+          })
+
+
+ */
+
 
         var doesAccessCodeExist = new Promise(function(resolve, reject) {
           if (inputCode != "" && inputCode != null){
