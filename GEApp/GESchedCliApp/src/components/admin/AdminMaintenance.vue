@@ -143,7 +143,7 @@
                     
                     <br>
                     <button type="button" class="float-right btn btn-sm btn-danger" @click.prevent="onDeleteOldRequestsModal">Delete Past Requests</button>
-                    <button type="button" class="btn btn-sm btn-secondary" @click.prevent="resetFilterView">Reset</button>
+                    <button type="button" class="btn btn-sm btn-secondary" @click.prevent="clearSearchUI">Reset</button>
                     
                   </div>
               </div>
@@ -448,6 +448,31 @@ export default {
         
       },
 
+      clearSearchUI() {
+        //clear all search UI to be blank
+        var inputs = $("input");
+        inputs.each(function(){
+          let inputType = this.type;
+          if (inputType == "text" || inputType == "number"){
+            this.value = "";
+          } else if (inputType == "checkbox"){
+            this.checked = false;
+          }
+        });
+
+        var selects = $('select');
+        selects.each(function(){
+          if (this.id != null && this.id != "") {
+            if (this.id.indexOf("default") > -1) {
+              //if there is a default, reselect it
+              this.value = this.id.replace("default-", "");
+            }
+          } else {
+            this.value = "";
+          }
+        });
+      },
+
 
       checkIfAccessCodeExists(isAdminCode, inputCode){
         let vm = this;
@@ -492,34 +517,7 @@ export default {
         let inputCode = $("#deleteAccessCode")[0].value;
         let isAdminCode = $("#accessCodeDeleteIsAdmin")[0].checked;
 
-/* 
-        let getCountUrl = apiMgr.getAccessCodesUrl().replace("accessCodes", "accessCodesCount");
-        if (isAdminCode){
-          getCountUrl += `&isForAdmin=${isAdminCode}`;
-        }
 
-        axios.get(url)
-          .then(res => {
-            console.log("getAccessCodesCount return status: " + res.status);                
-            
-            if(count > 1){
-              //put code here
-
-            } else {
-              vm.hasFailure = true;
-              vm.isAccessCodeDeleteFailure = true;
-              vm.failureMessage = "Error: Cannot delete (One access code of type left)";  
-            }
-
-          })
-          .catch((err) => {
-            vm.hasFailure = true;
-            vm.isAccessCodeDeleteFailure = true;
-            vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                 
-          })
-
-
- */
 
 
         var doesAccessCodeExist = new Promise(function(resolve, reject) {
