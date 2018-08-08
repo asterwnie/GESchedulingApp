@@ -210,17 +210,34 @@ export default {
             requestResultCaption: "Requests - All",
             currentPageNumber: 1,
             requestsQueryString: "",
-            deleteMode: false,
-            processingStatusOptions: this.$store.state.processingStatusOptions,
-            underReviewLabel: this.$store.state.appConfig.requestStatusTagUnderReview,
-            rejectedLabel: this.$store.state.appConfig.requestStatusTagRejected,
-            approvedLabel: this.$store.state.appConfig.requestStatusTagApproved,
-            canceledLabel: this.$store.state.appConfig.requestStatusTagCanceled
+            deleteMode: false
         }
     },
 
 
     computed: {
+
+        processingStatusOptions() {
+            return this.$store.state.processingStatusOptions; 
+        },
+
+        underReviewLabel() {
+            return this.$store.state.appConfig.requestStatusTagUnderReview; 
+        },
+
+        rejectedLabel() {
+            return this.$store.state.appConfig.requestStatusTagRejected; 
+        },
+
+        approvedLabel() {
+            return this.$store.state.appConfig.requestStatusTagApproved; 
+        },
+
+        canceledLabel() {
+            return this.$store.state.appConfig.requestStatusTagCanceled; 
+        },
+
+
         title() {
             return this.$store.state.appConfig.adminHomeViewTitle; 
         },

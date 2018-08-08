@@ -41,10 +41,6 @@ import sendEmailComponent from '@/components/admin/SendEmailCommon.vue'
 export default {
     data () {
         return {
-            title: this.$store.state.appConfig.adminSendInviteViewTitle,
-            viewDescription: this.$store.state.appConfig.adminSendInviteViewDescription,
-            emailSubject: this.$store.state.appConfig.adminSendInviteEmailSubject,
-            emailTemplate: this.$store.state.appConfig.adminSendInviteEmailTemplate,
             navOutButtonLabel: "Done",
             navOutRoutePath: "/admin/home",
             supportDoAnother: true,
@@ -56,9 +52,24 @@ export default {
     components: {
         sendEmailComponentCtrl: sendEmailComponent
     },
-
     
     computed: {
+        
+        title() {
+            return this.$store.state.appConfig.adminSendInviteViewTitle; 
+        },
+
+        viewDescription() {
+            return this.$store.state.appConfig.adminSendInviteViewDescription; 
+        },
+        
+        emailSubject() {
+            return this.$store.state.appConfig.adminSendInviteEmailSubject; 
+        },
+
+        emailTemplate() {
+            return this.$store.state.appConfig.adminSendInviteEmailTemplate; 
+        },
 
         defRecipientName() {
             return null; 

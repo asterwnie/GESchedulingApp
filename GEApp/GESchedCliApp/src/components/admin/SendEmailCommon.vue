@@ -42,7 +42,7 @@
             
             <div v-if="canEmail">
                 <button type="button" @click.prevent="onNavOut" class="btn btn-sm btn-primary">{{navOutButtonLabel}}</button>
-                <a :href="`mailto:${recipientEmail}?subject=${sendInviteEmailSubject}&body=${emailStringDataExport}`">
+                <a :href="`mailto:${recipientEmail}?subject=${emailSubject}&body=${emailStringDataExport}`">
                     <button type="button" class="float-right btn btn-sm btn-primary">Launch Email</button>
                 </a>
             </div>
@@ -96,15 +96,13 @@ export default {
         console.log('SendEmailCommon.vue activated.');
         let vm = this;
 
-        if (this.$store.state.appConfig == null) {
+        if (this.$store.state.appConfig.siteCode == null) {
             this.$router.push('/login'); // Config data lost, force back to login to refetch data.
             return;
         }
 
         this.$store.state.currentViewTitle = this.title;
         this.$store.state.enableNavBar = true;
-
-        $(".validation-msg").hide();
         
         if (this.needMostRecentUserAccessCode) {
             this.getMostRecentUserAccessCode();
@@ -215,6 +213,7 @@ export default {
 
         onReset() {
 
+            $(".validation-msg").hide();    
             $("#recipientEmail").val(this.defRecipientEmail);
             $("#recipientName").val(this.defRecipientName);
             $("#emailPreview").val(null);  
@@ -224,7 +223,6 @@ export default {
             
             this.$forceUpdate();
         }
-
 
     }
 }
