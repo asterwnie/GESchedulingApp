@@ -37,7 +37,7 @@
                 <h6 class="card-title">{{requestItem.processingStatusMessage}}</h6>
                 <div class="card-text"><i class="label-icon fas fa-building"></i>&nbsp;&nbsp;<b>{{requestItem.locationOfEvent.name}}</b>,&nbsp;{{requestItem.locationOfEvent.building}}</div> 
                 <div v-if="requestItem.eventDateTimeDisp != null" class="card-text"><i class="label-icon fas fa-calendar-check"></i>&nbsp;&nbsp;{{requestItem.eventDateTimeDisp}}</div>
-                <div class="card-text"><i class="label-icon fas fa-user-circle"></i>&nbsp;&nbsp;{{requestItem.eventGEContactPersonName}}</div>                      
+                <div class="card-text"><i class="label-icon fas fa-user-circle"></i>&nbsp;&nbsp;{{requestItem.eventGEContactPersonNameDisp}}</div>                      
                 <div class="card-text text-muted" style="font-size:80%;margin-bottom: 8px;">Updated On:&nbsp;{{requestItem.updatedAtDisp}}</div>
                 <div v-if="requestItem.userCanEdit">
                   <button :id="requestItem._id" type="button" @click.prevent="onEditRequest" class="enableEdit btn btn-warning btn-sm float-right">Edit</button>
@@ -127,6 +127,7 @@ export default {
 
     vm.$store.state.currentViewTitle = this.title;
     vm.$store.state.enableNavBar = true;
+    this.$store.state.hideBackNav  = true;
 
     this.checkHasWorkingNewRequestCached();
 
@@ -145,6 +146,13 @@ export default {
 
             $.each(foundRequests, function (index, request) {
               request.updatedAtDisp = util.getDateTimeDisplay(request.updatedAt);
+
+              request.eventGEContactPersonNameDisp = request.eventGEContactPersonName;
+              if (request.eventGEContactPersonNameDisp == null && request.eventGEContactPersonNameDisp == "") {
+                request.eventGEContactPersonNameDisp = request.eventGEContactPersonEmail; 
+              } else {
+                request.eventGEContactPersonNameDisp += `, (${request.eventGEContactPersonEmail})`;
+              }
 
               if (request.eventSchedule != null && 
                  request.eventSchedule.startDateTime != null &&
@@ -250,7 +258,6 @@ export default {
       }
 
       storeState.currentRequest = selectedRequest;
-      storeState.selectedRoom = selectedRequest.locationOfEvent;
 
       //check if it is an edit or a view; if edit, go to request/1, if view, go to summary
       if($(event.target).hasClass("enableEdit")){
@@ -262,7 +269,7 @@ export default {
     },
 
     onViewRequest: function(event) {
-      console.log('Home.vue - onEditViewRequest activate');
+      console.log('Home.vue - onViewRequest activate');
 
       let vm = this;
       let selectedReqId = event.target.id;
@@ -270,6 +277,8 @@ export default {
 
       var selectedRequest = null;
 
+      // If viewing a request the assumption is that it should be edited and 
+      // therefore clear out any from the cache and rely on the one from the server.
       var revisingRequest = localCacheMgr.getCachedItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, selectedReqId));
       if (revisingRequest != undefined && revisingRequest != null) {
         localCacheMgr.uncacheItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, selectedReqId));
@@ -282,7 +291,6 @@ export default {
       });
       
       storeState.currentRequest = selectedRequest;
-      storeState.selectedRoom = selectedRequest.locationOfEvent;
 
       //check if it is an edit or a view; if edit, go to request/1, if view, go to summary
       if($(event.target).hasClass("enableEdit")){

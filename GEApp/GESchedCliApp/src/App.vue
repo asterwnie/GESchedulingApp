@@ -11,7 +11,7 @@
       <div class="d-flex justify-content-between">
         <!--Back button-->
         <div class="p-2 align-self-center">
-          <a @click="$router.go(-1)"><span class="fas fa-chevron-left fa-lg" :hidden="!$store.state.enableNavBar"></span></a><span :hidden="!isInDebugMode">&nbsp;({{windowWidth}},{{windowHeight}})&nbsp;Small:&nbsp;{{this.$store.state.isInSmallWidthMode}}</span>
+          <a @click="$router.go(-1)"><span class="fas fa-chevron-left fa-lg" :hidden="!$store.state.enableNavBar || $store.state.hideBackNav"></span></a><span :hidden="!isInDebugMode">&nbsp;({{windowWidth}},{{windowHeight}})&nbsp;Small:&nbsp;{{this.$store.state.isInSmallWidthMode}}</span>
         </div>       
         <!--Title-->
         <div class="p-2 align-self-center">{{ title }}</div>
@@ -246,6 +246,9 @@ export default {
   watch:{
     $route (to, from){
       window.scrollTo(0, 0);
+
+      this.$store.state.enableNavBar = true;
+      this.$store.state.hideBackNav  = false;
       
       if (this.$store.state.inAdminMode) {
         if (to.name == "AttentionNotes" && this.$store.state.previousPage == "AttentionNotes") {

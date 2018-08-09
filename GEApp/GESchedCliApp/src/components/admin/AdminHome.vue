@@ -131,7 +131,7 @@
                             <h6 class="card-title"><span :class="requestItem.processingStatus">{{requestItem.processingStatusLabel}}</span></h6>
                             <div class="card-text"><i class="label-icon fas fa-building"></i>&nbsp;&nbsp;<b>{{requestItem.locationOfEvent.name}}</b>,&nbsp;{{requestItem.locationOfEvent.building}}</div> 
                             <div v-if="requestItem.eventDateTimeDisp != null" class="card-text"><i class="label-icon fas fa-calendar-check"></i>&nbsp;&nbsp;{{requestItem.eventDateTimeDisp}}</div>
-                            <div class="card-text"><i class="label-icon fas fa-user-circle"></i>&nbsp;&nbsp;{{requestItem.eventGEContactPersonName}}</div>                      
+                            <div class="card-text"><i class="label-icon fas fa-user-circle"></i>&nbsp;&nbsp;{{requestItem.eventGEContactPersonNameDisp}}</div>                      
                             <div class="card-text text-muted" style="font-size:80%;margin-bottom: 8px;">Updated On:&nbsp;{{requestItem.updatedAtDisp}}</div>
                             <div v-if="requestItem.adminCanEdit">
                                 <button :id="requestItem._id" style="cursor:pointer" type="button" @click.prevent="onEditViewRequest" class="enableEdit btn btn-warning btn-sm float-right">Edit</button>
@@ -292,6 +292,7 @@ export default {
 
         this.$store.state.currentViewTitle = this.title;
         this.$store.state.enableNavBar = true;
+        this.$store.state.hideBackNav  = true;
 
         if (util.detectIsInSmallWidthMode()) {
             //collapse search menu
@@ -399,6 +400,13 @@ export default {
                     $.each(foundRequests, function (index, foundRequest) {
 
                         foundRequest.updatedAtDisp = util.getDateTimeDisplay(foundRequest.updatedAt);
+
+                        foundRequest.eventGEContactPersonNameDisp = foundRequest.eventGEContactPersonName;
+                        if (foundRequest.eventGEContactPersonNameDisp == null && foundRequest.eventGEContactPersonNameDisp == "") {
+                            foundRequest.eventGEContactPersonNameDisp = foundRequest.eventGEContactPersonEmail; 
+                        } else {
+                            foundRequest.eventGEContactPersonNameDisp += `, (${foundRequest.eventGEContactPersonEmail})`;
+                        }
 
                         if (foundRequest.eventSchedule != null && 
                             foundRequest.eventSchedule.startDateTime != null &&
@@ -556,7 +564,6 @@ export default {
 
                 storeState.currentRequest = revisingRequest;
                 manageProcessingStatus(storeState.currentRequest);
-                storeState.selectedRoom = storeState.currentRequest.locationOfEvent;
                     
                 //check if it is an edit or a view; if edit, go to request/1, if view, go to summary
                 if($(event.target).hasClass("enableEdit")){
@@ -577,7 +584,6 @@ export default {
  
                         storeState.currentRequest = res.data;
                         manageProcessingStatus(storeState.currentRequest);
-                        storeState.selectedRoom = storeState.currentRequest.locationOfEvent;
                     
                         //check if it is an edit or a view; if edit, go to request/1, if view, go to summary
                         if($(event.target).hasClass("enableEdit")){

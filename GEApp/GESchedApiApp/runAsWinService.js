@@ -32,9 +32,11 @@ var drives = ['C','D','E','F','G','H','I','X','Y','Z'];
 
 var foundPath = false;
 drives.forEach((drive) => {
-    serverExecPath = drive + serverExecPathSufix;
-    if (!foundPath && fs.existsSync(serverExecPath)) {
-        foundPath = true;
+    if (!foundPath) {
+        serverExecPath = drive + serverExecPathSufix;
+        if (fs.existsSync(serverExecPath)) {
+            foundPath = true;
+        }
     }
 });
 

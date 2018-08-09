@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import * as util from '@/common/util.js';
+
 export default {
   data () {
     return {
@@ -48,29 +50,24 @@ export default {
   },
 
   activated() {
-    console.log('DoFirst.vue activated.');
+    util.logDebugMsg('DoFirst.vue activated.');
+
+    if (this.$store.state.appConfig.doFirstViewTitle == null) {
+      this.$router.push('/login'); // Config data lost, force back to login to refetch data.
+    }
 
     if (this.$route.params.isNewRequest != null && this.$route.params.isNewRequest == "true") {
       this.$store.state.currentRequest = null;
-      this.$store.state.selectedRoom = null;
     }
 
     if (this.inAdminMode) {
        this.$router.push('/request/1'); // In Admin mode, no need to show these notes.
     }
 
-    if (this.$store.state.appConfig.doFirstViewTitle == null) {
-      this.$router.push('/login'); // Config data lost, force back to login to refetch data.
-    }
-
     this.$store.state.currentViewTitle = this.title;
     this.$store.state.enableNavBar = true;
   }
 }
-
-// ToDo: Add a method called process text to look for [links] and convert it to html:
-// <a :href="link-goes-here"><span :class="badge badge-info">website</span></a>
-
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

@@ -23,7 +23,7 @@ export const transformMetaTags = (text) => {
     // And then replace the [url] with: <a href="url" target="_blank">website</a>
     if (bracketedStrings != null) {
         bracketedStrings.forEach((bracketedString, index) => {
-            console.log(`Detected bracketed Link: %{bracketedString}`);
+            console.log(`Detected bracketed Link: ${bracketedString}`);
 
             if (bracketedString != null && bracketedString.toLowerCase().indexOf("[http") > -1) {
                 var rawUrl = bracketedString.replace("[", "").replace("]", "");
@@ -87,7 +87,7 @@ export const transformAsMailToBodyText = (text) => {
     // For each bracketed link, trim the [ and ] to get just the string inside.
     if (bracketedStrings != null) {
         bracketedStrings.forEach((bracketedString, index) => {
-            console.log(`Detected bracketed String: %{bracketedString}`);
+            console.log(`Detected bracketed String: ${bracketedString}`);
             
             //if a line break is detected, replace it
             if (bracketedString != null && bracketedString.indexOf("[LINEBREAK") > -1) {

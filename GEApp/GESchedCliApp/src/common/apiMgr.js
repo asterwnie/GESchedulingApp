@@ -95,6 +95,16 @@ export const getRoomsUrl = () => {
     return url;
 }
 
+export const getRoomsByIdUrl = (id) => {
+    //debugger; // Uncomment to trigger breakpoint.
+
+    const appDefConfig = centralStore.state.appDefConfig;
+    var url = appDefConfig.roomsUrlTmpl.replace('{0}', appDefConfig.apiHost);
+    url = url.replace('{1}', appDefConfig.apiPort);
+    url = url + `/${id}?site=` + appDefConfig.site;
+    return url;
+}
+
 export const getRequestPromptsUrl = () => {
     //debugger; // Uncomment to trigger breakpoint.
 
