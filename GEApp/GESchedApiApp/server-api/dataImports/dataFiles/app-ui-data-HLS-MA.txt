@@ -13,6 +13,9 @@ http://localhost
 --AppTitle
 Meeting & Event[LINEBREAK]Request
 
+--AppName
+GE Meeting & Event Request App
+
 --HomeViewTitle 
 Home
 
@@ -137,28 +140,28 @@ Send Invite
 Invite a requester to use this booking utility.
 
 --AdminSendInviteEmailSubject 
-GE Scheduling Utility Access
+[APPNAME] Access
 
 --AdminSendInviteEmailTemplate
 Hello, [RECIPIENTNAME]!
 [LINEBREAK]
-[ADMINNAME] would like to invite you to access the GE Scheduling Utility.
+[ADMINNAME] would like to invite you to access the [APPNAME].
 Access Code: [ACCESSCODE]
 [LINEBREAK]
-To access the GE Scheduling Utility, use the following link on your browser:
+To access the [APPNAME], use the following link on your browser:
 [APPLINK]
 
 --AddAdminEmailSubject 
-GE Scheduling Utility Administrator Access
+[APPNAME] Administrator Access
 
 --AddAdminEmailTemplate 
 Hello, [RECIPIENTNAME]!
 [LINEBREAK]
-[ADMINNAME] would like to invite you to become an administrator on the GE Scheduling Utility.
+[ADMINNAME] would like to invite you to become an administrator on the [APPNAME].
 [LINEBREAK]
 Admin Access Code: [ADMINACCESSCODE]
 [LINEBREAK]
-To access the GE Scheduling Utility, use the following link on your browser:
+To access the [APPNAME], use the following link on your browser:
 [APPLINK]
 
 --RequestApprovedEmailAsk
@@ -176,9 +179,9 @@ Your Meeting Request Has Been Approved
 --RequestApprovedEmailTemplate 
 Hello, [RECIPIENTNAME]!
 [LINEBREAK]
-Your meeting request has been approved! Please review.
+Your meeting request has been approved! Please review it in the [APPNAME].
 [LINEBREAK]
-To access the GE Scheduling Utility, use the following link on your browser:
+To access the [APPNAME], use the following link on your browser:
 [APPLINK]
 
 --RequestNeedMoreInfoEmailAsk
@@ -198,5 +201,5 @@ Hello, [RECIPIENTNAME]!
 [LINEBREAK]
 Your meeting request has not yet been approved. Please review and update your request to provide the additional information needed.
 [LINEBREAK]
-To access the GE Scheduling Utility, use the following link on your browser:
+To access the [APPNAME], use the following link on your browser:
 [APPLINK]
