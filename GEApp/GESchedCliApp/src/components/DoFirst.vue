@@ -56,6 +56,10 @@ export default {
       this.$router.push('/login'); // Config data lost, force back to login to refetch data.
     }
 
+    if (this.$route.params.isNewRequest != null && this.$route.params.isNewRequest == "true") {
+      this.$store.state.currentRequest = null;
+    }
+
     if (this.inAdminMode) {
        this.$router.push('/request/1'); // In Admin mode, no need to show these notes.
     }

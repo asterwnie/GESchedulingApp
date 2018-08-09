@@ -280,7 +280,7 @@ export default {
     storeState.enableNavBar = true;
 
     if (storeState.currentRequest == null) {
-      var workingNewRequest = localCacheMgr.getCachedItem(util.makeWorkingNewRequestCacheKey(storeState.loginContext.requesterEmail));
+      let workingNewRequest = localCacheMgr.getCachedItem(util.makeWorkingNewRequestCacheKey(storeState.loginContext.requesterEmail));
       if (workingNewRequest != undefined && workingNewRequest != null) {
 
         storeState.currentRequest = workingNewRequest;

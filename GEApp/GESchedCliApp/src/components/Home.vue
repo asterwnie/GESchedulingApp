@@ -261,7 +261,7 @@ export default {
     },
 
     onViewRequest: function(event) {
-      console.log('Home.vue - onEditViewRequest activate');
+      console.log('Home.vue - onViewRequest activate');
 
       let vm = this;
       let selectedReqId = event.target.id;
@@ -269,6 +269,8 @@ export default {
 
       var selectedRequest = null;
 
+      // If viewing a request the assumption is that it should be edited and 
+      // therefore clear out any from the cache and rely on the one from the server.
       var revisingRequest = localCacheMgr.getCachedItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, selectedReqId));
       if (revisingRequest != undefined && revisingRequest != null) {
         localCacheMgr.uncacheItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, selectedReqId));

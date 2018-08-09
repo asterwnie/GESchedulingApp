@@ -695,16 +695,16 @@ export default {
 
               if (res.status == 200) {
                 util.logDebugMsg("onSubmitRequest - Existing request found. About to call submitUpdatedRequest.");             
-                this.submitUpdatedRequest(requestsUrl, storeState.currentRequest, '/home');
+                this.submitUpdatedRequest(requestsUrl, storeState.currentRequest, false);
               } else {
                 util.logDebugMsg("onSubmitRequest - status code is not 200, assume request not found. Creating new request.");
-                this.submitNewRequest(requestsUrl, storeState.currentRequest, '/home');
+                this.submitNewRequest(requestsUrl, storeState.currentRequest);
               }          
           })
           .catch((err) => {
               if(err.response != null && err.response.status == 404) { //If that id is not found
                 util.logDebugMsg("onSubmitRequest - No existing request found with id. About to call submitNewRequest. id: " + storeState.currentRequest._id);
-                this.submitNewRequest(requestsUrl, storeState.currentRequest, '/home');
+                this.submitNewRequest(requestsUrl, storeState.currentRequest);
               } else {
                 vm.hasFailure = true;
                 vm.failureMessage = "Server unavailable or not working at this time. Please try later.";   
@@ -762,9 +762,8 @@ export default {
               util.logDebugMsg("submitNewRequest - localCacheMgr.uncacheItem, cacheKey: " + cacheKey);
 
               storeState.currentRequest = null;
-              util.logDebugMsg("submitNewRequest - set currentRequest to null.");
+              util.logDebugMsg("submitNewRequest - set currentRequest to null. about to call onReturnHome.");
 
-              util.logDebugMsg("submitNewRequest - about to call onReturnHome");
               vm.onReturnHome();
 
           } else {
@@ -794,14 +793,18 @@ export default {
     },
 
 
-    submitUpdatedRequest(requestsUrl, request) {
+    submitUpdatedRequest(requestsUrl, request, justUpdateApprovalNotified) {
 
       util.logDebugMsg("RequestSummary - submitUpdatedRequest");
       var vm = this;
       vm.isSubmitting = true;
       const storeState = vm.$store.state;
 
-      if (request.processingStatus == "rejected" && !this.inAdminMode) {
+      if (justUpdateApprovalNotified == undefined || justUpdateApprovalNotified == null) {
+        justUpdateApprovalNotified = false;
+      }
+
+      if (!justUpdateApprovalNotified && request.processingStatus == "rejected" && !this.inAdminMode) {
         util.logDebugMsg("submitUpdatedRequest - request.processingStatus is rejected and not inAdminMode, set request.processingStatus to underReview.");
         request.processingStatus = "underReview";
       }
@@ -830,19 +833,44 @@ export default {
               
               util.logDebugMsg("submitUpdatedRequest - called localCacheMgr.uncacheItem vwith cacheKey: " + cacheKey);
 
-              if (vm.inAdminMode && (requestUpdated.processingStatus == "approved" || requestUpdated.processingStatus == "rejected")) {
+              let canGoHome = true;
+              if (justUpdateApprovalNotified) {
+                canGoHome = false;
+              }
+
+              if (!justUpdateApprovalNotified && vm.inAdminMode && 
+                  (requestUpdated.processingStatus == "approved" || requestUpdated.processingStatus == "rejected")) {
  
-                util.logDebugMsg("submitUpdatedRequest - inAdminMode == true, requestUpdated.processingStatus: " + requestUpdated.processingStatus);
+                let canDoNotify = true;
 
-                util.logDebugMsg("submitUpdatedRequest - calling updateSendEmailConfirmDialogTitle & updateSendEmailConfirmDialogMessage");
-                this.updateSendEmailConfirmDialogTitle(requestUpdated);
-                this.updateSendEmailConfirmDialogMessage(requestUpdated);
-                this.$forceUpdate();
+                if (requestUpdated.approvalNotified != undefined && requestUpdated.approvalNotified == true) {
+                  canDoNotify = false;
+                }
 
-                util.logDebugMsg("submitUpdatedRequest - About to sendEmailConfirmDialog.modal('show')");
-                $('#sendEmailConfirmDialog').modal('show');
+                if (canDoNotify) {
+                  canGoHome = false;
+                  util.logDebugMsg("submitUpdatedRequest - inAdminMode == true, requestUpdated.processingStatus: " + requestUpdated.processingStatus);
 
-              } else {
+                  util.logDebugMsg("submitUpdatedRequest - calling updateSendEmailConfirmDialogTitle & updateSendEmailConfirmDialogMessage");
+                  this.updateSendEmailConfirmDialogTitle(requestUpdated);
+                  this.updateSendEmailConfirmDialogMessage(requestUpdated);
+                  this.$forceUpdate();
+
+                  util.logDebugMsg("submitUpdatedRequest - About to sendEmailConfirmDialog.modal('show')");
+                  $('#sendEmailConfirmDialog').modal('show');
+
+                  //Update requestUpdated.approvalNotified = true and call server to save it.
+                  requestUpdated.approvalNotified = true;
+                  justUpdateApprovalNotified = true;
+                  this.submitUpdatedRequest(requestsUrl, requestUpdated, justUpdateApprovalNotified);
+
+                } else {
+                  canDoNotify = true;
+                }
+
+              } 
+              
+              if (canGoHome) {
                 util.logDebugMsg("submitUpdatedRequest - setting currentRequest to null before calling onReturnHome.");
                 storeState.currentRequest = null;
                 vm.onReturnHome();
