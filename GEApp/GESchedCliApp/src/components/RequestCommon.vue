@@ -427,7 +427,7 @@ export default {
       } else {
         this.hasValidationError = true;       
         //Ensures the view is at the bottom to show the view-level validation error message.
-        document.body.scrollIntoView({block: "end"});
+        window.scrollTo(0,document.body.scrollHeight);
       }
     },
 
