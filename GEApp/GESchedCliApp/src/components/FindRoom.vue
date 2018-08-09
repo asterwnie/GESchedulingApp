@@ -244,11 +244,19 @@ export default {
     },
     selectedRoom(){
       return this.$store.state.selectedRoom;
-    }
+    },
+    isNewRequest() {
+      var isNew = true;
+      var storeState = this.$store.state;
+      if (storeState.currentRequest != null && storeState.currentRequest._id != undefined && storeState.currentRequest._id != null) {
+        isNew = false;
+      }
+      return isNew;
+    },
   },
 
   activated() {
-    console.log('FindRoom.vue activated.');
+    util.logDebugMsg('FindRoom.vue activated.');
     let vm = this;
 
     if (this.$store.state.appConfig.findRoomViewTitle == null) {
@@ -267,7 +275,7 @@ export default {
     }); */
 
     var selects = $("option");
-    selects.each(function(){
+    selects.each(function() {
       this.selected = false;
     });
 
@@ -283,15 +291,15 @@ export default {
     });
 
 
+    util.logDebugMsg('FindRoom.vue activated - vm.$store.state.previousPage: ' + vm.$store.state.previousPage);
+
     vm.isSelectingRoom = false;
     //check if previous screen was a request screen
     if(vm.$store.state.previousPage.indexOf("RequestScreen") > -1){
-      console.log(`Previous screen is request: ${vm.$store.state.previousPage}. Select Room Activated.`);
+      util.logDebugMsg(`Previous screen is request: ${vm.$store.state.previousPage}. Select Room Activated.`);
       vm.isSelectingRoom = true;
       vm.$store.state.currentViewTitle = "Select Room";
-
     }
-
 
   },
 
@@ -390,15 +398,14 @@ export default {
           queryString = queryString.substring(0, queryString.length-1);
         }
 
-        console.log(`FindRoom.vue - Query string: ${queryString}`);
+        util.logDebugMsg(`FindRoom.vue - Query string: ${queryString}`);
 
-  
         //get queried rooms
         var url = apiMgr.getRoomsUrl() + queryString; 
 
             axios.get(url)
                 .then(res => {
-                    console.log("getRoomsUrl return status: " + res.status);
+                    util.logDebugMsg("getRoomsUrl return status: " + res.status);
                     
                     while(vm.$store.state.roomSearchResult.length > 0) {
                       vm.$store.state.roomSearchResult.pop();
@@ -417,7 +424,6 @@ export default {
                     vm.hasFailure = true;
                     vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
                 })
-
         
       }
     },
@@ -449,7 +455,7 @@ export default {
     onRoomSelectModal: function(event){
       if(event){
           let vm = this;
-          console.log("onRoomSelectModal activate.");
+          util.logDebugMsg("onRoomSelectModal begin.");
 
           $('#findRoomModal').modal('show');
           let currId = event.target.id;
@@ -459,50 +465,77 @@ export default {
           document.getElementById("selectedRoomUI").innerHTML = currCard;
 
           //set selectedRoom
-          let siteCode = apiMgr.getRoomsUrl().substring(apiMgr.getRoomsUrl().indexOf('?'), apiMgr.getRoomsUrl().length);
-          var url = apiMgr.getRoomsUrl().substring(0, apiMgr.getRoomsUrl().indexOf('?')) + `/${currId}${siteCode}`;
+          var url = apiMgr.getRoomsByIdUrl(currId);
 
           axios.get(url)
               .then(res => {
-                  console.log("getRoomsUrl return status: " + res.status);
-                  
-                  console.log('onRoomSelectModal - selectedRoom set.');
+                  util.logDebugMsg("onRoomSelectModal - getRoomsUrl return status: " + res.status);
+                          
                   vm.$store.state.selectedRoom = res.data;
+                  if (vm.$store.state.selectedRoom != null) {
+                    util.logDebugMsg('onRoomSelectModal - Assigned vm.$store.state.selectedRoom: ' + vm.$store.state.selectedRoom.name);
+                  }
               })
               .catch((err) => {
                   vm.hasFailure = true;
-                  vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                  vm.failureMessage = "Server unavailable or not working at this time. Please try later.";  
+                  util.logDebugMsg('onRoomSelectModal - ' + vm.failureMessage);                             
               })
       }
     },
 
 
     onRoomSelectConfirm() {
-      console.log('onRoomSelectConfirm activated.');
+      util.logDebugMsg('onRoomSelectConfirm activated.');
       let vm = this;
 
       //save selected config
-       if($(".border-success").length > 0){
+      if ($(".border-success").length > 0) {
         vm.$store.state.selectedRoom["selectedConfig"] = $(".border-success")[0].id;
+        util.logDebugMsg('onRoomSelectConfirm activated. Set vm.$store.state.selectedRoom["selectedConfig"] = ' + vm.$store.state.selectedRoom["selectedConfig"]);
       }
       
       $('#findRoomModal').modal('hide');
-      if(vm.$store.state.previousPage.indexOf("Request") > -1){
-        //save to currentRequest and flush selectedRoom
+
+      util.logDebugMsg('onRoomSelectConfirm - findRoomModal.modal(hide)');
+
+      if (vm.$store.state.previousPage != null) {
+        util.logDebugMsg('onRoomSelectConfirm - vm.$store.state.previousPage: ' + vm.$store.state.previousPage);
+      }
+
+      if (vm.$store.state.previousPage.indexOf("Request") > -1) {
+        //save to currentRequest and flush selectedRoom  
+        var curReq = vm.$store.state.currentRequest;     
         vm.$store.state.currentRequest.locationOfEvent = vm.$store.state.selectedRoom;
+        vm.$store.state.currentRequest = null; // temporarily change it and trick computed to trigger.
+        vm.$store.state.currentRequest = curReq;
+        if (vm.$store.state.currentRequest.locationOfEvent != null) {
+          util.logDebugMsg('onRoomSelectConfirm - set currentRequest.locationOfEvent with selectRoom: ' + vm.$store.state.selectedRoom.name);
+        }
+
         vm.$store.state.selectedRoom = null;
-        //cache currentRequest
+        util.logDebugMsg('onRoomSelectConfirm - cleared out. set selectedRoom to null');
+
+        //cache Request
         try {
-            localCacheMgr.cacheItem(
-              util.makeWorkingNewRequestCacheKey(vm.$store.state.loginContext.requesterEmail), 
-              vm.$store.state.currentRequest);
+          if (this.isNewRequest) {
+            let cacheKey = util.makeWorkingNewRequestCacheKey(vm.$store.state.loginContext.requesterEmail);
+            util.logDebugMsg(`onRoomSelectConfirm - About to cache request (${vm.$store.state.currentRequest.eventTitle}) using the cacheKey (${cacheKey})`);
+            localCacheMgr.cacheItem(cacheKey, vm.$store.state.currentRequest);
+          } else {
+            let cacheKey = util.makeRevisingRequestCacheKey(vm.$store.state.loginContext.requesterEmail, vm.$store.state.currentRequest._id)
+            util.logDebugMsg(`onRoomSelectConfirm - About to cache request (${vm.$store.state.currentRequest.eventTitle}) using the cacheKey (${cacheKey})`);
+            localCacheMgr.cacheItem(cacheKey, vm.$store.state.currentRequest);
+          }
         } catch (err) {
-          console.log("Not able to locally cache the working request");
+          util.logDebugMsg("onRoomSelectConfirm - Not able to locally cache the working request. err: " + err);
         }
 
         //navigate back to request page
         let pageNum = vm.$store.state.previousPage.substring(vm.$store.state.previousPage.length-1, vm.$store.state.previousPage.length);
-        vm.$router.push(`/request/${pageNum}`);
+        let routePath = `/request/${pageNum}`;
+        util.logDebugMsg("onRoomSelectConfirm - route to: " + routePath);
+        vm.$router.push(routePath);
       }
 
       vm.$forceUpdate();
@@ -510,7 +543,7 @@ export default {
     },
 
     onRoomDeselect(){
-      console.log('onRoomDeselect activated. selectedRoom unset.');
+      util.logDebugMsg('onRoomDeselect activated. selectedRoom unset (set to null).');
       this.$store.state.selectedRoom = null;
       $('#findRoomModal').modal('hide');
       $(".card").removeClass("border-success");

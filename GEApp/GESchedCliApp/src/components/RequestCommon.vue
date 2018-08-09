@@ -121,8 +121,6 @@ import * as util from '@/common/util.js';
 import * as apiMgr from '@/common/apiMgr.js';
 import * as localCacheMgr from '@/common/localCacheMgr.js';
 
-//import Room from '@/../GESchedApiApp/server-api/models/roomModel.js'
-
 import { clearValidationMessages, validateRequest, manageProcessingStatus, bindUiValuesFromRequest, applyBadgeColorBasedOnProcessingStatus } from '@/common/requestMgr.js'
 
 import textInputCtrl from '@/components/requestPrompts/TextInput.vue'
@@ -270,11 +268,11 @@ export default {
     $('.is-admin-comment').hide();
     if (this.isNewRequest) {
       $('.is-admin-comment').val("");
+      util.logDebugMsg('RequestCommon.vue - isNewRequest == true, so clear all is-admin-comment ctrl values.');
     }
 
     if (this.isNewRequest) {
       storeState.currentViewTitle = storeState.appConfig.newRequestViewTitle;
-      storeState.currentRequest = null;
     } else {
       storeState.currentViewTitle = storeState.appConfig.editRequestViewTitle;
     }
@@ -290,12 +288,7 @@ export default {
         storeState.currentRequest.userCanEdit = true;
         storeState.currentRequest.adminCanEdit = false; 
       }
-    } else {
-      var revisingRequest = localCacheMgr.getCachedItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, storeState.currentRequest._id));
-      if (revisingRequest != undefined && revisingRequest != null) {
-        storeState.currentRequest = revisingRequest;
-      }
-    }
+    } 
 
     this.InitDependsOnControls();
 
@@ -311,6 +304,13 @@ export default {
       storeState.currentRequest["eventGEContactPersonPhone"] = this.currentUserPhone;
     }
 
+    if (storeState.currentRequest.locationOfEvent == null && storeState.selectedRoom != null) { 
+      util.logDebugMsg('RequestCommon.vue - currentRequest.locationOfEvent is null and storeState.selectedRoom is available to be assigned.');
+      storeState.currentRequest.locationOfEvent = storeState.selectedRoom;
+      storeState.selectedRoom = null;
+      util.logDebugMsg('RequestCommon.vue - storeState.selectedRoom is now consumed, set selectedRoom to null.');      
+    }
+
     bindUiValuesFromRequest(storeState.currentRequest, this.currentScreenNum, (this.inAdminMode && !this.isNewRequest));
 
     var emailCtrl = $("#eventGEContactPersonEmail");
@@ -324,6 +324,9 @@ export default {
         emailCtrl.css("background-color", "white")
       }
     }
+
+    // FOrce update to ensure newly assigned room rebind to the UI.
+    this.$forceUpdate();
 
     this.$nextTick(function () {
       if (this.isNewRequest) {
@@ -482,20 +485,17 @@ export default {
                   storeState.currentRequest[inputCtrl.id] = parseInt(ctrlVal);               
                 }
               } catch (err) {
-                console.log(`Unable to assign ${ctrlVal} to ${inputCtrl.id}`);
+                util.logDebugMsg(`bindCtrlValuesToRequestProperties - Unable to assign ${ctrlVal} to ${inputCtrl.id}`);
               }
 
             } else if ($(inputCtrl).attr('isRoom') == "true") {
 
-              if(storeState.selectedRoom != null && storeState.selectedRoom != undefined){
+              if (storeState.selectedRoom != null && storeState.currentRequest[inputCtrl.id] == null) {
+
                 storeState.currentRequest[inputCtrl.id] = storeState.selectedRoom;
+                util.logDebugMsg(`bindCtrlValuesToRequestProperties - assign selectedRoom (${storeState.selectedRoom.name}) to currentRequest (${storeState.currentRequest.eventTitle})`);
                 storeState.selectedRoom = null;
-              } else {
-                try {
-                  if (storeState.currentRequest[inputCtrl.id] == null) {
-                    storeState.currentRequest[inputCtrl.id] = null;
-                  }
-                } catch (err) {}
+                util.logDebugMsg('bindCtrlValuesToRequestProperties - reset selectedRoom back to null since its consumed');
               }
 
             } else if ($(inputCtrl).attr('isEventDateTime') == "true") {

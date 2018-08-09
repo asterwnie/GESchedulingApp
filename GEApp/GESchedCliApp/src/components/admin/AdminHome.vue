@@ -556,7 +556,6 @@ export default {
 
                 storeState.currentRequest = revisingRequest;
                 manageProcessingStatus(storeState.currentRequest);
-                storeState.selectedRoom = storeState.currentRequest.locationOfEvent;
                     
                 //check if it is an edit or a view; if edit, go to request/1, if view, go to summary
                 if($(event.target).hasClass("enableEdit")){
@@ -577,7 +576,6 @@ export default {
  
                         storeState.currentRequest = res.data;
                         manageProcessingStatus(storeState.currentRequest);
-                        storeState.selectedRoom = storeState.currentRequest.locationOfEvent;
                     
                         //check if it is an edit or a view; if edit, go to request/1, if view, go to summary
                         if($(event.target).hasClass("enableEdit")){

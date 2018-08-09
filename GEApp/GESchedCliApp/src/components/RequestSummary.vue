@@ -184,12 +184,17 @@ export default {
       if (storeState.currentRequest != null && storeState.currentRequest._id != undefined && storeState.currentRequest._id != null) {
         isNew = false;
       }
+      util.logDebugMsg('RequestSummary.vue - isNew: ' + isNew);
       return isNew;
     },
 
+
     inAdminMode() {
-      return this.$store.state.inAdminMode;
+      let isAdmin = this.$store.state.inAdminMode;
+      util.logDebugMsg('RequestSummary.vue - inAdminMode: ' + isAdmin);
+      return isAdmin;
     },
+
 
     requestProcessingStatus() {
       var status = null;
@@ -197,8 +202,10 @@ export default {
       if (storeState.currentRequest != null && storeState.currentRequest.processingStatus != null) {
         status = storeState.currentRequest.processingStatus;
       }
+      util.logDebugMsg('RequestSummary.vue - requestProcessingStatus: ' + status);
       return status;
     },
+
 
     requestProcessingStatusLabel() {
       var label = null;
@@ -206,34 +213,41 @@ export default {
       if (storeState.currentRequest != null && storeState.currentRequest.processingStatusLabel != null) {
         label = storeState.currentRequest.processingStatusLabel;
       }
+      util.logDebugMsg('RequestSummary.vue - requestProcessingStatusLabel: ' + label);
       return label;
     },
 
 
     canEditPreparationInfo() {
+      var status = false;
       var storeState = this.$store.state;
       if (this.inAdminMode && storeState.currentRequest != null && 
           storeState.currentRequest.processingStatus != null &&
           storeState.currentRequest.processingStatus != "underReview" &&
           storeState.currentRequest.processingStatus != "rejected") {
-        return true;
+        status = true;
       } else {
-        return false;
+        status = false;
       }
-
+      util.logDebugMsg('RequestSummary.vue - canEditPreparationInfo: ' + status);
+      return status;
     },
 
+
     canEditAdminGeneralComment() {
+      let status = false;
       var storeState = this.$store.state;
       if (this.inAdminMode && storeState.currentRequest != null && 
           storeState.currentRequest.processingStatus != null &&
           storeState.currentRequest.processingStatus != 'rejected') {
-        return true;
+        status = true;
       } else {
-        return false;
+        status = false;
       }
-
+      util.logDebugMsg('RequestSummary.vue - canEditAdminGeneralComment: ' + status);
+      return status;
     },
+
 
     canEditRequest() {
       var canEdit = false;
@@ -249,8 +263,10 @@ export default {
                  storeState.currentRequest.adminCanEdit == true) {
         canEdit = true;
       }
+      util.logDebugMsg('RequestSummary.vue - canEditRequest: ' + canEdit);
       return canEdit;
     },
+
 
     isNewRequest() {
       var isNew = true;
@@ -258,21 +274,23 @@ export default {
       if (storeState.currentRequest != null && storeState.currentRequest._id != undefined && storeState.currentRequest._id != null) {
         isNew = false;
       }
+      util.logDebugMsg('RequestSummary.vue - isNewRequest: ' + isNew);
       return isNew;
     },
+
 
     isApproved() {
       var approved = false;
       var storeState = this.$store.state;
       if (storeState.currentRequest != null && 
           storeState.currentRequest.processingStatus != undefined && 
-          (storeState.currentRequest.processingStatus == "approved" || 
-           storeState.currentRequest.processingStatus == "completed" ||
-           storeState.currentRequest.processingStatus == "prepared")) {
+          storeState.currentRequest.processingStatus == "approved") {
         approved = true;
       }
+      util.logDebugMsg('RequestSummary.vue - isApproved: ' + approved);
       return approved;
     },
+
 
     adminCommentCtrlId() {
       return this.ctrlId + "AdminComment";
@@ -289,7 +307,7 @@ export default {
   },
 
   activated() {
-    util.logDebugMsg('SubmitRequest.vue activated.');
+    util.logDebugMsg('RequestSummary.vue activated.');
     let vm = this;
     var storeState = this.$store.state;
 
@@ -300,18 +318,24 @@ export default {
 
     if (this.inAdminMode) {
 
+      util.logDebugMsg('RequestSummary.vue - inAdminMode == true, about to manage setting the generalAdminComment and generalPreparationNotes control value');
+
       var commentCtrl = $("#generalAdminComment");
       if (storeState.currentRequest.generalAdminComment != undefined && storeState.currentRequest.generalAdminComment != "") {
         commentCtrl.val(storeState.currentRequest.generalAdminComment);
+        util.logDebugMsg('RequestSummary.vue - finished setting generalAdminComment ctrl with: ' + storeState.currentRequest.generalAdminComment);
       } else {
         commentCtrl.val(null);
+        util.logDebugMsg('RequestSummary.vue - finished setting generalAdminComment ctrl with null.');
       }
 
       var notesCtrl = $("#generalPreparationNotes");
       if (storeState.currentRequest.generalPreparationNotes != undefined && storeState.currentRequest.generalPreparationNotes != "") {
         notesCtrl.val(storeState.currentRequest.generalPreparationNotes);
+        util.logDebugMsg('RequestSummary.vue - finished setting generalPreparationNotes ctrl with: ' + storeState.currentRequest.generalPreparationNotes);
       } else {
         notesCtrl.val(null);
+        util.logDebugMsg('RequestSummary.vue - finished setting generalPreparationNotes ctrl with null.');
       }
 
     }
@@ -400,7 +424,7 @@ export default {
   },
 
   created() {
-      console.log('SubmitRequest.vue created.');
+      console.log('RequestSummary.vue created.');
   },
 
   methods: {
@@ -426,7 +450,7 @@ export default {
     onDontSendEmail() {
       $('#sendEmailConfirmDialog').modal('hide');
       this.$store.state.currentRequest = null;
-      this.$store.state.selectedRoom = null;
+      util.logDebugMsg('RequestSummary - onDontSendEmail - set currentRequest to null.');
       this.onReturnHome();
     },
 
@@ -451,7 +475,8 @@ export default {
       storeState.defRecipientNameForSendEmail = currentRequest.eventGEContactPersonName;
       storeState.defRecipientEmailForSendEmail = currentRequest.eventGEContactPersonEmail;
       storeState.currentRequest = null;
-      storeState.selectedRoom = null;
+      util.logDebugMsg('RequestSummary - onEmailOutApproval - set currentRequest to null.');
+
       this.$router.push('/admin/sendapprovedemail'); 
     },
 
@@ -463,7 +488,8 @@ export default {
       storeState.defRecipientNameForSendEmail = currentRequest.eventGEContactPersonName;
       storeState.defRecipientEmailForSendEmail = currentRequest.eventGEContactPersonEmail;
       storeState.currentRequest = null;
-      storeState.selectedRoom = null;
+      util.logDebugMsg('RequestSummary - onEmailOutNeedMoreInfo - set currentRequest to null.');
+
       this.$router.push('/admin/sendneedmoreinfoemail'); 
     },
 
@@ -475,6 +501,8 @@ export default {
 
       if (canEditRequest) {
 
+        util.logDebugMsg('showHideLabeledTextArea - canEditRequest == true - ctrlId: ' + ctrlId);
+
         adminCtrl.prop('readonly', false);
         adminCtrl.prop('disabled', false);
 
@@ -484,6 +512,8 @@ export default {
         if (adminCtrlVal != null && adminCtrlVal != "") {
           needToShow = true;
         }
+
+        util.logDebugMsg('showHideLabeledTextArea - needToShow == ' + needToShow.toString() + ' - value: ' + adminCtrlVal.toString());
 
         if (needToShow) {
           adminCtrlLabel.show();
@@ -495,6 +525,8 @@ export default {
         
       } else {
 
+        util.logDebugMsg('showHideLabeledTextArea - canEditRequest == false - ctrlId: ' + ctrlId);
+
         adminCtrl.prop('readonly', true);
         adminCtrl.prop('disabled', true);
         adminCtrl.css("background-color", "white")
@@ -503,6 +535,8 @@ export default {
         if (adminCtrlVal != null && adminCtrlVal != "") {
           needToShow = true;
         }
+
+        util.logDebugMsg('showHideLabeledTextArea - needToShow == ' + needToShow + ' - value: ' + adminCtrlVal);
 
         if (needToShow) {
           adminCtrlLabel.show();
@@ -514,21 +548,30 @@ export default {
       }
     },
 
+
     onAddAdminComment(evt) {  
 
+      util.logDebugMsg('RequestSummary.vue - onAddAdminComment');
       var storeState = this.$store.state;
       var adminCtrlLabel = $("#generalAdminCommentLabel");
       var adminCtrl = $("#generalAdminComment");
+
       if (!adminCtrl.is(':visible')) {
+
+        util.logDebugMsg('onAddAdminComment - generalAdminComment is not visible. About to show control.');
         adminCtrlLabel.show();
         adminCtrl.show();
+
       } else {
+
+        util.logDebugMsg('onAddAdminComment - generalAdminComment is visible. About to hide control and set control value to null.');
         adminCtrlLabel.hide();
         adminCtrl.hide();
         adminCtrl.val(null);
         if (storeState.currentRequest != null && 
             storeState.currentRequest['generalAdminComment'] != undefined) {
           storeState.currentRequest['generalAdminComment'] = null;
+          util.logDebugMsg("RequestSummary.vue - set currentRequest's generalAdminComment to null.");
         }
       }
     },
@@ -536,13 +579,19 @@ export default {
 
     onAddPreparationNotes(evt) {  
 
+      util.logDebugMsg('RequestSummary.vue - onAddPreparationNotes');
       var storeState = this.$store.state;
       var adminCtrlLabel = $("#generalPreparationNotesLabel");
       var adminCtrl = $("#generalPreparationNotes");
+
       if (!adminCtrl.is(':visible')) {
+
+        util.logDebugMsg('onAddPreparationNotes - generalPreparationNotes is not visible. About to show control.');
         adminCtrlLabel.show();
         adminCtrl.show();
       } else {
+
+        util.logDebugMsg('onAddPreparationNotes - generalPreparationNotes is visible. About to hide control and set control value to null.');
         adminCtrlLabel.hide();
         adminCtrl.hide();
         adminCtrl.val(null);
@@ -550,6 +599,7 @@ export default {
         if (storeState.currentRequest != null && 
             storeState.currentRequest['generalPreparationNotes'] != undefined) {
           storeState.currentRequest['generalPreparationNotes'] = null;
+          util.logDebugMsg("RequestSummary.vue - set currentRequest's generalPreparationNotes to null.");
         }
       }
     },
@@ -557,10 +607,12 @@ export default {
 
     onApproveRequest(evt) {
 
+      util.logDebugMsg('RequestSummary.vue - onApproveRequest'); 
       var storeState = this.$store.state;
       var currRequest = storeState.currentRequest;
       if (currRequest != null) {
         currRequest.processingStatus = "approved";
+        util.logDebugMsg('onApproveRequest - setting currRequest.processingStatus to approved.');
       }
       this.onSubmitRequest(evt);
     },
@@ -568,40 +620,53 @@ export default {
 
     onRejectRequest(evt) {
 
+      util.logDebugMsg('RequestSummary.vue - onRejectRequest'); 
       var storeState = this.$store.state;
       var currRequest = storeState.currentRequest;
       if (currRequest != null) {
         currRequest.processingStatus = "rejected";
+        util.logDebugMsg('onRejectRequest - setting currRequest.processingStatus to rejected.');
       }
       this.onSubmitRequest(evt);
     },
 
 
     onSubmitRequest(evt) {
-      
+      util.logDebugMsg('RequestSummary.vue - onSubmitRequest'); 
       var vm = this;
       var storeState = vm.$store.state;
       var currRequest = storeState.currentRequest;
 
       if (this.inAdminMode) {
 
+        util.logDebugMsg('onSubmitRequest - inAdminMode == true'); 
+
         var comment = $("#generalAdminComment").val();
         comment = comment.trim();
         if (comment != null && comment != "") {
+
           currRequest.generalAdminComment = comment;
+          util.logDebugMsg('onSubmitRequest - generalAdminComment ctrl value is not null, set currRequest.generalAdminComment: ' + currRequest.generalAdminComment); 
+
         } else if (currRequest.generalAdminComment != undefined) {
           try {
             currRequest.generalAdminComment = null;
+            util.logDebugMsg('onSubmitRequest - set currRequest.generalAdminComment to null.'); 
           } catch (err) {}
         }
 
         var notes = $("#generalPreparationNotes").val();
         notes = notes.trim();
         if (notes != null && notes != "") {
+
           currRequest.generalPreparationNotes = notes;
+          util.logDebugMsg('onSubmitRequest - generalPreparationNotes ctrl value is not null, set currRequest.generalPreparationNotes: ' + currRequest.generalPreparationNotes); 
+
+
         } else if (currRequest.generalPreparationNotes != undefined) {
           try {
             currRequest.generalPreparationNotes = null;
+            util.logDebugMsg('onSubmitRequest - set currRequest.generalPreparationNotes to null.'); 
           } catch (err) {}
         }        
 
@@ -613,10 +678,12 @@ export default {
 
       if (this.isNewRequest) {
 
+        util.logDebugMsg('onSubmitRequest - isNewRequest == true, about to call submitNewRequest.'); 
         this.submitNewRequest(requestsUrl, storeState.currentRequest, '/home');
 
       } else {
        
+       util.logDebugMsg('onSubmitRequest - isNewRequest == false, about to call getRequestByIdUrl to Check if item with that id exists.');
         //Check if item with that id exists
         vm.isSubmitting = true;
         var url = apiMgr.getRequestByIdUrl(storeState.currentRequest._id);
@@ -627,20 +694,21 @@ export default {
               console.log("getRequestsUrl return status: " + res.status);
 
               if (res.status == 200) {
-                console.log("onSubmitRequest - Existing request found. Updating request.");             
+                util.logDebugMsg("onSubmitRequest - Existing request found. About to call submitUpdatedRequest.");             
                 this.submitUpdatedRequest(requestsUrl, storeState.currentRequest, '/home');
               } else {
-                console.log("onSubmitRequest - status code is not 200, assume request not found. Creating new request.");
+                util.logDebugMsg("onSubmitRequest - status code is not 200, assume request not found. Creating new request.");
                 this.submitNewRequest(requestsUrl, storeState.currentRequest, '/home');
               }          
           })
           .catch((err) => {
               if(err.response != null && err.response.status == 404) { //If that id is not found
-                console.log("onSubmitRequest - No existing request found with id. Creating new request.");
+                util.logDebugMsg("onSubmitRequest - No existing request found with id. About to call submitNewRequest. id: " + storeState.currentRequest._id);
                 this.submitNewRequest(requestsUrl, storeState.currentRequest, '/home');
               } else {
                 vm.hasFailure = true;
-                vm.failureMessage = "Server unavailable or not working at this time. Please try later.";        
+                vm.failureMessage = "Server unavailable or not working at this time. Please try later.";   
+                util.logDebugMsg(vm.failureMessage);     
               }
               vm.isSubmitting = false;                   
           })
@@ -650,58 +718,77 @@ export default {
 
     submitNewRequest(requestsUrl, request) {
 
+      util.logDebugMsg("submitNewRequest begins");
       var vm = this;
       vm.isSubmitting = true;
       const storeState = vm.$store.state;
 
       if (request.processingStatus == undefined || request.processingStatus == null) {
         request.processingStatus = "underReview";
+        util.logDebugMsg("submitNewRequest - update request.processingStatus to underReview.");
       }
 
       if (request.processingStatusLabel != undefined && request.processingStatusLabel != null) {
         delete request.processingStatusLabel;
+        util.logDebugMsg("submitNewRequest - deleted request.processingStatusLabel");
       }
       if (request.processingStatusMessage != undefined && request.processingStatusMessage != null) {
         delete request.processingStatusMessage;
+        util.logDebugMsg("submitNewRequest - deleted request.processingStatusMessage");
       }
 
+      util.logDebugMsg("submitNewRequest - for new request, null properties should be deleted and not saved.");
       var reqProps = Object.getOwnPropertyNames(request);
       reqProps.forEach((prop, index) => {
+        try {
+          if (request[prop] != undefined && (request[prop] == null || request[prop] == "")) {
+            delete request[prop];
+          }
+        } catch (err) {}
       });
 
       axios.post(requestsUrl, request)
       .then(res => {
-          console.log("submitNewRequest response status: " + res.status);
+          util.logDebugMsg("submitNewRequest response status: " + res.status);
           vm.isSubmitting = false;
           vm.hasFailure = false;
           
           if (res.status == 201 && res.data != null) {
               var requestCreated = res.data;
 
-              localCacheMgr.uncacheItem(util.makeWorkingNewRequestCacheKey(storeState.loginContext.requesterEmail));
-              storeState.currentRequest = null;
-              storeState.selectedRoom = null;
+              let cacheKey = util.makeWorkingNewRequestCacheKey(storeState.loginContext.requesterEmail);
+              localCacheMgr.uncacheItem(cacheKey);
 
+              util.logDebugMsg("submitNewRequest - localCacheMgr.uncacheItem, cacheKey: " + cacheKey);
+
+              storeState.currentRequest = null;
+              util.logDebugMsg("submitNewRequest - set currentRequest to null.");
+
+              util.logDebugMsg("submitNewRequest - about to call onReturnHome");
               vm.onReturnHome();
 
           } else {
                 vm.hasFailure = true;
                 vm.failureMessage = "Unable to create the meeting request. Please try again.";
+                util.logDebugMsg(vm.failureMessage);
           }       
       })
       .catch((err) => {
-          console.log("Create request failed: " + err);
+          util.logDebugMsg("Create request failed: " + err);
           vm.isSubmitting = false;
           vm.hasFailure = true;
 
           if (err.response != null && err.response.status == 401) { //401 - Unauthorized.                  
               vm.failureMessage = "You're not authorized to create a meeting request.";
+              util.logDebugMsg(vm.failureMessage);
             
           } else if (err.response != null && err.response.status == 400) { //400 - Bad Request.                  
               vm.failureMessage = "The Meeting Request server received a bad request. Please contact your administrator if this problem persists.";
+              util.logDebugMsg(vm.failureMessage);
 
           } else {
               vm.failureMessage = "The Meeting Request server is unavailable or not working at this time.";
+              util.logDebugMsg(vm.failureMessage);
           }
       })
     },
@@ -709,80 +796,100 @@ export default {
 
     submitUpdatedRequest(requestsUrl, request) {
 
+      util.logDebugMsg("RequestSummary - submitUpdatedRequest");
       var vm = this;
       vm.isSubmitting = true;
       const storeState = vm.$store.state;
 
       if (request.processingStatus == "rejected" && !this.inAdminMode) {
+        util.logDebugMsg("submitUpdatedRequest - request.processingStatus is rejected and not inAdminMode, set request.processingStatus to underReview.");
         request.processingStatus = "underReview";
       }
 
       if (request.processingStatusLabel != undefined && request.processingStatusLabel != null) {
         delete request.processingStatusLabel;
+        util.logDebugMsg("submitUpdatedRequest - delete request.processingStatusLabel");
       }
+
       if (request.processingStatusMessage != undefined && request.processingStatusMessage != null) {
         delete request.processingStatusMessage;
+        util.logDebugMsg("submitUpdatedRequest - delete request.processingStatusMessage");
       }
 
       axios.put(requestsUrl, request)
       .then(res => {
-          console.log("submit request for update response status: " + res.status);
+          util.logDebugMsg("submitUpdatedRequest - submit request for update response status: " + res.status);
           vm.isSubmitting = false;
           vm.hasFailure = false;
           
           if (res.status == 200 && res.data != null) {
               var requestUpdated = res.data;
 
-              localCacheMgr.uncacheItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, requestUpdated._id));          
+              let cacheKey = util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, requestUpdated._id);
+              localCacheMgr.uncacheItem(cacheKey);       
+              
+              util.logDebugMsg("submitUpdatedRequest - called localCacheMgr.uncacheItem vwith cacheKey: " + cacheKey);
 
               if (vm.inAdminMode && (requestUpdated.processingStatus == "approved" || requestUpdated.processingStatus == "rejected")) {
  
+                util.logDebugMsg("submitUpdatedRequest - inAdminMode == true, requestUpdated.processingStatus: " + requestUpdated.processingStatus);
+
+                util.logDebugMsg("submitUpdatedRequest - calling updateSendEmailConfirmDialogTitle & updateSendEmailConfirmDialogMessage");
                 this.updateSendEmailConfirmDialogTitle(requestUpdated);
                 this.updateSendEmailConfirmDialogMessage(requestUpdated);
                 this.$forceUpdate();
 
+                util.logDebugMsg("submitUpdatedRequest - About to sendEmailConfirmDialog.modal('show')");
                 $('#sendEmailConfirmDialog').modal('show');
 
               } else {
+                util.logDebugMsg("submitUpdatedRequest - setting currentRequest to null before calling onReturnHome.");
                 storeState.currentRequest = null;
-                storeState.selectedRoom = null;
                 vm.onReturnHome();
               }         
 
           } else {
                 vm.hasFailure = true;
                 vm.failureMessage = "Unable to update the meeting request. Please try again.";
+                util.logDebugMsg(vm.failureMessage);
           }       
       })
       .catch((err) => {
-          console.log("Update request failed: " + err);
+          console.log("submitUpdatedRequest - Update request failed: " + err);
           //prevent spam clicking
           vm.isSubmitting = false;
           vm.hasFailure = true;
 
           if (err.response != null && err.response.status == 401) { //401 - Unauthorized.                  
               vm.failureMessage = "You're not authorized to update a meeting request.";
+              util.logDebugMsg("submitUpdatedRequest - " + vm.failureMessage);
             
           } else if (err.response != null && err.response.status == 400) { //400 - Bad Request.                  
               vm.failureMessage = "The Meeting Request server received a bad request. Please contact your administrator if this problem persist.";
-
+              util.logDebugMsg("submitUpdatedRequest - " + vm.failureMessage);
           } else {
               vm.failureMessage = "The Meeting Request server is unavailable or not working at this time.";
+              util.logDebugMsg("submitUpdatedRequest - " + vm.failureMessage);
           }
       })
     },
 
+
     onPrint(evt) {
+      util.logDebugMsg("RequestSummary - launchPrint");
       util.launchPrint();
     },
 
+
     onReturnHome() {
+      util.logDebugMsg("RequestSummary - onReturnHome, set currentRequest to null.");
       this.$store.state.currentRequest = null;
-      this.$store.state.selectedRoom = null;
 
       if(this.$store.state.inAdminMode){
+        util.logDebugMsg("RequestSummary - $router.push: /admin/home");
         this.$router.push("/admin/home");
       } else {
+        util.logDebugMsg("RequestSummary - $router.push: /home");
         this.$router.push("/home");
       }
     }
@@ -794,9 +901,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.label-icon {
-    color: rgb(80, 80, 80);
-}
 .request-summary-label {
   color:#17a2b8 !important;
   font-size:110%;
