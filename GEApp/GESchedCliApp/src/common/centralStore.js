@@ -5,8 +5,10 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
     state: {
+
         currentViewTitle: "...",
         enableNavBar: false,
+        hideBackNav: false,
         previousPage: null,
 
         defaultTimeOption: "09:00:00",

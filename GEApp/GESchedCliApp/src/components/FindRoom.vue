@@ -496,6 +496,9 @@ export default {
       }
       
       $('#findRoomModal').modal('hide');
+      window.scrollTo(0, 0);
+      $("#collapseOne").removeClass("show");
+      $("#collapseOne").removeClass("hide");
 
       util.logDebugMsg('onRoomSelectConfirm - findRoomModal.modal(hide)');
 

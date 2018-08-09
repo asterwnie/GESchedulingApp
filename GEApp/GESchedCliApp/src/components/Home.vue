@@ -127,6 +127,7 @@ export default {
 
     vm.$store.state.currentViewTitle = this.title;
     vm.$store.state.enableNavBar = true;
+    this.$store.state.hideBackNav  = true;
 
     this.checkHasWorkingNewRequestCached();
 
