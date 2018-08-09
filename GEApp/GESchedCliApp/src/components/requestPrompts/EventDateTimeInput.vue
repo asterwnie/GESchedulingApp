@@ -9,7 +9,7 @@
          <label>Start:&nbsp;</label>
         <input :id="startDateCtrlId" :screenNum="screenNum" type="date" :min="currentDate" v-on:change="onStartDateChanged" class="is-request-data-part form-control form-control-sm" aria-describedby="basic-addon3">
         <div class="input-group-append">
-          <select :id="startTimeCtrlId" :screenNum="screenNum" class="is-request-data-part custom-select form-control form-control-sm">
+          <select :id="startTimeCtrlId" :screenNum="screenNum" v-on:change="onStartTimeChanged" class="is-request-data-part custom-select form-control form-control-sm">
             <option v-for="(timeOption, index) in timeOptions" :key="index" 
               :value="timeOption.time">
               {{timeOption.label}}
@@ -163,9 +163,36 @@ export default {
       var newStartVal = $(evt.srcElement).val();
       var endDateCtrlId = evt.srcElement.id.replace("StartDate", "EndDate");
       var endDateVal = $('#' + endDateCtrlId).val();
-      if (newStartVal != null && newStartVal != "" && (endDateVal == null || endDateVal == "")) {
-        $('#' + endDateCtrlId).val(newStartVal);
+
+      if (newStartVal != null && newStartVal != "") {
+        if (newStartVal != null && newStartVal != "" && (endDateVal == null || endDateVal == "")) {
+          $('#' + endDateCtrlId).val(newStartVal);
+        } else {
+          var start = new Date(newStartVal);
+          var end = new Date(endDateVal);
+          if (start > end) {
+            $('#' + endDateCtrlId).val(newStartVal);
+          }
+        }
       }
+    },
+
+    onStartTimeChanged: function(evt) {
+      var newStartTimeVal = $(evt.srcElement).val();
+      var endTimeCtrlId = evt.srcElement.id.replace("StartTime", "EndTime");
+      var endTimeVal = $('#' + endTimeCtrlId).val();
+
+      if (newStartTimeVal != null && newStartTimeVal != "" && (endTimeVal == null || endTimeVal == "")) {
+          $('#' + endTimeCtrlId).val(newStartTimeVal);
+        } else {
+          var sameYr = "1/1/2000 ";
+          var start = new Date(sameYr + newStartTimeVal);
+          var end = new Date(sameYr + endTimeVal);
+          if (start > end) {
+            $('#' + endTimeCtrlId).val(newStartTimeVal);
+          }
+        }
+
     }
   }
 }
