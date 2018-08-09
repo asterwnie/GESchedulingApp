@@ -154,6 +154,7 @@ export const detectIsInSmallWidthMode  = () => {
     return centralStore.state.isInSmallWidthMode;
 }
 
+
 export const launchPrint = () => {
     var topBar = $('#headerBar');
     var buttons = $(':button');

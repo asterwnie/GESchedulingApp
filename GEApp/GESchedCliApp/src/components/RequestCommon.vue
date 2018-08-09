@@ -105,6 +105,7 @@
             <div class="mb-3">
               <button type="button" id="continueBtn" class="btn btn-primary btn-sm" @click.prevent="onContinue">Continue&nbsp;<i class="fas fa-arrow-right"></i></button>
             </div>
+            <p class="text-danger" id="viewLevelExtendedErrorMsg" :hidden="enoughRoomCapacity">The total number of attendees exceeds the room capacity.</p>
             <p class="text-danger" id="viewLevelErrorMsg" :hidden="!hasValidationError">Please correct your input above.</p>
             <br>
             <br>
@@ -122,7 +123,7 @@ import * as util from '@/common/util.js';
 import * as apiMgr from '@/common/apiMgr.js';
 import * as localCacheMgr from '@/common/localCacheMgr.js';
 
-import { clearValidationMessages, validateRequest, manageProcessingStatus, bindUiValuesFromRequest, applyBadgeColorBasedOnProcessingStatus } from '@/common/requestMgr.js'
+import { clearValidationMessages, validateRequest, manageProcessingStatus, bindUiValuesFromRequest, applyBadgeColorBasedOnProcessingStatus, isTotalAttendeesLessThanOrEqualToRoomCapacity } from '@/common/requestMgr.js'
 
 import textInputCtrl from '@/components/requestPrompts/TextInput.vue'
 import textAreaInputCtrl from '@/components/requestPrompts/TextAreaInput.vue'
@@ -151,6 +152,7 @@ export default {
     data () {
     return {  
       hasValidationError: false,
+      enoughRoomCapacity: true,
       showPleaseReviewCommentsMsg: false,
       requestStatusMessageRejectedViewDescription: this.$store.state.appConfig.RequestStatusMessageRejectedViewDescription
     }
@@ -408,8 +410,10 @@ export default {
       this.bindCtrlValuesToRequestProperties();
  
       var allValid = validateRequest(storeState.currentRequest, vm.currentScreenNum);
+
+      vm.enoughRoomCapacity = isTotalAttendeesLessThanOrEqualToRoomCapacity(vm.$store.state.currentRequest);
       
-      if (allValid) {
+      if (allValid && vm.enoughRoomCapacity) {
 
         this.hasValidationError = false;
 
@@ -421,7 +425,7 @@ export default {
         }
         
       } else {
-        this.hasValidationError = true;
+        this.hasValidationError = true;       
         //Ensures the view is at the bottom to show the view-level validation error message.
         document.body.scrollIntoView({block: "end"});
       }

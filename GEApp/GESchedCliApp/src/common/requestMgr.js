@@ -632,6 +632,37 @@ export const bindUiValuesFromRequest = (request, currentScreenNum, inAdminMode) 
 }
 
 
+export const getTotalAttendees = (request) => {
+    let count = 0;
+
+    if (request != undefined && request != null) {
+        if (request.numOfGeEmpAttending != undefined && request.numOfGeEmpAttending != null) {
+            count += request.numOfGeEmpAttending;  
+        }
+        if (request.numOfNonGeAttending != undefined && request.numOfNonGeAttending != null) {
+            count += request.numOfNonGeAttending;  
+        }
+    }
+
+    return count;
+}
+
+
+export const isTotalAttendeesLessThanOrEqualToRoomCapacity = (request) => {
+    let status = true;
+
+    if (request != undefined && request != null &&
+        request.locationOfEvent != undefined && request.locationOfEvent != null) {
+
+        let attendeesCount = getTotalAttendees(request);
+        if (attendeesCount > request.locationOfEvent.seatingCapacity) {
+            status = false;
+        }
+    }
+    return status;
+}
+
+
 export const getLocalUserRequestById = (requestId, getfromPreviewRequests) => {
 
     var matchedRequest = null;
