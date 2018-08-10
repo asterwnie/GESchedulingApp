@@ -214,6 +214,7 @@ import axios from 'axios';
 import * as util from '@/common/util.js';
 import * as apiMgr from '@/common/apiMgr.js';
 import * as localCacheMgr from '@/common/localCacheMgr.js';
+import { saveRequest } from '@/common/requestMgr.js'
 
 export default {
   data () {
@@ -227,32 +228,42 @@ export default {
     title() {
       return this.$store.state.appConfig.findRoomViewTitle; 
     },
+    
     viewDescription() {
       return this.$store.state.appConfig.roomsViewDescription; 
     },
+
     rooms() {
       return this.$store.state.roomSearchResult;
     },
+
     sizeTypes(){
       return this.$store.state.appConfig.sizeTypes;
     },
+
     capabilities(){
       return this.$store.state.appConfig.roomCapabilities;
     },
+
     buildings(){
       return this.$store.state.appConfig.buildings;
     },
+
     selectedRoom(){
       return this.$store.state.selectedRoom;
     },
+
     isNewRequest() {
       var isNew = true;
       var storeState = this.$store.state;
-      if (storeState.currentRequest != null && storeState.currentRequest._id != undefined && storeState.currentRequest._id != null) {
+      if (storeState.currentRequest != null && 
+          storeState.currentRequest.processingStatus != undefined && 
+          storeState.currentRequest.processingStatus != null && 
+          storeState.currentRequest.processingStatus != "newUnsubmitted") {
         isNew = false;
       }
       return isNew;
-    },
+    }
   },
 
   activated() {
@@ -512,7 +523,7 @@ export default {
       if (vm.$store.state.previousPage.indexOf("Request") > -1) {
         //save to currentRequest and flush selectedRoom  
         var curReq = vm.$store.state.currentRequest;     
-        vm.$store.state.currentRequest.locationOfEvent = vm.$store.state.selectedRoom;
+        curReq.locationOfEvent = vm.$store.state.selectedRoom;
         vm.$store.state.currentRequest = null; // temporarily change it and trick computed to trigger.
         vm.$store.state.currentRequest = curReq;
         if (vm.$store.state.currentRequest.locationOfEvent != null) {
@@ -522,20 +533,8 @@ export default {
         vm.$store.state.selectedRoom = null;
         util.logDebugMsg('onRoomSelectConfirm - cleared out. set selectedRoom to null');
 
-        //cache Request
-        try {
-          if (this.isNewRequest) {
-            let cacheKey = util.makeWorkingNewRequestCacheKey(vm.$store.state.loginContext.requesterEmail);
-            util.logDebugMsg(`onRoomSelectConfirm - About to cache request (${vm.$store.state.currentRequest.eventTitle}) using the cacheKey (${cacheKey})`);
-            localCacheMgr.cacheItem(cacheKey, vm.$store.state.currentRequest);
-          } else {
-            let cacheKey = util.makeRevisingRequestCacheKey(vm.$store.state.loginContext.requesterEmail, vm.$store.state.currentRequest._id)
-            util.logDebugMsg(`onRoomSelectConfirm - About to cache request (${vm.$store.state.currentRequest.eventTitle}) using the cacheKey (${cacheKey})`);
-            localCacheMgr.cacheItem(cacheKey, vm.$store.state.currentRequest);
-          }
-        } catch (err) {
-          util.logDebugMsg("onRoomSelectConfirm - Not able to locally cache the working request. err: " + err);
-        }
+        util.logDebugMsg('onRoomSelectConfirm - issue saveRequest');
+        saveRequest(vm.$store.state.currentRequest);
 
         //navigate back to request page
         let pageNum = vm.$store.state.previousPage.substring(vm.$store.state.previousPage.length-1, vm.$store.state.previousPage.length);

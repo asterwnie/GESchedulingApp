@@ -181,10 +181,12 @@ export default {
     isNewRequest() {
       var isNew = true;
       var storeState = this.$store.state;
-      if (storeState.currentRequest != null && storeState.currentRequest._id != undefined && storeState.currentRequest._id != null) {
+      if (storeState.currentRequest != null &&
+          storeState.currentRequest.processingStatus != undefined && 
+          storeState.currentRequest.processingStatus != null && 
+          storeState.currentRequest.processingStatus != "newUnsubmitted") {
         isNew = false;
       }
-      util.logDebugMsg('RequestSummary.vue - isNew: ' + isNew);
       return isNew;
     },
 
@@ -271,7 +273,10 @@ export default {
     isNewRequest() {
       var isNew = true;
       var storeState = this.$store.state;
-      if (storeState.currentRequest != null && storeState.currentRequest._id != undefined && storeState.currentRequest._id != null) {
+      if (storeState.currentRequest != null &&
+          storeState.currentRequest.processingStatus != undefined && 
+          storeState.currentRequest.processingStatus != null && 
+          storeState.currentRequest.processingStatus != "newUnsubmitted") {
         isNew = false;
       }
       util.logDebugMsg('RequestSummary.vue - isNewRequest: ' + isNew);
@@ -635,6 +640,7 @@ export default {
 
     onSubmitRequest(evt) {
       util.logDebugMsg('RequestSummary.vue - onSubmitRequest'); 
+
       var vm = this;
       var storeState = vm.$store.state;
       var currRequest = storeState.currentRequest;
@@ -676,19 +682,19 @@ export default {
 
       var requestsUrl = apiMgr.getRequestsUrl();
 
-      if (this.isNewRequest) {
+      if (storeState.currentRequest._id == undefined || storeState.currentRequest._id == null) {
 
         util.logDebugMsg('onSubmitRequest - isNewRequest == true, about to call submitNewRequest.'); 
-        this.submitNewRequest(requestsUrl, storeState.currentRequest, '/home');
+        this.submitNewRequest(requestsUrl, storeState.currentRequest);
 
       } else {
        
        util.logDebugMsg('onSubmitRequest - isNewRequest == false, about to call getRequestByIdUrl to Check if item with that id exists.');
         //Check if item with that id exists
         vm.isSubmitting = true;
-        var url = apiMgr.getRequestByIdUrl(storeState.currentRequest._id);
+        var requestsUrlById = apiMgr.getRequestByIdUrl(storeState.currentRequest._id);
 
-        axios.get(url)
+        axios.get(requestsUrlById)
           .then(res => {
 
               console.log("getRequestsUrl return status: " + res.status);
@@ -698,6 +704,7 @@ export default {
                 this.submitUpdatedRequest(requestsUrl, storeState.currentRequest, false);
               } else {
                 util.logDebugMsg("onSubmitRequest - status code is not 200, assume request not found. Creating new request.");
+                delete storeState.currentRequest._id;
                 this.submitNewRequest(requestsUrl, storeState.currentRequest);
               }          
           })

@@ -52,7 +52,10 @@ export default {
     isNewRequest() {
       var isNew = true;
       var storeState = this.$store.state;
-      if (storeState.currentRequest != null && storeState.currentRequest._id != undefined && storeState.currentRequest._id != null) {
+      if (storeState.currentRequest != null && 
+          storeState.currentRequest.processingStatus != undefined && 
+          storeState.currentRequest.processingStatus != null && 
+          storeState.currentRequest.processingStatus != "newUnsubmitted") {
         isNew = false;
       }
       return isNew;

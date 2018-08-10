@@ -5,12 +5,12 @@
       <div class="col col-sm-1 col-md-2 col-lg-4"></div>
         <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%;">
         <form class="needs-validation" novalidate>
-          <button class="btn btn-primary btn-block" type="submit" @click.prevent="onNewRequest">New Request!</button>
+          <button class="btn btn-primary btn-block" type="submit" @click.prevent="onNewRequest">New Request</button>
         </form>
         <div v-if="hasWorkingNewRequest">
           <br>
           <form class="needs-validation" novalidate>
-            <button class="btn btn-primary btn-block" type="submit" @click.prevent="onContinueRequest">Continue Request!</button>
+            <button class="btn btn-primary btn-block" type="submit" @click.prevent="onContinueRequest">Continue Request</button>
           </form>
         </div>
         <hr>
@@ -99,7 +99,10 @@ export default {
     isNewRequest() {
       var isNew = true;
       var storeState = this.$store.state;
-      if (storeState.currentRequest != null && storeState.currentRequest._id != undefined && storeState.currentRequest._id != null) {
+      if (storeState.currentRequest != null &&
+          storeState.currentRequest.processingStatus != undefined && 
+          storeState.currentRequest.processingStatus != null && 
+          storeState.currentRequest.processingStatus != "newUnsubmitted") {
         isNew = false;
       }
       return isNew;

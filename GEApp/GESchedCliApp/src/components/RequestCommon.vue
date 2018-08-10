@@ -208,7 +208,9 @@ export default {
     requestProcessingStatus() {
       var status = null;
       var storeState = this.$store.state;
-      if (storeState.currentRequest != null && storeState.currentRequest.processingStatus != null) {
+      if (storeState.currentRequest != null && 
+          storeState.currentRequest.processingStatus != "newUnsubmitted" &&
+          storeState.currentRequest.processingStatus != null) {
         status = storeState.currentRequest.processingStatus;
       }
       return status;
@@ -226,7 +228,10 @@ export default {
     isNewRequest() {
       var isNew = true;
       var storeState = this.$store.state;
-      if (storeState.currentRequest != null && storeState.currentRequest._id != undefined && storeState.currentRequest._id != null) {
+      if (storeState.currentRequest != null &&
+          storeState.currentRequest.processingStatus != undefined && 
+          storeState.currentRequest.processingStatus != null && 
+          storeState.currentRequest.processingStatus != "newUnsubmitted") {
         isNew = false;
       }
       return isNew;
@@ -300,6 +305,7 @@ export default {
 
     if (storeState.currentRequest == null) {
         storeState.currentRequest = {};
+        storeState.currentRequest.processingStatus = "newUnsubmitted";
         storeState.currentRequest.userCanEdit = true;
         storeState.currentRequest.adminCanEdit = false; 
     } 

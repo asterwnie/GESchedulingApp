@@ -688,6 +688,7 @@ export const getLocalUserRequestById = (requestId, getfromPreviewRequests) => {
 
 export const applyBadgeColorBasedOnProcessingStatus = () => {
     $(function() {
+        $(".newUnsubmitted").addClass("badge badge-light");
         $(".approved").addClass("badge badge-success");
         $(".rejected").addClass("badge badge-danger");
         $(".underReview").addClass("badge badge-warning");
@@ -743,9 +744,10 @@ export const saveRequest = (request) => {
 
     if (request._id == undefined || request._id == null) {
       neverGotSaved = true;
-      request.processingStatus = "newUnsubmitted";     
+      request.processingStatus = "newUnsubmitted";       
       util.logDebugMsg(`Updated the new request: ${request.eventTitle}, processingStatus: ${request.processingStatus}`);   
     }
+    manageProcessingStatus(request);
 
     if (neverGotSaved) {
 
