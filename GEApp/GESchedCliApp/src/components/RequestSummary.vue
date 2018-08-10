@@ -676,8 +676,6 @@ export default {
 
       var requestsUrl = apiMgr.getRequestsUrl();
 
-      manageProcessingStatus(storeState.currentRequest);
-
       if (this.isNewRequest) {
 
         util.logDebugMsg('onSubmitRequest - isNewRequest == true, about to call submitNewRequest.'); 
@@ -725,10 +723,11 @@ export default {
       vm.isSubmitting = true;
       const storeState = vm.$store.state;
 
-      if (request.processingStatus == undefined || request.processingStatus == null) {
+      if (request._id == undefined || request._id == null || request.processingStatus == "newUnsubmitted") {
         request.processingStatus = "underReview";
         util.logDebugMsg("submitNewRequest - update request.processingStatus to underReview.");
       }
+      manageProcessingStatus(request);
 
       if (request.processingStatusLabel != undefined && request.processingStatusLabel != null) {
         delete request.processingStatusLabel;
@@ -743,7 +742,7 @@ export default {
       var reqProps = Object.getOwnPropertyNames(request);
       reqProps.forEach((prop, index) => {
         try {
-          if (request[prop] != undefined && (request[prop] == null || request[prop] == "")) {
+          if (request[prop] == undefined || request[prop] == null || request[prop] == "") {
             delete request[prop];
           }
         } catch (err) {}
@@ -754,6 +753,7 @@ export default {
           util.logDebugMsg("submitNewRequest response status: " + res.status);
           vm.isSubmitting = false;
           vm.hasFailure = false;
+          vm.failureMessage = null;
           
           if (res.status == 201 && res.data != null) {
               var requestCreated = res.data;
@@ -797,8 +797,19 @@ export default {
       vm.isSubmitting = true;
       const storeState = vm.$store.state;
 
+      if (request.processingStatus == "newUnsubmitted") {
+        request.processingStatus = "underReview";
+        util.logDebugMsg("submitNewRequest - update request.processingStatus to underReview.");
+      }
+      manageProcessingStatus(request);
+
       if (justUpdateApprovalNotified == undefined || justUpdateApprovalNotified == null) {
         justUpdateApprovalNotified = false;
+      }
+
+      if (request._id == undefined || request._id == null || request.processingStatus == "newUnsubmitted") {
+        request.processingStatus = "underReview";
+        util.logDebugMsg("submitNewRequest - update request.processingStatus to underReview.");
       }
 
       if (!justUpdateApprovalNotified && request.processingStatus == "rejected" && !this.inAdminMode) {

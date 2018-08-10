@@ -238,19 +238,16 @@ export default {
             return this.$store.state.appConfig.requestStatusTagCancelled; 
         },
 
-
         title() {
             return this.$store.state.appConfig.adminHomeViewTitle; 
         },
+
         viewDescription() {
             return this.$store.state.appConfig.adminHomeViewDescription; 
         },
+
         requestsPreview() {
             return this.$store.state.currentRequestsPreview;
-        },
-
-        selectedRequestForDelete() {
-            return this.$store.state.actionForSelectedRequest.forDelete;
         },
 
         welcomeMessage() {

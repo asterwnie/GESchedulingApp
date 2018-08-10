@@ -88,6 +88,12 @@ Guest wifi for online access on-site.
 --FindRoomViewTitle 
 Find Room
 
+--RequestStatusTagNewUnsubmitted
+New
+
+--RequestStatusMessageNewUnsubmitted
+New (Not Submitted)
+
 --RequestStatusTagUnderReview 
 Under Review
 

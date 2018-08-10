@@ -699,7 +699,12 @@ export const applyBadgeColorBasedOnProcessingStatus = () => {
 export const manageProcessingStatus = (request) => {
     //debugger; // Uncomment to trigger breakpoint.
 
-    if (request.processingStatus == "underReview") {
+    if (request.processingStatus == "newUnsubmitted") {
+        request.userCanEdit = true;
+        request.adminCanEdit = false;
+        request.processingStatusLabel = centralStore.state.appConfig.requestStatusTagNewUnsubmitted;
+        request.processingStatusMessage = centralStore.state.appConfig.requestStatusMessageNewUnsubmitted;
+    } else if (request.processingStatus == "underReview") {
         request.userCanEdit = false;
         request.adminCanEdit = true;
         request.processingStatusLabel = centralStore.state.appConfig.requestStatusTagUnderReview;
@@ -717,8 +722,8 @@ export const manageProcessingStatus = (request) => {
     } else if (request.processingStatus == "cancelled") {
         request.userCanEdit = false;
         request.adminCanEdit = true;
-        request.processingStatusLabel = centralStore.state.appConfig.requestStatusTagCanceled;
-        request.processingStatusMessage = centralStore.state.appConfig.requestStatusMessageCanceled;
+        request.processingStatusLabel = centralStore.state.appConfig.requestStatusTagCancelled;
+        request.processingStatusMessage = centralStore.state.appConfig.requestStatusMessageCancelled;
     }    
 }
 
@@ -738,10 +743,8 @@ export const saveRequest = (request) => {
 
     if (request._id == undefined || request._id == null) {
       neverGotSaved = true;
-      if (request.processingStatus == undefined || request.processingStatus == null) {
-        request.processingStatus = "newUnsubmitted";     
-        util.logDebugMsg(`Updated the new request: ${request.eventTitle}, processingStatus: ${request.processingStatus}`);
-      }
+      request.processingStatus = "newUnsubmitted";     
+      util.logDebugMsg(`Updated the new request: ${request.eventTitle}, processingStatus: ${request.processingStatus}`);   
     }
 
     if (neverGotSaved) {
@@ -750,6 +753,7 @@ export const saveRequest = (request) => {
       .then(res => {
             if (res.status == 201 && res.data != null) {
               util.logDebugMsg(`Successfully saved the new request: ${request.eventTitle}, status: ${res.status}`);
+              centralStore.state.currentRequest = res.data;
             } else {
               let errMsg = `Unable to saved the new request with newUnsubmitted: ${request.eventTitle}, status: ${res.status}`;
               util.logDebugMsg(errMsg);
@@ -768,6 +772,7 @@ export const saveRequest = (request) => {
       .then(res => {
             if ((res.status == 200 || res.status == 204) && res.data != null) {
               util.logDebugMsg(`Successfully saved the editing request: ${request.eventTitle}, status: ${res.status}`);
+              centralStore.state.currentRequest = res.data;
             } else {
               let errMsg = `Unable to saved the editing request with newUnsubmitted: ${request.eventTitle}, status: ${res.status}`;
               util.logDebugMsg(errMsg);

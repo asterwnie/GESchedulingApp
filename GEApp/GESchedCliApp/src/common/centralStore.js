@@ -18,11 +18,8 @@ const store = new Vuex.Store({
         smallWidthModeMax: 768,
 
         isModalBeingDisplayed: false,
-
-        hasWorkingNewRequestCache: false,
         
         selectedRoom: null,
-
 
         processingStatusOptions: null,
 

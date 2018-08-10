@@ -32,29 +32,34 @@ const RequestSchema = new Schema({
         enum: ['newUnsubmitted', 'underReview', 'approved', 'rejected', 'cancelled']
     },
 
+    // Note, the required fields below are now remove from the schema
+    // since when newUnsubmitted this might not be filled in yet.
+    // The checking is now move to the requestController and only enforced 
+    // when the request's processinStatus is not newUnsubmitted.
+
     eventTitle: {
-        type: String,
-        required: [true, 'Title is required!']
+        type: String
+        //required: [true, 'Title is required!'] 
     },
 
     eventSchedule: {
-        type: EventDateTimeSchema,
-        required: [true, 'The event schedule is required!']
+        type: EventDateTimeSchema
+        //required: [true, 'The event schedule is required!']
     },
 
     locationOfEvent: {
-        type: RoomSchema,
-        required: [true, 'The location of the event is required!']
+        type: RoomSchema
+        //required: [true, 'The location of the event is required!']
     },
 
     eventGEContactPersonEmail: {
-        type: String,
-        required: [true, 'Requester email is required!']
+        type: String
+        //required: [true, 'Requester email is required!']
     },
 
     eventGEContactPersonName: {
-        type: String,
-        required: [true, 'Requester name is required!']
+        type: String
+        //required: [true, 'Requester name is required!']
     },
 
     eventGEContactPersonPhone: {
@@ -62,8 +67,8 @@ const RequestSchema = new Schema({
     },
     
     numOfGeEmpAttending: {
-        type: Number,
-        required: [true, 'Number of GE Employees attending is required!']
+        type: Number
+        //required: [true, 'Number of GE Employees attending is required!']
     }
 }, 
 {

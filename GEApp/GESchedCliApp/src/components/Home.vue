@@ -5,12 +5,12 @@
       <div class="col col-sm-1 col-md-2 col-lg-4"></div>
         <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%;">
         <form class="needs-validation" novalidate>
-          <button class="btn btn-primary btn-block" type="submit" @click.prevent="onNewRequest">New Request</button>
+          <button class="btn btn-primary btn-block" type="submit" @click.prevent="onNewRequest">New Request!</button>
         </form>
-        <div v-if="hasWorkingNewRequestCached">
+        <div v-if="hasWorkingNewRequest">
           <br>
           <form class="needs-validation" novalidate>
-            <button class="btn btn-primary btn-block" type="submit" @click.prevent="onContinueRequest">Continue Request</button>
+            <button class="btn btn-primary btn-block" type="submit" @click.prevent="onContinueRequest">Continue Request!</button>
           </form>
         </div>
         <hr>
@@ -21,7 +21,7 @@
           </div>
         </div>
 
-        <div v-if="currentUserRequests.length < 1">
+        <div v-if="!hasSubmittedRequests">
           <div class="card">
             <br>
             <p style="text-align:center" class="font-italic text-muted">No current requests! Hit "New Request" to create one.</p>
@@ -76,6 +76,8 @@ export default {
         hasFailure: false,
         failureMessage: null,
         isFetchingRequests: false,
+        hasSubmittedRequests: false,
+        hasWorkingNewRequest: false,
         allStatuses: "newUnsubmitted|underReview|rejected|approved|cancelled"
       }
   },
@@ -101,19 +103,8 @@ export default {
         isNew = false;
       }
       return isNew;
-    },
-
-    currentRequestData() {
-      return this.$store.state.currentRequest;
-    },
-
-    hasWorkingNewRequestCached() {
-      return this.$store.state.hasWorkingNewRequestCache;
-    },
-
-    selectedRequestForDelete() {
-      return this.$store.state.actionForSelectedRequest.forDelete;
     }
+
   },
 
 
@@ -130,50 +121,7 @@ export default {
     vm.$store.state.enableNavBar = true;
     this.$store.state.hideBackNav  = true;
 
-    this.checkHasWorkingNewRequestCached();
-
-    this.refetchUserRequests()
-
-    //get requests for current user
-    // let queryUser = `&requesterEmailContains=${this.$store.state.currentUser.email}`;
-    // var url = apiMgr.getRequestsUrl() + queryUser;
-
-    // axios.get(url)
-    //     .then(res => {
-    //         console.log("getRequestsUrl return status: " + res.status);
-            
-            // while(vm.$store.state.currentUserRequests.length > 0) {
-            //   vm.$store.state.currentUserRequests.pop();
-            // }
-            // var foundRequests = res.data;
-
-            // $.each(foundRequests, function (index, request) {
-            //   request.updatedAtDisp = util.getDateTimeDisplay(request.updatedAt);
-
-            //   request.eventGEContactPersonNameDisp = request.eventGEContactPersonName;
-            //   if (request.eventGEContactPersonNameDisp == null && request.eventGEContactPersonNameDisp == "") {
-            //     request.eventGEContactPersonNameDisp = request.eventGEContactPersonEmail; 
-            //   } else {
-            //     request.eventGEContactPersonNameDisp += `, (${request.eventGEContactPersonEmail})`;
-            //   }
-
-            //   if (request.eventSchedule != null && 
-            //      request.eventSchedule.startDateTime != null &&
-            //      request.eventSchedule.endDateTime != null) {
-            //     request.eventDateTimeDisp = util.makeEventDateTimeDisplay(request.eventSchedule.startDateTime, request.eventSchedule.endDateTime);
-            //   }
-
-            //   vm.$store.state.currentUserRequests.push(request);          
-            // });
-
-            // prepareRequestsForUI(vm.$store.state.currentUserRequests);
-            // vm.isFetchingRequests = false;
-    //     })
-    //     .catch((err) => {
-    //         vm.hasFailure = true;
-    //         vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
-    //     })
-
+    this.refetchUserRequests();
   },
 
 
@@ -205,6 +153,33 @@ export default {
 
   methods:{
 
+    checkUserRequestTypes() {
+      let vm = this;
+      let storeState = this.$store.state;
+      var count = 0;
+      this.hasWorkingNewRequest = false;
+
+      // scan currentRequest list for the request with processingStatus of newUnsubmitted
+      $.each(storeState.currentUserRequests, function (index, request) {
+        if (request.processingStatus != undefined && request.processingStatus != null &&
+            request.processingStatus != "newUnsubmitted") {
+          count += 1;
+        }
+        if (request.processingStatus == undefined || request.processingStatus == null ||
+            request.processingStatus == "newUnsubmitted") {
+          vm.hasWorkingNewRequest = true;
+        }
+      });
+
+      var hasSubmitted = false;
+      if (count > 0) {
+        hasSubmitted = true;
+      }
+
+      this.hasSubmittedRequests = hasSubmitted;
+    },
+
+
     isPassedDate(startDateTime) {
       var daysOld = 1;
       var oneDateAgo = Date.now()+ -daysOld*24*3600*1000;
@@ -217,23 +192,59 @@ export default {
       }
     },
 
-    checkHasWorkingNewRequestCached() {
-      let storeState = this.$store.state;
-      storeState.hasWorkingNewRequestCache = false;
-      //xx to-do - scan currentRequest list for the request with processingStatus of newUnsubmitted
-    },
 
     onNewRequest: function(event) {
       console.log('Home.vue - onNewRequest activate');
-      this.$store.state.currentRequest = null;
-      this.$router.push('/dofirst/true');
+
+      let storeState = this.$store.state;
+      storeState.currentRequest = null;
+
+      var newReq = this.findNewRequest();
+      storeState.currentRequest = newReq;
+
+      if (storeState.currentRequest != null) {
+
+        // Start fresh, clear out request properties (except GE Contact person info and internal properties)
+        var reqProps = Object.getOwnPropertyNames(storeState.currentRequest);
+        reqProps.forEach((prop, index) => {
+          try {
+            if (prop.indexOf('_') == -1 && prop.indexOf('eventGEContact') == -1 && prop != "processingStatus" && prop != "createdAt" && prop != "updatedAt" && 
+                (storeState.currentRequest[prop] != undefined || storeState.currentRequest[prop] != null)) {
+              storeState.currentRequest[prop] = null;
+            }
+          } catch (err) {}
+        });
+      }
+
+      this.$router.push('/dofirst/false');
     },
 
+
     onContinueRequest: function(event) {
-      this.$store.state.currentRequest = null;
       console.log('Home.vue - onContinueRequest activate');
-      this.$router.push('/dofirst/true');
+      this.$store.state.currentRequest = null;
+
+      var newReq = this.findNewRequest();
+      this.$store.state.currentRequest = newReq;
+
+      console.log('Home.vue - onContinueRequest activate');
+      this.$router.push('/dofirst/false');
     },
+
+    
+    findNewRequest: function(event) {
+      var newReq = null;
+      $.each(this.$store.state.currentUserRequests, function (index, request) {
+        if (request.processingStatus == undefined || request.processingStatus == null ||
+            request._id == undefined || request._id == null ||
+            request.processingStatus == "newUnsubmitted") {
+          newReq = request;
+        }
+      });
+      return newReq;
+    },
+
+
 
     onEditRequest: function(event) {
       console.log('Home.vue - onEditViewRequest activate');
@@ -261,6 +272,7 @@ export default {
 
     },
 
+
     onViewRequest: function(event) {
       console.log('Home.vue - onViewRequest activate');
 
@@ -286,6 +298,7 @@ export default {
       }
 
     },
+
 
     onCancelRequestConfirm: function (event) {
         console.log('onCancelRequestConfirm');
@@ -408,9 +421,11 @@ export default {
                 vm.$store.state.currentUserRequests.push(request);
               });
               
+              vm.checkUserRequestTypes();
               prepareRequestsForUI(vm.$store.state.currentUserRequests);
 
               vm.isFetchingRequests = false;
+              vm.$forceUpdate();
           })
           .catch((err) => {
               vm.hasFailure = true;

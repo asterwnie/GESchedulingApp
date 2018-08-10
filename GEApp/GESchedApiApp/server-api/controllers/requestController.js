@@ -162,6 +162,34 @@ exports.getRequestsCount = function (req, res) {
 
 }
 
+function checkRequiredFields (request) {
+    if (request.processingStatus != "newUnsubmitted") {
+        if (request.eventSchedule == undefined || request.eventSchedule == null) {
+            logger.error(`requestController.checkRequiredFields - the required field request.eventSchedule is missing on request with id: ${request._id}`);
+            return false;
+        }
+        if (request.locationOfEvent == undefined || request.locationOfEvent == null) {
+            logger.error(`requestController.checkRequiredFields - the required field request.locationOfEvent is missing on request with id: ${request._id}`);
+            return false;
+        }
+        if (request.eventGEContactPersonEmail == undefined || request.eventGEContactPersonEmail == null) {
+            logger.error(`requestController.checkRequiredFields - the required field request.eventGEContactPersonEmail is missing on request with id: ${request._id}`);
+            return false;
+        }
+        if (request.eventGEContactPersonName == undefined || request.eventGEContactPersonName == null) {
+            logger.error(`requestController.checkRequiredFields - the required field request.eventGEContactPersonName is missing on request with id: ${request._id}`);
+            return false;
+        }
+        if (request.numOfGeEmpAttending == undefined || request.numOfGeEmpAttending == null) {
+            logger.error(`requestController.checkRequiredFields - the required field request.numOfGeEmpAttending is missing on request with id: ${request._id}`);
+            return false;
+        }
+        return true;
+    } else {
+        return true;
+    }
+}
+
 exports.createRequest = function (req, res) {
     logger.verbose('requestController.createRequest begin');
 
@@ -176,6 +204,14 @@ exports.createRequest = function (req, res) {
                 logger.error(`requestController.createRequest - create new Request validation error: ${validationErr.errors[prop]}`);
             }
             var errMsg = `createRequest failed on validation. Error: ${validationErr}`;
+            res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST
+            return;
+        }
+
+        var passedRequiredFields = checkRequiredFields(newRequest);
+        if (!passedRequiredFields) {
+            var errMsg = `createRequest failed on validation. Error: Not all required fields are provided.`;
+            logger.error(errMsg);
             res.status(400).json({ error: errMsg }); // 400 - INVALID REQUEST
             return;
         }
