@@ -49,7 +49,7 @@
                   <button :id="requestItem._id" type="button" @click.prevent="onDeleteRequestConfirm" class="enableEdit btn btn-danger btn-sm float-left"><i class="fas fa-trash-alt"></i></button>
                 </div>
                 <div v-else>
-                  <div v-if="requestItem.processingStatus != 'canceled'">
+                  <div v-if="requestItem.processingStatus != 'cancelled'">
                   <button :id="requestItem._id" type="button" @click.prevent="onCancelRequestConfirm" class="enableEdit btn btn-danger btn-sm float-left">Cancel</button>
                   </div>
                 </div>
@@ -76,7 +76,7 @@ export default {
         hasFailure: false,
         failureMessage: null,
         isFetchingRequests: false,
-        allStatuses: "newUnsubmitted|underReview|rejected|approved|canceled"
+        allStatuses: "newUnsubmitted|underReview|rejected|approved|cancelled"
       }
   },
 
@@ -305,7 +305,7 @@ export default {
       const storeState = vm.$store.state;
 
       var request = vm.$store.state.actionForSelectedRequest.forCancel;
-      request.processingStatus = "canceled";
+      request.processingStatus = "cancelled";
 
       manageProcessingStatus(request);
 

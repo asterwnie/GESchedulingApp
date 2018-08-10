@@ -100,10 +100,10 @@ Approved
 --RequestStatusMessageApproved 
 Your request has been approved.
 
---RequestStatusTagCanceled 
+--RequestStatusTagCancelled 
 Cancelled
 
---RequestStatusMessageCanceled 
+--RequestStatusMessageCancelled 
 This meeting has been cancelled! 
 
 --RequestStatusTagRejected 

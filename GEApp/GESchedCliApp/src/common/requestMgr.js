@@ -691,7 +691,7 @@ export const applyBadgeColorBasedOnProcessingStatus = () => {
         $(".approved").addClass("badge badge-success");
         $(".rejected").addClass("badge badge-danger");
         $(".underReview").addClass("badge badge-warning");
-        $(".canceled").addClass("badge badge-danger"); 
+        $(".cancelled").addClass("badge badge-danger"); 
       });
 }
 
@@ -714,7 +714,7 @@ export const manageProcessingStatus = (request) => {
         request.adminCanEdit = false;
         request.processingStatusLabel = centralStore.state.appConfig.requestStatusTagRejected;
         request.processingStatusMessage = centralStore.state.appConfig.requestStatusMessageRejected;
-    } else if (request.processingStatus == "canceled") {
+    } else if (request.processingStatus == "cancelled") {
         request.userCanEdit = false;
         request.adminCanEdit = true;
         request.processingStatusLabel = centralStore.state.appConfig.requestStatusTagCanceled;

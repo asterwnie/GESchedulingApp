@@ -43,7 +43,7 @@
                 <button id="underReview" @click.prevent="onQuickFilter" class="btn btn-xs btn-warning">{{underReviewLabel}}</button>
                 <button id="rejected" @click.prevent="onQuickFilter" class="btn btn-xs btn-danger" >{{rejectedLabel}}</button>                
                 <button id="approved" @click.prevent="onQuickFilter" class="btn btn-xs btn-success">{{approvedLabel}}</button>
-                <button id="canceled" @click.prevent="onQuickFilter" class="btn btn-xs btn-danger">{{canceledLabel}}</button>
+                <button id="cancelled" @click.prevent="onQuickFilter" class="btn btn-xs btn-danger">{{cancelledLabel}}</button>
             </span>
         </div>
         <div style="height:10px"></div>
@@ -211,7 +211,7 @@ export default {
             currentPageNumber: 1,
             requestsQueryString: "",
             deleteMode: false,
-            allStatusesExcludeNew: "underReview|rejected|approved|canceled"
+            allStatusesExcludeNew: "underReview|rejected|approved|cancelled"
         }
     },
 
@@ -234,7 +234,7 @@ export default {
             return this.$store.state.appConfig.requestStatusTagApproved; 
         },
 
-        canceledLabel() {
+        cancelledLabel() {
             return this.$store.state.appConfig.requestStatusTagCanceled; 
         },
 

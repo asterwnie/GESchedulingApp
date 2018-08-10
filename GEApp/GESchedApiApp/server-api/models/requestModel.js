@@ -29,7 +29,7 @@ const RequestSchema = new Schema({
 
     processingStatus: {
         type: String,
-        enum: ['newUnsubmitted', 'underReview', 'approved', 'rejected', 'canceled']
+        enum: ['newUnsubmitted', 'underReview', 'approved', 'rejected', 'cancelled']
     },
 
     eventTitle: {
