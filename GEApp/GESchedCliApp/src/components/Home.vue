@@ -30,7 +30,7 @@
         </div>
         <div v-else>
           <div v-for="(requestItem, index) in currentUserRequests" :key="index">
-            <div class="card">
+            <div class="card" v-if="requestItem.processingStatus != 'newUnsubmitted'">
               <div class="card-body">
                 <h6 class="card-title">{{requestItem.eventTitle}}</h6>
                 <h6 class="card-title"><span :class="requestItem.processingStatus">{{requestItem.processingStatusLabel}}</span></h6>
