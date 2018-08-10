@@ -289,7 +289,11 @@ export default {
       let backdrops = document.getElementsByClassName("modal-backdrop");
       $.each(backdrops, function(){
         this.addEventListener("click", function(){
-          $(".modal-backdrop").remove();
+          $.each(document.getElementsByClassName("modal-backdrop"), function(){
+            $('.modal').modal('hide');
+            $('body').removeClass('modal-open');
+            this.remove();
+          });
         });
       });
 
