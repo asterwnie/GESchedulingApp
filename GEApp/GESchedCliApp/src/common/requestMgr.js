@@ -2,6 +2,7 @@
 // Request Manager for request initialization and validation.
 //
 
+import axios from 'axios'
 import * as util from '@/common/util.js';
 import * as apiMgr from '@/common/apiMgr.js';
 const centralStore = require('@/common/centralStore.js').centralStore;
@@ -730,7 +731,7 @@ export const prepareRequestsForUI = (requests) => {
 
 
 
-export const saveRequest = (requests) => {
+export const saveRequest = (request) => {
 
     var url = apiMgr.getRequestsUrl();
     var neverGotSaved = false;
@@ -739,6 +740,7 @@ export const saveRequest = (requests) => {
       neverGotSaved = true;
       if (request.processingStatus == undefined || request.processingStatus == null) {
         request.processingStatus = "newUnsubmitted";     
+        util.logDebugMsg(`Updated the new request: ${request.eventTitle}, processingStatus: ${request.processingStatus}`);
       }
     }
 
@@ -749,13 +751,13 @@ export const saveRequest = (requests) => {
             if (res.status == 201 && res.data != null) {
               util.logDebugMsg(`Successfully saved the new request: ${request.eventTitle}, status: ${res.status}`);
             } else {
-              let errMsg = `unable to saved the new request with newUnsubmitted: ${request.eventTitle}, status: ${res.status}`;
+              let errMsg = `Unable to saved the new request with newUnsubmitted: ${request.eventTitle}, status: ${res.status}`;
               util.logDebugMsg(errMsg);
               util.centralEvent.$emit('OnRequestBackgroundSaveError', errMsg);
             }             
         })
         .catch((err) => {   
-          let errMsg = `unable to saved the new request: ${request.eventTitle}, error: ${err}`;        
+          let errMsg = `Unable to saved the new request: ${request.eventTitle}, error: ${err}`;        
           util.logDebugMsg(errMsg);
           util.centralEvent.$emit('OnRequestBackgroundSaveError', errMsg);
         })
@@ -767,13 +769,13 @@ export const saveRequest = (requests) => {
             if ((res.status == 200 || res.status == 204) && res.data != null) {
               util.logDebugMsg(`Successfully saved the editing request: ${request.eventTitle}, status: ${res.status}`);
             } else {
-              let errMsg = `unable to saved the editing request with newUnsubmitted: ${request.eventTitle}, status: ${res.status}`;
+              let errMsg = `Unable to saved the editing request with newUnsubmitted: ${request.eventTitle}, status: ${res.status}`;
               util.logDebugMsg(errMsg);
               util.centralEvent.$emit('OnRequestBackgroundSaveError', errMsg);
             }             
         })
         .catch((err) => {   
-          let errMsg = `unable to saved the editing request: ${request.eventTitle}, error: ${err}`;        
+          let errMsg = `Unable to saved the editing request: ${request.eventTitle}, error: ${err}`;        
           util.logDebugMsg(errMsg);
           util.centralEvent.$emit('OnRequestBackgroundSaveError', errMsg);
         })
