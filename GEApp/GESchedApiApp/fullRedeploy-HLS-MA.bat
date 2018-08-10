@@ -58,7 +58,9 @@ if not exist %sourceFolder% (
     echo About to get the latest source files from GitHub
 
     CD %sourceFolder%
-    Git Pull
+    git add -A
+    git commit -m "SERVER OPERATOR MODIFICATION"
+    git pull
 
     if ERRORLEVEL 1 GOTO ERROR
 
