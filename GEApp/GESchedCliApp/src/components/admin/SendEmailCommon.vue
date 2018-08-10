@@ -70,6 +70,7 @@ export default {
             'emailTemplate', 
             'navOutButtonLabel', 
             'navOutRoutePath', 
+            'navOutClickedEmitEventName',
             'supportDoAnother', 
             'emailSubject', 
             'emailTemplate', 
@@ -117,9 +118,17 @@ export default {
     methods: {
 
         onNavOut() {
-            this.$store.state.defRecipientNameForSendEmail = null;
-            this.$store.state.defRecipientEmailForSendEmail = null;
-            this.$router.push(this.navOutRoutePath);
+            if (this.navOutRoutePath != undefined && this.navOutRoutePath != null) {
+                this.$store.state.defRecipientNameForSendEmail = null;
+                this.$store.state.defRecipientEmailForSendEmail = null;
+                this.$router.push(this.navOutRoutePath);
+                return;
+            }
+
+            if (this.navOutClickedEmitEventName != undefined && navOutClickedEmitEventName != null) {
+                util.centralEvent.$emit(navOutClickedEmitEventName);
+                return;
+            }
         },       
 
 
