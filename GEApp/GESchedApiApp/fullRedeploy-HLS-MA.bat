@@ -19,7 +19,7 @@ if not exist %sourceFolder% (
 
 if not exist %sourceFolder% (
     echo This directory does not exist: %sourceFolder%
-    echo Unable to file a source directory to do the backup! 
+    echo Unable to find a source directory to do the backup! 
 ) else (
 
     set CurDate=%date:~10,4%%date:~4,2%%date:~7,2%
@@ -33,13 +33,17 @@ if not exist %sourceFolder% (
 
     mkdir %sourceBackupFolder%
 
-    if ERRORLEVEL 1 GOTO ERROR
+    if ERRORLEVEL 1 (
+        echo Unable to complete all operations!
+    )
 
     echo Created backup directory: %sourceBackupFolder%
 
     xcopy /S /Y /I %sourceFolder%\*.* %sourceBackupFolder%
-
-    if ERRORLEVEL 1 GOTO ERROR
+    
+    if ERRORLEVEL 1 (
+        echo Unable to complete all operations!
+    )
 
     echo Stop the application Windows service.
 
@@ -62,7 +66,9 @@ if not exist %sourceFolder% (
     git commit -m "SERVER OPERATOR MODIFICATION"
     git pull
 
-    if ERRORLEVEL 1 GOTO ERROR
+    if ERRORLEVEL 1 (
+        echo Unable to complete all operations!
+    )
 
     echo Completed getting the latest source files from GitHub
 
@@ -70,7 +76,9 @@ if not exist %sourceFolder% (
 
     call runDataImports-HLS-MA.bat
 
-    if ERRORLEVEL 1 GOTO ERROR
+    if ERRORLEVEL 1 (
+        echo Unable to complete all operations!
+    )
 
     echo Done re-import all application reference data.
 
@@ -78,14 +86,17 @@ if not exist %sourceFolder% (
 
     node %sourceFolder%\runAsWinService.js -u
 
-    if ERRORLEVEL 1 GOTO ERROR
+    if ERRORLEVEL 1 (
+        echo Unable to complete all operations!
+    )
 
     echo About to re-install the application's Windows service.
 
     node %sourceFolder%\runAsWinService.js 
 
-    if ERRORLEVEL 1 GOTO ERROR
+    if ERRORLEVEL 1 (
+        echo Unable to complete all operations!
+    ) else (
+        echo Complete all operations!
+    )
 )
-
-:ERROR
-echo Unable to complete all operations!
