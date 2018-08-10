@@ -235,7 +235,7 @@ export default {
         },
 
         cancelledLabel() {
-            return this.$store.state.appConfig.requestStatusTagCanceled; 
+            return this.$store.state.appConfig.requestStatusTagCancelled; 
         },
 
 
