@@ -37,7 +37,7 @@ async function queryRequests (siteCode, req, callback) {
     var filterDirective = {}; //default, no filering
     if (req.query.locationContains != null) {    
         const locationName = new RegExp(`(${req.query.locationContains})`, "i");
-        filterDirective = {"locationOfEvent.name": locationName};
+        filterDirective = { "locationOfEvent.name": locationName };
     }
     if (req.query.requestNameContains != null) {    
         const regExpression = new RegExp(`(${req.query.requestNameContains})`, "i");

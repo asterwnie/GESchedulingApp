@@ -210,7 +210,8 @@ export default {
             requestResultCaption: "Requests - All",
             currentPageNumber: 1,
             requestsQueryString: "",
-            deleteMode: false
+            deleteMode: false,
+            allStatusesExcludeNew: "underReview|rejected|approved|canceled"
         }
     },
 
@@ -301,6 +302,7 @@ export default {
         }
 
         vm.clearSearchUI();
+        vm.requestsQueryString = `&processingStatusContains=${this.allStatusesExcludeNew}`;
         vm.updateRequests();
         vm.$forceUpdate();
 
@@ -408,9 +410,7 @@ export default {
                             foundRequest.eventGEContactPersonNameDisp += `, (${foundRequest.eventGEContactPersonEmail})`;
                         }
 
-                        if (foundRequest.eventSchedule != null && 
-                            foundRequest.eventSchedule.startDateTime != null &&
-                            foundRequest.eventSchedule.endDateTime != null) {
+                        if (foundRequest.eventSchedule != null && foundRequest.eventSchedule.startDateTime != null && foundRequest.eventSchedule.endDateTime != null) {
                             foundRequest.eventDateTimeDisp = util.makeEventDateTimeDisplay(foundRequest.eventSchedule.startDateTime, foundRequest.eventSchedule.endDateTime);
                         }
 
@@ -509,7 +509,7 @@ export default {
             console.log("resetFilterView activated.");
             let vm = this;
             vm.requestResultCaption = "Requests - All"
-            vm.requestsQueryString = null;
+            vm.requestsQueryString = `&processingStatusContains=${this.allStatusesExcludeNew}`;
             vm.clearSearchUI();
             vm.updateRequests();
         },
@@ -559,20 +559,20 @@ export default {
             let selectedReqId = event.target.id;
             let storeState = this.$store.state;
 
-            var revisingRequest = localCacheMgr.getCachedItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, selectedReqId));
-            if (revisingRequest != undefined && revisingRequest != null) {
+            //xx var revisingRequest = localCacheMgr.getCachedItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, selectedReqId));
+            // if (revisingRequest != undefined && revisingRequest != null) {
 
-                storeState.currentRequest = revisingRequest;
-                manageProcessingStatus(storeState.currentRequest);
+            //     storeState.currentRequest = revisingRequest;
+            //     manageProcessingStatus(storeState.currentRequest);
                     
-                //check if it is an edit or a view; if edit, go to request/1, if view, go to summary
-                if($(event.target).hasClass("enableEdit")){
-                    vm.$router.push('/request/1');
-                } else if ($(event.target).hasClass("disableEdit")) {
-                    vm.$router.push('/requestsummary'); 
-                }
+            //     //check if it is an edit or a view; if edit, go to request/1, if view, go to summary
+            //     if($(event.target).hasClass("enableEdit")){
+            //         vm.$router.push('/request/1');
+            //     } else if ($(event.target).hasClass("disableEdit")) {
+            //         vm.$router.push('/requestsummary'); 
+            //     }
 
-            } else {
+            //} else {
                 //construct query string
                 var url = apiMgr.getRequestByIdUrl(selectedReqId);
                 console.log(url);
@@ -596,7 +596,7 @@ export default {
                         vm.hasFailure = true;
                         vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
                     })
-            }
+            //}
 
         },
 
@@ -657,10 +657,8 @@ export default {
                 let statusToQuery = event.target.id;
 
                 var filterLabel = util.getProcessingStatusOptionLabel(statusToQuery);
-
                 vm.requestResultCaption = "Requests - " + filterLabel;
                 
-
                 vm.requestsQueryString += `&processingStatusContains=${statusToQuery}`;
                 vm.updateRequests();
             }

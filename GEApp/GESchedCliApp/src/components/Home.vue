@@ -75,7 +75,8 @@ export default {
     return {
         hasFailure: false,
         failureMessage: null,
-        isFetchingRequests: false
+        isFetchingRequests: false,
+        allStatuses: "newUnsubmitted|underReview|rejected|approved|canceled"
       }
   },
 
@@ -131,45 +132,47 @@ export default {
 
     this.checkHasWorkingNewRequestCached();
 
+    this.refetchUserRequests()
+
     //get requests for current user
-    let queryUser = `&requesterEmailContains=${this.$store.state.currentUser.email}`;
-    var url = apiMgr.getRequestsUrl() + queryUser;
+    // let queryUser = `&requesterEmailContains=${this.$store.state.currentUser.email}`;
+    // var url = apiMgr.getRequestsUrl() + queryUser;
 
-    axios.get(url)
-        .then(res => {
-            console.log("getRequestsUrl return status: " + res.status);
+    // axios.get(url)
+    //     .then(res => {
+    //         console.log("getRequestsUrl return status: " + res.status);
             
-            while(vm.$store.state.currentUserRequests.length > 0) {
-              vm.$store.state.currentUserRequests.pop();
-            }
-            var foundRequests = res.data;
+            // while(vm.$store.state.currentUserRequests.length > 0) {
+            //   vm.$store.state.currentUserRequests.pop();
+            // }
+            // var foundRequests = res.data;
 
-            $.each(foundRequests, function (index, request) {
-              request.updatedAtDisp = util.getDateTimeDisplay(request.updatedAt);
+            // $.each(foundRequests, function (index, request) {
+            //   request.updatedAtDisp = util.getDateTimeDisplay(request.updatedAt);
 
-              request.eventGEContactPersonNameDisp = request.eventGEContactPersonName;
-              if (request.eventGEContactPersonNameDisp == null && request.eventGEContactPersonNameDisp == "") {
-                request.eventGEContactPersonNameDisp = request.eventGEContactPersonEmail; 
-              } else {
-                request.eventGEContactPersonNameDisp += `, (${request.eventGEContactPersonEmail})`;
-              }
+            //   request.eventGEContactPersonNameDisp = request.eventGEContactPersonName;
+            //   if (request.eventGEContactPersonNameDisp == null && request.eventGEContactPersonNameDisp == "") {
+            //     request.eventGEContactPersonNameDisp = request.eventGEContactPersonEmail; 
+            //   } else {
+            //     request.eventGEContactPersonNameDisp += `, (${request.eventGEContactPersonEmail})`;
+            //   }
 
-              if (request.eventSchedule != null && 
-                 request.eventSchedule.startDateTime != null &&
-                 request.eventSchedule.endDateTime != null) {
-                request.eventDateTimeDisp = util.makeEventDateTimeDisplay(request.eventSchedule.startDateTime, request.eventSchedule.endDateTime);
-              }
+            //   if (request.eventSchedule != null && 
+            //      request.eventSchedule.startDateTime != null &&
+            //      request.eventSchedule.endDateTime != null) {
+            //     request.eventDateTimeDisp = util.makeEventDateTimeDisplay(request.eventSchedule.startDateTime, request.eventSchedule.endDateTime);
+            //   }
 
-              vm.$store.state.currentUserRequests.push(request);          
-            });
+            //   vm.$store.state.currentUserRequests.push(request);          
+            // });
 
-            prepareRequestsForUI(vm.$store.state.currentUserRequests);
-            vm.isFetchingRequests = false;
-        })
-        .catch((err) => {
-            vm.hasFailure = true;
-            vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
-        })
+            // prepareRequestsForUI(vm.$store.state.currentUserRequests);
+            // vm.isFetchingRequests = false;
+    //     })
+    //     .catch((err) => {
+    //         vm.hasFailure = true;
+    //         vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+    //     })
 
   },
 
@@ -217,23 +220,24 @@ export default {
     checkHasWorkingNewRequestCached() {
       let storeState = this.$store.state;
       storeState.hasWorkingNewRequestCache = false;
-      let workingNewRequest = localCacheMgr.getCachedItem(util.makeWorkingNewRequestCacheKey(this.$store.state.loginContext.requesterEmail));
-      if (workingNewRequest != null) {
-        storeState.hasWorkingNewRequestCache = true;
-      }
-      workingNewRequest = null;
+      //xx to-do - scan currentRequest list for the request with processingStatus of newUnsubmitted
+      //let workingNewRequest = localCacheMgr.getCachedItem(util.makeWorkingNewRequestCacheKey(this.$store.state.loginContext.requesterEmail));
+      //if (workingNewRequest != null) {
+      //  storeState.hasWorkingNewRequestCache = true;
+      //}
+      //workingNewRequest = null;
     },
 
     onNewRequest: function(event) {
       console.log('Home.vue - onNewRequest activate');
       this.$store.state.currentRequest = null;
-      localCacheMgr.uncacheItem(util.makeWorkingNewRequestCacheKey(this.$store.state.loginContext.requesterEmail));
+      //xx localCacheMgr.uncacheItem(util.makeWorkingNewRequestCacheKey(this.$store.state.loginContext.requesterEmail));
       this.$router.push('/dofirst/true');
     },
 
     onContinueRequest: function(event) {
       this.$store.state.currentRequest = null;
-      console.log('Home.vue - onNewRequest activate');
+      console.log('Home.vue - onContinueRequest activate');
       this.$router.push('/dofirst/true');
     },
 
@@ -246,16 +250,17 @@ export default {
 
       var selectedRequest = null;
 
-      var revisingRequest = localCacheMgr.getCachedItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, selectedReqId));
-      if (revisingRequest != undefined && revisingRequest != null) {
-        selectedRequest = revisingRequest;
-      } else {
-        storeState.currentUserRequests.forEach(function(request) {
-          if (request._id == selectedReqId) {
-            selectedRequest = request;
-          }
-        });
-      }
+      //xx var revisingRequest = localCacheMgr.getCachedItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, selectedReqId));
+      // if (revisingRequest != undefined && revisingRequest != null) {
+      //   selectedRequest = revisingRequest;
+      // } else {
+      // }
+
+      storeState.currentUserRequests.forEach(function(request) {
+        if (request._id == selectedReqId) {
+          selectedRequest = request;
+        }
+      });
 
       storeState.currentRequest = selectedRequest;
 
@@ -279,10 +284,10 @@ export default {
 
       // If viewing a request the assumption is that it should be edited and 
       // therefore clear out any from the cache and rely on the one from the server.
-      var revisingRequest = localCacheMgr.getCachedItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, selectedReqId));
-      if (revisingRequest != undefined && revisingRequest != null) {
-        localCacheMgr.uncacheItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, selectedReqId));
-      } 
+      //xx var revisingRequest = localCacheMgr.getCachedItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, selectedReqId));
+      // if (revisingRequest != undefined && revisingRequest != null) {
+      //   localCacheMgr.uncacheItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, selectedReqId));
+      // } 
 
       storeState.currentUserRequests.forEach(function(request) {
         if (request._id == selectedReqId) {
@@ -389,7 +394,7 @@ export default {
       let vm = this;
 
       //get requests for current user
-      let queryUser = `&requesterEmailContains=${vm.$store.state.currentUser.email}`;
+      let queryUser = `&requesterEmailContains=${vm.$store.state.currentUser.email}&processingStatusContains=${this.allStatuses}`;
       var url = apiMgr.getRequestsUrl() + queryUser;
 
       axios.get(url)
@@ -402,6 +407,20 @@ export default {
               var foundRequests = res.data;
 
               $.each(foundRequests, function (index, request) {
+
+                request.updatedAtDisp = util.getDateTimeDisplay(request.updatedAt);
+
+                request.eventGEContactPersonNameDisp = request.eventGEContactPersonName;
+                if (request.eventGEContactPersonNameDisp == null && request.eventGEContactPersonNameDisp == "") {
+                  request.eventGEContactPersonNameDisp = request.eventGEContactPersonEmail; 
+                } else {
+                  request.eventGEContactPersonNameDisp += `, (${request.eventGEContactPersonEmail})`;
+                }
+
+                if (request.eventSchedule != null && request.eventSchedule.startDateTime != null && request.eventSchedule.endDateTime != null) {
+                  request.eventDateTimeDisp = util.makeEventDateTimeDisplay(request.eventSchedule.startDateTime, request.eventSchedule.endDateTime);
+                }
+
                 vm.$store.state.currentUserRequests.push(request);
               });
               

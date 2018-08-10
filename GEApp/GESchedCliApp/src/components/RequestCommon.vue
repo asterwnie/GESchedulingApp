@@ -103,7 +103,7 @@
             </div>
             <br>
             <div class="mb-3">
-              <button type="button" id="continueBtn" class="btn btn-primary btn-sm" @click.prevent="onContinue">Continue&nbsp;<i class="fas fa-arrow-right"></i></button>
+              <button type="button" id="continueBtn" class="btn btn-primary btn-sm" @click.prevent="onContinue">Save&nbsp;&amp;&nbsp;Continue&nbsp;<i class="fas fa-arrow-right"></i></button>
             </div>
             <p class="text-danger" id="viewLevelExtendedErrorMsg" :hidden="enoughRoomCapacity">The total number of attendees exceeds the room capacity.</p>
             <p class="text-danger" id="viewLevelErrorMsg" :hidden="!hasValidationError">Please correct your input above.</p>
@@ -282,15 +282,16 @@ export default {
     storeState.enableNavBar = true;
 
     if (storeState.currentRequest == null) {
-      let workingNewRequest = localCacheMgr.getCachedItem(util.makeWorkingNewRequestCacheKey(storeState.loginContext.requesterEmail));
-      if (workingNewRequest != undefined && workingNewRequest != null) {
+      //xx scan of newUnsubmitted
+      // let workingNewRequest = localCacheMgr.getCachedItem(util.makeWorkingNewRequestCacheKey(storeState.loginContext.requesterEmail));
+      // if (workingNewRequest != undefined && workingNewRequest != null) {
 
-        storeState.currentRequest = workingNewRequest;
-      } else {
+      //   storeState.currentRequest = workingNewRequest;
+      // } else {
         storeState.currentRequest = {};
         storeState.currentRequest.userCanEdit = true;
         storeState.currentRequest.adminCanEdit = false; 
-      }
+      //}
     } 
 
     this.InitDependsOnControls();
@@ -366,15 +367,16 @@ export default {
 
       this.bindCtrlValuesToRequestProperties();   
       
-      try {
-        if (this.isNewRequest) {
-          localCacheMgr.cacheItem(util.makeWorkingNewRequestCacheKey(storeState.loginContext.requesterEmail), storeState.currentRequest);
-        } else {
-          localCacheMgr.cacheItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, storeState.currentRequest._id), storeState.currentRequest);
-        }
-      } catch (err) {
-        console.log("Not able to locally cache the working request");
-      }
+      // //xx
+      // try {
+      //   if (this.isNewRequest) {
+      //     localCacheMgr.cacheItem(util.makeWorkingNewRequestCacheKey(storeState.loginContext.requesterEmail), storeState.currentRequest);
+      //   } else {
+      //     localCacheMgr.cacheItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, storeState.currentRequest._id), storeState.currentRequest);
+      //   }
+      // } catch (err) {
+      //   console.log("Not able to locally cache the working request");
+      // }
 
       if (vm.currentScreenNum == 1 && storeState.currentUser != null) {
           var usersUrl = apiMgr.getUsersUrl();
@@ -417,6 +419,8 @@ export default {
 
         this.hasValidationError = false;
 
+        this.saveRequest(request);
+
         var nextScreenNum = vm.currentScreenNum + 1;
         if (nextScreenNum <= vm.$store.state.numOfRequestScreens) {
           vm.$router.push('/request/' + nextScreenNum);          
@@ -429,6 +433,66 @@ export default {
         //Ensures the view is at the bottom to show the view-level validation error message.
         window.scrollTo(0,document.body.scrollHeight);
       }
+    },
+
+    returnHome() {
+      if (this.$store.state.inAdminMode) {
+        util.logDebugMsg("RequestCommon - $router.push: /admin/home");
+        this.$router.push("/admin/home");
+      } else {
+        util.logDebugMsg("RequestCommon - $router.push: /home");
+        this.$router.push("/home");
+      }
+    },
+
+
+    saveRequest(request) {
+
+      var url = apiMgr.getRequestsUrl();
+      var neverGotSaved = false;
+
+      if (request.processingStatus == undefined || request.processingStatus == null) {
+        request.processingStatus = "newUnsubmitted";
+        neverGotSaved = true;
+      }
+
+      if (neverGotSaved) {
+
+        axios.post(url, request)
+        .then(res => {
+              if (res.status == 200 && res.data != null) {
+                util.logDebugMsg(`Successfully saved the new request: ${request.eventTitle}, status: ${res.status}`);
+              } else {
+                let errMsg = `unable to saved the new request with newUnsubmitted: ${request.eventTitle}, status: ${res.status}`;
+                util.logDebugMsg(errMsg);
+                util.centralEvent.$emit('OnRequestBackgroundSaveError', errMsg);
+              }             
+          })
+          .catch((err) => {   
+            let errMsg = `unable to saved the new request: ${request.eventTitle}, error: ${err}`;        
+            util.logDebugMsg(errMsg);
+            util.centralEvent.$emit('OnRequestBackgroundSaveError', errMsg);
+          })
+
+      } else {
+
+        axios.put(url, request)
+        .then(res => {
+              if (res.status == 200 && res.data != null) {
+                util.logDebugMsg(`Successfully saved the editing request: ${request.eventTitle}, status: ${res.status}`);
+              } else {
+                let errMsg = `unable to saved the editing request with newUnsubmitted: ${request.eventTitle}, status: ${res.status}`;
+                util.logDebugMsg(errMsg);
+                util.centralEvent.$emit('OnRequestBackgroundSaveError', errMsg);
+              }             
+          })
+          .catch((err) => {   
+            let errMsg = `unable to saved the editing request: ${request.eventTitle}, error: ${err}`;        
+            util.logDebugMsg(errMsg);
+            util.centralEvent.$emit('OnRequestBackgroundSaveError', errMsg);
+          })
+      }
+
     },
 
     checkIfUserNeedToReviewComment() {

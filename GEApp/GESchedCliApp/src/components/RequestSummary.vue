@@ -756,10 +756,9 @@ export default {
           if (res.status == 201 && res.data != null) {
               var requestCreated = res.data;
 
-              let cacheKey = util.makeWorkingNewRequestCacheKey(storeState.loginContext.requesterEmail);
-              localCacheMgr.uncacheItem(cacheKey);
-
-              util.logDebugMsg("submitNewRequest - localCacheMgr.uncacheItem, cacheKey: " + cacheKey);
+              //xx let cacheKey = util.makeWorkingNewRequestCacheKey(storeState.loginContext.requesterEmail);
+              //localCacheMgr.uncacheItem(cacheKey);
+              //util.logDebugMsg("submitNewRequest - localCacheMgr.uncacheItem, cacheKey: " + cacheKey);
 
               storeState.currentRequest = null;
               util.logDebugMsg("submitNewRequest - set currentRequest to null. about to call onReturnHome.");
@@ -828,10 +827,9 @@ export default {
           if (res.status == 200 && res.data != null) {
               var requestUpdated = res.data;
 
-              let cacheKey = util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, requestUpdated._id);
-              localCacheMgr.uncacheItem(cacheKey);       
-              
-              util.logDebugMsg("submitUpdatedRequest - called localCacheMgr.uncacheItem vwith cacheKey: " + cacheKey);
+              //xx let cacheKey = util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, requestUpdated._id);
+              //localCacheMgr.uncacheItem(cacheKey);                    
+              //util.logDebugMsg("submitUpdatedRequest - called localCacheMgr.uncacheItem vwith cacheKey: " + cacheKey);
 
               let canGoHome = true;
               if (justUpdateApprovalNotified) {
