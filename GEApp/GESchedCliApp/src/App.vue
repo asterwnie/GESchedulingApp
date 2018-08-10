@@ -158,7 +158,9 @@ export default {
     return {
       modalShowMenu: false,
       windowWidth: 0,
-      windowHeight: 0
+      windowHeight: 0,
+
+      modalPopups: document.getElementsByClassName("modal"),
     }
   },
 
@@ -276,6 +278,19 @@ export default {
         this.windowWidth = $(window).width();
         this.windowHeight = $(window).height();
       }
+    },
+
+    modalPopups: function (){
+      console.log("Cleaning up modal backdrop.");
+      $.each(modalPopups, function(index, modalPopup){
+        if(modalPopup.style.display == "block"){
+          
+        }
+      }
+      /* if(document.getElementById("findRoomModal").style.display == "none"){
+        $(".modal-backdrop show").remove();
+      } */
+      //if none of the modals have display = block, then remove the backdrop
     }
   },
 

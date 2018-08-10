@@ -457,6 +457,7 @@ export default {
           let vm = this;
           util.logDebugMsg("onRoomSelectModal begin.");
 
+
           $('#findRoomModal').modal('show');
           let currId = event.target.id;
 
