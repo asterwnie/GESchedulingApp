@@ -459,6 +459,7 @@ export default {
 
 
           $('#findRoomModal').modal('show');
+          this.$store.state.isModalBeingDisplayed = true;
           let currId = event.target.id;
 
           let currCard = document.getElementsByClassName(currId)[0].innerHTML;
@@ -497,6 +498,7 @@ export default {
       }
       
       $('#findRoomModal').modal('hide');
+      this.$store.state.isModalBeingDisplayed = false;
       window.scrollTo(0, 0);
       $("#collapseOne").removeClass("show");
       $("#collapseOne").removeClass("hide");
@@ -550,6 +552,7 @@ export default {
       util.logDebugMsg('onRoomDeselect activated. selectedRoom unset (set to null).');
       this.$store.state.selectedRoom = null;
       $('#findRoomModal').modal('hide');
+      this.$store.state.isModalBeingDisplayed = false;
       $(".card").removeClass("border-success");
     },
 

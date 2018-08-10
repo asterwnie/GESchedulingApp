@@ -383,6 +383,7 @@ export default {
         }
 
         $('#deleteModal').modal('show');
+        this.$store.state.isModalBeingDisplayed = true;
         vm.modalUI = "onDeleteOldRequests";
 
         //get query to delete. Gather days old to query
@@ -424,6 +425,7 @@ export default {
         let vm = this;
         vm.requestsToDelete = null;
         $('#deleteModal').modal('hide');
+        this.$store.state.isModalBeingDisplayed = false;
       },
 
       onDeleteOldRequestsConfirm() {
@@ -446,6 +448,7 @@ export default {
               }
 
               $('#deleteModal').modal('hide');
+              this.$store.state.isModalBeingDisplayed = false;
               vm.$forceUpdate();
           })
           .catch((err) => {

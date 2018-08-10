@@ -313,6 +313,7 @@ export default {
         this.$store.state.actionForSelectedRequest.forCancelFromView = "Home.vue";
         this.$store.state.actionForSelectedRequest.forCancel = getLocalUserRequestById(currId, false);
         $('#requestActionConfirmDialog').modal('show');
+        this.$store.state.isModalBeingDisplayed = true;
     },
 
 
@@ -348,6 +349,7 @@ export default {
             this.$store.state.actionForSelectedRequest.forCancelFromView = null;
             this.$store.state.actionForSelectedRequest.forCancel = null;
             $('#requestActionConfirmDialog').modal('hide');
+            this.$store.state.isModalBeingDisplayed = false;
 
             //refresh requests in UI
             vm.$nextTick(function () {
@@ -386,6 +388,7 @@ export default {
         this.$store.state.actionForSelectedRequest.forDeleteFromView = "Home.vue";
         this.$store.state.actionForSelectedRequest.forDelete = getLocalUserRequestById(currId, false);
         $('#requestActionConfirmDialog').modal('show');
+        this.$store.state.isModalBeingDisplayed = true;
     },
 
 
@@ -453,6 +456,7 @@ export default {
             this.$store.state.actionForSelectedRequest.forDelete = null;
 
             $('#requestActionConfirmDialog').modal('hide');
+            this.$store.state.isModalBeingDisplayed = false;
 
             //refresh requests in UI
             vm.$nextTick(function () {
