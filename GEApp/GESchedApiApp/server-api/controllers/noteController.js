@@ -107,7 +107,7 @@ exports.createNote = function (req, res) {
 };
 
 
-// PUT (update) a note using it's id.
+// PUT (update) a note using its id.
 exports.updateNote = function (req, res) {
     logger.verbose('noteController.updateNote begin');
 

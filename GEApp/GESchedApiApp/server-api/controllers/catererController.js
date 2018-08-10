@@ -109,7 +109,7 @@ exports.createCaterer = function (req, res) {
 };
 
 
-// PUT (update) a caterer using it's id.
+// PUT (update) a caterer using its id.
 exports.updateCaterer  = function (req, res) {
     logger.verbose('catererController.updateCaterer  begin');
 
