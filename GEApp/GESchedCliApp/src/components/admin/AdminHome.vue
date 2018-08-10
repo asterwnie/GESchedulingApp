@@ -617,6 +617,7 @@ export default {
                     this.$store.state.actionForSelectedRequest.forDelete = null;
                     this.$store.state.actionForSelectedRequest.forDeleteFromView = null;
                     $('#requestActionConfirmDialog').modal('hide');
+                    this.$store.state.isModalBeingDisplayed = false;
                 })
                 .catch((err) => {
                     if (err.response.status == 400) {
@@ -676,6 +677,7 @@ export default {
                 this.$store.state.actionForSelectedRequest.forDeleteFromView = "AdminHome.vue";
                 
                 $('#requestActionConfirmDialog').modal('show');
+                this.$store.state.isModalBeingDisplayed = true;
             }
         },
 

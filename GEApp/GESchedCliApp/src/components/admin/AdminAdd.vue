@@ -613,6 +613,7 @@ export default {
 
                 
                 $("#deleteAdminUserModal").modal("show");
+                this.$store.state.isModalBeingDisplayed = true;
                 
 
             }
@@ -631,6 +632,7 @@ export default {
                     console.log("onDeleteAdminUser return status: " + res.status);
 
                     $("#deleteAdminUserModal").modal("hide");
+                    this.$store.state.isModalBeingDisplayed = false;
                     vm.refreshAdminUI();
                     vm.$forceUpdate();
 
@@ -648,6 +650,7 @@ export default {
             let vm = this;
 
             $("#deleteAdminUserModal").modal("hide");
+            this.$store.state.isModalBeingDisplayed = false;
             vm.selectedAdminUserToDelete = null;
 
         }

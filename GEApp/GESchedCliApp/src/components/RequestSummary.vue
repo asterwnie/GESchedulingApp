@@ -449,6 +449,7 @@ export default {
 
     onDontSendEmail() {
       $('#sendEmailConfirmDialog').modal('hide');
+      this.$store.state.isModalBeingDisplayed = false;
       this.$store.state.currentRequest = null;
       util.logDebugMsg('RequestSummary - onDontSendEmail - set currentRequest to null.');
       this.onReturnHome();
@@ -460,6 +461,7 @@ export default {
       if (currentRequest == null) { return; }
 
       $('#sendEmailConfirmDialog').modal('hide');
+      this.$store.state.isModalBeingDisplayed = false;
       if (currentRequest.processingStatus == "approved") {
         this.onEmailOutApproval();
       } else if (currentRequest.processingStatus == "rejected") {
@@ -858,6 +860,7 @@ export default {
 
                   util.logDebugMsg("submitUpdatedRequest - About to sendEmailConfirmDialog.modal('show')");
                   $('#sendEmailConfirmDialog').modal('show');
+                  this.$store.state.isModalBeingDisplayed = true;
 
                   //Update requestUpdated.approvalNotified = true and call server to save it.
                   requestUpdated.approvalNotified = true;

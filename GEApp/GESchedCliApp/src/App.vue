@@ -160,7 +160,6 @@ export default {
       windowWidth: 0,
       windowHeight: 0,
 
-      modalPopups: document.getElementsByClassName("modal"),
     }
   },
 
@@ -171,6 +170,10 @@ export default {
 
 
   computed: {
+
+    isModalBeingDisplayed(){
+      return this.$store.state.isModalBeingDisplayed;
+    },
 
     title() {
       return this.$store.state.currentViewTitle;
@@ -280,17 +283,16 @@ export default {
       }
     },
 
-    modalPopups: function (){
-      console.log("Cleaning up modal backdrop.");
-      $.each(modalPopups, function(index, modalPopup){
-        if(modalPopup.style.display == "block"){
-          
-        }
-      }
-      /* if(document.getElementById("findRoomModal").style.display == "none"){
-        $(".modal-backdrop show").remove();
-      } */
-      //if none of the modals have display = block, then remove the backdrop
+    isModalBeingDisplayed: function (){
+      console.log("App.vue - Cleaning up modal backdrop.");
+
+      let backdrops = document.getElementsByClassName("modal-backdrop");
+      $.each(backdrops, function(){
+        this.addEventListener("click", function(){
+          $(".modal-backdrop").remove();
+        });
+      });
+
     }
   },
 
@@ -313,6 +315,7 @@ export default {
         this.$store.state.actionForSelectedRequest.forCancelFromView = null;
 
         $('#requestActionConfirmDialog').modal('hide');
+        this.$store.state.isModalBeingDisplayed = false;
     },
 
     onConfirmedActionOnRequest() {
