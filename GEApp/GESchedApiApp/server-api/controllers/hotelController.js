@@ -107,7 +107,7 @@ exports.createHotel = function (req, res) {
 };
 
 
-// PUT (update) a hotel using it's id.
+// PUT (update) a hotel using its id.
 exports.updateHotel = function (req, res) {
     logger.verbose('hotelController.updateHotel begin');
 

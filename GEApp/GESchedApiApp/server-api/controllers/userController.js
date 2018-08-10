@@ -135,7 +135,7 @@ exports.createUser = async function (req, res) {
 
 
 
-// PUT (update) a user using it's id.
+// PUT (update) a user using its id.
 exports.updateUser = function (req, res) {
     logger.verbose('userController.updateUser begin');
 

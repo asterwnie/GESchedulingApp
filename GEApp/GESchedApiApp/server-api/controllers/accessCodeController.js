@@ -176,7 +176,7 @@ exports.createAccessCode = function (req, res) {
 };
 
 
-// PUT (update) a accessCode using it's id.
+// PUT (update) a accessCode using its id.
 exports.updateAccessCode = function (req, res) {
     logger.verbose('accessCodeController.updateAccessCode begin');
 

@@ -438,7 +438,12 @@ export default {
               console.log("onDeleteOldRequests return status: " + res.status);
 
               vm.canShowRequestResult = true;
-              vm.requestResultMessage = `${res.data.deletedCount} requests successfully deleted.`
+
+              if(res.data.deletedCount == 0){
+                vm.requestResultMessage = "No requests matched for deletion."
+              } else {
+                vm.requestResultMessage = `${res.data.deletedCount} requests successfully deleted.`;
+              }
 
               $('#deleteModal').modal('hide');
               vm.$forceUpdate();

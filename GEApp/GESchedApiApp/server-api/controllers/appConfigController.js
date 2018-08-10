@@ -98,7 +98,7 @@ exports.createAppConfig = function (req, res) {
 };
 
 
-// PUT (update) a appConfig using it's id.
+// PUT (update) a appConfig using its id.
 exports.updateAppConfig = function (req, res) {
     logger.verbose('appConfigController.updateAppConfig begin');
 

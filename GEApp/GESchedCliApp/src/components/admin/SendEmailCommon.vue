@@ -189,13 +189,18 @@ export default {
                 vm.hasFailure = false;
 
                 //Replace meta tags
-                vm.emailStringDataExport = textTransformer.transformAsMailToBodyText(vm.emailTemplate)
-                    .replace('[RECIPIENTNAME]', vm.recipientName)
-                    .replace('[RECIPIENTEMAIL]', vm.recipientEmail)
-                    .replace('[APPLINK]', vm.$store.state.appConfig.appLink)
-                    .replace('[ACCESSCODE]', vm.$store.state.mostRecentUserAccessCode)
-                    .replace('[ADMINACCESSCODE]', vm.$store.state.mostRecentAdminAccessCode)
-                    .replace('[ADMINNAME]', vm.$store.state.currentAdminUser.name);
+                vm.emailStringDataExport = textTransformer.transformAsMailToBodyText(vm.emailTemplate);
+
+                while(vm.emailStringDataExport.indexOf("[") > -1){
+                    vm.emailStringDataExport = vm.emailStringDataExport
+                        .replace('[RECIPIENTNAME]', vm.recipientName)
+                        .replace('[RECIPIENTEMAIL]', vm.recipientEmail)
+                        .replace('[APPLINK]', vm.$store.state.appConfig.appLink)
+                        .replace('[ACCESSCODE]', vm.$store.state.mostRecentUserAccessCode)
+                        .replace('[ADMINACCESSCODE]', vm.$store.state.mostRecentAdminAccessCode)
+                        .replace('[ADMINNAME]', vm.$store.state.currentAdminUser.name)
+                        .replace('[APPNAME]', vm.$store.state.appConfig.appName);
+                }
                 
                 //Reformat for display in preview
                 vm.emailStringDataDisplay = vm.emailStringDataExport.replace(/%0D%0A/g, '\n').replace(/%20/g, ' ');

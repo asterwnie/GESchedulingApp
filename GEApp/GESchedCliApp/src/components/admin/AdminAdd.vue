@@ -368,11 +368,16 @@ export default {
 
                     //replace email and name (and access code)
                     vm.emailStringDataExport = textTransformer.transformAsMailToBodyText(vm.$store.state.appConfig.addAdminEmailTemplate)
-                    .replace('[RECIPIENTNAME]', vm.recipientName)
-                    .replace('[RECIPIENTEMAIL]', vm.recipientEmail)
-                    .replace('[APPLINK]', vm.$store.state.appConfig.appLink)
-                    .replace('[ADMINACCESSCODE]', vm.$store.state.mostRecentAdminAccessCode)
-                    .replace('[ADMINNAME]', adminName);
+                    while(vm.emailStringDataExport.indexOf("[") > -1){
+                        vm.emailStringDataExport = vm.emailStringDataExport
+                            .replace('[RECIPIENTNAME]', vm.recipientName)
+                            .replace('[RECIPIENTEMAIL]', vm.recipientEmail)
+                            .replace('[APPLINK]', vm.$store.state.appConfig.appLink)
+                            .replace('[ACCESSCODE]', vm.$store.state.mostRecentUserAccessCode)
+                            .replace('[ADMINACCESSCODE]', vm.$store.state.mostRecentAdminAccessCode)
+                            .replace('[ADMINNAME]', vm.$store.state.currentAdminUser.name)
+                            .replace('[APPNAME]', vm.$store.state.appConfig.appName);
+                    }
                     
                     //reformat for display in preview
                     vm.emailStringDataDisplay = vm.emailStringDataExport.replace(/%0D%0A/g, '\n').replace(/%20/g, ' ');
@@ -403,6 +408,8 @@ export default {
             if(vm.recipientName != "" && vm.recipientEmail != ""){
 
                 let isValid = vm.validateEmailString(vm.recipientEmail);
+                let isExistingStandardUser = false;
+                let existingStandardUserId = null;
 
                 var checkIfDupe = new Promise(function(resolve, reject) {
                     //check if it is a duplicate
@@ -413,15 +420,36 @@ export default {
                                 console.log("onAddAdmin: get users return status: " + res.status);
                                 
                                 if(res.data.count >= 1){
-                                    isValid = false;
 
-                                    vm.hasFailure = true;
-                                    vm.failureMessage = "Error: A user with this email already exists!";      
+                                    let queryExistingUserUrl = apiMgr.getUsersUrl() + `&emailContains=${vm.recipientEmail}`;
+
+                                    //find matching user
+                                    axios.get(queryExistingUserUrl)
+                                        .then(res => {
+                                            console.log("onFindExistingUser return status: " + res.status);
+
+                                            if(res.data[0].isAdmin){
+                                                isValid = false;
+
+                                                vm.hasFailure = true;
+                                                vm.failureMessage = "Error: A user with this email already exists!";   
+                                            } else {
+                                                
+                                                isExistingStandardUser = true;
+                                                existingStandardUserId = res.data[0]._id;
+                                                resolve();
+                                            }
+                                
+                                        })
+                                        .catch((err) => {
+                                            vm.hasFailure = true;
+                                            vm.failureMessage = `An error has occured. ${err}`;                               
+                                        });
+
                                 } else {
-                                    vm.hasFailure = false;
+                                    //if the user doesn't already exist
+                                    resolve();
                                 }
-
-                                resolve();
 
                             })
                             .catch((err) => {
@@ -432,50 +460,60 @@ export default {
 
                 checkIfDupe.then(function() {
                     if(isValid){
+                        if(!isExistingStandardUser){
+                            //gather new user
+                            let newUser = {
+                                email: vm.recipientEmail,
+                                name: vm.recipientName,
+                                isAdmin: true,
+                            };
+                            if(vm.recipientPhone != ""){
+                                newUser.phone = vm.recipientPhone;
+                            }
 
-                        //gather new user
-                        let newUser = {
-                            email: vm.recipientEmail,
-                            name: vm.recipientName,
-                            isAdmin: true,
-                        };
-                        if(vm.recipientPhone != ""){
-                            newUser.phone = vm.recipientPhone;
+                            //get url
+                            let url = apiMgr.getUsersUrl();
+                            
+                            //create (post) new user
+                            axios.post(url, newUser)
+                                .then(res => {
+                                    console.log("onAddAdmin return status: " + res.status);
+                                    vm.createAdminSuccess();
+
+                                })
+                                .catch((err) => {
+                                    vm.hasFailure = true;
+                                    vm.failureMessage = `An error has occured. ${err}`;                               
+                                });
+
+                        } else {
+                            //gather modified user
+                            let modifiedUser = {
+                                _id: existingStandardUserId,
+                                name: vm.recipientName,
+                                email: vm.recipientEmail,
+                                isAdmin: true,
+                            }
+
+                            if(vm.recipientPhone != ""){
+                                newUser.phone = vm.recipientPhone;
+                            }
+
+                            //get url
+                            let url = apiMgr.getUsersUrl();
+                            
+                            //update (put) admin user
+                            axios.put(url, modifiedUser)
+                                .then(res => {
+                                    console.log("onAddAdmin return status: " + res.status);
+                                    vm.createAdminSuccess();
+
+                                })
+                                .catch((err) => {
+                                    vm.hasFailure = true;
+                                    vm.failureMessage = `An error has occured. ${err}`;                               
+                                });
                         }
-
-                        //get url
-                        let url = apiMgr.getUsersUrl();
-                        
-                        //create (post) new user
-                        axios.post(url, newUser)
-                            .then(res => {
-                                console.log("onAddAdmin return status: " + res.status);
-                                
-                                vm.hasFailure = false;
-                                vm.hasSuccess = true;
-
-                                vm.successMessage = "Success!"
-
-                                //replace email and name in UI
-                                $("#recipientNameAdmin")[0].value = vm.recipientName;
-                                $("#recipientEmailAdmin")[0].value = vm.recipientEmail;
-
-                                $("#recipientNameAdmin")[0].disabled = false;
-                                $("#recipientEmailAdmin")[0].disabled = false;
-                                vm.canGenerateEmail = true;
-
-                                $("#collapseAddAdmin").collapse("hide");
-                                //$("#collapseSendNotification").collapse("show");
-                                $("#collapseSendNotification").addClass('show');
-
-                                vm.refreshAdminUI();
-                                vm.$forceUpdate();
-
-                            })
-                            .catch((err) => {
-                                vm.hasFailure = true;
-                                vm.failureMessage = `An error has occured. ${err}`;                               
-                            });
                         
                     }
                 });
@@ -485,6 +523,30 @@ export default {
                 vm.hasFailure = true;
                 vm.failureMessage = "Required fields cannot be empty."
             }
+        },
+
+        createAdminSuccess() {
+            let vm = this;
+
+            vm.hasFailure = false;
+            vm.hasSuccess = true;
+
+            vm.successMessage = "Success!"
+
+            //replace email and name in UI
+            $("#recipientNameAdmin")[0].value = vm.recipientName;
+            $("#recipientEmailAdmin")[0].value = vm.recipientEmail;
+
+            $("#recipientNameAdmin")[0].disabled = false;
+            $("#recipientEmailAdmin")[0].disabled = false;
+            vm.canGenerateEmail = true;
+
+            $("#collapseAddAdmin").collapse("hide");
+            //$("#collapseSendNotification").collapse("show");
+            $("#collapseSendNotification").addClass('show');
+
+            vm.refreshAdminUI();
+            vm.$forceUpdate();
         },
 
         onResetAdd() {
@@ -568,13 +630,10 @@ export default {
                 .then(res => {
                     console.log("onDeleteAdminUser return status: " + res.status);
 
-                    /* vm.canShowRequestResult = true;
-                    vm.requestResultMessage = `${res.data.deletedCount} requests successfully deleted.` */
-
                     $("#deleteAdminUserModal").modal("hide");
                     vm.refreshAdminUI();
                     vm.$forceUpdate();
-                    //vm.isFetchingRequests = false;
+
                 })
                 .catch((err) => {
                     vm.hasFailure = true;

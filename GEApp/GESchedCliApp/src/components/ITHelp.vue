@@ -1,11 +1,14 @@
 <template>
-  <div class="container-fluid" style="width:100%">
-    <div> 
-        <div style="padding:20px; width:100%" class="alert alert-info card">
+<div class="container-fluid" style="width:100%;">
+    <div class="row">
+      <div class="col col-sm-1 col-md-2 col-lg-4"></div>
+      <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%;">
+          <div style="padding:20px; width:100%" class="alert alert-info card">
           <div v-html="viewDescription"></div>
-        </div>     
-    </div> 
-  </div> 
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 
