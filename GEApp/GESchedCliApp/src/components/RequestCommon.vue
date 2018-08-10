@@ -107,6 +107,7 @@
             </div>
             <p class="text-danger" id="viewLevelExtendedErrorMsg" :hidden="enoughRoomCapacity">The total number of attendees exceeds the room capacity.</p>
             <p class="text-danger" id="viewLevelErrorMsg" :hidden="!hasValidationError">Please correct your input above.</p>
+            <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
             <br>
             <br>
           </form>
@@ -123,7 +124,13 @@ import * as util from '@/common/util.js';
 import * as apiMgr from '@/common/apiMgr.js';
 import * as localCacheMgr from '@/common/localCacheMgr.js';
 
-import { clearValidationMessages, validateRequest, manageProcessingStatus, bindUiValuesFromRequest, applyBadgeColorBasedOnProcessingStatus, isTotalAttendeesLessThanOrEqualToRoomCapacity } from '@/common/requestMgr.js'
+import { clearValidationMessages, 
+          validateRequest, 
+          manageProcessingStatus, 
+          bindUiValuesFromRequest, 
+          applyBadgeColorBasedOnProcessingStatus, 
+          isTotalAttendeesLessThanOrEqualToRoomCapacity, 
+          saveRequest } from '@/common/requestMgr.js'
 
 import textInputCtrl from '@/components/requestPrompts/TextInput.vue'
 import textAreaInputCtrl from '@/components/requestPrompts/TextAreaInput.vue'
@@ -151,6 +158,8 @@ export default {
 
     data () {
     return {  
+      hasFailure: false,
+      failureMessage: null,
       hasValidationError: false,
       enoughRoomCapacity: true,
       showPleaseReviewCommentsMsg: false,
@@ -246,6 +255,14 @@ export default {
 
   },
 
+
+  created() {
+      util.centralEvent.$on('OnRequestBackgroundSaveError', (errMsg) => {
+        this.hasFailure = true;
+        this.failureMessage = errMsg;
+      });
+  },
+
   
   updated() {
       applyBadgeColorBasedOnProcessingStatus();
@@ -282,16 +299,9 @@ export default {
     storeState.enableNavBar = true;
 
     if (storeState.currentRequest == null) {
-      //xx scan of newUnsubmitted
-      // let workingNewRequest = localCacheMgr.getCachedItem(util.makeWorkingNewRequestCacheKey(storeState.loginContext.requesterEmail));
-      // if (workingNewRequest != undefined && workingNewRequest != null) {
-
-      //   storeState.currentRequest = workingNewRequest;
-      // } else {
         storeState.currentRequest = {};
         storeState.currentRequest.userCanEdit = true;
         storeState.currentRequest.adminCanEdit = false; 
-      //}
     } 
 
     this.InitDependsOnControls();
@@ -366,17 +376,6 @@ export default {
       var storeState = vm.$store.state;
 
       this.bindCtrlValuesToRequestProperties();   
-      
-      // //xx
-      // try {
-      //   if (this.isNewRequest) {
-      //     localCacheMgr.cacheItem(util.makeWorkingNewRequestCacheKey(storeState.loginContext.requesterEmail), storeState.currentRequest);
-      //   } else {
-      //     localCacheMgr.cacheItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, storeState.currentRequest._id), storeState.currentRequest);
-      //   }
-      // } catch (err) {
-      //   console.log("Not able to locally cache the working request");
-      // }
 
       if (vm.currentScreenNum == 1 && storeState.currentUser != null) {
           var usersUrl = apiMgr.getUsersUrl();
@@ -400,6 +399,8 @@ export default {
                 vm.$router.push('/attentionNotes');
             })
       }
+
+      saveRequest(storeState.currentRequest);
   },
 
   methods: {
@@ -418,8 +419,6 @@ export default {
       if (allValid && vm.enoughRoomCapacity) {
 
         this.hasValidationError = false;
-
-        this.saveRequest(request);
 
         var nextScreenNum = vm.currentScreenNum + 1;
         if (nextScreenNum <= vm.$store.state.numOfRequestScreens) {
@@ -445,55 +444,6 @@ export default {
       }
     },
 
-
-    saveRequest(request) {
-
-      var url = apiMgr.getRequestsUrl();
-      var neverGotSaved = false;
-
-      if (request.processingStatus == undefined || request.processingStatus == null) {
-        request.processingStatus = "newUnsubmitted";
-        neverGotSaved = true;
-      }
-
-      if (neverGotSaved) {
-
-        axios.post(url, request)
-        .then(res => {
-              if (res.status == 200 && res.data != null) {
-                util.logDebugMsg(`Successfully saved the new request: ${request.eventTitle}, status: ${res.status}`);
-              } else {
-                let errMsg = `unable to saved the new request with newUnsubmitted: ${request.eventTitle}, status: ${res.status}`;
-                util.logDebugMsg(errMsg);
-                util.centralEvent.$emit('OnRequestBackgroundSaveError', errMsg);
-              }             
-          })
-          .catch((err) => {   
-            let errMsg = `unable to saved the new request: ${request.eventTitle}, error: ${err}`;        
-            util.logDebugMsg(errMsg);
-            util.centralEvent.$emit('OnRequestBackgroundSaveError', errMsg);
-          })
-
-      } else {
-
-        axios.put(url, request)
-        .then(res => {
-              if (res.status == 200 && res.data != null) {
-                util.logDebugMsg(`Successfully saved the editing request: ${request.eventTitle}, status: ${res.status}`);
-              } else {
-                let errMsg = `unable to saved the editing request with newUnsubmitted: ${request.eventTitle}, status: ${res.status}`;
-                util.logDebugMsg(errMsg);
-                util.centralEvent.$emit('OnRequestBackgroundSaveError', errMsg);
-              }             
-          })
-          .catch((err) => {   
-            let errMsg = `unable to saved the editing request: ${request.eventTitle}, error: ${err}`;        
-            util.logDebugMsg(errMsg);
-            util.centralEvent.$emit('OnRequestBackgroundSaveError', errMsg);
-          })
-      }
-
-    },
 
     checkIfUserNeedToReviewComment() {
 

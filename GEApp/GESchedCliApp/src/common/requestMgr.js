@@ -3,6 +3,7 @@
 //
 
 import * as util from '@/common/util.js';
+import * as apiMgr from '@/common/apiMgr.js';
 const centralStore = require('@/common/centralStore.js').centralStore;
 
 
@@ -725,5 +726,58 @@ export const prepareRequestsForUI = (requests) => {
     $.each(requests, function (index, request) {
         manageProcessingStatus(request);
     });
+}
+
+
+
+export const saveRequest = (requests) => {
+
+    var url = apiMgr.getRequestsUrl();
+    var neverGotSaved = false;
+
+    if (request._id == undefined || request._id == null) {
+      neverGotSaved = true;
+      if (request.processingStatus == undefined || request.processingStatus == null) {
+        request.processingStatus = "newUnsubmitted";     
+      }
+    }
+
+    if (neverGotSaved) {
+
+      axios.post(url, request)
+      .then(res => {
+            if (res.status == 201 && res.data != null) {
+              util.logDebugMsg(`Successfully saved the new request: ${request.eventTitle}, status: ${res.status}`);
+            } else {
+              let errMsg = `unable to saved the new request with newUnsubmitted: ${request.eventTitle}, status: ${res.status}`;
+              util.logDebugMsg(errMsg);
+              util.centralEvent.$emit('OnRequestBackgroundSaveError', errMsg);
+            }             
+        })
+        .catch((err) => {   
+          let errMsg = `unable to saved the new request: ${request.eventTitle}, error: ${err}`;        
+          util.logDebugMsg(errMsg);
+          util.centralEvent.$emit('OnRequestBackgroundSaveError', errMsg);
+        })
+
+    } else {
+
+      axios.put(url, request)
+      .then(res => {
+            if ((res.status == 200 || res.status == 204) && res.data != null) {
+              util.logDebugMsg(`Successfully saved the editing request: ${request.eventTitle}, status: ${res.status}`);
+            } else {
+              let errMsg = `unable to saved the editing request with newUnsubmitted: ${request.eventTitle}, status: ${res.status}`;
+              util.logDebugMsg(errMsg);
+              util.centralEvent.$emit('OnRequestBackgroundSaveError', errMsg);
+            }             
+        })
+        .catch((err) => {   
+          let errMsg = `unable to saved the editing request: ${request.eventTitle}, error: ${err}`;        
+          util.logDebugMsg(errMsg);
+          util.centralEvent.$emit('OnRequestBackgroundSaveError', errMsg);
+        })
+    }
+
 }
 

@@ -221,17 +221,11 @@ export default {
       let storeState = this.$store.state;
       storeState.hasWorkingNewRequestCache = false;
       //xx to-do - scan currentRequest list for the request with processingStatus of newUnsubmitted
-      //let workingNewRequest = localCacheMgr.getCachedItem(util.makeWorkingNewRequestCacheKey(this.$store.state.loginContext.requesterEmail));
-      //if (workingNewRequest != null) {
-      //  storeState.hasWorkingNewRequestCache = true;
-      //}
-      //workingNewRequest = null;
     },
 
     onNewRequest: function(event) {
       console.log('Home.vue - onNewRequest activate');
       this.$store.state.currentRequest = null;
-      //xx localCacheMgr.uncacheItem(util.makeWorkingNewRequestCacheKey(this.$store.state.loginContext.requesterEmail));
       this.$router.push('/dofirst/true');
     },
 
@@ -249,12 +243,6 @@ export default {
       let storeState = this.$store.state;
 
       var selectedRequest = null;
-
-      //xx var revisingRequest = localCacheMgr.getCachedItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, selectedReqId));
-      // if (revisingRequest != undefined && revisingRequest != null) {
-      //   selectedRequest = revisingRequest;
-      // } else {
-      // }
 
       storeState.currentUserRequests.forEach(function(request) {
         if (request._id == selectedReqId) {
@@ -281,13 +269,6 @@ export default {
       let storeState = this.$store.state;
 
       var selectedRequest = null;
-
-      // If viewing a request the assumption is that it should be edited and 
-      // therefore clear out any from the cache and rely on the one from the server.
-      //xx var revisingRequest = localCacheMgr.getCachedItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, selectedReqId));
-      // if (revisingRequest != undefined && revisingRequest != null) {
-      //   localCacheMgr.uncacheItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, selectedReqId));
-      // } 
 
       storeState.currentUserRequests.forEach(function(request) {
         if (request._id == selectedReqId) {

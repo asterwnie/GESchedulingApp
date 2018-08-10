@@ -559,45 +559,28 @@ export default {
             let selectedReqId = event.target.id;
             let storeState = this.$store.state;
 
-            //xx var revisingRequest = localCacheMgr.getCachedItem(util.makeRevisingRequestCacheKey(storeState.loginContext.requesterEmail, selectedReqId));
-            // if (revisingRequest != undefined && revisingRequest != null) {
+            var url = apiMgr.getRequestByIdUrl(selectedReqId);
+            console.log(url);
 
-            //     storeState.currentRequest = revisingRequest;
-            //     manageProcessingStatus(storeState.currentRequest);
-                    
-            //     //check if it is an edit or a view; if edit, go to request/1, if view, go to summary
-            //     if($(event.target).hasClass("enableEdit")){
-            //         vm.$router.push('/request/1');
-            //     } else if ($(event.target).hasClass("disableEdit")) {
-            //         vm.$router.push('/requestsummary'); 
-            //     }
+            //get requests
+            axios.get(url)
+                .then(res => {
+                    console.log("getRequestByIdUrl return status: " + res.status);
 
-            //} else {
-                //construct query string
-                var url = apiMgr.getRequestByIdUrl(selectedReqId);
-                console.log(url);
-
-                //get requests
-                axios.get(url)
-                    .then(res => {
-                        console.log("getRequestByIdUrl return status: " + res.status);
- 
-                        storeState.currentRequest = res.data;
-                        manageProcessingStatus(storeState.currentRequest);
-                    
-                        //check if it is an edit or a view; if edit, go to request/1, if view, go to summary
-                        if($(event.target).hasClass("enableEdit")){
-                            vm.$router.push('/request/1');
-                        } else if ($(event.target).hasClass("disableEdit")) {
-                            vm.$router.push('/requestsummary'); 
-                        }
-                    })
-                    .catch((err) => { //todo
-                        vm.hasFailure = true;
-                        vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
-                    })
-            //}
-
+                    storeState.currentRequest = res.data;
+                    manageProcessingStatus(storeState.currentRequest);
+                
+                    //check if it is an edit or a view; if edit, go to request/1, if view, go to summary
+                    if($(event.target).hasClass("enableEdit")){
+                        vm.$router.push('/request/1');
+                    } else if ($(event.target).hasClass("disableEdit")) {
+                        vm.$router.push('/requestsummary'); 
+                    }
+                })
+                .catch((err) => { //todo
+                    vm.hasFailure = true;
+                    vm.failureMessage = "Server unavailable or not working at this time. Please try later.";                               
+                })
         },
 
 
