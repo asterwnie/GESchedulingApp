@@ -5,9 +5,8 @@ REM    + Get latest application files from GitHub
 REM    + Refresh the application reference data in the application database
 REM    + Uninstall and reinstall the application as a Windows service 
 
-
 set DRIVE=%1
-if "%1" == "" set DRIVE=C
+if "%1" == "" set DRIVE=D
 
 set sourceFolder=%DRIVE%:\GESchedulingApp\GESchedulingApp\GEApp\GESchedApiApp
 set backupRootFolder=%DRIVE%:\GESchedulingApp\Backups
