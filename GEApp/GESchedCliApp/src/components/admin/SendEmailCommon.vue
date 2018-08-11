@@ -18,14 +18,14 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">Recipient Name</span>
                 </div>
-                <input id="recipientName" type="text" v-bind:value="recipientEmailValue" class="form-control" aria-label="recipient-name" aria-describedby="basic-addon1">
+                <input id="recipientName" type="text" v-bind:value="recipientNameValue" class="form-control" aria-label="recipient-name" aria-describedby="basic-addon1">
             </div>
             <p class="text-danger validation-msg" style="display:none;" id="REQUIRED-MSG-FOR-recipientName">The recipient name is required.</p>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon2">Recipient Email</span>
                 </div>
-                <input id="recipientEmail" type="text" v-bind:value="recipientNameValue" class="form-control" aria-label="recipient-email" aria-describedby="basic-addon2">
+                <input id="recipientEmail" type="text" v-bind:value="recipientEmailValue" class="form-control" aria-label="recipient-email" aria-describedby="basic-addon2">
             </div>
             <p class="text-danger validation-msg" style="display:none;" id="INVALID-MSG-FOR-recipientEmail">Please enter a valid email address.</p>
             <p class="text-danger validation-msg" style="display:none;" id="REQUIRED-MSG-FOR-recipientEmail">A email address is required.</p>
@@ -244,8 +244,8 @@ export default {
         onReset() {
 
             $(".validation-msg").hide();    
-            $("#recipientEmail").val(this.defRecipientEmail);
-            $("#recipientName").val(this.defRecipientName);
+            $("#recipientEmail").val(this.recipientEmailValue);
+            $("#recipientName").val(this.recipientNameValue);
             $("#emailPreview").val(null);  
 
             this.emailStringDataExport = null;
