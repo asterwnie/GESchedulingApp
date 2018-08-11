@@ -20,17 +20,6 @@ set backupFolder=%backupFolder%-%timestamp%
 echo Using source folder: %sourceFolder%
 echo Using backup folder: %backupFolder%
 
-
-call :Begin >fullRedeploy-HLS-MA-Log.txt 
-exit /b
-
-:Begin
-
-echo Timestamp: %timestamp%
-echo Using source folder: %sourceFolder%
-echo Using backup folder: %backupFolder%
-
-
 echo Check exist for: %sourceFolder%
 
 if not exist %sourceFolder% (
@@ -45,9 +34,19 @@ if not exist %sourceFolder% (
     if not exist %backupRootFolder% (
         mkdir %backupRootFolder%
     )
-
     echo Creating backup folder: %backupFolder%
     mkdir %backupFolder%
+)
+
+
+call :Begin >%backupFolder%\fullRedeploy-HLS-MA-Log.txt 
+exit /b
+
+:Begin
+
+    echo Timestamp: %timestamp%
+    echo Using source folder: %sourceFolder%
+    echo Using backup folder: %backupFolder%
 
     echo Begin backing up file from %sourceFolder%
 
@@ -122,4 +121,3 @@ if not exist %sourceFolder% (
     ) else (
         echo Complete all operations!
     )
-)
