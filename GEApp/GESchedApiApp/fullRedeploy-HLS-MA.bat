@@ -8,6 +8,9 @@ REM    + Uninstall and reinstall the application as a Windows service
 set DRIVE=%1
 if "%1" == "" set DRIVE=D
 
+set ForDev=%2
+if "%2" == "dev" set ForDev=dev
+
 set sourceFolder=%DRIVE%:\GESchedulingApp\GESchedulingApp\GEApp\GESchedApiApp
 set backupRootFolder=%DRIVE%:\GESchedulingApp\Backups
 set backupFolder=%DRIVE%:\GESchedulingApp\Backups\GESchedApiApp
@@ -21,6 +24,8 @@ echo Using source folder: %sourceFolder%
 echo Using backup folder: %backupFolder%
 
 echo Check exist for: %sourceFolder%
+
+pause
 
 if not exist %sourceFolder% (
 
@@ -38,8 +43,8 @@ if not exist %sourceFolder% (
     mkdir %backupFolder%
 )
 
-
-call :Begin >%backupFolder%\fullRedeploy-HLS-MA-Log.txt 
+pause
+call :Begin >%backupFolder%-Log.txt 
 exit /b
 
 :Begin
@@ -56,8 +61,10 @@ exit /b
     echo ====================================================================
     echo ====================================================================
 
+pause
+
     if ERRORLEVEL 1 (
-        echo ==== Unable to complete all operations!
+        echo ==== FAILED - Unable to complete all operations!
         exit
     )
 
@@ -68,7 +75,7 @@ exit /b
     xcopy /S /Y /I %sourceFolder%\*.* %backupFolder%
     
     if ERRORLEVEL 1 (
-        echo ==== Unable to complete all operations!
+        echo ==== FAILED - Unable to complete all operations!
         exit
     )
 
@@ -95,12 +102,21 @@ exit /b
     echo ====================================================================
 
     CD %sourceFolder%
-    git add -A
-    git commit -m "SERVER OPERATOR MODIFICATION"
-    git pull
+
+    if "%ForDev%" == "dev" (
+        echo ==== Do Git Add, Commit and Pull
+        git add -A
+        git commit -m "SERVER OPERATOR MODIFICATION"
+        git pull
+    ) else (
+        echo ==== Do Git Fetch and hard Reset
+        REM git status
+        REM git fetch --all
+        REM git reset --hard origin/master
+    )
 
     if ERRORLEVEL 1 (
-        echo ==== Unable to complete all operations!
+        echo ==== FAILED - Unable to complete all operations!
         exit
     )
 
@@ -114,7 +130,7 @@ exit /b
     call runDataImports-HLS-MA.bat
 
     if ERRORLEVEL 1 (
-        echo ==== Unable to complete all operations!
+        echo ==== FAILED - Unable to complete all operations!
         exit
     )
 
@@ -129,7 +145,7 @@ exit /b
     node %sourceFolder%\runAsWinService.js -u
 
     if ERRORLEVEL 1 (
-        echo ==== Unable to complete all operations!
+        echo ==== FAILED - Unable to complete all operations!
         exit
     )
 
@@ -140,7 +156,7 @@ exit /b
     node %sourceFolder%\runAsWinService.js 
 
     if ERRORLEVEL 1 (
-        echo ==== Unable to complete all operations!
+        echo ==== FAILED - Unable to complete all operations!
     ) else (
-        echo ==== Successfully complete all operations!!
+        echo ==== SUCCESS - complete all operations!
     )
