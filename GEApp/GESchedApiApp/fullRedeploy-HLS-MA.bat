@@ -119,7 +119,7 @@ exit /b
     )
 
     echo ====================================================================
-    echo ==== Done re-import all application reference data.
+    echo ==== Done re-import all application reference data. 
     echo ====================================================================
 
     echo ====================================================================
