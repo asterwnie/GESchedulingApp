@@ -4,12 +4,25 @@ REM    + A full backup
 REM    + Get latest application files from GitHub 
 REM    + Refresh the application reference data in the application database
 REM    + Uninstall and reinstall the application as a Windows service 
+REM
+REM Usage (in Admin mode):
+REM    + No addtional command parameters - default to D: drive, use PROD mode for Git operations
+REM    fullRedeploy-HLS-MA.bat
+REM    + Use command parameters - 1st arg to specify drive, 2rd arg for Git mode (dev for DEV mode)
+REM    fullRedeploy-HLS-MA.bat c dev
+REM    + Use command parameters - 3rd arg to tell script to prompt to continue
+REM    fullRedeploy-HLS-MA.bat c dev dopause
+REM    + Use command parameters - use 2rd arg to tell script to skip the Git operations
+REM    fullRedeploy-HLS-MA.bat c skipgit
+
 
 set DRIVE=%1
 if "%1" == "" set DRIVE=D
 
 set ForDev=%2
 if "%2" == "dev" set ForDev=dev
+
+if "%3" == "dopause" set DoPause=dopause
 
 set sourceFolder=%DRIVE%:\GESchedulingApp\GESchedulingApp\GEApp\GESchedApiApp
 set backupRootFolder=%DRIVE%:\GESchedulingApp\Backups
@@ -25,12 +38,21 @@ echo Using backup folder: %backupFolder%
 
 echo Check exist for: %sourceFolder%
 
-pause
+if "%ForDev%" == "dev" (
+    echo Will do Git Add, Commit and Pull
+)
+if "%ForDev%" == "prod" (
+    echo Will do Git Fetch and hard Reset
+)
+
+if "%DoPause%" == "dopause" pause
 
 if not exist %sourceFolder% (
 
-    echo This directory does not exist: %sourceFolder%
-    echo Unable to find a source directory to do the backup! 
+    echo ==== This directory does not exist: %sourceFolder%
+    echo ==== FAILED - Unable to find a source directory to do the backup! 
+    echo ==== FAILED - Exiting script
+    if "%DoPause%" == "dopause" pause
     exit
 
 ) else (
@@ -38,12 +60,17 @@ if not exist %sourceFolder% (
     echo Make sure backup root folder exist: %backupRootFolder%
     if not exist %backupRootFolder% (
         mkdir %backupRootFolder%
+        echo Created backup root folder exist: %backupRootFolder%
     )
-    echo Creating backup folder: %backupFolder%
+    
     mkdir %backupFolder%
+    echo Created backup folder: %backupFolder%
 )
 
-pause
+if "%DoPause%" == "dopause" pause
+
+echo Running script in the background. Activities are logged to: %backupFolder%-Log.txt 
+
 call :Begin >%backupFolder%-Log.txt 
 exit /b
 
@@ -61,11 +88,9 @@ exit /b
     echo ====================================================================
     echo ====================================================================
 
-pause
-
     if ERRORLEVEL 1 (
         echo ==== FAILED - Unable to complete all operations!
-        exit
+        GOTO END
     )
 
     echo ====================================================================
@@ -76,7 +101,7 @@ pause
     
     if ERRORLEVEL 1 (
         echo ==== FAILED - Unable to complete all operations!
-        exit
+        GOTO END
     )
 
     echo ====================================================================
@@ -104,25 +129,26 @@ pause
     CD %sourceFolder%
 
     if "%ForDev%" == "dev" (
-        echo ==== Do Git Add, Commit and Pull
+        echo ==== In DEV mode - About to do Git Add, Commit and Pull
         git add -A
         git commit -m "SERVER OPERATOR MODIFICATION"
         git pull
+    ) else if NOT "%ForDev%" == "prod" (
+        echo ==== Skipping Git operations
     ) else (
-        echo ==== Do Git Fetch and hard Reset
+         echo ==== In PROD mode - About to do Git Fetch and hard Reset
         REM git status
         REM git fetch --all
-        REM git reset --hard origin/master
+        REM git reset --hard origin/master       
     )
 
     if ERRORLEVEL 1 (
         echo ==== FAILED - Unable to complete all operations!
-        exit
+        GOTO END
     )
 
     echo ====================================================================
     echo ==== Completed getting the latest source files from GitHub
-    echo ====================================================================
     echo ====================================================================
     echo ==== About to re-import all application reference data.
     echo ====================================================================
@@ -131,13 +157,11 @@ pause
 
     if ERRORLEVEL 1 (
         echo ==== FAILED - Unable to complete all operations!
-        exit
+        GOTO END
     )
 
     echo ====================================================================
     echo ==== Done re-import all application reference data. 
-    echo ====================================================================
-
     echo ====================================================================
     echo ==== About to uninstall the application's Windows service.
     echo ====================================================================
@@ -146,7 +170,7 @@ pause
 
     if ERRORLEVEL 1 (
         echo ==== FAILED - Unable to complete all operations!
-        exit
+        GOTO END
     )
 
     echo ====================================================================
@@ -158,5 +182,13 @@ pause
     if ERRORLEVEL 1 (
         echo ==== FAILED - Unable to complete all operations!
     ) else (
+        echo ====================================================================
         echo ==== SUCCESS - complete all operations!
+        echo ====================================================================
+        set CurDate=%date:~10,4%-%date:~4,2%-%date:~7,2%
+        set timestamp=%CurDate%-%time:~0,2%%time:~3,2%%time:~6,2%
+        echo ==== Timestamp: %timestamp% 
+        echo ====================================================================
     )
+
+    :END
