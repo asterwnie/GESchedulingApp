@@ -294,6 +294,7 @@ export default {
             $('.modal').modal('hide');
             $('body').removeClass('modal-open');
             this.remove();
+            vm.$store.state.isModalBeingDisplayed = false;
           });
         });
       });

@@ -1,11 +1,32 @@
 <template>
 <div>
+  <!-- Modal -->
+<div class="modal" id="newRequestModal" tabindex="-1" role="dialog" aria-labelledby="newRequestModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newRequestModalLabel">New Request</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Creating a new request will clear any unsubmitted work and start a new request. Would you like to continue?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Cancel</button>
+        <button type="button" class="btn btn-primary" @click.prevent="onNewRequest">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Page Contents -->
   <div class="container-fluid">
     <div class="row">
       <div class="col col-sm-1 col-md-2 col-lg-4"></div>
         <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%;">
         <form class="needs-validation" novalidate>
-          <button class="btn btn-primary btn-block" type="submit" @click.prevent="onNewRequest">New Request</button>
+          <button class="btn btn-primary btn-block" type="submit" @click.prevent="onNewRequestModal">New Request</button>
         </form>
         <div v-if="hasWorkingNewRequest">
           <br>
@@ -195,9 +216,19 @@ export default {
       }
     },
 
+    onNewRequestModal() {
+      console.log('Home.vue - onNewRequestModal activate');
+      let vm = this;
 
-    onNewRequest: function(event) {
+      $('#newRequestModal').modal('show');
+      vm.$store.state.isModalBeingDisplayed = true;
+    },
+
+    onNewRequest() {
       console.log('Home.vue - onNewRequest activate');
+
+      $('#newRequestModal').modal('hide');
+      this.$store.state.isModalBeingDisplayed = false;
 
       let storeState = this.$store.state;
       storeState.currentRequest = null;
