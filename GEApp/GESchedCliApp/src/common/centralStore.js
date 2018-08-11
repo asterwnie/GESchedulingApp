@@ -32,6 +32,9 @@ const store = new Vuex.Store({
         currentAdminUser: null,
         inAdminMode: false,
 
+        currentSendEmailRecipientEmail: null,
+        currentSendEmailRecipientName: null,
+
         currentRequest: null,
         currentUserRequests: [],
         currentRequestsPreview: [],

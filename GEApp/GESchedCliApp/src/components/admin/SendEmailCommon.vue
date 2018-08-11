@@ -18,14 +18,14 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">Recipient Name</span>
                 </div>
-                <input id="recipientName" type="text" class="form-control" aria-label="recipient-name" aria-describedby="basic-addon1">
+                <input id="recipientName" type="text" v-bind:value="recipientEmailValue" class="form-control" aria-label="recipient-name" aria-describedby="basic-addon1">
             </div>
             <p class="text-danger validation-msg" style="display:none;" id="REQUIRED-MSG-FOR-recipientName">The recipient name is required.</p>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon2">Recipient Email</span>
                 </div>
-                <input id="recipientEmail" type="text" class="form-control" aria-label="recipient-email" aria-describedby="basic-addon2">
+                <input id="recipientEmail" type="text" v-bind:value="recipientNameValue" class="form-control" aria-label="recipient-email" aria-describedby="basic-addon2">
             </div>
             <p class="text-danger validation-msg" style="display:none;" id="INVALID-MSG-FOR-recipientEmail">Please enter a valid email address.</p>
             <p class="text-danger validation-msg" style="display:none;" id="REQUIRED-MSG-FOR-recipientEmail">A email address is required.</p>
@@ -84,11 +84,28 @@ export default {
         return {
             hasFailure: false,
             failureMessage: null,
-            recipientEmail: defRecipientEmail,
-            recipientName: defRecipientName,
             emailStringDataExport: null,
             emailStringDataDisplay: null,
             canEmail: false,
+        }
+    },
+
+    computed: {
+
+        recipientEmailValue() {
+            var val = this.defRecipientEmail;
+            if (val == null || val == "") {
+                val = this.$store.state.currentSendEmailRecipientEmail;
+            }    
+            return val;
+        },
+
+        recipientNameValue() {
+            var val = this.defRecipientName;
+            if (val == null || val == "") {
+                val = this.$store.state.currentSendEmailRecipientName;
+            }    
+            return val;
         }
     },
 
@@ -185,8 +202,8 @@ export default {
 
             vm.isValid = true;
 
-            vm.recipientName = $("#recipientName").val();
-            vm.recipientEmail = $("#recipientEmail").val();
+            let recipientName = $("#recipientName").val();
+            let recipientEmail = $("#recipientEmail").val();
             
             var prompts = [];
             prompts.push({ isRequired: true, inputType: { ctrlType: "email", ctrlDataId: "recipientEmail" } });
@@ -202,8 +219,8 @@ export default {
 
                 while(vm.emailStringDataExport.indexOf("[") > -1){
                     vm.emailStringDataExport = vm.emailStringDataExport
-                        .replace('[RECIPIENTNAME]', vm.recipientName)
-                        .replace('[RECIPIENTEMAIL]', vm.recipientEmail)
+                        .replace('[RECIPIENTNAME]', recipientName)
+                        .replace('[RECIPIENTEMAIL]', recipientEmail)
                         .replace('[APPLINK]', vm.$store.state.appConfig.appLink)
                         .replace('[ACCESSCODE]', vm.$store.state.mostRecentUserAccessCode)
                         .replace('[ADMINACCESSCODE]', vm.$store.state.mostRecentAdminAccessCode)
