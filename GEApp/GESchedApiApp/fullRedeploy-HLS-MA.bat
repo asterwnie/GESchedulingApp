@@ -6,7 +6,9 @@ REM    + Refresh the application reference data in the application database
 REM    + Uninstall and reinstall the application as a Windows service 
 
 set sourceDrive=C:
-set sourcePath=\GESchedulingApp\GESchedulingApp\GEApp\GESchedApiApp-TEST
+set sourcePath=\GESchedulingApp\GESchedulingApp\GEApp\GESchedApiApp
+set targetPath=\GESchedulingApp\Backups\GESchedApiApp
+
 set sourceFolder=%sourceDrive%%sourcePath%
 echo Check exist for: %sourceFolder%
 
@@ -24,11 +26,14 @@ if not exist %sourceFolder% (
 
     set CurDate=%date:~10,4%%date:~4,2%%date:~7,2%
     set timestamp=%CurDate%-%time:~0,2%%time:~3,2%%time:~6,2%
-    set sourceBackupFolder=%sourceFolder%-%timestamp%
-  
-    echo sourceBackupFolder: %sourceBackupFolder%
 
-    echo Begin backing up file in %sourceFolder%
+    if not exist %sourceDrive%\GESchedulingApp\Backups (
+        mkdir %sourceDrive%\GESchedulingApp\Backups
+    )
+
+    set sourceBackupFolder=%sourceDrive%%targetPath%-%timestamp%
+
+    echo Begin backing up file from %sourceFolder%
     echo To directory %sourceBackupFolder%
 
     mkdir %sourceBackupFolder%
