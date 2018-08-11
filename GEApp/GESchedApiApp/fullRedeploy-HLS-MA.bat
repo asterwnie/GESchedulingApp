@@ -184,9 +184,9 @@ GOTO END
         echo ==== About to get the latest source files from GitHub  
         echo ==== In PROD mode - About to do Git Fetch and hard Reset
         echo ====================================================================
-        REM git status
-        REM git fetch --all
-        REM git reset --hard origin/master   
+        git status
+        git fetch --all
+        git reset --hard origin/master   
         echo ====================================================================
         echo ==== Completed getting the latest source files from GitHub
         echo ====================================================================    
