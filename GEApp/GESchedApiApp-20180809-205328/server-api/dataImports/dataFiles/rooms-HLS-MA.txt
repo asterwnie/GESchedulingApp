@@ -1,0 +1,311 @@
+--Room.Name: Forum
+--Room.SizeType: Forum
+--Room.SeatingCapacity: 9999999
+--Room.Floor: 1
+--Room.Building: Health MBO
+--Room.RoomNumber: 
+--Room.RoomPhone: 
+--Room.AddressGAL: 
+--Room.SpecialNote: 
+--Room.Capability: 
+
+--Room.Name: Wellfleet
+--Room.SizeType: Medium Conference
+--Room.SeatingCapacity: 16
+--Room.Floor: 1
+--Room.Building: Health MBO
+--Room.RoomNumber: 1132
+--Room.RoomPhone: 774-843-7142
+--Room.AddressGAL: Health MBO Wellfleet
+--Room.SpecialNote: FDA inspection takes priority over previously scheduled meetings
+
+--Room.Name: Plum Island
+--Room.SizeType: Small Training Room
+--Room.SeatingCapacity: 16
+--Room.Floor: 3
+--Room.Building: Health MBO
+--Room.RoomNumber: 3131
+--Room.RoomPhone: 508-683-2216
+--Room.AddressGAL: Health MBO Plum Island Training - 16
+--Room.Capability: Telephone available upon request
+--Room.Capability: Monitors|ClickShare
+--Room.Capability: Non-GE computers can present
+--Room.Configuration: U-Setup-14-Max
+--Room.Configuration: Classroom-Setup-16-Max
+--Room.Configuration: Conference-Setup-16-Max
+
+--Room.Name: Martha's Vineyard
+--Room.SizeType: Large Training Room
+--Room.SeatingCapacity: 40
+--Room.Floor: 3
+--Room.Building: Health MBO
+--Room.RoomNumber: 3133
+--Room.RoomPhone: 508-683-2216
+--Room.AddressGAL: Health MBO Martha Vineyard Training - 40
+--Room.SpecialNote:
+--Room.Capability: Telephone available upon request
+--Room.Capability: Podium|Projector|Screen|Speaker System|ClickShare
+--Room.Capability: Non-GE computers can present
+--Room.Configuration: Classroom-Setup-40-Max
+--Room.Configuration: Conference-Setup-24-Max
+--Room.Configuration: SplitV-Setup-40-Max
+--Room.Configuration: U-Setup-24-Max
+--Room.Configuration: Theater-Setup-40-Max
+
+--Room.Name:Falmouth
+--Room.SizeType:Medium Conference
+--Room.SeatingCapacity: 12
+--Room.Floor: 1
+--Room.Building: Health MBO
+--Room.RoomNumber: 1103
+--Room.RoomPhone: 774-843-7140
+--Room.AddressGAL: Health MBO Falmouth
+--Room.SpecialNote: FDA inspection takes priority over previously scheduled meetings
+--Room.Capability:Crestron units
+--Room.Capability: Only GE employees can present Wirelessly
+
+--Room.Name:Mashpee
+--Room.SizeType:Medium Conference
+--Room.SeatingCapacity: 8
+--Room.Floor: 1
+--Room.Building: Health MBO
+--Room.RoomNumber: 1116
+--Room.RoomPhone: 774-843-7141
+--Room.AddressGAL: Health MBO Mashpee
+--Room.SpecialNote: FDA inspection takes priority over previously scheduled meetings
+--Room.Capability:Crestron units
+--Room.Capability: Only GE employees can present Wirelessly
+
+--Room.Name:Provincetown
+--Room.SizeType:Medium Conference
+--Room.SeatingCapacity: 8
+--Room.Floor: 1
+--Room.Building: Health MBO
+--Room.RoomNumber: 1117
+--Room.RoomPhone: 774-843-7143
+--Room.AddressGAL: Health MBO Provincetown
+--Room.SpecialNote: FDA inspection takes priority over previously scheduled meetings
+--Room.Capability:Crestron units
+--Room.Capability: Only GE employees can present Wirelessly
+
+--Room.Name:Boardroom
+--Room.SizeType:Boardroom
+--Room.SeatingCapacity: 20
+--Room.Floor: 2
+--Room.Building: Health MBO
+--Room.RoomNumber: 
+--Room.RoomPhone:508-683-2216
+--Room.AddressGAL: Health MBO Boardroom
+--Room.SpecialNote: 
+--Room.Capability: Monitor|Speaker System|Phone|ClickShare
+--Room.Capability: Non-GE computers can present
+
+
+--Room.Name:Bunker Hill
+--Room.SizeType:Large Conference
+--Room.SeatingCapacity: 20
+--Room.Floor: 2
+--Room.Building: Health MBO
+--Room.RoomNumber: 2144
+--Room.RoomPhone: 774-843-7150
+--Room.AddressGAL: Health MBO Bunker Hill
+--Room.SpecialNote: 
+--Room.Capability: Telephone available upon request
+--Room.Capability: Monitors|ClickShare
+--Room.Capability: Non-GE computers can present
+
+
+--Room.Name:Kenmore
+--Room.SizeType:Large Conference
+--Room.SeatingCapacity: 14
+--Room.Floor: 2
+--Room.Building: Health MBO
+--Room.RoomNumber: 2424
+--Room.RoomPhone: 508-486-6668
+--Room.AddressGAL: Health MBO Kenmore
+--Room.SpecialNote: 
+--Room.Capability: Telephone available upon request
+--Room.Capability: 
+--Room.Capability: 
+
+--Room.Name:Foxboro
+--Room.SizeType:Large Conference
+--Room.SeatingCapacity: 14
+--Room.Floor: 2
+--Room.Building: Health MBO
+--Room.RoomNumber: 2425
+--Room.RoomPhone: 508-486-6667
+--Room.AddressGAL: Health MBO Foxboro
+--Room.SpecialNote: 
+--Room.Capability: Telephone available upon request
+--Room.Capability: 
+--Room.Capability: 
+
+--Room.Name:Freedom Trail
+--Room.SizeType:Medium Conference
+--Room.SeatingCapacity: 10
+--Room.Floor: 2
+--Room.Building: Health MBO
+--Room.RoomNumber: 2336
+--Room.RoomPhone: 774-843-7152
+--Room.AddressGAL: Health MBO Freedom Trail
+--Room.SpecialNote: 
+--Room.Capability: Telephone available upon request
+--Room.Capability: 
+--Room.Capability: 
+
+--Room.Name:Fenway
+--Room.SizeType:Medium Conference
+--Room.SeatingCapacity: 8
+--Room.Floor: 2
+--Room.Building: Health MBO
+--Room.RoomNumber: 2126
+--Room.RoomPhone: 774-843-7151
+--Room.AddressGAL: Health MBO Fenway
+--Room.SpecialNote: 
+--Room.Capability: Telephone available upon request
+--Room.Capability: Monitors|ClickShare
+--Room.Capability: Non-GE computers can present
+
+
+--Room.Name:TP US Marlborough HC 2010
+--Room.SizeType:Telepresence
+--Room.SeatingCapacity: 6
+--Room.Floor: 2
+--Room.Building:TP US Marlborough HC
+--Room.RoomNumber: 2010
+--Room.RoomPhone: 774-843-7154
+--Room.AddressGAL:TP US Marlborough HC 2010
+--Room.SpecialNote: 
+--Room.Capability: Telephone available upon request
+--Room.Capability: 
+--Room.Capability: 
+
+
+--Room.Name:TP US Marlborough HC 2411
+--Room.SizeType:TP Lite
+--Room.SeatingCapacity: 4
+--Room.Floor: 2
+--Room.Building: TP US Marlborough HC
+--Room.RoomNumber: 2411
+--Room.RoomPhone: 300-881-0477
+--Room.AddressGAL:TP US Marlborough HC 2411
+--Room.SpecialNote: 
+--Room.Capability: Telephone available upon request
+--Room.Capability: 
+--Room.Capability: 
+
+
+--Room.Name:Video Room 2124
+--Room.SizeType:Video Phone
+--Room.SeatingCapacity: 2
+--Room.Floor: 2
+--Room.Building: Health MBO
+--Room.RoomNumber: 2124
+--Room.RoomPhone: 508-683-2352
+--Room.AddressGAL:Health MBO Video Room2121-2
+--Room.SpecialNote: 
+--Room.Capability:Crestron units
+--Room.Capability: Only GE employees can present Wirelessly
+
+
+--Room.Name:Nantucket
+--Room.SizeType:Small Training Room
+--Room.SeatingCapacity: 16
+--Room.Floor: 3
+--Room.Building: Health MBO
+--Room.RoomNumber: 3132
+--Room.RoomPhone: 508-683-2216
+--Room.AddressGAL:Health MBO Natucket Training - 16
+--Room.SpecialNote: Telephone available upon request
+--Room.Capability: Telephone available upon request
+--Room.Capability: Monitors|ClickShare
+--Room.Capability: Non-GE computers can present
+--Room.Configuration: U-Setup-14-Max
+--Room.Configuration: Classroom-Setup-16-Max
+--Room.Configuration: Conference-Setup-16-Max
+
+--Room.Name:Wachusett
+--Room.SizeType:Large Conference
+--Room.SeatingCapacity: 16
+--Room.Floor: 3
+--Room.Building: Health MBO
+--Room.RoomNumber: 3111
+--Room.RoomPhone: 774-843-7166
+--Room.AddressGAL:Health MBO Wachusett
+--Room.SpecialNote: FDA inspection takes priority over previously scheduled meetings
+--Room.Capability: Telephone available upon request
+--Room.Capability: Monitors|ClickShare
+--Room.Capability: Non-GE computers can present
+
+--Room.Name:Shaker
+--Room.SizeType:Large Conference
+--Room.SeatingCapacity: 12
+--Room.Floor: 3
+--Room.Building: Health MBO
+--Room.RoomNumber: 3375
+--Room.RoomPhone: 508-490-0016
+--Room.AddressGAL:Health MBO Shaker
+--Room.SpecialNote:
+--Room.Capability:Crestron units
+--Room.Capability: Only GE employees can present Wirelessly
+
+--Room.Name:Blackpoll
+--Room.SizeType: Medium Conference 
+--Room.SeatingCapacity: 12
+--Room.Floor: 3
+--Room.Building: Health MBO
+--Room.RoomNumber: 3363
+--Room.RoomPhone: 508-490-0014
+--Room.AddressGAL:Health MBO Blackpoll
+--Room.SpecialNote:
+--Room.Capability:Crestron units
+--Room.Capability: Only GE employees can present Wirelessly
+
+--Room.Name:Sugarloaf
+--Room.SizeType: Medium Conference 
+--Room.SeatingCapacity: 10
+--Room.Floor: 3
+--Room.Building: Health MBO
+--Room.RoomNumber: 3323
+--Room.RoomPhone: 774-843-7169
+--Room.AddressGAL:Health MBO Sugarloaf
+--Room.SpecialNote:
+--Room.Capability:Crestron units
+--Room.Capability: Only GE employees can present Wirelessly
+
+--Room.Name:Nashoba
+--Room.SizeType: Medium Conference 
+--Room.SeatingCapacity: 10
+--Room.Floor: 3
+--Room.Building: Health MBO
+--Room.RoomNumber: 3323
+--Room.RoomPhone: 774-843-7168
+--Room.AddressGAL:Health MBO Nashoba
+--Room.SpecialNote:
+--Room.Capability:Crestron units
+--Room.Capability: Only GE employees can present Wirelessly
+
+--Room.Name:Greylock
+--Room.SizeType: Medium Conference 
+--Room.SeatingCapacity: 10
+--Room.Floor: 3
+--Room.Building: Health MBO
+--Room.RoomNumber: 3364
+--Room.RoomPhone: 508-490-0015
+--Room.AddressGAL:Health MBO Greylock
+--Room.SpecialNote:
+--Room.Capability:Crestron units
+--Room.Capability: Only GE employees can present Wirelessly
+
+--Room.Name:TP US Marlborough HC 3210
+--Room.SizeType: Telepresence (Large)
+--Room.SeatingCapacity: 14
+--Room.Floor: 3
+--Room.Building:TP US Marlborough HC
+--Room.RoomNumber: 3210
+--Room.RoomPhone: 774-843-7173
+--Room.AddressGAL:TP US Marlborough HC 3210
+--Room.SpecialNote:
+--Room.Capability:Crestron units
+--Room.Capability: Only GE employees can present Wirelessly
