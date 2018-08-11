@@ -10,6 +10,9 @@ GE Health Life Sciences
 --AppLink
 http://localhost
 
+--NotifyAppAdminEmailDistributionList
+ResultsWayCommunityReception@ge.com
+
 --AppTitle
 Meeting & Event[LINEBREAK]Request
 
