@@ -14,7 +14,9 @@ REM    fullRedeploy-HLS-MA.bat c dev
 REM    + Use command parameters - 3rd arg to tell script to prompt to continue
 REM    fullRedeploy-HLS-MA.bat c dev dopause
 REM    + Use command parameters - use 2rd arg to tell script to skip the Git source file operations
-REM    fullRedeploy-HLS-MA.bat c skipgit
+REM    fullRedeploy-HLS-MA.bat d skipgit
+REM    + Use command parameters - skip reinstalling the application service and just restart it
+REM    fullRedeploy-HLS-MA.bat d prod skipinstallservice
 
 
 set DRIVE=%1
@@ -22,9 +24,16 @@ if "%1" == "" set DRIVE=D
 
 set GitMode=%2
 if "%2" == "" set GitMode=prod
+if "%2" == "dopause" set GitMode=prod
 
 set DoPause=none
+if "%2" == "dopause" set DoPause=dopause
 if "%3" == "dopause" set DoPause=dopause
+if "%4" == "dopause" set DoPause=dopause
+
+set DoSkipInstallService=DontSkip
+if "%3" == "skipinstallservice" set DoSkipInstallService=skipinstallservice
+if "%4" == "skipinstallservice" set DoSkipInstallService=skipinstallservice
 
 set sourceFolder=%DRIVE%:\GESchedulingApp\GESchedulingApp\GEApp\GESchedApiApp
 set backupRootFolder=%DRIVE%:\GESchedulingApp\Backups
@@ -41,6 +50,7 @@ echo Using backup folder:
 echo %backupFolder%
 
 echo Git DoPause: %DoPause%
+echo Skip Install Service: %DoSkipInstallService%
 echo Git Mode: %GitMode%
 
 if "%GitMode%" == "dev" (
@@ -50,7 +60,8 @@ if "%GitMode%" == "prod" (
     echo Will do Git Fetch and hard Reset
 )
 
-echo About to check exist for: %sourceFolder%
+echo About to check exist for: 
+echo %sourceFolder%
 
 if "%DoPause%" == "dopause" (
     pause
@@ -58,7 +69,8 @@ if "%DoPause%" == "dopause" (
 
 if not exist %sourceFolder% (
 
-    echo ==== This directory does not exist: %sourceFolder%
+    echo ==== This directory does not exist: 
+    echo ==== %sourceFolder%
     echo ==== FAILED - Unable to find a source directory to do the backup! 
     echo ==== FAILED - Exiting script
     if "%DoPause%" == "dopause" pause
@@ -66,14 +78,17 @@ if not exist %sourceFolder% (
 
 ) else (
 
-    echo Make sure backup root folder exist: %backupRootFolder%
+    echo Make sure backup root folder exist: 
+    echo %backupRootFolder%
     if not exist %backupRootFolder% (
         mkdir %backupRootFolder%
-        echo Created backup root folder exist: %backupRootFolder%
+        echo Created backup root folder exist: 
+        echo %backupRootFolder%
     )
     
     mkdir %backupFolder%
-    echo Created backup folder: %backupFolder%
+    echo Created backup folder: 
+    echo %backupFolder%
 )
 
 if "%DoPause%" == "dopause" (
@@ -86,6 +101,8 @@ echo %backupFolder%-Log.txt
 
 call :Begin >%backupFolder%-Log.txt 
 exit /b
+echo done!
+GOTO END
 
 :Begin
 
@@ -131,6 +148,9 @@ exit /b
 
     net stop gemeetingrequestapp.exe
 
+    if ERRORLEVEL 1 (
+        echo ==== WARNING - Not able to stop the application service. It might not be running.
+    )
     REM Clear out error just in case the service is not running
     set ERRORLEVEL=0
 
@@ -151,6 +171,7 @@ exit /b
         git add -A
         git commit -m "FULL REDEPLOYMENT AUTOMATION RUN (DEV MODE) - %timestamp%"
         git pull
+        echo ""
         echo ====================================================================
         echo ==== Completed getting the latest source files from GitHub
         echo ==================================================================== 
@@ -186,25 +207,41 @@ exit /b
         echo ==== FAILED - Unable to complete all operations!
         GOTO END
     )
-
     echo ====================================================================
     echo ==== Done re-importing all application reference data. 
     echo ====================================================================
-    echo ==== About to uninstall the application's Windows service.
-    echo ====================================================================
 
-    node %sourceFolder%\runAsWinService.js -u
+    if "%DoSkipInstallService%" == "skipinstallservice" (
+        echo ====================================================================
+        echo ==== Skipping installing the application's Windows service.
+        echo ====================================================================
+        echo ====================================================================
+        echo ==== About to retart the application's Windows service.
+        echo ====================================================================
+        net start gemeetingrequestapp.exe
 
-    if ERRORLEVEL 1 (
-        echo ==== FAILED - Unable to complete all operations!
-        GOTO END
+        if ERRORLEVEL 1 (
+            echo ==== FAILED - Not able to start the application service!
+        )
+
+    ) else (
+        echo ====================================================================
+        echo ==== About to uninstall the application's Windows service.
+        echo ====================================================================
+
+        node %sourceFolder%\runAsWinService.js -u
+
+        if ERRORLEVEL 1 (
+            echo ==== FAILED - Unable to complete all operations!
+            GOTO END
+        )
+
+        echo ====================================================================
+        echo ==== About to re-install the application's Windows service.
+        echo ====================================================================
+
+        node %sourceFolder%\runAsWinService.js 
     )
-
-    echo ====================================================================
-    echo ==== About to re-install the application's Windows service.
-    echo ====================================================================
-
-    node %sourceFolder%\runAsWinService.js 
 
     if ERRORLEVEL 1 (
         echo ==== FAILED - Unable to complete all operations!
