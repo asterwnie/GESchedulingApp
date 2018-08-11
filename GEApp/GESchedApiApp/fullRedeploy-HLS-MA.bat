@@ -44,41 +44,55 @@ exit /b
 
 :Begin
 
-    echo Timestamp: %timestamp%
-    echo Using source folder: %sourceFolder%
-    echo Using backup folder: %backupFolder%
+    echo ====================================================================
+    echo ====================================================================
+    echo ==== Timestamp: %timestamp%
+    echo ==== Using source folder: %sourceFolder%
+    echo ==== Using backup folder: %backupFolder%
+    echo ====================================================================
+    echo ====================================================================
 
-    echo Begin backing up file from %sourceFolder%
+    echo ==== Begin backing up file from %sourceFolder%
+    echo ====================================================================
+    echo ====================================================================
 
     if ERRORLEVEL 1 (
-        echo Unable to complete all operations!
+        echo ==== Unable to complete all operations!
         exit
     )
 
+    echo ====================================================================
     echo Created backup directory: %backupFolder%
+    echo ====================================================================
 
     xcopy /S /Y /I %sourceFolder%\*.* %backupFolder%
     
     if ERRORLEVEL 1 (
-        echo Unable to complete all operations!
+        echo ==== Unable to complete all operations!
         exit
     )
 
-    echo Stop the application Windows service.
+    echo ====================================================================
+    echo ==== Stop the application Windows service.
+    echo ====================================================================
 
     net stop gemeetingrequestapp.exe
 
     REM Clear out error just in case the service is not running
     set ERRORLEVEL=0
 
-    echo Copied source file to backup folder.
+    echo ====================================================================
+    echo ==== Copied source file to backup folder.
+    echo ====================================================================
 
     REM echo About to deleted all source files.
     REM del /Q /F /S %sourceFolder%\*.*
     REM if ERRORLEVEL 1 GOTO ERROR
     REM echo Deleted all source files.
 
+    echo ====================================================================
     echo About to get the latest source files from GitHub
+    echo ====================================================================
 
     CD %sourceFolder%
     git add -A
@@ -86,38 +100,47 @@ exit /b
     git pull
 
     if ERRORLEVEL 1 (
-        echo Unable to complete all operations!
+        echo ==== Unable to complete all operations!
         exit
     )
 
-    echo Completed getting the latest source files from GitHub
-
-    echo About to re-import all application reference data.
+    echo ====================================================================
+    echo ==== Completed getting the latest source files from GitHub
+    echo ====================================================================
+    echo ====================================================================
+    echo ==== About to re-import all application reference data.
+    echo ====================================================================
 
     call runDataImports-HLS-MA.bat
 
     if ERRORLEVEL 1 (
-        echo Unable to complete all operations!
+        echo ==== Unable to complete all operations!
         exit
     )
 
-    echo Done re-import all application reference data.
+    echo ====================================================================
+    echo ==== Done re-import all application reference data.
+    echo ====================================================================
 
-    echo About to uninstall the application's Windows service.
+    echo ====================================================================
+    echo ==== About to uninstall the application's Windows service.
+    echo ====================================================================
 
     node %sourceFolder%\runAsWinService.js -u
 
     if ERRORLEVEL 1 (
-        echo Unable to complete all operations!
+        echo ==== Unable to complete all operations!
         exit
     )
 
-    echo About to re-install the application's Windows service.
+    echo ====================================================================
+    echo ==== About to re-install the application's Windows service.
+    echo ====================================================================
 
     node %sourceFolder%\runAsWinService.js 
 
     if ERRORLEVEL 1 (
-        echo Unable to complete all operations!
+        echo ==== Unable to complete all operations!
     ) else (
-        echo Complete all operations!
+        echo ==== Successfully complete all operations!!
     )
