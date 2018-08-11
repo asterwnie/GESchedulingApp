@@ -204,7 +204,7 @@ import { getLocalUserRequestById, manageProcessingStatus, prepareRequestsForUI, 
 export default {
     data () {
         return {
-            previewPerPage: 6, //hardcoded for now
+            previewPerPage: 6, //hardcoded for now - need review
             numPages: 0,
             numRequests: 0,
             requestResultCaption: "Requests - All",
