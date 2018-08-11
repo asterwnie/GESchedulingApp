@@ -1,0 +1,10 @@
+Timestamp: 2018-08-10-223910
+Using source folder: C:\GESchedulingApp\GESchedulingApp\GEApp\GESchedApiApp
+Using backup folder: C:\GESchedulingApp\Backups\GESchedApiApp-2018-08-10-223910
+Check exist for: C:\GESchedulingApp\GESchedulingApp\GEApp\GESchedApiApp
+Make sure backup root folder exist: C:\GESchedulingApp\Backups
+Creating backup folder: C:\GESchedulingApp\Backups\GESchedApiApp-2018-08-10-223910
+Begin backing up file from C:\GESchedulingApp\GESchedulingApp\GEApp\GESchedApiApp
+Created backup directory: C:\GESchedulingApp\Backups\GESchedApiApp-2018-08-10-223910
+C:\GESchedulingApp\GESchedulingApp\GEApp\GESchedApiApp\.gitignore
+C:\GESchedulingApp\GESchedulingApp\GEApp\GESchedApiApp\fullRedeploy-HLS-MA-Log.txt
