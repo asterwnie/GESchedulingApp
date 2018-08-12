@@ -439,6 +439,8 @@ export default {
         this.sendEmailConfirmDialogTitle = this.$store.state.appConfig.requestApprovedEmailViewTitle;
       } else if (request.processingStatus == "rejected") {
         this.sendEmailConfirmDialogTitle = this.$store.state.appConfig.requestNeedMoreInfoEmailViewTitle;
+      } else if (request.processingStatus == "underReview"){
+        this.sendEmailConfirmDialogTitle = this.$store.state.appConfig.requestSubmittedEmailViewTitle;
       }
     },
 
@@ -448,6 +450,8 @@ export default {
         this.sendEmailConfirmDialogMessage = this.$store.state.appConfig.requestApprovedEmailAsk;
       } else if (request.processingStatus == "rejected") {
         this.sendEmailConfirmDialogMessage = this.$store.state.appConfig.requestNeedMoreInfoEmailAsk;
+      } else if (request.processingStatus == "underReview"){
+        this.sendEmailConfirmDialogMessage = this.$store.state.appConfig.requestSubmittedEmailAsk;
       }
     },
 
@@ -471,6 +475,8 @@ export default {
         this.onEmailOutApproval();
       } else if (currentRequest.processingStatus == "rejected") {
         this.onEmailOutNeedMoreInfo();
+      } else if (currentRequest.processingStatus == "underReview"){
+        this.onEmailOutUnderReview();
       }
     },
 
@@ -498,6 +504,19 @@ export default {
       util.logDebugMsg('RequestSummary - onEmailOutNeedMoreInfo - set currentRequest to null.');
 
       this.$router.push('/admin/sendneedmoreinfoemail'); 
+    },
+
+
+    onEmailOutUnderReview() {
+
+      var storeState = this.$store.state;
+      let currentRequest = this.$store.state.currentRequest;
+      storeState.defRecipientNameForSendEmail = currentRequest.eventGEContactPersonName;
+      storeState.defRecipientEmailForSendEmail = currentRequest.eventGEContactPersonEmail;
+      //storeState.currentRequest = null;
+      util.logDebugMsg('RequestSummary - onEmailOutUnderReview');
+
+      this.$router.push('/sendsubmittedemail'); 
     },
 
 
@@ -768,7 +787,9 @@ export default {
               storeState.currentRequest = null;
               util.logDebugMsg("submitNewRequest - set currentRequest to null. about to call onReturnHome.");
 
-              vm.onReturnHome();
+              $('#sendEmailConfirmDialog').modal('show');
+              this.$store.state.isModalBeingDisplayed = true;
+              //vm.onReturnHome();
 
           } else {
                 vm.hasFailure = true;
@@ -848,8 +869,8 @@ export default {
                 canGoHome = false;
               }
 
-              if (!justUpdateApprovalNotified && vm.inAdminMode && 
-                  (requestUpdated.processingStatus == "approved" || requestUpdated.processingStatus == "rejected")) {
+              if (!justUpdateApprovalNotified && 
+                  (requestUpdated.processingStatus == "approved" || requestUpdated.processingStatus == "rejected" || requestUpdated.processingStatus == "underReview")) {
  
                 let canDoNotify = true;
 
@@ -859,7 +880,7 @@ export default {
 
                 if (canDoNotify) {
                   canGoHome = false;
-                  util.logDebugMsg("submitUpdatedRequest - inAdminMode == true, requestUpdated.processingStatus: " + requestUpdated.processingStatus);
+                  util.logDebugMsg("submitUpdatedRequest - requestUpdated.processingStatus: " + requestUpdated.processingStatus);
 
                   util.logDebugMsg("submitUpdatedRequest - calling updateSendEmailConfirmDialogTitle & updateSendEmailConfirmDialogMessage");
                   this.updateSendEmailConfirmDialogTitle(requestUpdated);

@@ -15,6 +15,7 @@ import AttentionNotes from '@/components/AttentionNotes.vue'
 import RequestSummary from '@/components/RequestSummary.vue'
 import ITHelp from '@/components/ITHelp.vue'
 import About from '@/components/About.vue'
+import SendSubmittedEmail from '@/components/SendSubmittedEmail.vue'
 
 
 import AdminHome from '@/components/admin/AdminHome.vue'
@@ -99,6 +100,11 @@ export default new Router({
       path: '/about',
       name: 'About',
       component: About
+    },
+    {
+      path:'/sendsubmittedemail',
+      name: 'SendSubmittedEmail',
+      component: SendSubmittedEmail
     },
     {
       path: '/admin/home',

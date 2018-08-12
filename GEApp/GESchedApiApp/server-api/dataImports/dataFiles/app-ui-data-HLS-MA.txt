@@ -17,7 +17,7 @@ ResultsWayCommunityReception@ge.com
 Meeting & Event[LINEBREAK]Request
 
 --AppName
-GE Meeting & Event Request App
+GE Meeting And Event Request App
 
 --HomeViewTitle 
 Home
@@ -119,7 +119,7 @@ This meeting has been cancelled!
 More Info Required
 
 --RequestStatusMessageRejected 
-Your request is not complete. More Information is required. Please review, update and resubmit your request.
+Your request is not complete. More Information is required. Please review, update, and resubmit your request.
 
 --RequestStatusMessageRejectedViewDescription
 More information is needed. Please review the comments in this request.
@@ -157,8 +157,9 @@ Hello, [RECIPIENTNAME]!
 [ADMINNAME] would like to invite you to access the [APPNAME].
 Access Code: [ACCESSCODE]
 [LINEBREAK]
-To access the [APPNAME], use the following link on your browser:
+To access the [APPNAME], use the following link in your browser:
 [APPLINK]
+[LINEBREAK]
 
 --AddAdminEmailSubject 
 [APPNAME] Administrator Access
@@ -170,8 +171,9 @@ Hello, [RECIPIENTNAME]!
 [LINEBREAK]
 Admin Access Code: [ADMINACCESSCODE]
 [LINEBREAK]
-To access the [APPNAME], use the following link on your browser:
+To access the [APPNAME], use the following link in your browser:
 [APPLINK]
+[LINEBREAK]
 
 --RequestApprovedEmailAsk
 Do you want to create an email to notify the requester that this meeting request has been approved? 
@@ -180,7 +182,7 @@ Do you want to create an email to notify the requester that this meeting request
 Notify Approval
 
 --RequestApprovedEmailViewDescription
-Create request approval notification email.
+Create a request approval notification email.
 
 --RequestApprovedEmailSubject 
 Your Meeting Request Has Been Approved
@@ -190,8 +192,9 @@ Hello, [RECIPIENTNAME]!
 [LINEBREAK]
 Your meeting request has been approved! Please review it in the [APPNAME].
 [LINEBREAK]
-To access the [APPNAME], use the following link on your browser:
+To access the [APPNAME], use the following link in your browser:
 [APPLINK]
+[LINEBREAK]
 
 --RequestNeedMoreInfoEmailAsk
 Do you want to create an email to notify the requester that more information is needed? 
@@ -200,7 +203,7 @@ Do you want to create an email to notify the requester that more information is 
 Notify Need More Info
 
 --RequestNeedMoreInfoEmailViewDescription
-Create notification email to get more information.
+Create a notification email to get more information.
 
 --RequestNeedMoreInfoEmailSubject 
 Your Meeting Request Needs More Information
@@ -210,5 +213,29 @@ Hello, [RECIPIENTNAME]!
 [LINEBREAK]
 Your meeting request has not yet been approved. Please review and update your request to provide the additional information needed.
 [LINEBREAK]
-To access the [APPNAME], use the following link on your browser:
+To access the [APPNAME], use the following link in your browser:
 [APPLINK]
+[LINEBREAK]
+
+--RequestSubmittedEmailAsk
+Would you like to send a notification to the event organizers? Note if you do not send this notification, event processing and scheduling may be heavily delayed.
+
+--RequestSubmittedEmailViewTitle
+Notify Request Submitted
+
+--RequestSubmittedEmailViewDescription
+Create a notification email to alert event organizers.
+
+--RequestSubmittedEmailSubject
+Event Request - [EVENTTITLE] from [CURRENTUSER]
+
+--RequestSubmittedEmailTemplate
+[CURRENTUSER] has submitted a request through the [APPNAME].
+[LINEBREAK]
+Title: [EVENTTITLE]
+Date: [EVENTDATE]
+Room: [EVENTROOMNAME]
+[LINEBREAK]
+To access the [APPNAME], use the following link in your browser:
+[APPLINK]
+[LINEBREAK]

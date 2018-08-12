@@ -285,6 +285,7 @@ export default {
 
     isModalBeingDisplayed: function (){
       console.log("App.vue - Cleaning up modal backdrop.");
+      let vm = this;
 
       let backdrops = document.getElementsByClassName("modal-backdrop");
       $.each(backdrops, function(){
@@ -293,6 +294,7 @@ export default {
             $('.modal').modal('hide');
             $('body').removeClass('modal-open');
             this.remove();
+            vm.$store.state.isModalBeingDisplayed = false;
           });
         });
       });

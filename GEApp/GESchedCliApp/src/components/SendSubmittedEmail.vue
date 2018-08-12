@@ -18,7 +18,7 @@
             :navOutRoutePath="navOutRoutePath"
             :supportDoAnother="supportDoAnother"
             :defRecipientName="defRecipientName"
-            :defRecipientEmail="defRecipientEmail"
+            :defRecipientEmail="adminEmailDistList"
             :needMostRecentUserAccessCode="needMostRecentUserAccessCode"
             :needMostRecentAdminAccessCode="needMostRecentAdminAccessCode">
         </send-email-component-ctrl>
@@ -42,10 +42,12 @@ export default {
     data () {
         return {
             navOutButtonLabel: "Done",
-            navOutRoutePath: "/admin/home",
+            navOutRoutePath: "/home",
             supportDoAnother: false,
             needMostRecentUserAccessCode: false,
-            needMostRecentAdminAccessCode: false
+            needMostRecentAdminAccessCode: false,
+
+            defRecipientName: "Event Organizer",
         }
     },
 
@@ -57,37 +59,33 @@ export default {
     computed: {
  
         title() {
-            return this.$store.state.appConfig.requestApprovedEmailViewTitle; 
+            return this.$store.state.appConfig.requestSubmittedEmailViewTitle; 
         },
 
         viewDescription() {
-            return this.$store.state.appConfig.requestApprovedEmailViewDescription; 
+            return this.$store.state.appConfig.requestSubmittedEmailViewDescription; 
         },
         
         emailSubject() {
-            return this.$store.state.appConfig.requestApprovedEmailSubject; 
+            return this.$store.state.appConfig.requestSubmittedEmailSubject; 
         },
 
         emailTemplate() {
-            return this.$store.state.appConfig.requestApprovedEmailTemplate; 
+            return this.$store.state.appConfig.requestSubmittedEmailTemplate; 
         },
 
-        defRecipientName() {
-            return this.$store.state.defRecipientNameForSendEmail; 
-        },
-        defRecipientEmail() {
-            return this.$store.state.defRecipientEmailForSendEmail; 
+        adminEmailDistList() {
+            return this.$store.state.appConfig.notifyAppAdminEmailDistributionList; 
         },
     },
 
     activated() {
-        console.log('SendApprovedEmail.vue activated.');
+        console.log('SendSubmittedEmail.vue activated.');
 
         this.$store.state.currentViewTitle = this.title;
         this.$store.state.enableNavBar = true;
 
-        
-    },
-    
+
+    }
 }
 </script>
