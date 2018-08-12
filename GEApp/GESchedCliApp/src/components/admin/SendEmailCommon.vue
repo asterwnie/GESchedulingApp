@@ -249,7 +249,7 @@ export default {
 
                         vm.emailStringDataExport = vm.emailStringDataExport
                             .replace('[EVENTTITLE]', currentRequest.eventTitle)
-                            .replace('[EVENTDATE]', `${util.getDateTimeDisplay(currentRequest.eventSchedule.startDateTime)} to ${util.getDateTimeDisplay(currentRequest.eventSchedule.endDateTime)}`)
+                            .replace('[EVENTDATE]', `${util.makeEventDateTimeDisplay(currentRequest.eventSchedule.startDateTime, currentRequest.eventSchedule.endDateTime)}`)
                             .replace('[EVENTROOMNAME]', currentRequest.locationOfEvent.name);
                     }
                 }
