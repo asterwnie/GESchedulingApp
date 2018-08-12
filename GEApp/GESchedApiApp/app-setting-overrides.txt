@@ -1,0 +1,8 @@
+--AppPort
+80
+
+--AppLink
+https://GEEventScheduling.ge.com
+
+--NotifyAppAdminEmailDistributionList
+ResultsWayCommunityReception@ge.com

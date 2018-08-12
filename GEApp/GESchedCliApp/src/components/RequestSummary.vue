@@ -853,7 +853,7 @@ export default {
  
                 let canDoNotify = true;
 
-                if (requestUpdated.approvalNotified != undefined && requestUpdated.approvalNotified == true) {
+                if (requestUpdated.processingStatus == "approved" && requestUpdated.approvalNotified != undefined && requestUpdated.approvalNotified == true) {
                   canDoNotify = false;
                 }
 

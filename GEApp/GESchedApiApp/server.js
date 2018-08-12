@@ -8,7 +8,8 @@ const bodyParser = require('body-parser');      // Help convert JSON data in the
 const cookieParser = require('cookie-parser')   // Help parse name/value pairs in request cookie. https://www.npmjs.com/package/cookie-parser
 const appConfig = require('./server.config');   // Load app configuration settings.
 const logger = require('./server-api/logger');  // Create logging helper for morgan
-const cors = require('cors');                     // Enables Cross-origin resource sharing. https://github.com/expressjs/cors#enabling-cors-pre-flight
+const settingOverridesMgr = require('./server-api/settingOverridesMgr');  // App setting overrides manager
+const cors = require('cors');                   // Enables Cross-origin resource sharing. https://github.com/expressjs/cors#enabling-cors-pre-flight
 const fs = require('fs');                       // File system.
 
 
@@ -124,6 +125,9 @@ app.get('/api/appconfigs', async (req, res) => {
             logger.info(`appConfigController.queryAppConfigs success. About to send back http response with the single appConfig onject.`);
             if (result.appConfigs.length > 0) {
                 appConfigForSite = result.appConfigs[0];
+
+                settingOverridesMgr.processOverridesIfExist(appConfigForSite);
+
             } else {
                 var err = `appConfigController.queryAppConfigs failed. Not able to get an appConfig object.`;
                 logger.error(err);
@@ -180,6 +184,11 @@ app.get('/api/appconfigs', async (req, res) => {
 
 
 // Start web server:
+
+var overrideSettings = settingOverridesMgr.readOverrides();
+if (overrideSettings != null && overrideSettings.appPort != undefined && overrideSettings.appPort != null) {
+    portNum = overrideSettings.appPort;
+}
 
 var server = app.listen(portNum, function () {
     var port = server.address().port
