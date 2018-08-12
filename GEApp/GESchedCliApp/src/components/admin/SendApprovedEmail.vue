@@ -85,6 +85,9 @@ export default {
 
         this.$store.state.currentViewTitle = this.title;
         this.$store.state.enableNavBar = true;
-    }
+
+        
+    },
+    
 }
 </script>

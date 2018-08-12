@@ -157,7 +157,7 @@ export const transformAppConfig = (appConfig) => {
     appConfigSettings.forEach((setting, index) => {
         let originalText = appConfig[setting]; 
         var transformedText = null;
-        if (setting.indexOf('EmailTemplate') > -1) {    
+        if (setting.indexOf('EmailTemplate') > -1 || setting.indexOf('EmailSubject') > -1) {    
             transformedText = transformAsMailToBodyText(originalText);
         } else {
             transformedText = transformMetaTags(originalText);

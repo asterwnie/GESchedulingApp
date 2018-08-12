@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col col-12 col-md-1 col-lg-2"></div>
 
-            <div id="adminBar" class="col col-12 col-md-4 col-lg-4 col-xl-3" style="padding-bottom:10px">
+            <div id="emailBar" class="col col-12 col-md-4 col-lg-4 col-xl-3" style="padding-bottom:10px">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">Recipient Name</span>
@@ -41,7 +41,7 @@
             
             <div v-if="canEmail">
                 <button type="button" @click.prevent="onNavOut" class="btn btn-sm btn-primary">{{navOutButtonLabel}}</button>
-                <a :href="`mailto:${recipientEmail}?subject=${emailSubject}&body=${emailStringDataExport}`">
+                <a :href="`mailto:${recipientEmailValue}?subject=${emailSubjectDataExport}&body=${emailStringDataExport}`">
                     <button type="button" class="float-right btn btn-sm btn-primary">Launch Email</button>
                 </a>
             </div>
@@ -71,9 +71,7 @@ export default {
             'navOutButtonLabel', 
             'navOutRoutePath', 
             'navOutClickedEmitEventName',
-            'supportDoAnother', 
-            'emailSubject', 
-            'emailTemplate', 
+            'supportDoAnother',
             'defRecipientName', 
             'defRecipientEmail',
             'needMostRecentUserAccessCode',
@@ -87,26 +85,17 @@ export default {
             emailStringDataExport: null,
             emailStringDataDisplay: null,
             canEmail: false,
+
+            recipientEmailValue: null,
+            recipientNameValue: null,
+
+            /* recipientName: null,
+            recipientEmail: null, */
         }
     },
 
     computed: {
 
-        recipientEmailValue() {
-            var val = this.defRecipientEmail;
-            if (val == null || val == "") {
-                val = this.$store.state.currentSendEmailRecipientEmail;
-            }    
-            return val;
-        },
-
-        recipientNameValue() {
-            var val = this.defRecipientName;
-            if (val == null || val == "") {
-                val = this.$store.state.currentSendEmailRecipientName;
-            }    
-            return val;
-        }
     },
 
     activated() {
@@ -126,6 +115,20 @@ export default {
         }
         if (this.needMostRecentAdminAccessCode) {
             this.getMostRecentAdminAccessCode();
+        }
+
+
+        //set email and name values
+        if(this.defRecipientEmail != null && this.defRecipientEmail != ""){
+            this.recipientEmailValue = this.defRecipientEmail;
+        } else {
+            this.recipientEmailValue = this.$store.state.currentSendEmailRecipientEmail;
+        }    
+            
+        if(this.defRecipientName != null && this.defRecipientName != ""){
+            this.recipientNameValue = this.defRecipientName;
+        } else {
+            this.recipientNameValue = this.$store.state.currentSendEmailRecipientName;
         }
 
         this.onReset();
@@ -202,8 +205,10 @@ export default {
 
             vm.isValid = true;
 
-            let recipientName = $("#recipientName").val();
-            let recipientEmail = $("#recipientEmail").val();
+            vm.recipientNameValue = $("#recipientName").val();
+            vm.recipientEmailValue = $("#recipientEmail").val();
+            let recipientEmail = vm.recipientEmailValue;
+            let recipientName = vm.recipientNameValue;
             
             var prompts = [];
             prompts.push({ isRequired: true, inputType: { ctrlType: "email", ctrlDataId: "recipientEmail" } });
@@ -214,7 +219,7 @@ export default {
             if(allValid){
                 vm.hasFailure = false;
 
-                //Replace meta tags
+                //Replace meta tags in email body
                 vm.emailStringDataExport = textTransformer.transformAsMailToBodyText(vm.emailTemplate);
 
                 while(vm.emailStringDataExport.indexOf("[") > -1){
@@ -223,17 +228,47 @@ export default {
                         .replace('[RECIPIENTEMAIL]', recipientEmail)
                         .replace('[APPLINK]', vm.$store.state.appConfig.appLink)
                         .replace('[ACCESSCODE]', vm.$store.state.mostRecentUserAccessCode)
-                        .replace('[ADMINACCESSCODE]', vm.$store.state.mostRecentAdminAccessCode)
-                        .replace('[ADMINNAME]', vm.$store.state.currentAdminUser.name)
-                        .replace('[APPNAME]', vm.$store.state.appConfig.appName);
+                        .replace('[APPNAME]', vm.$store.state.appConfig.appName)
+                        .replace('[CURRENTUSER]', vm.$store.state.currentUser.name)
+                        .replace('[ADMINDISTEMAIL]', vm.$store.state.appConfig.notifyAppAdminEmailDistributionList);
+
+                    if(vm.$store.state.inAdminMode){
+                        vm.emailStringDataExport = vm.emailStringDataExport
+                            .replace('[ADMINACCESSCODE]', vm.$store.state.mostRecentAdminAccessCode)
+                            .replace('[ADMINNAME]', vm.$store.state.currentAdminUser.name);
+                    }
+
+                    if(vm.$store.state.currentRequest != null){
+                        let currentRequest = vm.$store.state.currentRequest;
+
+                        vm.emailStringDataExport = vm.emailStringDataExport
+                            .replace('[EVENTTITLE]', currentRequest.eventTitle)
+                            .replace('[EVENTDATE]', `${util.getDateTimeDisplay(currentRequest.eventSchedule.startDateTime)} to ${util.getDateTimeDisplay(currentRequest.eventSchedule.endDateTime)}`)
+                            .replace('[EVENTROOMNAME]', currentRequest.locationOfEvent.name);
+                    }
                 }
                 
-                //Reformat for display in preview
+                //Reformat email body for display in preview
                 vm.emailStringDataDisplay = vm.emailStringDataExport.replace(/%0D%0A/g, '\n').replace(/%20/g, ' ');
 
                 $("#emailPreview").val(vm.emailStringDataDisplay);  
 
-                //$("#emailPreview")[0].disabled = false;
+                
+                //Replace meta tags in email subject
+                vm.emailSubjectDataExport = textTransformer.transformAsMailToBodyText(vm.emailSubject);
+
+                while(vm.emailSubjectDataExport.indexOf("[") > -1){
+                    if(vm.$store.state.currentRequest != null){
+                        let currentRequest = vm.$store.state.currentRequest;
+
+                        vm.emailSubjectDataExport = vm.emailSubjectDataExport
+                            .replace('[EVENTTITLE]', currentRequest.eventTitle)
+                            .replace('[CURRENTUSER]', vm.$store.state.currentUser.name);
+                    }
+                }
+
+
+
                 vm.canEmail = true;
             }
             

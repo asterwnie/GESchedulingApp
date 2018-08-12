@@ -18,7 +18,9 @@
             :navOutRoutePath="navOutRoutePath"
             :supportDoAnother="supportDoAnother"
             :defRecipientName="defRecipientName"
-            :defRecipientEmail="defRecipientEmail">
+            :defRecipientEmail="adminEmailDistList"
+            :needMostRecentUserAccessCode="needMostRecentUserAccessCode"
+            :needMostRecentAdminAccessCode="needMostRecentAdminAccessCode">
         </send-email-component-ctrl>
 
         <div style="height:12px"></div>
@@ -42,6 +44,10 @@ export default {
             navOutButtonLabel: "Done",
             navOutRoutePath: "/home",
             supportDoAnother: false,
+            needMostRecentUserAccessCode: false,
+            needMostRecentAdminAccessCode: false,
+
+            defRecipientName: "Event Organizer",
         }
     },
 
@@ -68,11 +74,8 @@ export default {
             return this.$store.state.appConfig.requestSubmittedEmailTemplate; 
         },
 
-        defRecipientName() {
-            return this.$store.state.defRecipientNameForSendEmail; 
-        },
-        defRecipientEmail() {
-            return this.$store.state.defRecipientEmailForSendEmail; 
+        adminEmailDistList() {
+            return this.$store.state.appConfig.notifyAppAdminEmailDistributionList; 
         },
     },
 
@@ -81,6 +84,8 @@ export default {
 
         this.$store.state.currentViewTitle = this.title;
         this.$store.state.enableNavBar = true;
+
+
     }
 }
 </script>
