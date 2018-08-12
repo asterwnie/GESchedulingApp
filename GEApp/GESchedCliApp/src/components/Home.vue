@@ -220,8 +220,12 @@ export default {
       console.log('Home.vue - onNewRequestModal activate');
       let vm = this;
 
-      $('#newRequestModal').modal('show');
-      vm.$store.state.isModalBeingDisplayed = true;
+      if(vm.$store.state.currentRequest){
+        $('#newRequestModal').modal('show');
+        vm.$store.state.isModalBeingDisplayed = true;
+      } else {
+        vm.onNewRequest();
+      }
     },
 
     onNewRequest() {

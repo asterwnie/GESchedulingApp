@@ -222,7 +222,13 @@ export default {
                 //Replace meta tags in email body
                 vm.emailStringDataExport = textTransformer.transformAsMailToBodyText(vm.emailTemplate);
 
-                while(vm.emailStringDataExport.indexOf("[") > -1){
+                let loopCount = 0;
+                while(vm.emailStringDataExport.indexOf("[") > -1 && vm.emailStringDataExport.indexOf("]") > -1){
+                    loopCount += 1;
+                    if (loopCount > 50){
+                        break;
+                    }
+
                     vm.emailStringDataExport = vm.emailStringDataExport
                         .replace('[RECIPIENTNAME]', recipientName)
                         .replace('[RECIPIENTEMAIL]', recipientEmail)
@@ -257,7 +263,13 @@ export default {
                 //Replace meta tags in email subject
                 vm.emailSubjectDataExport = textTransformer.transformAsMailToBodyText(vm.emailSubject);
 
-                while(vm.emailSubjectDataExport.indexOf("[") > -1){
+                let loopCount2 = 0;
+                while(vm.emailSubjectDataExport.indexOf("[") > -1 && vm.emailStringDataExport.indexOf("]") > -1){
+                    loopCount2 += 1;
+                    if (loopCount2 > 50){
+                        break;
+                    }
+
                     if(vm.$store.state.currentRequest != null){
                         let currentRequest = vm.$store.state.currentRequest;
 
@@ -268,7 +280,8 @@ export default {
                 }
 
 
-
+                vm.$store.state.currentRequest = null;
+                util.logDebugMsg("onSubmitRequest - set currentRequest to null.");
                 vm.canEmail = true;
             }
             
