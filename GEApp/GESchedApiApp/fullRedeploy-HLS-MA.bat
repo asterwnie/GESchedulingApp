@@ -23,7 +23,7 @@ REM    fullRedeploy-HLS-MA.bat d prod alwaysgetsource
 set DoPause=none
 
 set DRIVE=%1
-if "%1" == "" set DRIVE=C
+if "%1" == "" set DRIVE=D
 
 set GitMode=%2
 if "%2" == "" set GitMode=prod
@@ -42,7 +42,7 @@ if "%4" == "restartserviceonly" set DoReStartServiceOnly=restartserviceonly
 if "%5" == "restartserviceonly" set DoReStartServiceOnly=restartserviceonly
 
 set AlwaysGetSource=getonlywhennewerversion
-if "%2" == "alwaysgetsource" set AlwayGetSource=alwaysgetsource
+if "%2" == "alwaysgetsource" set AlwaysGetSource=alwaysgetsource
 if "%3" == "alwaysgetsource" set AlwaysGetSource=alwaysgetsource
 if "%4" == "alwaysgetsource" set AlwaysGetSource=alwaysgetsource
 if "%5" == "alwaysgetsource" set AlwaysGetSource=alwaysgetsource
@@ -117,7 +117,6 @@ echo %backupFolder%-Log.txt
 
 call :Begin >%backupFolder%-Log.txt 
 exit /b
-echo done!
 GOTO END
 
 :Begin
