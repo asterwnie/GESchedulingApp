@@ -136,31 +136,11 @@ GOTO END
     echo ==== Git Mode: %GitMode%
     echo ====================================================================
 
-    echo ==== Begin backing up file from: 
-    echo ==== %sourceFolder%
-    echo ====================================================================
-    echo ====================================================================
-
+ 
     if ERRORLEVEL 1 (
         echo ==== FAILED - Unable to complete all operations!
         GOTO END
     )
-
-    echo ====================================================================
-    echo ==== Created backup directory: 
-    echo ==== %backupFolder%
-    echo ====================================================================
-
-    xcopy /S /Y /I %sourceFolder%\*.* %backupFolder%
-    
-    if ERRORLEVEL 1 (
-        echo ==== FAILED - Unable to complete all operations!
-        GOTO END
-    )
-
-    echo ====================================================================
-    echo ==== Copied source file to backup folder.
-    echo ====================================================================
 
     echo ====================================================================
     echo ==== Begin checking application versioning
@@ -248,15 +228,39 @@ GOTO END
         ) else (
             echo ====================================================================
             echo ==== appVersionExpected NOT greater than appVersionCurrent
-            echo ==== Skip Git souce files
+            echo ==== SKIP FULL REDEPLOYMENT!
+            echo ==== Done.
             echo ====================================================================
             set GitMode=skipgit
+            GOTO END
         )
     )
 
     echo ====================================================================
     echo ==== Done checking application versioning
     echo ====================================================================
+
+    echo ==== Begin backing up file from: 
+    echo ==== %sourceFolder%
+    echo ====================================================================
+    echo ====================================================================
+
+    echo ====================================================================
+    echo ==== Created backup directory: 
+    echo ==== %backupFolder%
+    echo ====================================================================
+
+    xcopy /S /Y /I %sourceFolder%\*.* %backupFolder%
+    
+    if ERRORLEVEL 1 (
+        echo ==== FAILED - Unable to complete all operations!
+        GOTO END
+    )
+
+    echo ====================================================================
+    echo ==== Copied source file to backup folder.
+    echo ====================================================================
+
 
     echo ====================================================================
     echo ==== Stopping the application Windows service.

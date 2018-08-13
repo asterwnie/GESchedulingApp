@@ -13,7 +13,7 @@ const cors = require('cors');                   // Enables Cross-origin resource
 const fs = require('fs');                       // File system.
 
 
-const portNum = appConfig.port;
+var portNum = appConfig.port;
 const appName = appConfig.appServerName;
 
 const app = express();
