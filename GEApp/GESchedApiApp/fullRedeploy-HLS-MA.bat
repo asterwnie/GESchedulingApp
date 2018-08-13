@@ -167,8 +167,12 @@ GOTO END
 
     set appVersionExpectedFilepath=%sourceFolder%\appVersionExpected.txt
     set appVersionCurrentFilepath=%sourceFolder%\appVersionCurrent.txt
-    echo appVersionExpected file path: %appVersionExpectedFilepath%
-    echo appVersionCurrent file path: %appVersionCurrentFilepath%
+
+    echo ====================================================================
+    echo ==== appVersionExpected file path: %appVersionExpectedFilepath%
+    echo ==== appVersionCurrent file path: %appVersionCurrentFilepath%
+    echo ==== After Git operation to get the remote appVersionExpected.txt file
+    echo ====================================================================
 
     if "%AlwaysGetSource%" == "getonlywhennewerversion" (
 
@@ -178,6 +182,10 @@ GOTO END
         git checkout -m origin/master -- %appVersionExpectedFilepath%
         git add %appVersionExpectedFilepath%
         git commit -m "FULL REDEPLOYMENT AUTOMATION RUN - %timestamp%"
+
+        echo ====================================================================
+        echo ==== After Git operation to get the remote appVersionExpected.txt file
+        echo ====================================================================
 
         if ERRORLEVEL 1 (
             echo ====================================================================
@@ -190,6 +198,10 @@ GOTO END
 
     if "%AlwaysGetSource%" == "getonlywhennewerversion" (
 
+        echo ====================================================================
+        echo ==== About to read versions from files.
+        echo ====================================================================
+
         for /f "TOKENS=*" %%a in (%appVersionExpectedFilepath%) do (
             set /a appVersionExpected=%%a * 1
         )
@@ -197,6 +209,10 @@ GOTO END
         for /f "TOKENS=*" %%a in (%appVersionCurrentFilepath%) do (
             set /a appVersionCurrent=%%a * 1
         )
+
+        echo ====================================================================
+        echo ==== After to read versions from files.
+        echo ====================================================================
     )
 
     if "%AlwaysGetSource%" == "getonlywhennewerversion" (
