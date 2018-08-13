@@ -116,7 +116,7 @@ GOTO END
     echo ==== %backupFolder%
     echo ====================================================================
     echo ==== Do Pause Prompt: %DoPause%
-    echo ==== Always Get Source: %AlwaysGetSource%
+    echo ==== Source file Update: %AlwaysGetSource%
     echo ==== App Service update: %DoReStartServiceOnly%
     echo ==== Git Mode: %GitMode%
     echo ====================================================================
@@ -142,6 +142,12 @@ GOTO END
     echo ==== appVersionCurrent file path: %appVersionCurrentFilepath%
     echo ==== After Git operation to get the remote appVersionExpected.txt file
     echo ====================================================================
+
+    if "%AlwaysGetSource%" == "alwaysgetsource " (
+        echo ====================================================================
+        echo ==== Skipping version checking.
+        echo ====================================================================
+    )
 
     if "%AlwaysGetSource%" == "getonlywhennewerversion" (
 
@@ -287,9 +293,9 @@ GOTO END
         echo ==== In DEV mode - About to do Git Add, Commit and Pull
         echo ====================================================================
         git add -A
-        git commit -m "FULL REDEPLOYMENT AUTOMATION RUN (DEV MODE) - %timestamp%"
         git pull
-        echo ""
+        git commit -m "FULL REDEPLOYMENT AUTOMATION RUN (DEV MODE) - %timestamp%"
+        echo .
         echo ====================================================================
         echo ==== Completed getting the latest source files from GitHub
         echo ==================================================================== 
