@@ -109,6 +109,8 @@ if "%DoPause%" == "dopause" (
     pause
 )
 
+set /a appVersionExpected=0
+set /a appVersionCurrent=0
 
 if "%AlwaysGetSource%" == "getonlywhennewerversion" (
 
@@ -135,8 +137,7 @@ if "%AlwaysGetSource%" == "getonlywhennewerversion" (
 
 if "%AlwaysGetSource%" == "getonlywhennewerversion" (
 
-    set /a appVersionExpected=0
-    set /a appVersionCurrent=0
+
 
     for /f "TOKENS=*" %%a in (%appVersionExpectedFilepath%) do (
         set /a appVersionExpected=%%a * 1
@@ -153,6 +154,14 @@ if "%AlwaysGetSource%" == "getonlywhennewerversion" (
     if ERRORLEVEL 1 (
         echo ====================================================================
         echo ==== ERROR  - unable to check versioning
+        echo ==== FAILED - Unable to complete all operations!
+        echo ====================================================================
+        GOTO END
+    )
+
+        if %appVersionExpected% == 0 (
+        echo ====================================================================
+        echo ==== ERROR  - unable to check versioning!
         echo ==== FAILED - Unable to complete all operations!
         echo ====================================================================
         GOTO END
