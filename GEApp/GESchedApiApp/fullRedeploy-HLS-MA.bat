@@ -20,6 +20,7 @@ REM    fullRedeploy-HLS-MA.bat d prod restartserviceonly
 REM    + force get files from GitHub without version checking
 REM    fullRedeploy-HLS-MA.bat d prod alwaysgetsource
 
+set ERRORLEVEL=0
 set DoPause=none
 
 set DRIVE=%1
@@ -64,8 +65,8 @@ echo Using backup folder:
 echo %backupFolder%
 
 echo Do Pause Prompt: %DoPause%
-echo Always Get Source: %AlwaysGetSource%
-echo Skip Install Service: %DoReStartServiceOnly%
+echo Source file Update: %AlwaysGetSource%
+echo App Service Update: %DoReStartServiceOnly%
 echo Git Mode: %GitMode%
 
 if "%GitMode%" == "dev" (
@@ -103,6 +104,7 @@ echo %backupFolder%-Log.txt
 
 call :Begin >%backupFolder%-Log.txt 
 exit /b
+echo done!
 GOTO END
 
 :Begin
@@ -143,7 +145,7 @@ GOTO END
     echo ==== After Git operation to get the remote appVersionExpected.txt file
     echo ====================================================================
 
-    if "%AlwaysGetSource%" == "alwaysgetsource " (
+    if "%AlwaysGetSource%" == "alwaysgetsource" (
         echo ====================================================================
         echo ==== Skipping version checking.
         echo ====================================================================
@@ -317,7 +319,7 @@ GOTO END
     )
 
     if ERRORLEVEL 1 (
-        echo ==== FAILED - Unable to complete all operations!
+        echo ==== FAILED - Unable to complete all operations! Error: %ERRORLEVEL%
         GOTO END
     )
 
