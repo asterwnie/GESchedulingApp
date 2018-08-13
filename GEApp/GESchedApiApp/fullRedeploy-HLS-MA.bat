@@ -122,9 +122,9 @@ echo appVersionCurrent file path: %appVersionCurrentFilepath%
 if "%AlwaysGetSource%" == "getonlywhennewerversion" (
 
     CD %sourceFolder%
-    REM git fetch
+    git fetch
     git add -A
-    git checkout -m revision  -- %appVersionExpectedFilepath%
+    git checkout -m origin/master -- %appVersionExpectedFilepath%
     git add %appVersionExpectedFilepath%
     git commit -m "FULL REDEPLOYMENT AUTOMATION RUN - %timestamp%"
 
@@ -136,6 +136,7 @@ if "%AlwaysGetSource%" == "getonlywhennewerversion" (
         GOTO END
     )
 )
+
 
 if "%AlwaysGetSource%" == "getonlywhennewerversion" (
 
