@@ -65,7 +65,7 @@ echo %backupFolder%
 
 echo Do Pause Prompt: %DoPause%
 echo Always Get Source: %AlwaysGetSource%
-echo Skip Install Service: %DoSkipInstallService%
+echo Skip Install Service: %DoReStartServiceOnly%
 echo Git Mode: %GitMode%
 
 if "%GitMode%" == "dev" (
@@ -130,6 +130,10 @@ GOTO END
     echo ==== Using backup folder: 
     echo ==== %backupFolder%
     echo ====================================================================
+    echo ==== Do Pause Prompt: %DoPause%
+    echo ==== Always Get Source: %AlwaysGetSource%
+    echo ==== Skip Install Service: %DoReStartServiceOnly%
+    echo ==== Git Mode: %GitMode%
     echo ====================================================================
 
     echo ==== Begin backing up file from: 
@@ -233,8 +237,8 @@ GOTO END
             GOTO END
         )
 
-        echo appVersionExpected (remote): %appVersionExpected%
-        echo appVersionCurrent (local):   %appVersionCurrent%
+        echo appVersionExpected [remote] %appVersionExpected%
+        echo appVersionCurrent [local]   %appVersionCurrent%
 
         if %appVersionExpected% gtr %appVersionCurrent%  (
             echo ====================================================================
