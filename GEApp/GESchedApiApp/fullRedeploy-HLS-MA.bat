@@ -132,7 +132,7 @@ GOTO END
     echo ====================================================================
     echo ==== Do Pause Prompt: %DoPause%
     echo ==== Always Get Source: %AlwaysGetSource%
-    echo ==== Skip Install Service: %DoReStartServiceOnly%
+    echo ==== App Service update: %DoReStartServiceOnly%
     echo ==== Git Mode: %GitMode%
     echo ====================================================================
 
