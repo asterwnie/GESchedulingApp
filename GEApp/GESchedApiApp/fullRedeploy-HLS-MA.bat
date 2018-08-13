@@ -148,7 +148,6 @@ if "%AlwaysGetSource%" == "getonlywhennewerversion" (
     )
 )
 
-
 if "%AlwaysGetSource%" == "getonlywhennewerversion" (
 
     if ERRORLEVEL 1 (
