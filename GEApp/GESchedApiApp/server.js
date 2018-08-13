@@ -8,12 +8,12 @@ const bodyParser = require('body-parser');      // Help convert JSON data in the
 const cookieParser = require('cookie-parser')   // Help parse name/value pairs in request cookie. https://www.npmjs.com/package/cookie-parser
 const appConfig = require('./server.config');   // Load app configuration settings.
 const logger = require('./server-api/logger');  // Create logging helper for morgan
-const settingOverridesMgr = require('./server-api/settingOverridesMgr');  // App setting overrides manager
+const settingOverridesMgr = require('./server-api/settingOverridesMgr');  // App setting overrides manager.
 const cors = require('cors');                   // Enables Cross-origin resource sharing. https://github.com/expressjs/cors#enabling-cors-pre-flight
 const fs = require('fs');                       // File system.
 
 
-const portNum = appConfig.port;
+var portNum = appConfig.port;
 const appName = appConfig.appServerName;
 
 const app = express();

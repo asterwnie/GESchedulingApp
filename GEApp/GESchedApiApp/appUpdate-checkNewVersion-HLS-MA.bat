@@ -20,10 +20,11 @@ REM    fullRedeploy-HLS-MA.bat d prod restartserviceonly
 REM    + force get files from GitHub without version checking
 REM    fullRedeploy-HLS-MA.bat d prod alwaysgetsource
 
+set ERRORLEVEL=0
 set DoPause=none
 
 set DRIVE=%1
-if "%1" == "" set DRIVE=C
+if "%1" == "" set DRIVE=D
 
 set GitMode=%2
 if "%2" == "" set GitMode=prod
@@ -42,7 +43,7 @@ if "%4" == "restartserviceonly" set DoReStartServiceOnly=restartserviceonly
 if "%5" == "restartserviceonly" set DoReStartServiceOnly=restartserviceonly
 
 set AlwaysGetSource=getonlywhennewerversion
-if "%2" == "alwaysgetsource" set AlwayGetSource=alwaysgetsource
+if "%2" == "alwaysgetsource" set AlwaysGetSource=alwaysgetsource
 if "%3" == "alwaysgetsource" set AlwaysGetSource=alwaysgetsource
 if "%4" == "alwaysgetsource" set AlwaysGetSource=alwaysgetsource
 if "%5" == "alwaysgetsource" set AlwaysGetSource=alwaysgetsource
@@ -64,8 +65,8 @@ echo Using backup folder:
 echo %backupFolder%
 
 echo Do Pause Prompt: %DoPause%
-echo Always Get Source: %AlwaysGetSource%
-echo Skip Install Service: %DoSkipInstallService%
+echo Source file Update: %AlwaysGetSource%
+echo App Service Update: %DoReStartServiceOnly%
 echo Git Mode: %GitMode%
 
 if "%GitMode%" == "dev" (
@@ -91,102 +92,11 @@ if not exist %sourceFolder% (
     echo ==== FAILED - Exiting script
     if "%DoPause%" == "dopause" pause
     GOTO END
-
-) else (
-
-    echo Make sure backup root folder exist: 
-    echo %backupRootFolder%
-    if not exist %backupRootFolder% (
-        mkdir %backupRootFolder%
-        echo Created backup root folder exist: 
-        echo %backupRootFolder%
-    )
-    
-    mkdir %backupFolder%
-    echo Created backup folder: 
-    echo %backupFolder%
-)
+) 
 
 if "%DoPause%" == "dopause" (
     pause
 )
-
-set /a appVersionExpected=0
-set /a appVersionCurrent=0
-
-set appVersionExpectedFilepath=%sourceFolder%\appVersionExpected.txt
-set appVersionCurrentFilepath=%sourceFolder%\appVersionCurrent.txt
-echo appVersionExpected file path: %appVersionExpectedFilepath%
-echo appVersionCurrent file path: %appVersionCurrentFilepath%
-
-if "%AlwaysGetSource%" == "getonlywhennewerversion" (
-
-    CD %sourceFolder%
-    REM git fetch
-    git add -A
-    git checkout -m revision  -- %appVersionExpectedFilepath%
-    git add %appVersionExpectedFilepath%
-    git commit -m "FULL REDEPLOYMENT AUTOMATION RUN - %timestamp%"
-
-    if ERRORLEVEL 1 (
-        echo ====================================================================
-        echo ==== ERROR  - unable to get versioning file.
-        echo ==== FAILED - Unable to complete all operations!
-        echo ====================================================================
-        GOTO END
-    )
-)
-
-if "%AlwaysGetSource%" == "getonlywhennewerversion" (
-
-    for /f "TOKENS=*" %%a in (%appVersionExpectedFilepath%) do (
-        set /a appVersionExpected=%%a * 1
-    )
-
-    for /f "TOKENS=*" %%a in (%appVersionCurrentFilepath%) do (
-        set /a appVersionCurrent=%%a * 1
-    )
-)
-
-
-if "%AlwaysGetSource%" == "getonlywhennewerversion" (
-
-    if ERRORLEVEL 1 (
-        echo ====================================================================
-        echo ==== ERROR  - unable to check versioning
-        echo ==== FAILED - Unable to complete all operations!
-        echo ====================================================================
-        GOTO END
-    )
-
-        if %appVersionExpected% == 0 (
-        echo ====================================================================
-        echo ==== ERROR  - unable to check versioning!
-        echo ==== FAILED - Unable to complete all operations!
-        echo ====================================================================
-        GOTO END
-    )
-
-    echo appVersionExpected: %appVersionExpected%
-    echo appVersionCurrent:  %appVersionCurrent%
-
-    if %appVersionExpected% gtr %appVersionCurrent%  (
-        echo ====================================================================
-        echo ==== appVersionExpected greater than appVersionCurrent
-        echo ==== Apply current GitMode: %GitMode%
-        echo ====================================================================
-    ) else (
-        echo ====================================================================
-        echo ==== appVersionExpected NOT greater than appVersionCurrent
-        echo ==== Skip Git souce files
-        echo ====================================================================
-        set GitMode=skipgit
-    )
-)
- 
-
-pause
-exit
 
 
 echo Running script in the background. Activities are logged to: 
@@ -207,17 +117,145 @@ GOTO END
     echo ==== Using backup folder: 
     echo ==== %backupFolder%
     echo ====================================================================
+    echo ==== Do Pause Prompt: %DoPause%
+    echo ==== Source file Update: %AlwaysGetSource%
+    echo ==== App Service update: %DoReStartServiceOnly%
+    echo ==== Git Mode: %GitMode%
     echo ====================================================================
+
+ 
+    if ERRORLEVEL 1 (
+        echo ==== FAILED - Unable to complete all operations!
+        GOTO END
+    )
+
+    echo ====================================================================
+    echo ==== Begin checking application versioning
+    echo ====================================================================
+
+    set /a appVersionExpected=0
+    set /a appVersionCurrent=0
+
+    set appVersionExpectedFilepath=%sourceFolder%\appVersionExpected.txt
+    set appVersionCurrentFilepath=%sourceFolder%\appVersionCurrent.txt
+
+    echo ====================================================================
+    echo ==== appVersionExpected file path: %appVersionExpectedFilepath%
+    echo ==== appVersionCurrent file path: %appVersionCurrentFilepath%
+    echo ==== After Git operation to get the remote appVersionExpected.txt file
+    echo ====================================================================
+
+    if "%AlwaysGetSource%" == "alwaysgetsource" (
+        echo ====================================================================
+        echo ==== Skipping version checking.
+        echo ====================================================================
+    )
+
+    if "%AlwaysGetSource%" == "getonlywhennewerversion" (
+
+        CD %sourceFolder%
+        git fetch
+        git add -A
+        git checkout -m origin/master -- %appVersionExpectedFilepath%
+        git add %appVersionExpectedFilepath%
+        git commit -m "FULL REDEPLOYMENT AUTOMATION RUN - %timestamp%"
+
+        echo .
+        echo ====================================================================
+        echo ==== After Git operation to get the remote appVersionExpected.txt file
+        echo ====================================================================
+
+        if ERRORLEVEL 1 (
+            echo ====================================================================
+            echo ==== ERROR  - unable to get versioning file.
+            echo ==== FAILED - Unable to complete all operations!
+            echo ====================================================================
+            GOTO END
+        )
+    )
+
+    if "%AlwaysGetSource%" == "getonlywhennewerversion" (
+
+        echo ====================================================================
+        echo ==== About to read versions from files.
+        echo ====================================================================
+
+        for /f "TOKENS=*" %%a in (%appVersionExpectedFilepath%) do (
+            set /a appVersionExpected=%%a * 1
+        )
+
+        for /f "TOKENS=*" %%a in (%appVersionCurrentFilepath%) do (
+            set /a appVersionCurrent=%%a * 1
+        )
+
+        echo ====================================================================
+        echo ==== After to read versions from files.
+        echo ====================================================================
+    )
+
+    if "%AlwaysGetSource%" == "getonlywhennewerversion" (
+
+        if ERRORLEVEL 1 (
+            echo ====================================================================
+            echo ==== ERROR  - unable to check versioning
+            echo ==== FAILED - Unable to complete all operations!
+            echo ====================================================================
+            GOTO END
+        )
+
+            if %appVersionExpected% == 0 (
+            echo ====================================================================
+            echo ==== ERROR  - unable to check versioning!
+            echo ==== FAILED - Unable to complete all operations!
+            echo ====================================================================
+            GOTO END
+        )
+
+        echo appVersionExpected [remote] %appVersionExpected%
+        echo appVersionCurrent [local]   %appVersionCurrent%
+
+        if %appVersionExpected% gtr %appVersionCurrent%  (
+            echo ====================================================================
+            echo ==== appVersionExpected greater than appVersionCurrent
+            echo ==== Apply current GitMode: %GitMode%
+            echo ====================================================================
+        ) else (
+            echo ====================================================================
+            echo ==== appVersionExpected NOT greater than appVersionCurrent
+            echo ==== SKIP FULL REDEPLOYMENT!
+            echo ==== Done.
+            echo ====================================================================
+            set GitMode=skipgit
+            GOTO END
+        )
+    )
+
+    echo ====================================================================
+    echo ==== Done checking application versioning
+    echo ====================================================================
+
+
+    echo Make sure backup root folder exist: 
+    echo %backupRootFolder%
+    if not exist %backupRootFolder% (
+        mkdir %backupRootFolder%
+        echo ====================================================================
+        echo ==== Created backup root folder exist: 
+        echo ==== %backupRootFolder%
+        echo ====================================================================
+    )
+    
+    echo ====================================================================
+    mkdir %backupFolder%
+    echo ==== Created backup folder: 
+    echo ==== %backupFolder%
+    echo ====================================================================
+
 
     echo ==== Begin backing up file from: 
     echo ==== %sourceFolder%
     echo ====================================================================
     echo ====================================================================
-
-    if ERRORLEVEL 1 (
-        echo ==== FAILED - Unable to complete all operations!
-        GOTO END
-    )
 
     echo ====================================================================
     echo ==== Created backup directory: 
@@ -234,6 +272,7 @@ GOTO END
     echo ====================================================================
     echo ==== Copied source file to backup folder.
     echo ====================================================================
+
 
     echo ====================================================================
     echo ==== Stopping the application Windows service.
@@ -256,9 +295,10 @@ GOTO END
         echo ==== In DEV mode - About to do Git Add, Commit and Pull
         echo ====================================================================
         git add -A
-        git commit -m "FULL REDEPLOYMENT AUTOMATION RUN (DEV MODE) - %timestamp%"
         git pull
-        echo ""
+        git commit -m "FULL REDEPLOYMENT AUTOMATION RUN (DEV MODE) - %timestamp%"
+        git push
+        echo .
         echo ====================================================================
         echo ==== Completed getting the latest source files from GitHub
         echo ==================================================================== 
@@ -280,7 +320,7 @@ GOTO END
     )
 
     if ERRORLEVEL 1 (
-        echo ==== FAILED - Unable to complete all operations!
+        echo ==== FAILED - Unable to complete all operations! Error: %ERRORLEVEL%
         GOTO END
     )
 

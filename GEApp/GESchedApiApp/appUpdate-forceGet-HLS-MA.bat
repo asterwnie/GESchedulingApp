@@ -1,0 +1,1 @@
+appUpdate-checkNewVersion-HLS-MA.bat d prod alwaysgetsource
