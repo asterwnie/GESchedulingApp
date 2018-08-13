@@ -112,18 +112,18 @@ if "%DoPause%" == "dopause" (
 set /a appVersionExpected=0
 set /a appVersionCurrent=0
 
-if "%AlwaysGetSource%" == "getonlywhennewerversion" (
+set appVersionExpectedFilepath=%sourceFolder%\appVersionExpected.txt
+set appVersionCurrentFilepath=%sourceFolder%\appVersionCurrent.txt
+echo appVersionExpected file path: %appVersionExpectedFilepath%
+echo appVersionCurrent file path: %appVersionCurrentFilepath%
 
-    set appVersionExpectedFilepath=%sourceFolder%\appVersionExpected.txt
-    set appVersionCurrentFilepath=%sourceFolder%\appVersionCurrent.txt
-    echo appVersionExpected file path: %appVersionExpectedFilepath%
-    echo appVersionCurrent file path: %appVersionCurrentFilepath%
+if "%AlwaysGetSource%" == "getonlywhennewerversion" (
 
     CD %sourceFolder%
     REM git fetch
     git add -A
-    git checkout -m revision  -- %sourceFolder%\appVersionExpected.txt
-    git add %sourceFolder%\appVersionExpected.txt
+    git checkout -m revision  -- appVersionExpectedFilepath
+    git add appVersionExpectedFilepath
     git commit -m "FULL REDEPLOYMENT AUTOMATION RUN (DEV MODE) - %timestamp%"
 
     if ERRORLEVEL 1 (
