@@ -111,82 +111,6 @@ if "%DoPause%" == "dopause" (
     pause
 )
 
-set /a appVersionExpected=0
-set /a appVersionCurrent=0
-
-set appVersionExpectedFilepath=%sourceFolder%\appVersionExpected.txt
-set appVersionCurrentFilepath=%sourceFolder%\appVersionCurrent.txt
-echo appVersionExpected file path: %appVersionExpectedFilepath%
-echo appVersionCurrent file path: %appVersionCurrentFilepath%
-
-if "%AlwaysGetSource%" == "getonlywhennewerversion" (
-
-    CD %sourceFolder%
-    git fetch
-    git add -A
-    git checkout -m origin/master -- %appVersionExpectedFilepath%
-    git add %appVersionExpectedFilepath%
-    git commit -m "FULL REDEPLOYMENT AUTOMATION RUN - %timestamp%"
-
-    if ERRORLEVEL 1 (
-        echo ====================================================================
-        echo ==== ERROR  - unable to get versioning file.
-        echo ==== FAILED - Unable to complete all operations!
-        echo ====================================================================
-        GOTO END
-    )
-)
-
-if "%AlwaysGetSource%" == "getonlywhennewerversion" (
-
-    for /f "TOKENS=*" %%a in (%appVersionExpectedFilepath%) do (
-        set /a appVersionExpected=%%a * 1
-    )
-
-    for /f "TOKENS=*" %%a in (%appVersionCurrentFilepath%) do (
-        set /a appVersionCurrent=%%a * 1
-    )
-)
-
-if "%AlwaysGetSource%" == "getonlywhennewerversion" (
-
-    if ERRORLEVEL 1 (
-        echo ====================================================================
-        echo ==== ERROR  - unable to check versioning
-        echo ==== FAILED - Unable to complete all operations!
-        echo ====================================================================
-        GOTO END
-    )
-
-        if %appVersionExpected% == 0 (
-        echo ====================================================================
-        echo ==== ERROR  - unable to check versioning!
-        echo ==== FAILED - Unable to complete all operations!
-        echo ====================================================================
-        GOTO END
-    )
-
-    echo appVersionExpected: %appVersionExpected%
-    echo appVersionCurrent:  %appVersionCurrent%
-
-    if %appVersionExpected% gtr %appVersionCurrent%  (
-        echo ====================================================================
-        echo ==== appVersionExpected greater than appVersionCurrent
-        echo ==== Apply current GitMode: %GitMode%
-        echo ====================================================================
-    ) else (
-        echo ====================================================================
-        echo ==== appVersionExpected NOT greater than appVersionCurrent
-        echo ==== Skip Git souce files
-        echo ====================================================================
-        set GitMode=skipgit
-    )
-)
- 
-
-pause
-exit
-
 
 echo Running script in the background. Activities are logged to: 
 echo %backupFolder%-Log.txt 
@@ -232,6 +156,86 @@ GOTO END
 
     echo ====================================================================
     echo ==== Copied source file to backup folder.
+    echo ====================================================================
+
+    echo ====================================================================
+    echo ==== Begin checking application versioning
+    echo ====================================================================
+
+    set /a appVersionExpected=0
+    set /a appVersionCurrent=0
+
+    set appVersionExpectedFilepath=%sourceFolder%\appVersionExpected.txt
+    set appVersionCurrentFilepath=%sourceFolder%\appVersionCurrent.txt
+    echo appVersionExpected file path: %appVersionExpectedFilepath%
+    echo appVersionCurrent file path: %appVersionCurrentFilepath%
+
+    if "%AlwaysGetSource%" == "getonlywhennewerversion" (
+
+        CD %sourceFolder%
+        git fetch
+        git add -A
+        git checkout -m origin/master -- %appVersionExpectedFilepath%
+        git add %appVersionExpectedFilepath%
+        git commit -m "FULL REDEPLOYMENT AUTOMATION RUN - %timestamp%"
+
+        if ERRORLEVEL 1 (
+            echo ====================================================================
+            echo ==== ERROR  - unable to get versioning file.
+            echo ==== FAILED - Unable to complete all operations!
+            echo ====================================================================
+            GOTO END
+        )
+    )
+
+    if "%AlwaysGetSource%" == "getonlywhennewerversion" (
+
+        for /f "TOKENS=*" %%a in (%appVersionExpectedFilepath%) do (
+            set /a appVersionExpected=%%a * 1
+        )
+
+        for /f "TOKENS=*" %%a in (%appVersionCurrentFilepath%) do (
+            set /a appVersionCurrent=%%a * 1
+        )
+    )
+
+    if "%AlwaysGetSource%" == "getonlywhennewerversion" (
+
+        if ERRORLEVEL 1 (
+            echo ====================================================================
+            echo ==== ERROR  - unable to check versioning
+            echo ==== FAILED - Unable to complete all operations!
+            echo ====================================================================
+            GOTO END
+        )
+
+            if %appVersionExpected% == 0 (
+            echo ====================================================================
+            echo ==== ERROR  - unable to check versioning!
+            echo ==== FAILED - Unable to complete all operations!
+            echo ====================================================================
+            GOTO END
+        )
+
+        echo appVersionExpected (remote): %appVersionExpected%
+        echo appVersionCurrent (local):   %appVersionCurrent%
+
+        if %appVersionExpected% gtr %appVersionCurrent%  (
+            echo ====================================================================
+            echo ==== appVersionExpected greater than appVersionCurrent
+            echo ==== Apply current GitMode: %GitMode%
+            echo ====================================================================
+        ) else (
+            echo ====================================================================
+            echo ==== appVersionExpected NOT greater than appVersionCurrent
+            echo ==== Skip Git souce files
+            echo ====================================================================
+            set GitMode=skipgit
+        )
+    )
+
+    echo ====================================================================
+    echo ==== Done checking application versioning
     echo ====================================================================
 
     echo ====================================================================
