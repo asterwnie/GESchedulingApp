@@ -137,7 +137,6 @@ if "%AlwaysGetSource%" == "getonlywhennewerversion" (
     )
 )
 
-
 if "%AlwaysGetSource%" == "getonlywhennewerversion" (
 
     for /f "TOKENS=*" %%a in (%appVersionExpectedFilepath%) do (
