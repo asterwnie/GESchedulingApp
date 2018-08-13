@@ -152,6 +152,7 @@ GOTO END
         git add %appVersionExpectedFilepath%
         git commit -m "FULL REDEPLOYMENT AUTOMATION RUN - %timestamp%"
 
+        echo .
         echo ====================================================================
         echo ==== After Git operation to get the remote appVersionExpected.txt file
         echo ====================================================================
