@@ -16,11 +16,12 @@ REM    fullRedeploy-HLS-MA.bat c dev dopause
 REM    + Use command parameters - use 2rd arg to tell script to skip the Git source file operations
 REM    fullRedeploy-HLS-MA.bat d skipgit
 REM    + Use command parameters - skip reinstalling the application service and just restart it
-REM    fullRedeploy-HLS-MA.bat d prod skipinstallservice
+REM    fullRedeploy-HLS-MA.bat d prod restartserviceonly
 
+set DoPause=none
 
 set DRIVE=%1
-if "%1" == "" set DRIVE=D
+if "%1" == "" set DRIVE=C
 
 set GitMode=%2
 if "%2" == "" set GitMode=prod
@@ -30,18 +31,29 @@ set DoPause=none
 if "%2" == "dopause" set DoPause=dopause
 if "%3" == "dopause" set DoPause=dopause
 if "%4" == "dopause" set DoPause=dopause
+if "%5" == "dopause" set DoPause=dopause
 
-set DoSkipInstallService=DontSkip
-if "%3" == "skipinstallservice" set DoSkipInstallService=skipinstallservice
-if "%4" == "skipinstallservice" set DoSkipInstallService=skipinstallservice
+set DoReStartServiceOnly=reinstallservice
+if "%2" == "restartserviceonly" set DoReStartServiceOnly=restartserviceonly
+if "%3" == "restartserviceonly" set DoReStartServiceOnly=restartserviceonly
+if "%4" == "restartserviceonly" set DoReStartServiceOnly=restartserviceonly
+if "%5" == "restartserviceonly" set DoReStartServiceOnly=restartserviceonly
+
+set AlwaysGetSource=getonlywhennewerversion
+if "%2" == "alwaysgetsource" set AlwayGetSource=alwaysgetsource
+if "%3" == "alwaysgetsource" set AlwaysGetSource=alwaysgetsource
+if "%4" == "alwaysgetsource" set AlwaysGetSource=alwaysgetsource
+if "%5" == "alwaysgetsource" set AlwaysGetSource=alwaysgetsource
 
 set sourceFolder=%DRIVE%:\GESchedulingApp\GESchedulingApp\GEApp\GESchedApiApp
 set backupRootFolder=%DRIVE%:\GESchedulingApp\Backups
 set backupFolder=%DRIVE%:\GESchedulingApp\Backups\GESchedApiApp
 
 set CurDate=%date:~10,4%-%date:~4,2%-%date:~7,2%
-set timestamp=%CurDate%-%time:~0,2%%time:~3,2%%time:~6,2%
+set timePart=%time:~0,2%%time:~3,2%%time:~6,2% 
+set timePart=%timePart: =%
 
+set timestamp=%CurDate%-%timePart%
 set backupFolder=%backupFolder%-%timestamp%
 
 echo Using source folder: 
@@ -49,7 +61,8 @@ echo %sourceFolder%
 echo Using backup folder: 
 echo %backupFolder%
 
-echo Git DoPause: %DoPause%
+echo Do Pause Prompt: %DoPause%
+echo Always Get Source: %AlwaysGetSource%
 echo Skip Install Service: %DoSkipInstallService%
 echo Git Mode: %GitMode%
 
@@ -66,6 +79,7 @@ echo %sourceFolder%
 if "%DoPause%" == "dopause" (
     pause
 )
+
 
 if not exist %sourceFolder% (
 
@@ -94,6 +108,76 @@ if not exist %sourceFolder% (
 if "%DoPause%" == "dopause" (
     pause
 )
+
+
+if "%AlwaysGetSource%" == "getonlywhennewerversion" (
+
+    set appVersionExpectedFilepath=%sourceFolder%\appVersionExpected.txt
+    set appVersionCurrentFilepath=%sourceFolder%\appVersionCurrent.txt
+    echo appVersionExpected file path: %appVersionExpectedFilepath%
+    echo appVersionCurrent file path: %appVersionCurrentFilepath%
+
+    CD %sourceFolder%
+    git pull
+    git add -A
+    git commit -m "FULL REDEPLOYMENT AUTOMATION RUN (DEV MODE) - %timestamp%"
+    git checkout -m revision  -- %sourceFolder%\appVersionExpected.txt
+    REM git add %sourceFolder%\appVersionExpected.txt
+    REM git commit
+
+    if ERRORLEVEL 1 (
+        echo ====================================================================
+        echo ==== ERROR  - unable to get versioning file.
+        echo ==== FAILED - Unable to complete all operations!
+        echo ====================================================================
+        GOTO END
+    )
+)
+
+if "%AlwaysGetSource%" == "getonlywhennewerversion" (
+
+    set /a appVersionExpected=0
+    set /a appVersionCurrent=0
+
+    for /f "TOKENS=*" %%a in (%appVersionExpectedFilepath%) do (
+        set /a appVersionExpected=%%a * 1
+    )
+
+    for /f "TOKENS=*" %%a in (%appVersionCurrentFilepath%) do (
+        set /a appVersionCurrent=%%a * 1
+    )
+)
+
+
+if "%AlwaysGetSource%" == "getonlywhennewerversion" (
+
+    if ERRORLEVEL 1 (
+        echo ====================================================================
+        echo ==== ERROR  - unable to check versioning
+        echo ==== FAILED - Unable to complete all operations!
+        echo ====================================================================
+        GOTO END
+    )
+
+    echo appVersionExpected: %appVersionExpected%
+    echo appVersionCurrent:  %appVersionCurrent%
+
+    if %appVersionExpected% gtr %appVersionCurrent%  (
+        echo ====================================================================
+        echo ==== appVersionExpected greater than appVersionCurrent
+        echo ==== Apply current GitMode: %GitMode%
+        echo ====================================================================
+    ) else (
+        echo ====================================================================
+        echo ==== appVersionExpected NOT greater than appVersionCurrent
+        echo ==== Skip Git souce files
+        echo ====================================================================
+        set GitMode=skipgit
+    )
+)
+
+pause
+exit
 
 
 echo Running script in the background. Activities are logged to: 
@@ -155,12 +239,6 @@ GOTO END
     set ERRORLEVEL=0
 
 
-    REM echo About to deleted all source files.
-    REM del /Q /F /S %sourceFolder%\*.*
-    REM if ERRORLEVEL 1 GOTO ERROR
-    REM echo Deleted all source files.
-
-
     CD %sourceFolder%
 
     if "%GitMode%" == "dev" (
@@ -211,11 +289,9 @@ GOTO END
     echo ==== Done re-importing all application reference data. 
     echo ====================================================================
 
-    if "%DoSkipInstallService%" == "skipinstallservice" (
+    if "%RestartServiceOnly%" == "restartserviceonly" (
         echo ====================================================================
         echo ==== Skipping installing the application's Windows service.
-        echo ====================================================================
-        echo ====================================================================
         echo ==== About to retart the application's Windows service.
         echo ====================================================================
         net start gemeetingrequestapp.exe
