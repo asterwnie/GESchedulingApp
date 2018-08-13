@@ -15,8 +15,10 @@ REM    + Use command parameters - 3rd arg to tell script to prompt to continue
 REM    fullRedeploy-HLS-MA.bat c dev dopause
 REM    + Use command parameters - use 2rd arg to tell script to skip the Git source file operations
 REM    fullRedeploy-HLS-MA.bat d skipgit
-REM    + Use command parameters - skip reinstalling the application service and just restart it
+REM    + skip reinstalling the application service and just restart it
 REM    fullRedeploy-HLS-MA.bat d prod restartserviceonly
+REM    + force get files from GitHub without version checking
+REM    fullRedeploy-HLS-MA.bat d prod alwaysgetsource
 
 set DoPause=none
 
