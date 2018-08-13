@@ -239,6 +239,24 @@ GOTO END
     echo ==== Done checking application versioning
     echo ====================================================================
 
+
+    echo Make sure backup root folder exist: 
+    echo %backupRootFolder%
+    if not exist %backupRootFolder% (
+        mkdir %backupRootFolder%
+        echo ====================================================================
+        echo ==== Created backup root folder exist: 
+        echo ==== %backupRootFolder%
+        echo ====================================================================
+    )
+    
+    echo ====================================================================
+    mkdir %backupFolder%
+    echo ==== Created backup folder: 
+    echo ==== %backupFolder%
+    echo ====================================================================
+
+
     echo ==== Begin backing up file from: 
     echo ==== %sourceFolder%
     echo ====================================================================
