@@ -297,6 +297,7 @@ GOTO END
         git add -A
         git pull
         git commit -m "FULL REDEPLOYMENT AUTOMATION RUN (DEV MODE) - %timestamp%"
+        git push
         echo .
         echo ====================================================================
         echo ==== Completed getting the latest source files from GitHub
