@@ -17,7 +17,7 @@ ResultsWayCommunityReception@ge.com
 Meeting & Event[LINEBREAK]Request
 
 --AppName
-GE Meeting And Event Request App
+GE Meeting & Event Request App
 
 --HomeViewTitle 
 Home

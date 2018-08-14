@@ -57,11 +57,11 @@ export default {
     computed: {
  
         title() {
-            return this.$store.state.appConfig.adminAddSendInviteViewTitle; 
+            return this.$store.state.appConfig.adminAddSendEmailViewTitle; 
         },
 
         viewDescription() {
-            return this.$store.state.appConfig.adminAddSendInviteViewDescription; 
+            return this.$store.state.appConfig.adminAddSendEmailViewDescription; 
         },
         
         emailSubject() {

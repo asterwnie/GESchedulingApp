@@ -71,7 +71,6 @@ export const transformAsMailToBodyText = (text) => {
     }
 
     // Replace each space with %20
-    //transformedText.replace(/\s/g, "%20"); //This regex doesn't work for some reason.
     var spaces = text.match(/\s/g);
 
     if (spaces != null) {
@@ -79,6 +78,9 @@ export const transformAsMailToBodyText = (text) => {
                 transformedText = transformedText.replace(space, "%20");
         });
     }
+
+    // Replace each & with %26
+    transformedText.replace(/&/g, "%26");
 
     // Replace each [LINEBREAK] with %0D%0A
     // Uses Regular Expression to get all URLs in [] brackets. e.g. [http://www.ge.com]

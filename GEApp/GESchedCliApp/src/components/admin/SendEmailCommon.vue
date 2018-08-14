@@ -286,6 +286,19 @@ export default {
                 }
 
 
+                //clean up any stray spaces or & signs that were injected and did not pass textTransformer.js
+                //replace space with %20
+                var spaces = vm.emailStringDataExport.match(/\s/g);
+
+                if (spaces != null) {
+                    spaces.forEach((space, index) => {
+                            vm.emailStringDataExport = vm.emailStringDataExport.replace(space, "%20");
+                    });
+                }
+                // Replace each & with %26
+                vm.emailStringDataExport = vm.emailStringDataExport.replace(/&/g, "%26");
+
+
                 vm.$store.state.currentRequest = null;
                 util.logDebugMsg("onSubmitRequest - set currentRequest to null.");
                 vm.canEmail = true;
