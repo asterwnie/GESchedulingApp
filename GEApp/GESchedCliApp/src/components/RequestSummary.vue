@@ -106,11 +106,14 @@
                 <button type="button" class="btn btn-primary btn-sm" 
                   :disabled="isSubmitting" 
                   @click.prevent="onRejectRequest">{{rejectedLabel}}</button>
+
+                <button type="button" class="btn btn-primary btn-sm float-right" 
+                  @click.prevent="onReturnHome">Return</button>  
               </div>
               <div v-else>
                 <button type="button" class="btn btn-primary btn-sm" 
                   :disabled="isSubmitting" 
-                  @click.prevent="onSubmitRequest">Update</button>
+                  @click.prevent="onSubmitRequest">Save & Close</button>
                 <button type="button" class="btn btn-primary btn-sm float-right" 
                   @click.prevent="onPrint"><span class="fas fa-print"></span>&nbsp;Print</button>                  
               </div>
@@ -327,30 +330,30 @@ export default {
       return;
     }
 
-    if (this.inAdminMode) {
 
-      util.logDebugMsg('RequestSummary.vue - inAdminMode == true, about to manage setting the generalAdminComment and generalPreparationNotes control value');
+    util.logDebugMsg('RequestSummary.vue - about to manage setting the generalAdminComment and generalPreparationNotes control value');
 
-      var commentCtrl = $("#generalAdminComment");
-      if (storeState.currentRequest.generalAdminComment != undefined && storeState.currentRequest.generalAdminComment != "") {
-        commentCtrl.val(storeState.currentRequest.generalAdminComment);
-        util.logDebugMsg('RequestSummary.vue - finished setting generalAdminComment ctrl with: ' + storeState.currentRequest.generalAdminComment);
-      } else {
-        commentCtrl.val(null);
-        util.logDebugMsg('RequestSummary.vue - finished setting generalAdminComment ctrl with null.');
-      }
-
-      var notesCtrl = $("#generalPreparationNotes");
-      if (storeState.currentRequest.generalPreparationNotes != undefined && storeState.currentRequest.generalPreparationNotes != "") {
-        notesCtrl.val(storeState.currentRequest.generalPreparationNotes);
-        util.logDebugMsg('RequestSummary.vue - finished setting generalPreparationNotes ctrl with: ' + storeState.currentRequest.generalPreparationNotes);
-      } else {
-        notesCtrl.val(null);
-        util.logDebugMsg('RequestSummary.vue - finished setting generalPreparationNotes ctrl with null.');
-      }
-
+    var commentCtrl = $("#generalAdminComment");
+    if (storeState.currentRequest.generalAdminComment != undefined && storeState.currentRequest.generalAdminComment != "") {
+      commentCtrl.val(storeState.currentRequest.generalAdminComment);
+      util.logDebugMsg('RequestSummary.vue - finished setting generalAdminComment ctrl with: ' + storeState.currentRequest.generalAdminComment);
+    } else {
+      commentCtrl.val(null);
+      commentCtrl.hide();
+      util.logDebugMsg('RequestSummary.vue - finished setting generalAdminComment ctrl with null.');
     }
 
+    var notesCtrl = $("#generalPreparationNotes");
+    if (storeState.currentRequest.generalPreparationNotes != undefined && storeState.currentRequest.generalPreparationNotes != "") {
+      notesCtrl.val(storeState.currentRequest.generalPreparationNotes);
+      util.logDebugMsg('RequestSummary.vue - finished setting generalPreparationNotes ctrl with: ' + storeState.currentRequest.generalPreparationNotes);
+    } else {
+      notesCtrl.val(null);
+      notesCtrl.hide();
+      util.logDebugMsg('RequestSummary.vue - finished setting generalPreparationNotes ctrl with null.');
+    }
+
+  
     if (this.canEditRequest) {
       storeState.currentViewTitle = storeState.appConfig.submitRequestViewTitle;
     } else {

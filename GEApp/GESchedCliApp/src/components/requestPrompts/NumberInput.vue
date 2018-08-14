@@ -5,7 +5,7 @@
     <input type="number" isNumeric="true" :max="maxSeatingCapacityInputVal" min="0" :id="ctrlId" :screenNum="screenNum" class="is-request-data form-control form-control-sm">
     <p :id="dataInvalidMsgId" style="display:none;" class="text-danger">Invalid input.</p>
     <p :id="dataRequiredMsgId" style="display:none;" class="text-danger">This field is required.</p>
-    <p :id="dataOutOfBoundsMsgId" style="display:none;" class="text-danger">Please enter a value between 0 and {{maxSeatingCapacityInputVal}}.</p>
+    <p :id="dataOutOfBoundsMsgId" style="display:none;" class="input-invalid-msg text-danger">Please enter a value between 0 and {{maxSeatingCapacityInputVal}}.</p>
     <textarea :id="adminCommentCtrlId" :screenNum="screenNum" style="display:none; border: 2px solid orange;" placeholder="Add Comment" class="is-admin-comment form-control form-control-sm"></textarea>
   </div>
 
