@@ -300,6 +300,7 @@ export default {
 
         vm.clearSearchUI();
         vm.requestsQueryString = `&processingStatusContains=${this.allStatusesExcludeNew}`;
+        vm.currentPageNumber = 1;
         vm.updateRequests();
         vm.$forceUpdate();
 
@@ -512,7 +513,7 @@ export default {
         },
 
 
-        getNumPages(){
+        getNumPages( pageNumBeforeDelete ){
             console.log("getNumPages activated.");
             let vm = this;
 
@@ -538,6 +539,16 @@ export default {
                         vm.requestResultCaption = requestResultCaptionPrefix + newCountPart;
                     } else {
                         vm.requestResultCaption = vm.requestResultCaption + newCountPart;
+                    }
+
+                    if(pageNumBeforeDelete !== undefined){
+                        if(pageNumBeforeDelete > vm.numPages){
+                        console.log("AdminHome.vue - Going back 1 page after Delete");
+
+                        vm.currentPageNumber = vm.numPages;
+                        vm.updateRequests();
+                        
+                        }
                     }
 
                     vm.$forceUpdate();                   
@@ -587,7 +598,9 @@ export default {
 
             let currId = this.$store.state.actionForSelectedRequest.forDelete._id;                
             var url = apiMgr.getRequestByIdUrl(currId);
-            console.log(`Home.vue - Query url: ${url}`);
+            console.log(`AdminHome.vue - Query url: ${url}`);
+
+            let pageNumBeforeDelete = vm.currentPageNumber;
             
             axios.delete(url) // send delete request
                 .then(res => {
@@ -598,6 +611,10 @@ export default {
                     this.$store.state.actionForSelectedRequest.forDeleteFromView = null;
                     $('#requestActionConfirmDialog').modal('hide');
                     this.$store.state.isModalBeingDisplayed = false;
+
+                    //if the request was the last on its page, then go back 1 page
+                    vm.getNumPages(pageNumBeforeDelete);
+
                 })
                 .catch((err) => {
                     if (err.response.status == 400) {
