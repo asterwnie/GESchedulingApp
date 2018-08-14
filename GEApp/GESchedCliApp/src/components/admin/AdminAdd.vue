@@ -93,6 +93,7 @@
             <div class="card">
                 <div id="collapseAddAdmin" class="collapse show" aria-labelledby="addAdminCollapse" data-parent="#adminAddAccordian">
                     <div class="card-body">
+                        <p class="float-right text-success" :hidden="!hasSuccess">&nbsp;&nbsp;{{successMessage}}</p>
                         <div class="form-group">
                             <label for="recipientNameAdminInput">Recipient Name<i class="required-star">*</i></label>
                             <input type="text" class="form-control" id="recipientNameAdminInput" aria-describedby="nameHelp">
@@ -661,7 +662,7 @@ export default {
             this.$store.state.isModalBeingDisplayed = false;
             this.currModalForDisplay = "";
 
-            this.onResetAdd();
+           // this.onResetAdd();
 
         }
 
