@@ -26,12 +26,23 @@
 
               <div id="configCollapse" class="collapse" aria-labelledby="configHeading" data-parent="#accordionExample">
                 <div class="card-body">
-                  <div v-for="configuration in selectedRoom.configurations" :key="configuration">
-                    <div :id="`${configuration}`" @click.prevent="onConfigSelect" class="card">
-                      <div :id="`${configuration}`" class="card-body">
-                        <div :id="`${configuration}`" style="text-align:center">
-                          <img :id="`${configuration}`" style="height:200px" :src="require(`@/assets/roomconfig/${selectedRoom.name.replace(/\'|\s+/g, '')}/${configuration}.png`)" :alt="configuration"/>
-                          </div>
+                  <div v-for="(configuration, index) in selectedRoom.configurations" :key="index">
+                    <div v-if="index == 0">
+                      <div :id="`${configuration}`" @click.prevent="onConfigSelect" class="card border-success">
+                        <div :id="`${configuration}`" class="card-body">
+                          <div :id="`${configuration}`" style="text-align:center">
+                            <img :id="`${configuration}`" style="height:200px" :src="require(`@/assets/roomconfig/${selectedRoom.name.replace(/\'|\s+/g, '')}/${configuration}.png`)" :alt="configuration"/>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div v-else>
+                      <div :id="`${configuration}`" @click.prevent="onConfigSelect" class="card">
+                        <div :id="`${configuration}`" class="card-body">
+                          <div :id="`${configuration}`" style="text-align:center">
+                            <img :id="`${configuration}`" style="height:200px" :src="require(`@/assets/roomconfig/${selectedRoom.name.replace(/\'|\s+/g, '')}/${configuration}.png`)" :alt="configuration"/>
+                            </div>
+                        </div>
                       </div>
                     </div>
                   </div>
