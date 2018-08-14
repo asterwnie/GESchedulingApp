@@ -234,14 +234,16 @@ export default {
                         .replace('[RECIPIENTEMAIL]', recipientEmail)
                         .replace('[APPLINK]', vm.$store.state.appConfig.appLink)
                         .replace('[ACCESSCODE]', vm.$store.state.mostRecentUserAccessCode)
-                        .replace('[APPNAME]', vm.$store.state.appConfig.appName)
-                        
+                        .replace('[APPNAME]', vm.$store.state.appConfig.appName)                  
                         .replace('[ADMINDISTEMAIL]', vm.$store.state.appConfig.notifyAppAdminEmailDistributionList);
 
                     if(vm.$store.state.inAdminMode){
                         vm.emailStringDataExport = vm.emailStringDataExport
                             .replace('[ADMINACCESSCODE]', vm.$store.state.mostRecentAdminAccessCode)
                             .replace('[ADMINNAME]', vm.$store.state.currentAdminUser.name);
+                    } else {
+                        vm.emailStringDataExport = vm.emailStringDataExport
+                            .replace('[CURRENTUSER]', vm.$store.state.currentUser.name);
                     }
 
                     if(vm.$store.state.currentRequest != null){
@@ -275,10 +277,27 @@ export default {
                         let currentRequest = vm.$store.state.currentRequest;
 
                         vm.emailSubjectDataExport = vm.emailSubjectDataExport
-                            .replace('[EVENTTITLE]', currentRequest.eventTitle)
-                            .replace('[CURRENTUSER]', vm.$store.state.currentUser.name);
+                            .replace('[EVENTTITLE]', currentRequest.eventTitle);
+
+                        if(!vm.$store.state.inAdminMode){
+                            vm.emailStringDataExport = vm.emailStringDataExport
+                                .replace('[CURRENTUSER]', vm.$store.state.currentUser.name);
+                        }
                     }
                 }
+
+
+                //clean up any stray spaces or & signs that were injected and did not pass textTransformer.js
+                //replace space with %20
+                var spaces = vm.emailStringDataExport.match(/\s/g);
+
+                if (spaces != null) {
+                    spaces.forEach((space, index) => {
+                            vm.emailStringDataExport = vm.emailStringDataExport.replace(space, "%20");
+                    });
+                }
+                // Replace each & with %26
+                vm.emailStringDataExport = vm.emailStringDataExport.replace(/&/g, "%26");
 
 
                 vm.$store.state.currentRequest = null;

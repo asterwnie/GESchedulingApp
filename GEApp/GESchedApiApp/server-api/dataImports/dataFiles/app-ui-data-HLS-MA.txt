@@ -17,7 +17,7 @@ ResultsWayCommunityReception@ge.com
 Meeting & Event[LINEBREAK]Request
 
 --AppName
-GE Meeting And Event Request App
+GE Meeting & Event Request App
 
 --HomeViewTitle 
 Home
@@ -161,10 +161,19 @@ To access the [APPNAME], use the following link in your browser:
 [APPLINK]
 [LINEBREAK]
 
---AddAdminEmailSubject 
+--AdminAddEmailAsk
+Do you want to create an email to notify the user of administrative status? 
+
+--AdminAddSendEmailViewDescription 
+Invite an Admin to use this booking utility.
+
+--AdminAddSendEmailViewTitle 
+Send Admin Invite
+
+--AdminAddEmailSubject 
 [APPNAME] Administrator Access
 
---AddAdminEmailTemplate 
+--AdminAddEmailTemplate 
 Hello, [RECIPIENTNAME]!
 [LINEBREAK]
 [ADMINNAME] would like to invite you to become an administrator on the [APPNAME].
