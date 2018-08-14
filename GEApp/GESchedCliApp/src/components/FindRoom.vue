@@ -178,7 +178,12 @@
       <div v-for="(room, index) in rooms" :key="index">
         <div class="card" v-bind:class="room._id">
           <div class="card-body">
-            <h6 :hidden="showNamesOnly" class="card-title">{{room.name}}</h6>
+
+            <h6 :hidden="showNamesOnly" class="card-title">{{room.name}}
+              <i v-bind:id="room._id" class="popup fa fa-info-circle text-info" :hidden="showNamesOnly || room.specialNote == null || room.specialNote ==''" @click.prevent="togglePopup">
+                <span class="popuptext" style="font-family: Calibri; font-weight:normal" v-bind:id="`popup-${room._id}`">{{room.specialNote}}</span>
+              </i>
+            </h6>
             <h6 :hidden="!showNamesOnly" class="card-title">{{room.name}}&nbsp;-&nbsp;(seats: {{room.seatingCapacity}}),&nbsp;{{room.building}}
             <button :hidden="!showNamesOnly" v-bind:id="room._id" type="button" class="btn btn-sm btn-warning float-right" @click.prevent="onRoomSelectModal">Select</button>
             </h6>
@@ -193,7 +198,7 @@
                 <span class="badge text-light capability-badge-style">
                   {{capability}}
                 </span>
-              </span>     
+              </span>  
             </div>
             <br>
             </div>
@@ -590,6 +595,19 @@ export default {
           this.value = "";
         }
       });
+    },
+
+    togglePopup: function(event){
+      if (event){
+        var popup = document.getElementById(`popup-${event.target.id}`);
+        popup.classList.toggle("show");
+
+        setTimeout(function () {
+          if(popup.classList.contains("show")){
+              popup.classList.toggle("show");
+            }
+        }, 10000); //wait 10 seconds
+      }
     }
 
 
