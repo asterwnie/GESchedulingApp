@@ -883,18 +883,20 @@ export default {
                   util.logDebugMsg("submitUpdatedRequest - requestUpdated.processingStatus: " + requestUpdated.processingStatus);
 
                   util.logDebugMsg("submitUpdatedRequest - calling updateSendEmailConfirmDialogTitle & updateSendEmailConfirmDialogMessage");
-                  this.updateSendEmailConfirmDialogTitle(requestUpdated);
-                  this.updateSendEmailConfirmDialogMessage(requestUpdated);
-                  this.$forceUpdate();
+                  vm.updateSendEmailConfirmDialogTitle(requestUpdated);
+                  vm.updateSendEmailConfirmDialogMessage(requestUpdated);
+                  vm.$forceUpdate();
 
                   util.logDebugMsg("submitUpdatedRequest - About to sendEmailConfirmDialog.modal('show')");
                   $('#sendEmailConfirmDialog').modal('show');
-                  this.$store.state.isModalBeingDisplayed = true;
+                  vm.$store.state.isModalBeingDisplayed = true;
 
-                  //Update requestUpdated.approvalNotified = true and call server to save it.
-                  requestUpdated.approvalNotified = true;
-                  justUpdateApprovalNotified = true;
-                  this.submitUpdatedRequest(requestsUrl, requestUpdated, justUpdateApprovalNotified);
+                   if (requestUpdated.processingStatus == "approved") {
+                    //Update requestUpdated.approvalNotified = true and call server to save it.
+                    requestUpdated.approvalNotified = true;
+                    justUpdateApprovalNotified = true;
+                    vm.submitUpdatedRequest(requestsUrl, requestUpdated, justUpdateApprovalNotified);
+                   }
 
                 } else {
                   canDoNotify = true;

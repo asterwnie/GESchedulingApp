@@ -235,7 +235,7 @@ export default {
                         .replace('[APPLINK]', vm.$store.state.appConfig.appLink)
                         .replace('[ACCESSCODE]', vm.$store.state.mostRecentUserAccessCode)
                         .replace('[APPNAME]', vm.$store.state.appConfig.appName)
-                        .replace('[CURRENTUSER]', vm.$store.state.currentUser.name)
+                        
                         .replace('[ADMINDISTEMAIL]', vm.$store.state.appConfig.notifyAppAdminEmailDistributionList);
 
                     if(vm.$store.state.inAdminMode){
@@ -248,6 +248,7 @@ export default {
                         let currentRequest = vm.$store.state.currentRequest;
 
                         vm.emailStringDataExport = vm.emailStringDataExport
+                            .replace('[CURRENTUSER]', currentRequest.eventGEContactPersonName)
                             .replace('[EVENTTITLE]', currentRequest.eventTitle)
                             .replace('[EVENTDATE]', `${util.makeEventDateTimeDisplay(currentRequest.eventSchedule.startDateTime, currentRequest.eventSchedule.endDateTime)}`)
                             .replace('[EVENTROOMNAME]', currentRequest.locationOfEvent.name);
