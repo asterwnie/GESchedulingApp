@@ -322,7 +322,16 @@ export const validateNumberPrompt = (ctrlDataId, inputVal) => {
         isValid = false;
     }
 
-    let maxSeatingCapacityInputVal = centralStore.state.maxSeatingCapacityInputVal;
+    var invalidMsg = $('#OUTOFBOUNDS-MSG-FOR-' + ctrlDataId)
+    if (invalidMsg != null) {
+        invalidMsg.hide();
+    }
+    var invalidMsg = $('#INVALID-MSG-FOR-' + ctrlDataId)
+    if (invalidMsg != null) {
+        invalidMsg.hide();
+    }
+
+    let maxSeatingCapacityInputVal = centralStore.state.appConfig.maxNumberValueInput;
     if (inVal < 0 || inVal > maxSeatingCapacityInputVal) {
         isValid = false;
         var invalidMsg = $('#OUTOFBOUNDS-MSG-FOR-' + ctrlDataId)

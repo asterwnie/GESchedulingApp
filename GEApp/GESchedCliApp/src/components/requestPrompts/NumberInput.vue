@@ -23,7 +23,7 @@ export default {
       return this.ctrlId + "Container";
     },
     maxSeatingCapacityInputVal() {
-      return this.$store.state.maxSeatingCapacityInputVal;
+      return this.$store.state.appConfig.maxNumberValueInput;
     }
   },
 

@@ -161,6 +161,13 @@ export const transformAppConfig = (appConfig) => {
         var transformedText = null;
         if (setting.indexOf('EmailTemplate') > -1 || setting.indexOf('EmailSubject') > -1) {    
             transformedText = transformAsMailToBodyText(originalText);
+        } else if (setting == "maxNumberValueInput") {
+            //debugger;
+            try {
+                transformedText = parseInt(originalText);
+            } catch (err) {
+                transformedText = 500;
+            }
         } else {
             transformedText = transformMetaTags(originalText);
         }
