@@ -300,6 +300,8 @@ export default {
 
         vm.clearSearchUI();
         vm.requestsQueryString = `&processingStatusContains=${this.allStatusesExcludeNew}`;
+        vm.requestResultCaption = "Requests - All";
+
         vm.currentPageNumber = 1;
         vm.updateRequests();
         vm.$forceUpdate();
@@ -425,7 +427,7 @@ export default {
         },
 
 
-        filterView: function(event) {
+        filterView( quickFilterStatus ) {
             console.log("filterView activated.");
             var queryString = '';
             var vm = this;
@@ -546,8 +548,9 @@ export default {
                         console.log("AdminHome.vue - Going back 1 page after Delete");
 
                         vm.currentPageNumber = vm.numPages;
+                        console.log(vm.requestsQueryString);
                         vm.updateRequests();
-                        
+
                         }
                     }
 
