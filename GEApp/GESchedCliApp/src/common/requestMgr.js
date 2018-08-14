@@ -43,14 +43,6 @@ export const clearValidationMessages = (prompts, currentScreenNum) => {
         }
     });
 
-    // debugger;
-    var viewLevelMsgs = $('.view-level-invalid-msg');
-    if (viewLevelMsgs != null) {
-        $.each(viewLevelMsgs, function( index, item ){
-            $(item).hide();
-        });
-    }
-
 }
 
 

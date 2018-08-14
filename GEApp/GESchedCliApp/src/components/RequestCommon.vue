@@ -105,8 +105,8 @@
             <div class="mb-3">
               <button type="button" id="continueBtn" class="btn btn-primary btn-sm" @click.prevent="onContinue">Save&nbsp;&amp;&nbsp;Continue&nbsp;<i class="fas fa-arrow-right"></i></button>
             </div>
-            <p class="view-level-invalid-msg text-danger" id="viewLevelExtendedErrorMsg" :hidden="enoughRoomCapacity">The total number of attendees exceeds the room capacity.</p>
-            <p class="view-level-invalid-msg text-danger" id="viewLevelErrorMsg" :hidden="!hasValidationError">Please correct your input above.</p>
+            <p class="text-danger" id="viewLevelExtendedErrorMsg" :hidden="enoughRoomCapacity">The total number of attendees exceeds the room capacity.</p>
+            <p class="text-danger" id="viewLevelErrorMsg" :hidden="!hasValidationError">Please correct your input above.</p>
             <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
             <br>
             <br>
