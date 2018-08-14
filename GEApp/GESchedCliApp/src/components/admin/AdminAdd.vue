@@ -1,48 +1,72 @@
 <template>  
 <div>
 <!-- Modal -->
-  <div class="modal" id="deleteAdminUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteAdminUserModalLabel" aria-hidden="true">
+  <div class="modal" id="adminAddModal" tabindex="-1" role="dialog" aria-labelledby="deleteAdminUserModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="deleteModalLabel">Delete Admin User</h5>
-          <button @click.prevent="onDeleteAdminUserDeselect" type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div v-if="isAllowedToDeleteAdmin">
-            <div class="modal-body">
-                <p>Are you sure you want to delete this user? This action cannot be undone.</p>
-                <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
+          <!-- Modal Content for Delete -->
+          <div :hidden="!(currModalForDisplay == 'deleteAdminUser')">
+            <div class="modal-header">
+            <h5 class="modal-title" id="deleteModalLabel">Delete Admin User</h5>
+            <button @click.prevent="onDeleteAdminUserDeselect" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
             </div>
-        </div>
-        <div v-else>
-            <div class="modal-body">
-                <p class="text-danger" :hidden="!canShowDeleteAdminMessage">Error: {{deleteAdminMessage}}</p>
-                <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
-            </div>
-        </div>
-
-        <div :hidden="!isAllowedToDeleteAdmin" class="modal-body">
-            <div class="card">
-                <div class="card-body" id="selectedAdminUserUI">
-
+            <div v-if="isAllowedToDeleteAdmin">
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this user? This action cannot be undone.</p>
+                    <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
                 </div>
             </div>
-        </div>
-        
-        <div v-if="isAllowedToDeleteAdmin">
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" @click.prevent="onDeleteAdminUserDeselect">Cancel</button>
-                <button type="button" class="btn btn-primary" @click.prevent="onDeleteAdminUserConfirm">Confirm Delete</button>
+            <div v-else>
+                <div class="modal-body">
+                    <p class="text-danger" :hidden="!canShowDeleteAdminMessage">Error: {{deleteAdminMessage}}</p>
+                    <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
+                </div>
             </div>
-        </div>
-        <div v-else>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" @click.prevent="onDeleteAdminUserDeselect">Close</button>
+
+            <div :hidden="!isAllowedToDeleteAdmin" class="modal-body">
+                <div class="card">
+                    <div class="card-body" id="selectedAdminUserUI">
+
+                    </div>
+                </div>
             </div>
+            
+            <div v-if="isAllowedToDeleteAdmin">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @click.prevent="onDeleteAdminUserDeselect">Cancel</button>
+                    <button type="button" class="btn btn-primary" @click.prevent="onDeleteAdminUserConfirm">Confirm Delete</button>
+                </div>
+            </div>
+            <div v-else>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @click.prevent="onDeleteAdminUserDeselect">Close</button>
+                </div>
+            </div>
+          </div>
+
+        <!-- Modal Content for Admin Add Send Email -->
+        <div :hidden="!(currModalForDisplay == 'adminAddSendEmail')">
+            <div class="modal-header">
+            <h5 class="modal-title" id="deleteModalLabel">Send Email Notification</h5>
+            <button @click.prevent="onDeleteAdminUserDeselect" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            
+            <div class="modal-body">
+                <p>{{adminAddEmailAsk}}</p>
+                <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @click.prevent="onAdminAddEmailSkip">No</button>
+                <button type="button" class="btn btn-primary" @click.prevent="onAdminAddSendEmail">Yes</button>
+            </div>
+           
         </div>
-        
+
       </div>
     </div>
   </div>
@@ -67,9 +91,9 @@
 
         <div class="col col-12 col-sm-10 col-md-8 col-lg-8 accordion" id="adminAddAccordian">
             <div class="card">
-                <div class="card-header" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="addAdminCollapse" id="addAdminHeading">
+                <!-- <div class="card-header" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="addAdminCollapse" id="addAdminHeading">
                     Step 1: Add Admin<p class="float-right text-success" :hidden="!hasSuccess">&nbsp;&nbsp;{{successMessage}}</p>
-                </div>
+                </div> -->
 
                 <div id="collapseAddAdmin" class="collapse show" aria-labelledby="addAdminCollapse" data-parent="#adminAddAccordian">
                     <div class="card-body">
@@ -92,7 +116,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card">
+            <!-- <div class="card">
                 <div class="card-header" data-toggle="collapse" data-target="#sendNotificationCollapse" aria-expanded="true" aria-controls="sendNotificationCollapse" id="sendNotificationHeading">
                     Step 2: Send Notification
                 </div>
@@ -140,7 +164,7 @@
                     </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
 
 
@@ -168,9 +192,7 @@
                     </div>
                 </div>
                 <div class="float-right">
-                    <button :id="admin._id" class="btn btn-danger btn-sm float-left" type="button" @click.prevent="onDeleteAdminUserModal">
-                        <span :id="admin._id" aria-hidden="true"><i class="fas fa-trash-alt"></i></span>
-                    </button>
+                    <button :id="admin._id" style="padding-top:5px;padding-bottom:5px" class="btn btn-danger btn-sm fas fa-trash-alt float-left" type="button" @click.prevent="onDeleteAdminUserModal"></button>
                 </div>
             </div>
           </div>
@@ -198,6 +220,7 @@ import axios from 'axios';
 import * as apiMgr from '@/common/apiMgr.js';
 import * as localCacheMgr from '@/common/localCacheMgr.js';
 import * as textTransformer from '@/common/textTransformer.js';
+import * as util from '@/common/util.js';
 
 export default {
     data () {
@@ -225,6 +248,8 @@ export default {
         canShowDeleteAdminMessage: false,
         deleteAdminMessage: "",
 
+        currModalForDisplay: "",
+
     }
   },
 
@@ -237,6 +262,9 @@ export default {
         },
         addAdminEmailSubject() {
             return this.$store.state.appConfig.addAdminEmailSubject;
+        },
+        adminAddEmailAsk(){
+            return this.$store.state.appConfig.adminAddEmailAsk;
         }
     },
 
@@ -258,16 +286,29 @@ export default {
 
         this.getMostRecentAdminAccessCode();
 
-        $("#collapseSendNotification").removeClass("show");
+        vm.currModalForDisplay = "";
+
+        //$("#collapseSendNotification").removeClass("show");
+        vm.onResetAdd();
         vm.refreshAdminUI();
     },
 
-    updated(){
+    /* created() {
+        //If the vue was imbedded, this would've been used.
+       console.log('AdminAdd.vue created.');
+       let vm = this;
+
+       util.centralEvent.$on('onAddAdminUserSkipEmail', () => {
+           vm.onSendInviteDismiss();
+       });
+    }, */
+
+  /*   updated(){
         if(this.hasBeenActivated){
             let vm = this;
             $("#emailPreviewAdmin")[0].value = vm.emailStringDataDisplay;
         }
-    },
+    }, */
 
     methods: {
 
@@ -349,51 +390,23 @@ export default {
                 })
         },
 
-        onGenerateEmail () {
-            console.log("onGenerateEmail activated.");
+
+        onAdminAddSendEmail() {
+            console.log("onAdminAddSendEmail activate.")
             let vm = this;
+            var storeState = this.$store.state;
 
-            vm.isValid = true;
-
-            vm.recipientName = $("#recipientNameAdmin")[0].value;
-            vm.recipientEmail = $("#recipientEmailAdmin")[0].value;
+            $('#adminAddModal').modal('hide');
+            this.$store.state.isModalBeingDisplayed = false;
             
-            if(vm.recipientName != "" && vm.recipientEmail != ""){
-
-                let isValid = vm.validateEmailString(vm.recipientEmail);
-                let adminName = vm.$store.state.currentAdminUser.name;
-                
-                if(isValid){
-                    vm.hasFailure = false;
-
-                    //replace email and name (and access code)
-                    vm.emailStringDataExport = textTransformer.transformAsMailToBodyText(vm.$store.state.appConfig.addAdminEmailTemplate)
-                    while(vm.emailStringDataExport.indexOf("[") > -1){
-                        vm.emailStringDataExport = vm.emailStringDataExport
-                            .replace('[RECIPIENTNAME]', vm.recipientName)
-                            .replace('[RECIPIENTEMAIL]', vm.recipientEmail)
-                            .replace('[APPLINK]', vm.$store.state.appConfig.appLink)
-                            .replace('[ACCESSCODE]', vm.$store.state.mostRecentUserAccessCode)
-                            .replace('[ADMINACCESSCODE]', vm.$store.state.mostRecentAdminAccessCode)
-                            .replace('[ADMINNAME]', vm.$store.state.currentAdminUser.name)
-                            .replace('[APPNAME]', vm.$store.state.appConfig.appName);
-                    }
-                    
-                    //reformat for display in preview
-                    vm.emailStringDataDisplay = vm.emailStringDataExport.replace(/%0D%0A/g, '\n').replace(/%20/g, ' ');
-
-                    //$("#emailPreviewAdmin")[0].disabled = false;
-                    vm.canEmail = true;
-                }
-                
-            } else {
-                vm.hasFailure = true;
-                vm.failureMessage = "Required fields cannot be empty."
-            }
-          
-            vm.$forceUpdate();
+            storeState.defRecipientNameForSendEmail = $("#recipientNameAdminInput")[0].value;
+            storeState.defRecipientEmailForSendEmail = $("#recipientEmailAdminInput")[0].value;
             
+            util.logDebugMsg('AdminAdd - onAdminAddSendEmail');
+
+            this.$router.push('/admin/sendadminaddemail'); 
         },
+
 
         onAddAdmin(){
             console.log("onAddAdmin activate.");
@@ -533,17 +546,9 @@ export default {
 
             vm.successMessage = "Success!"
 
-            //replace email and name in UI
-            $("#recipientNameAdmin")[0].value = vm.recipientName;
-            $("#recipientEmailAdmin")[0].value = vm.recipientEmail;
-
-            $("#recipientNameAdmin")[0].disabled = false;
-            $("#recipientEmailAdmin")[0].disabled = false;
-            vm.canGenerateEmail = true;
-
-            $("#collapseAddAdmin").collapse("hide");
-            //$("#collapseSendNotification").collapse("show");
-            $("#collapseSendNotification").addClass('show');
+            vm.currModalForDisplay = "adminAddSendEmail";
+            $('#adminAddModal').modal('show');
+            this.$store.state.isModalBeingDisplayed = true;
 
             vm.refreshAdminUI();
             vm.$forceUpdate();
@@ -561,20 +566,17 @@ export default {
             this.emailStringDataExport = "";
             this.emailStringDataDisplay = "";
             $("#collapseAddAdmin").collapse("show");
-            $("#collapseSendNotification").removeClass("show");
+            //$("#collapseSendNotification").removeClass("show");
             this.$forceUpdate();
         },
 
-        onSendInviteDismiss(){
-            $("#collapseSendNotification").removeClass("show");
-            this.$forceUpdate();
-        },
 
         onDeleteAdminUserModal: function(event) {
             if(event){
                 console.log("onDeleteAdminUserModal activated.");
                 let vm = this;
                 let numAdmins = 0;
+                vm.currModalForDisplay = "deleteAdminUser";
 
                 vm.hasFailure = false;
                 vm.isAllowedToDeleteAdmin = false;
@@ -612,7 +614,7 @@ export default {
                     })
 
                 
-                $("#deleteAdminUserModal").modal("show");
+                $("#adminAddModal").modal("show");
                 this.$store.state.isModalBeingDisplayed = true;
                 
 
@@ -631,7 +633,7 @@ export default {
                 .then(res => {
                     console.log("onDeleteAdminUser return status: " + res.status);
 
-                    $("#deleteAdminUserModal").modal("hide");
+                    $("#adminAddModal").modal("hide");
                     this.$store.state.isModalBeingDisplayed = false;
                     vm.refreshAdminUI();
                     vm.$forceUpdate();
@@ -649,9 +651,20 @@ export default {
             console.log("onDeleteAdminUserDeselect activated. Selected admin user unset.")
             let vm = this;
 
-            $("#deleteAdminUserModal").modal("hide");
+            $("#adminAddModal").modal("hide");
             this.$store.state.isModalBeingDisplayed = false;
             vm.selectedAdminUserToDelete = null;
+
+            vm.currModalForDisplay = "";
+
+        },
+
+        onAdminAddEmailSkip() {
+
+            $("#adminAddModal").modal("hide");
+            this.$store.state.isModalBeingDisplayed = false;
+
+            this.currModalForDisplay = "";
 
         }
 
