@@ -6,7 +6,11 @@
       <div v-if="selectedRoom != undefined && selectedRoom != null">
         <div class="card" v-bind:class="[selectedRoom._id, 'is-request-data-part']">
           <div class="card-body">
-            <h6 class="card-title">{{selectedRoom.name}}</h6>
+            <h6 class="card-title">{{selectedRoom.name}}
+              <i v-bind:id="selectedRoom._id" class="popup fa fa-info-circle text-info" :hidden="selectedRoom.specialNote == null || selectedRoom.specialNote ==''" @click.prevent="togglePopup">
+                <span class="popuptext" style="font-family: Calibri; font-weight:normal" v-bind:id="`popup-${selectedRoom._id}`">{{selectedRoom.specialNote}}</span>
+              </i>
+            </h6>
             <div class="card-text" :hidden="selectedRoom.building == null || selectedRoom.building == ''">Building: {{selectedRoom.building}}</div>
             <div class="card-text" :hidden="selectedRoom.sizeType == null || selectedRoom.sizeType == ''">Size Type: {{selectedRoom.sizeType}}</div>
             <div class="card-text" :hidden="selectedRoom.seatingCapacity == null || selectedRoom.seatingCapacity == ''">Seating Capacity: {{selectedRoom.seatingCapacity}}</div>
@@ -87,6 +91,19 @@ export default {
       } else {
           adminCtrl.hide();
           adminCtrl.val(null);
+      }
+    },
+
+    togglePopup: function(event){
+      if (event){
+        var popup = document.getElementById(`popup-${event.target.id}`);
+        popup.classList.toggle("show");
+
+        setTimeout(function () {
+          if(popup.classList.contains("show")){
+              popup.classList.toggle("show");
+            }
+        }, 10000); //wait 10 seconds
       }
     }
   }

@@ -33,8 +33,14 @@
                     <div v-if="requestReadOnlyProperty.value.sizeType != null">
                       <div class="card">
                         <div class="card-body">
-                          <h6 class="card-title">{{requestReadOnlyProperty.value.name}}</h6>
-                          <div class="card-text" :hidden="requestReadOnlyProperty.value.building == null || requestReadOnlyProperty.value.building == ''">Building: {{requestReadOnlyProperty.value.building}}</div>
+                          <h6 class="card-title">{{requestReadOnlyProperty.value.name}}
+                            <i v-bind:id="requestReadOnlyProperty.value._id" class="popup fa fa-info-circle text-info" :hidden="requestReadOnlyProperty.value.specialNote == null || requestReadOnlyProperty.value.specialNote ==''" @click.prevent="togglePopup">
+                              <span class="popuptext" style="font-family: Calibri; font-weight:normal" v-bind:id="`popup-${requestReadOnlyProperty.value._id}`">{{requestReadOnlyProperty.value.specialNote}}</span>
+                            </i>
+                          </h6>
+                          <div class="card-text" :hidden="requestReadOnlyProperty.value.building == null || requestReadOnlyProperty.value.building == ''">Building: {{requestReadOnlyProperty.value.building}}, Floor: <span :hidden="requestReadOnlyProperty.value.floor == null || requestReadOnlyProperty.value.floor == ''">{{requestReadOnlyProperty.value.floor}}</span></div>
+                          <div class="card-text" :hidden="requestReadOnlyProperty.value.roomNumber == null || requestReadOnlyProperty.value.roomNumber == ''">Room Number: {{requestReadOnlyProperty.value.roomNumber}}</div>
+                          <div class="card-text" :hidden="requestReadOnlyProperty.value.roomPhone == null || requestReadOnlyProperty.value.roomPhone == ''">Room Phone: {{requestReadOnlyProperty.value.roomPhone}}</div>
                           <div class="card-text" :hidden="requestReadOnlyProperty.value.sizeType == null || requestReadOnlyProperty.value.sizeType == ''">Size Type: {{requestReadOnlyProperty.value.sizeType}}</div>
                           <div class="card-text" :hidden="requestReadOnlyProperty.value.seatingCapacity == null || requestReadOnlyProperty.value.seatingCapacity == ''">Seating Capacity: {{requestReadOnlyProperty.value.seatingCapacity}}</div>
                           <div class="card-text" :hidden="requestReadOnlyProperty.value.capabilities == null || requestReadOnlyProperty.value.capabilities.length == 0">
@@ -953,6 +959,19 @@ export default {
       } else {
         util.logDebugMsg("RequestSummary - $router.push: /home");
         this.$router.push("/home");
+      }
+    },
+
+    togglePopup: function(event){
+      if (event){
+        var popup = document.getElementById(`popup-${event.target.id}`);
+        popup.classList.toggle("show");
+
+        setTimeout(function () {
+          if(popup.classList.contains("show")){
+              popup.classList.toggle("show");
+            }
+        }, 10000); //wait 10 seconds
       }
     }
 
