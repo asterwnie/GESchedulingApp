@@ -79,7 +79,7 @@
             <div class="card" style="width:100%">
               <div class="card-header bg-danger text-light">
                   Invite Admin
-                  <button @click.prevent="onResetAdd" type="button" class="float-right btn btn-outline-light">Add Another</button>
+                  <button @click.prevent="onResetAdd" type="button" class="float-right btn btn-outline-light">Reset</button>
               </div>
             </div> 
 
@@ -91,10 +91,6 @@
 
         <div class="col col-12 col-sm-10 col-md-8 col-lg-8 accordion" id="adminAddAccordian">
             <div class="card">
-                <!-- <div class="card-header" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="addAdminCollapse" id="addAdminHeading">
-                    Step 1: Add Admin<p class="float-right text-success" :hidden="!hasSuccess">&nbsp;&nbsp;{{successMessage}}</p>
-                </div> -->
-
                 <div id="collapseAddAdmin" class="collapse show" aria-labelledby="addAdminCollapse" data-parent="#adminAddAccordian">
                     <div class="card-body">
                         <div class="form-group">
@@ -663,8 +659,9 @@ export default {
 
             $("#adminAddModal").modal("hide");
             this.$store.state.isModalBeingDisplayed = false;
-
             this.currModalForDisplay = "";
+
+            this.onResetAdd();
 
         }
 
