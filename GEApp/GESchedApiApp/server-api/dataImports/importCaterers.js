@@ -36,7 +36,7 @@ function doCatererImport() {
     try {
         clearInterval(timer);
 
-        var fileData = fs.readFileSync(`./server-api/dataImports/dataFiles/${fileName}`).toString()
+        var fileData = fs.readFileSync(`${appRoot}/server-api/dataImports/dataFiles/${fileName}`).toString()
         
         var result = extractCatererItems(fileData);
         if (result.success) {

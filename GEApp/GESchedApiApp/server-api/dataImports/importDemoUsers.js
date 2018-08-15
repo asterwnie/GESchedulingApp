@@ -36,7 +36,7 @@ function doUsersImport() {
     try {
         clearInterval(timer);
 
-        const jsonData = fs.readFileSync(`./server-api/dataImports/dataFiles/${fileName}`);
+        const jsonData = fs.readFileSync(`${appRoot}/server-api/dataImports/dataFiles/${fileName}`);
         const users = JSON.parse(jsonData);
 
         // Count the total first.

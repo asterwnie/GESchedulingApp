@@ -37,7 +37,7 @@ function doAccessCodeImport() {
     try {
         clearInterval(timer);
 
-        var fileData = fs.readFileSync(`./server-api/dataImports/dataFiles/${fileName}`).toString()
+        var fileData = fs.readFileSync(`${appRoot}/server-api/dataImports/dataFiles/${fileName}`).toString()
         
         var result = extractAccessCodeItems(fileData);
         if (result.success) {

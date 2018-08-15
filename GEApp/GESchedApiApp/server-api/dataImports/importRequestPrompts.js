@@ -36,7 +36,7 @@ function doRequestPromptsImport() {
     try {
         clearInterval(timer);
 
-        var fileData = fs.readFileSync(`./server-api/dataImports/dataFiles/${fileName}`).toString()
+        var fileData = fs.readFileSync(`${appRoot}/server-api/dataImports/dataFiles/${fileName}`).toString()
         
         var result = extractRequestPromptItems(fileData);
         if (result.success) {
