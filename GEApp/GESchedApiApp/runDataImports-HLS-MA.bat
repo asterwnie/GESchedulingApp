@@ -13,11 +13,7 @@ node .\server-api\dataImports\importRequestPrompts.js
 node .\server-api\dataImports\deleteCaterers.js
 node .\server-api\dataImports\importCaterers.js
 
-node .\server-api\dataImports\deleteAdminUsers.js
-node .\server-api\dataImports\importAdminUsers.js
+
 
 node .\server-api\dataImports\deleteAppConfig.js
 node .\server-api\dataImports\importAppConfig.js
-
-node .\server-api\dataImports\deleteAccessCodes.js
-node .\server-api\dataImports\importAccessCodes.js
