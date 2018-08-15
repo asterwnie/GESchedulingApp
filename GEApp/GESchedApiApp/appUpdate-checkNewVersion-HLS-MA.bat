@@ -8,17 +8,17 @@ REM    + Uninstall and reinstall the application as a Windows service
 REM
 REM Usage (Must run in Administrator mode):
 REM    + No addtional command parameters - default to D: drive, use PROD mode for Git operations
-REM    fullRedeploy-HLS-MA.bat
+REM    appUpdate-checkNewVersion-HLS-MA.bat
 REM    + Use command parameters - 1st arg to specify drive, 2rd arg for Git mode (dev for DEV mode)
-REM    fullRedeploy-HLS-MA.bat c dev
+REM    appUpdate-checkNewVersion-HLS-MA.bat c dev
 REM    + Use command parameters - 3rd arg to tell script to prompt to continue
-REM    fullRedeploy-HLS-MA.bat c dev dopause
+REM    appUpdate-checkNewVersion-HLS-MA.bat c dev dopause
 REM    + Use command parameters - use 2rd arg to tell script to skip the Git source file operations
-REM    fullRedeploy-HLS-MA.bat d skipgit
+REM    appUpdate-checkNewVersion-HLS-MA.bat d skipgit
 REM    + skip reinstalling the application service and just restart it
-REM    fullRedeploy-HLS-MA.bat d prod restartserviceonly
+REM    appUpdate-checkNewVersion-HLS-MA.bat d prod restartserviceonly
 REM    + force get files from GitHub without version checking
-REM    fullRedeploy-HLS-MA.bat d prod alwaysgetsource
+REM    appUpdate-checkNewVersion-HLS-MA.bat d prod alwaysgetsource
 
 set ERRORLEVEL=0
 set DoPause=none
@@ -97,6 +97,24 @@ if not exist %sourceFolder% (
 if "%DoPause%" == "dopause" (
     pause
 )
+
+
+echo Make sure backup root folder exist: 
+echo %backupRootFolder%
+if not exist %backupRootFolder% (
+    mkdir %backupRootFolder%
+    echo ====================================================================
+    echo ==== Created backup root folder exist: 
+    echo ==== %backupRootFolder%
+    echo ====================================================================
+)
+
+echo ====================================================================
+mkdir %backupFolder%
+echo ==== Created backup folder: 
+echo ==== %backupFolder%
+echo ====================================================================
+
 
 
 echo Running script in the background. Activities are logged to: 
@@ -234,22 +252,6 @@ GOTO END
     echo ==== Done checking application versioning
     echo ====================================================================
 
-
-    echo Make sure backup root folder exist: 
-    echo %backupRootFolder%
-    if not exist %backupRootFolder% (
-        mkdir %backupRootFolder%
-        echo ====================================================================
-        echo ==== Created backup root folder exist: 
-        echo ==== %backupRootFolder%
-        echo ====================================================================
-    )
-    
-    echo ====================================================================
-    mkdir %backupFolder%
-    echo ==== Created backup folder: 
-    echo ==== %backupFolder%
-    echo ====================================================================
 
 
     echo ==== Begin backing up file from: 
