@@ -1,2 +1,0 @@
-node deleteAccessCodes.js
-node importAccessCodes.js

@@ -1,2 +1,0 @@
-node deleteRequestPrompts.js
-node importRequestPrompts.js

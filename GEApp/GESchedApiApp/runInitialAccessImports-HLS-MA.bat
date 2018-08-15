@@ -1,5 +1,5 @@
-node .\server-api\dataImports\deleteAdminUsers.js
-node .\server-api\dataImports\importAdminUsers.js
+node .\server-api\dataImports\deleteAdminUsers.js HLS-MA
+node .\server-api\dataImports\importAdminUsers.js HLS-MA
 
-node .\server-api\dataImports\deleteAccessCodes.js
-node .\server-api\dataImports\importAccessCodes.js
+node .\server-api\dataImports\deleteAccessCodes.js HLS-MA
+node .\server-api\dataImports\importAccessCodes.js HLS-MA
