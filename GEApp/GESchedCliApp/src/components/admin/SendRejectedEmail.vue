@@ -33,6 +33,7 @@
           </div>
           <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
       </div>
+      <br>
   </div>
 </template>
 <script>

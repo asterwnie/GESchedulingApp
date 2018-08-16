@@ -98,7 +98,7 @@
           <br>
           <div v-if="canEditRequest">
             <div v-if="inAdminMode && !isNewRequest">
-              <div v-if="!isApproved">
+              <div v-if="!isApproved && !isCancelled">
                 <button type="button" class="btn btn-primary btn-sm" 
                   :disabled="isSubmitting" 
                   @click.prevent="onApproveRequest">Approve</button>
@@ -134,6 +134,7 @@
               @click.prevent="$router.push('/attentionNotes')"><i class="fas fa-exclamation-circle"></i></button>           
           </div>         
           <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
+          <br>
           <br>
           <br>
       </div>
@@ -303,6 +304,18 @@ export default {
       }
       util.logDebugMsg('RequestSummary.vue - isApproved: ' + approved);
       return approved;
+    },
+
+    isCancelled() {
+      var cancelled = false;
+      var storeState = this.$store.state;
+      if (storeState.currentRequest != null && 
+          storeState.currentRequest.processingStatus != undefined && 
+          storeState.currentRequest.processingStatus == "cancelled") {
+        cancelled = true;
+      }
+      util.logDebugMsg('RequestSummary.vue - isCancelled: ' + cancelled);
+      return cancelled;
     },
 
 
