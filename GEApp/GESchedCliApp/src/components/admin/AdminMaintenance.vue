@@ -158,17 +158,9 @@
               </div>
             </div>
 
-            <div id="updateAppDataCollapse" class="collapse" aria-labelledby="updateAppData" data-parent="#menuAccordian">
-              <div class="card-body">
 
-                <div class="alert alert-warning" role="alert">
-                  <strong>Notice</strong> This section is incomplete.
-                </div>
+            <update-app-data-info-component-ctrl></update-app-data-info-component-ctrl>
 
-                <p>Instructions on how to update data will be posted here. This is a work in progress.</p>
-
-              </div>
-            </div>
 
             <div id="manageAccessCodesCollapse" class="collapse" aria-labelledby="manageAccessCodes" data-parent="#menuAccordian">
               <div class="card-body">
@@ -246,6 +238,8 @@
 </template>
 
 <script>
+import updateAppDataInfoComponent from '@/components/admin/UpdateAppDataInfo.vue'
+
 import axios from 'axios';
 import * as util from '@/common/util.js';
 import * as apiMgr from '@/common/apiMgr.js';
@@ -278,6 +272,11 @@ export default {
         accessCodesList: null,
     }
   },
+
+      components: {
+        updateAppDataInfoComponentCtrl: updateAppDataInfoComponent
+    },
+
 
   computed: {
         title() {
