@@ -64,8 +64,7 @@ async function queryRooms (siteCode, query, callback) {
     }
 
     if (query.sizeTypeContains != null) {    
-        const regExpression = new RegExp(`(${query.sizeTypeContains})`);
-        filterDirective.sizeType = regExpression;        
+        filterDirective.sizeType = query.sizeTypeContains;        
     }
 
     if (query.hasTheseCapabilities != null) {    
