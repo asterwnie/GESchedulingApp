@@ -1,13 +1,13 @@
 --Room.Name: Forum
 --Room.SizeType: Forum
---Room.SeatingCapacity: 9999999
---Room.Floor: 1
---Room.Building: Health MBO
---Room.RoomNumber: 
---Room.RoomPhone: 
---Room.AddressGAL: 
---Room.SpecialNote: 
---Room.Capability: 
+--Room.SeatingCapacity: 600
+--Room.Floor: 2
+--Room.Building: Health MBO Results Way
+--Room.RoomNumber: none
+--Room.RoomPhone: none
+--Room.AddressGAL: Health MBO Results Way
+--Room.SpecialNote: Large Event Space
+--Room.Capability: Stage|Monitors|Speakers|Tables|Chairs
 
 --Room.Name: Wellfleet
 --Room.SizeType: Medium Conference

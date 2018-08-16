@@ -125,7 +125,7 @@ Your request is not complete. More Information is required. Please review, updat
 More information is needed. Please review the comments in this request.
 
 --MaxNumberValueInput
-500
+600
 
 --DeleteOlderThanNumDays 
 14
