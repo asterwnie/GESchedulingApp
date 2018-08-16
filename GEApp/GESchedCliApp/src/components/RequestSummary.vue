@@ -234,8 +234,7 @@ export default {
       var storeState = this.$store.state;
       if (this.inAdminMode && storeState.currentRequest != null && 
           storeState.currentRequest.processingStatus != null &&
-          storeState.currentRequest.processingStatus != "underReview" &&
-          storeState.currentRequest.processingStatus != "rejected") {
+          storeState.currentRequest.processingStatus == "approved") {
         status = true;
       } else {
         status = false;
@@ -250,6 +249,7 @@ export default {
       var storeState = this.$store.state;
       if (this.inAdminMode && storeState.currentRequest != null && 
           storeState.currentRequest.processingStatus != null &&
+          storeState.currentRequest.processingStatus != 'newUnsubmitted' &&
           storeState.currentRequest.processingStatus != 'rejected') {
         status = true;
       } else {
