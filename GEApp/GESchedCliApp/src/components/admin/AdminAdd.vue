@@ -290,23 +290,6 @@ export default {
         vm.refreshAdminUI();
     },
 
-    /* created() {
-        //If the vue was imbedded, this would've been used.
-       console.log('AdminAdd.vue created.');
-       let vm = this;
-
-       util.centralEvent.$on('onAddAdminUserSkipEmail', () => {
-           vm.onSendInviteDismiss();
-       });
-    }, */
-
-  /*   updated(){
-        if(this.hasBeenActivated){
-            let vm = this;
-            $("#emailPreviewAdmin")[0].value = vm.emailStringDataDisplay;
-        }
-    }, */
-
     methods: {
 
         getMostRecentAdminAccessCode() {
