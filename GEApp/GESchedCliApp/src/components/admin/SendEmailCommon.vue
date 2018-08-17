@@ -109,6 +109,7 @@ export default {
 
         this.$store.state.currentViewTitle = this.title;
         this.$store.state.enableNavBar = true;
+        this.$store.state.hideBackNav  = true;
         
         if (this.needMostRecentUserAccessCode) {
             this.getMostRecentUserAccessCode();
@@ -131,17 +132,42 @@ export default {
             this.recipientNameValue = this.$store.state.currentSendEmailRecipientName;
         }
 
+        document.getElementById("recipientName").disabled = false;
+        document.getElementById("recipientEmail").disabled = false; 
+
         this.onReset();
     },
+
+    created() {
+       console.log('SendEmailCommon.vue created.');
+       let vm = this;
+
+       util.centralEvent.$on('submittedRequestDisableRecipientInput', () => {
+           document.getElementById("recipientName").disabled = true;
+           document.getElementById("recipientEmail").disabled = true; 
+       });
+   },
 
 
     methods: {
 
         onNavOut() {
+            this.$store.state.currentRequest = null;
+            util.logDebugMsg("onSubmitRequest - set currentRequest to null.");
+
             if (this.navOutRoutePath != undefined && this.navOutRoutePath != null) {
                 this.$store.state.defRecipientNameForSendEmail = null;
                 this.$store.state.defRecipientEmailForSendEmail = null;
-                this.$router.push(this.navOutRoutePath);
+                if(this.navOutRoutePath.indexOf("home") > -1){
+                    if(this.$store.state.inAdminMode){
+                        this.$router.push("/admin/home");
+                    } else {
+                        this.$router.push(this.navOutRoutePath);
+                    }
+                } else {
+                    this.$router.push(this.navOutRoutePath);
+                }
+                
                 return;
             }
 
@@ -267,7 +293,7 @@ export default {
                 vm.emailSubjectDataExport = textTransformer.transformAsMailToBodyText(vm.emailSubject);
 
                 let loopCount2 = 0;
-                while(vm.emailSubjectDataExport.indexOf("[") > -1 && vm.emailStringDataExport.indexOf("]") > -1){
+                while(vm.emailSubjectDataExport.indexOf("[") > -1 && vm.emailSubjectDataExport.indexOf("]") > -1){
                     loopCount2 += 1;
                     if (loopCount2 > 50){
                         break;
@@ -277,14 +303,11 @@ export default {
                         let currentRequest = vm.$store.state.currentRequest;
 
                         vm.emailSubjectDataExport = vm.emailSubjectDataExport
-                            .replace('[EVENTTITLE]', currentRequest.eventTitle);
-
-                        if(!vm.$store.state.inAdminMode){
-                            vm.emailStringDataExport = vm.emailStringDataExport
-                                .replace('[CURRENTUSER]', vm.$store.state.currentUser.name);
-                        }
+                            .replace('[EVENTTITLE]', currentRequest.eventTitle)
+                            .replace('[CURRENTUSER]', currentRequest.eventGEContactPersonName);
                     }
                 }
+                
 
 
                 //clean up any stray spaces or & signs that were injected and did not pass textTransformer.js
@@ -300,8 +323,6 @@ export default {
                 vm.emailStringDataExport = vm.emailStringDataExport.replace(/&/g, "%26");
 
 
-                vm.$store.state.currentRequest = null;
-                util.logDebugMsg("onSubmitRequest - set currentRequest to null.");
                 vm.canEmail = true;
             }
             

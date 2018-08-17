@@ -38,6 +38,7 @@
 </template>
 <script>
 import sendEmailComponent from '@/components/admin/SendEmailCommon.vue'
+import * as util from '@/common/util.js'
 
 export default {
     data () {
@@ -82,6 +83,8 @@ export default {
 
     activated() {
         console.log('SendSubmittedEmail.vue activated.');
+
+        util.centralEvent.$emit('submittedRequestDisableRecipientInput');
 
         this.$store.state.currentViewTitle = this.title;
         this.$store.state.enableNavBar = true;
