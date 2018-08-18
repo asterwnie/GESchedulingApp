@@ -3,22 +3,22 @@
 <!--Page Contents-->
 <div class="container-fluid">
     <div class="row">
-        <div class="col col-12 col-sm-1 col-md-1 col-lg-2"></div>
-        <div class="col col-12 col-sm-10 col-md-10 col-lg-8" style="color:gray">
+        <div class="col col-12 col-sm-1 col-md-1 col-lg-1"></div>
+        <div class="col col-12 col-sm-10 col-md-10 col-lg-10" style="color:gray">
         <div style="padding:18px;background-color:#ffb3b3;">
             <div class="float-left"><img src="@/assets/ge-monogram.svg" width="40" height="40" class="d-inline-block align-top" alt=""></div>
             <div class="welcome-back-msg">{{welcomeMessage}}</div>
             <div style="cursor:pointer;" class="logoff-label" @click.prevent="$router.push('/login')">Log Out&nbsp;<span class="fas fa-chevron-right"></span></div>
         </div>
         </div>
-        <div class="col col-12 col-sm-1 col-md-1 col-lg-2"></div>
+        <div class="col col-12 col-sm-1 col-md-1 col-lg-1"></div>
     </div>
     
     <div style="height:10px"></div>
 
     <div class="row">
-        <div class="col col-12 col-sm-1 col-md-1 col-lg-2"></div>
-        <div class="col col-12 col-sm-10 col-md-10 col-lg-8" style="color:gray">
+        <div class="col col-12 col-sm-1 col-md-1 col-lg-1"></div>
+        <div class="col col-12 col-sm-10 col-md-10 col-lg-10" style="color:gray">
     
             <div class="card" style="width:100%">
                     <div class="card-header bg-info text-light">
@@ -27,15 +27,15 @@
             </div>
 
         </div>
-        <div class="col col-12 col-sm-1 col-md-1 col-lg-2"></div>
+        <div class="col col-12 col-sm-1 col-md-1 col-lg-1"></div>
     </div>
 
     <div style="height:10px"></div>
 
     <div class="row">
-    <div class="col col-12 col-sm-1 col-md-1 col-lg-2"></div>
+    <div class="col col-12 col-sm-1 col-md-1 col-lg-1"></div>
 
-    <div id="searchUI" class="col col-12 col-sm-10 col-md-4 col-lg-4 col-xl-2" style="margin-bottom:20px">
+    <div id="searchUI" class="col col-12 col-sm-10 col-md-4 col-lg-3" style="margin-bottom:20px">
         <div class="card-header">
             <span>
                 Quick Filter:&nbsp;<br>
@@ -114,17 +114,17 @@
       </div>
     </div>
 
-    <div id="requestUI" class="col col-12 col-md-6 col-lg-4 col-xl-6">
+    <div id="requestUI" style="margin: 0px;" class="col col-12 col-md-6 col-lg-7">
             <div v-if="requestsPreview.length < 1">
-                <div class="card">
+                <div class="card" style="margin: 0px; padding: 0px">
                     <br>
                     <p style="text-align:center" class="font-italic text-muted">No requests found.</p>
                     <br>
                 </div>
             </div>
             <div v-else>
-                <div style="height:10px;"></div>
-                <div class="container" style="width:100%; display:flex; flex-wrap:wrap;">
+                <div style="margin: 0px; padding: 0px"></div>
+                <div class="container" style="width:100%; display:flex; flex-wrap:wrap; margin: 0px; padding: 0px">
                     <div :class="[requestItem._id, 'request-item', 'card', 'col-12', 'col-xl-6']" v-for="(requestItem, index) in requestsPreview" :key="index">
                         <div class="card-body">
                             <h6 class="card-title">{{requestItem.eventTitle}}</h6>
@@ -147,8 +147,8 @@
             <div style="height:10px;"></div>
             <div class="float-right" style="display:flex; flex-direction:horizontal">
                 <div class="input-group-prepend">
-                    Total Requests: {{numRequests}}&nbsp;&nbsp;<span class="input-group-text bg-secondary text-light">Page</span>
-                </div>&nbsp;
+                    <span class="input-group-text bg-secondary text-light">Page</span>
+                </div>
                 <div v-if="currentPageNumber > 1">
                     <button @click.prevent="onPageDecrement" style="height:100%" type="button" class="btn btn-secondary btn-sm">
                         &nbsp;<span class="fas fa-chevron-left"></span>&nbsp;
@@ -173,12 +173,17 @@
                     </button>
                 </div>
             </div>
-
+            
+            <div class="float-right" style="display:flex; flex-direction:horizontal">
+                <div class="input-group-prepend">
+                    # of requests found:&nbsp;<b>{{numRequests}}</b>&nbsp;
+                </div>
+            </div>
             <div style="height:60px;"></div>
             
     </div>
 
-    <div class="col col-12 col-md-1 col-lg-2"></div>
+    <div class="col col-12 col-md-1 col-lg-1"></div>
     </div>
     <div style="height:30px"></div>
     <div class="row">
