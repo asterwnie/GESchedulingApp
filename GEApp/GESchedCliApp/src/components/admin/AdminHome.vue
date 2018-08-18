@@ -647,6 +647,8 @@ export default {
                 console.log("onQuickFilter activate.");
                 let vm = this;
 
+                vm.clearSearchUI();
+
                 if (util.detectIsInSmallWidthMode()) {
                     //collapse search menu
                     $("#filterPanel").removeClass("show");
