@@ -410,6 +410,10 @@ body {
   margin: 2px;
 }
 
+.admin-custom-filter-input {
+  min-width: 90px;
+}
+
 .site-name-footer {
   font-weight: bold;
   font-size  : .885rem;

@@ -6,9 +6,9 @@
         <div class="col col-12 col-sm-1 col-md-1 col-lg-2"></div>
         <div class="col col-12 col-sm-10 col-md-10 col-lg-8" style="color:gray">
         <div style="padding:18px;background-color:#ffb3b3;">
-        <div class="float-left"><img src="@/assets/ge-monogram.svg" width="40" height="40" class="d-inline-block align-top" alt=""></div>
-        <div class="welcome-back-msg">{{welcomeMessage}}</div>
-        <div style="cursor:pointer;" class="logoff-label" @click.prevent="$router.push('/login')">Log Out&nbsp;<span class="fas fa-chevron-right"></span></div>
+            <div class="float-left"><img src="@/assets/ge-monogram.svg" width="40" height="40" class="d-inline-block align-top" alt=""></div>
+            <div class="welcome-back-msg">{{welcomeMessage}}</div>
+            <div style="cursor:pointer;" class="logoff-label" @click.prevent="$router.push('/login')">Log Out&nbsp;<span class="fas fa-chevron-right"></span></div>
         </div>
         </div>
         <div class="col col-12 col-sm-1 col-md-1 col-lg-2"></div>
@@ -56,39 +56,39 @@
 
             <div id="inputEventName" class="input-group input-group-sm mb-3">
                 <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">Event Name</span>
+                <span class="input-group-text" id="inputGroup-sizing-sm">Event Name&nbsp;</span>
                 </div>
-                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                <input type="text" class="form-control admin-custom-filter-input" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
             </div>
 
             <div id="inputRequesterName" class="input-group input-group-sm mb-3">
                 <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">Requester Name</span>
+                <span class="input-group-text" id="inputGroup-sizing-sm">Requester Name&nbsp;</span>
                 </div>
-                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                <input type="text" class="form-control admin-custom-filter-input" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
             </div>
 
             <div id="inputRequesterEmail" class="input-group input-group-sm mb-3">
                 <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">Requester Email</span>
+                <span class="input-group-text" id="inputGroup-sizing-sm">Requester Email&nbsp;</span>
                 </div>
-                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                <input type="text" class="form-control admin-custom-filter-input" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
             </div>
 
             <div id="inputLocation" class="input-group input-group-sm mb-3">
                 <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">Room/Location</span>
+                <span class="input-group-text" id="inputGroup-sizing-sm">Room/Location&nbsp;</span>
                 </div>
-                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                <input type="text" class="form-control admin-custom-filter-input" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
             </div>
 
             <div id="inputStatus" class="input-group input-group-sm mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">Status</span>
+                    <span class="input-group-text" id="inputGroup-sizing-sm">Status&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 </div>
-                <select class="custom-select">
-                    <option selected></option>
-                    <option v-bind:id="statusItem.statusValue" v-bind:value='statusItem.statusValue' v-for="(statusItem, index) in processingStatusOptions" :key="index">
+                <select class="custom-select admin-custom-filter-input">
+                    <option class="admin-custom-filter-input" selected></option>
+                    <option class="admin-custom-filter-input" v-bind:id="statusItem.statusValue" v-bind:value='statusItem.statusValue' v-for="(statusItem, index) in processingStatusOptions" :key="index">
                         {{ statusItem.statusLabel }}
                     </option>
                 </select>
@@ -96,9 +96,9 @@
 
             <div id="inputPreviewPerPage" class="input-group input-group-sm mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">Items Per Page</span>
+                    <span class="input-group-text" id="inputGroup-sizing-sm">Items Per Page&nbsp;</span>
                 </div>
-                <select class="custom-select" id="default-6">
+                <select class="custom-select admin-custom-filter-input" id="default-6">
                     <option value="6" selected>6</option>
                     <option value="8">8</option>
                     <option value="10">10</option>
@@ -419,6 +419,7 @@ export default {
 
                     prepareRequestsForUI(vm.$store.state.currentRequestsPreview);         
                     vm.getNumPages();
+                    window.scrollTo(0, 0);
                 })
                 .catch((err) => {
                     vm.hasFailure = true;
