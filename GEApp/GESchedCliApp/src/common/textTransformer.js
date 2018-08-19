@@ -70,8 +70,9 @@ export const transformAsMailToBodyText = (text) => {
         return transformedText;
     }
 
+
     // Replace each space with %20
-    var spaces = text.match(/\s/g);
+    var spaces = transformedText.match(/\s/g);
 
     if (spaces != null) {
         spaces.forEach((space, index) => {
@@ -79,8 +80,13 @@ export const transformAsMailToBodyText = (text) => {
         });
     }
 
-    // Replace each & with %26
-    transformedText.replace(/&/g, "%26");
+    var amps = transformedText.match(/&/g);
+
+    if (amps != null) {
+        amps.forEach((amp, index) => {
+                transformedText = transformedText.replace(amp, "%26");
+        });
+    }
 
     // Replace each [LINEBREAK] with %0D%0A
     // Uses Regular Expression to get all URLs in [] brackets. e.g. [http://www.ge.com]

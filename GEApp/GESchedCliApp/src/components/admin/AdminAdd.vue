@@ -479,8 +479,8 @@ export default {
             });
 
             this.hasSuccess = false;
-            this.emailStringDataExport = "";
-            this.emailStringDataDisplay = "";
+            this.emailStringDataExport = null;
+            this.emailStringDataDisplay = null;
             $("#collapseAddAdmin").collapse("show");
             
             this.$forceUpdate();

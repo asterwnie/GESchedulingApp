@@ -155,6 +155,7 @@ Invite a requester to use this booking utility.
 Hello, [RECIPIENTNAME]!
 [LINEBREAK]
 [ADMINNAME] would like to invite you to access the [APPNAME].
+[LINEBREAK]
 Access Code: [ACCESSCODE]
 [LINEBREAK]
 To access the [APPNAME], use the following link in your browser:

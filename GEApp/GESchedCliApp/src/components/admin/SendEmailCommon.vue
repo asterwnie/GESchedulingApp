@@ -36,7 +36,7 @@
             <div id="adminUI" class="col col-12 col-md-6 col-lg-6">
             <div class="form-group">
                 <label for="emailPreview">Email Preview</label>
-                <textarea class="form-control" id="emailPreview" rows="10" readonly></textarea>
+                <textarea class="form-control" id="emailPreview" rows="12" readonly></textarea>
             </div>
             
             <div v-if="canEmail">
@@ -84,18 +84,18 @@ export default {
             failureMessage: null,
             emailStringDataExport: null,
             emailStringDataDisplay: null,
+            emailSubjectData: null,
             canEmail: false,
 
             recipientEmailValue: null,
-            recipientNameValue: null,
-
-            /* recipientName: null,
-            recipientEmail: null, */
+            recipientNameValue: null
         }
     },
 
     computed: {
-
+        emailSubjectDataExport() {
+            return this.emailSubjectData;
+        }
     },
 
     activated() {
@@ -246,7 +246,7 @@ export default {
                 vm.hasFailure = false;
 
                 //Replace meta tags in email body
-                vm.emailStringDataExport = textTransformer.transformAsMailToBodyText(vm.emailTemplate);
+                vm.emailStringDataExport = vm.emailTemplate;
 
                 let loopCount = 0;
                 while(vm.emailStringDataExport.indexOf("[") > -1 && vm.emailStringDataExport.indexOf("]") > -1){
@@ -282,48 +282,40 @@ export default {
                             .replace('[EVENTROOMNAME]', currentRequest.locationOfEvent.name);
                     }
                 }
+
+                vm.emailStringDataExport = textTransformer.transformAsMailToBodyText(vm.emailStringDataExport);
                 
                 //Reformat email body for display in preview
-                vm.emailStringDataDisplay = vm.emailStringDataExport.replace(/%0D%0A/g, '\n').replace(/%20/g, ' ');
+                vm.emailStringDataDisplay = vm.emailStringDataExport.replace(/%0D%0A/g, '\n').replace(/%20/g, ' ').replace(/%26/g, '&');
 
                 $("#emailPreview").val(vm.emailStringDataDisplay);  
 
-                
+
                 //Replace meta tags in email subject
-                vm.emailSubjectDataExport = textTransformer.transformAsMailToBodyText(vm.emailSubject);
+
+                vm.emailSubjectData = vm.emailSubject;
 
                 let loopCount2 = 0;
-                while(vm.emailSubjectDataExport.indexOf("[") > -1 && vm.emailSubjectDataExport.indexOf("]") > -1){
+                while(vm.emailSubjectData.indexOf("[") > -1 && vm.emailSubjectData.indexOf("]") > -1){
                     loopCount2 += 1;
                     if (loopCount2 > 50){
                         break;
                     }
 
+                    vm.emailSubjectData = vm.emailSubjectData.replace('[APPNAME]', vm.$store.state.appConfig.appName)
+
                     if(vm.$store.state.currentRequest != null){
                         let currentRequest = vm.$store.state.currentRequest;
 
-                        vm.emailSubjectDataExport = vm.emailSubjectDataExport
-                            .replace('[APPNAME]', vm.$store.state.appConfig.appName)
+                        vm.emailSubjectData = vm.emailSubjectData
                             .replace('[EVENTTITLE]', currentRequest.eventTitle)
                             .replace('[CURRENTUSER]', currentRequest.eventGEContactPersonName);
                     }
                 }
+
                 
-
-
-                //clean up any stray spaces or & signs that were injected and did not pass textTransformer.js
-                //replace space with %20
-                var spaces = vm.emailStringDataExport.match(/\s/g);
-
-                if (spaces != null) {
-                    spaces.forEach((space, index) => {
-                            vm.emailStringDataExport = vm.emailStringDataExport.replace(space, "%20");
-                    });
-                }
-                // Replace each & with %26
-                vm.emailStringDataExport = vm.emailStringDataExport.replace(/&/g, "%26");
-
-
+                vm.emailSubjectData = textTransformer.transformAsMailToBodyText(vm.emailSubjectData);
+                
                 vm.canEmail = true;
             }
             
@@ -333,13 +325,17 @@ export default {
 
         onReset() {
 
+            this.recipientNameValue = null;
+            this.recipientEmailValue = null;
+
             $(".validation-msg").hide();    
-            $("#recipientEmail").val(this.recipientEmailValue);
-            $("#recipientName").val(this.recipientNameValue);
+            $("#recipientEmail").val(null);
+            $("#recipientName").val(null);
             $("#emailPreview").val(null);  
 
             this.emailStringDataExport = null;
             this.emailStringDataDisplay = null;
+            this.emailSubjectData = null;
             
             this.$forceUpdate();
         }
