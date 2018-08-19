@@ -2,7 +2,7 @@
 --Room.SizeType: Forum
 --Room.SeatingCapacity: 600
 --Room.Floor: 2
---Room.Building: Health MBO Results Way
+--Room.Building: Health MBO
 --Room.RoomNumber: none
 --Room.RoomPhone: none
 --Room.AddressGAL: Health MBO Results Way
