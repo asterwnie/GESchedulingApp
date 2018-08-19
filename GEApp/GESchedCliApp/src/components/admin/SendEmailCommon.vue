@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col col-12 col-md-1 col-lg-1"></div>
             <div class="col col-12 col-md-10 col-lg-10" style="color:gray" v-if="supportDoAnother">
-                <button @click.prevent="onReset" type="button" class="float-right btn btn-secondary">Add Another</button>
+                <button @click.prevent="onAddAnother" type="button" class="float-right btn btn-secondary">Add Another</button>
             </div>
             <div class="col col-12 col-md-1 col-lg-1"></div>
         </div>
@@ -36,7 +36,7 @@
             <div id="adminUI" class="col col-12 col-md-6 col-lg-6">
             <div class="form-group">
                 <label for="emailPreview">Email Preview</label>
-                <textarea class="form-control" id="emailPreview" rows="12" readonly></textarea>
+                <textarea class="form-control" id="emailPreview" rows="14" readonly></textarea>
             </div>
             
             <div v-if="canEmail">
@@ -322,15 +322,17 @@ export default {
             vm.$forceUpdate();          
         },
 
+        onAddAnother() {
+            this.recipientNameValue = null;
+            this.recipientEmailValue = null;
+            this.onReset();
+        },
 
         onReset() {
 
-            this.recipientNameValue = null;
-            this.recipientEmailValue = null;
-
             $(".validation-msg").hide();    
-            $("#recipientEmail").val(null);
-            $("#recipientName").val(null);
+            $("#recipientEmail").val(this.recipientEmailValue);
+            $("#recipientName").val(this.recipientNameValue);
             $("#emailPreview").val(null);  
 
             this.emailStringDataExport = null;
