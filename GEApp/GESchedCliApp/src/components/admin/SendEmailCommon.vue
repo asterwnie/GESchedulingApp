@@ -1,31 +1,31 @@
 <template>  
     <div>
         <div class="row">
-            <div class="col col-12 col-md-1 col-lg-2"></div>
-            <div class="col col-12 col-md-10 col-lg-8" style="color:gray" v-if="supportDoAnother">
+            <div class="col col-12 col-md-1 col-lg-1"></div>
+            <div class="col col-12 col-md-10 col-lg-10" style="color:gray" v-if="supportDoAnother">
                 <button @click.prevent="onReset" type="button" class="float-right btn btn-secondary">Add Another</button>
             </div>
-            <div class="col col-12 col-md-1 col-lg-2"></div>
+            <div class="col col-12 col-md-1 col-lg-1"></div>
         </div>
 
         <div style="height:10px"></div>
 
         <div class="row">
-            <div class="col col-12 col-md-1 col-lg-2"></div>
+            <div class="col col-12 col-md-1 col-lg-1"></div>
 
-            <div id="emailBar" class="col col-12 col-md-4 col-lg-4 col-xl-3" style="padding-bottom:10px">
+            <div id="emailBar" class="col col-12 col-md-4 col-lg-4" style="padding-bottom:10px">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">Recipient Name</span>
                 </div>
-                <input id="recipientName" type="text" v-bind:value="recipientNameValue" class="form-control" aria-label="recipient-name" aria-describedby="basic-addon1">
+                <input id="recipientName" type="text" v-bind:value="recipientNameValue" class="form-control send-mail-input" aria-label="recipient-name" aria-describedby="basic-addon1">
             </div>
             <p class="text-danger validation-msg" style="display:none;" id="REQUIRED-MSG-FOR-recipientName">The recipient name is required.</p>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon2">Recipient Email</span>
                 </div>
-                <input id="recipientEmail" type="text" v-bind:value="recipientEmailValue" class="form-control" aria-label="recipient-email" aria-describedby="basic-addon2">
+                <input id="recipientEmail" type="text" v-bind:value="recipientEmailValue" class="form-control send-mail-input" aria-label="recipient-email" aria-describedby="basic-addon2">
             </div>
             <p class="text-danger validation-msg" style="display:none;" id="INVALID-MSG-FOR-recipientEmail">Please enter a valid email address.</p>
             <p class="text-danger validation-msg" style="display:none;" id="REQUIRED-MSG-FOR-recipientEmail">A email address is required.</p>
@@ -33,7 +33,7 @@
             <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
             </div>
 
-            <div id="adminUI" class="col col-12 col-md-6 col-lg-4 col-xl-5">
+            <div id="adminUI" class="col col-12 col-md-6 col-lg-6">
             <div class="form-group">
                 <label for="emailPreview">Email Preview</label>
                 <textarea class="form-control" id="emailPreview" rows="10" readonly></textarea>
@@ -51,7 +51,7 @@
             </div>         
             </div>
 
-            <div class="col col-12 col-md-1 col-lg-2"></div>
+            <div class="col col-12 col-md-1 col-lg-1"></div>
         </div>
   </div>
 </template>
@@ -303,6 +303,7 @@ export default {
                         let currentRequest = vm.$store.state.currentRequest;
 
                         vm.emailSubjectDataExport = vm.emailSubjectDataExport
+                            .replace('[APPNAME]', vm.$store.state.appConfig.appName)
                             .replace('[EVENTTITLE]', currentRequest.eventTitle)
                             .replace('[CURRENTUSER]', currentRequest.eventGEContactPersonName);
                     }

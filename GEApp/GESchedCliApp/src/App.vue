@@ -418,6 +418,11 @@ body {
   min-width: 90px;
 }
 
+.send-mail-input {
+  min-width: 90px;
+}
+
+
 .site-name-footer {
   font-weight: bold;
   font-size  : .885rem;
