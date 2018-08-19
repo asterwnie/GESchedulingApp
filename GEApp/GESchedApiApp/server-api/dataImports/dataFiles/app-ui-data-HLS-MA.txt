@@ -162,7 +162,7 @@ To access the [APPNAME], use the following link in your browser:
 [LINEBREAK]
 
 --AdminAddEmailAsk
-Do you want to create an email to notify the user of administrative status? 
+Do you want to create an email to notify this user of administrative status? 
 
 --AdminAddSendEmailViewDescription 
 Invite an Admin to use this booking utility.

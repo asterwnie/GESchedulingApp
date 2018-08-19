@@ -218,6 +218,7 @@ import * as apiMgr from '@/common/apiMgr.js';
 import * as localCacheMgr from '@/common/localCacheMgr.js';
 import * as textTransformer from '@/common/textTransformer.js';
 import * as util from '@/common/util.js';
+import { validatePrompts } from '@/common/requestMgr.js'
 
 export default {
     data () {
@@ -391,12 +392,24 @@ export default {
         onAddAdmin(){
             console.log("onAddAdmin activate.");
             let vm = this;
+            
+            vm.hasFailure = false;
+
+            var prompts = [];
+
+            prompts.push({ isRequired: true, inputType: { ctrlType: "text", ctrlDataId: "recipientNameAdminInput" } });
+            prompts.push({ isRequired: true, inputType: { ctrlType: "email", ctrlDataId: "recipientEmailAdminInput" } });
+            prompts.push({ isRequired: false, inputType: { ctrlType: "text", ctrlDataId: "recipientPhoneAdminInput" } });
+            
+            var allValid = validatePrompts(prompts);
+            if (!allValid) {
+                return;
+            }
+            
 
             vm.recipientName = $("#recipientNameAdminInput")[0].value;
             vm.recipientEmail = $("#recipientEmailAdminInput")[0].value;
             vm.recipientPhone = $("#recipientPhoneAdminInput")[0].value;
-            
-            vm.hasFailure = false;
 
             if(vm.recipientName != "" && vm.recipientEmail != ""){
 

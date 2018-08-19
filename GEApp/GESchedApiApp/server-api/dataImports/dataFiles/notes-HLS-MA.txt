@@ -5,12 +5,6 @@ You need to reserve your event space or room first before submitting a request u
 To reserve the [Forum] for an event: check the Results Way site calendar in the GAL at Health MBO Results Way to see if it is available. For all other conference and training rooms check the GAL for the specific location and reserve the conference room for the date & time of your event.
 
 --Note.DoFirst
-Click here to go the Results Way site calendar: [http://www.ge.com]
-
---Note.DoFirst
-Click here for all other conference and training rooms: [http://www.ge.com]
-
---Note.DoFirst
 If you have any questions please reach out to David.Spatara@ge.com. 
 
 --Note.Attention
@@ -47,7 +41,7 @@ All other huddle and conference rooms are equipped with Crestron units and only 
 Via the guest's smartphone or laptop, find the WiFi network called "Internet".
 
 --Note.GuestWiFiAccess
-The GE host will provide the password (key) by going to https://guest.ge.com [https://guest.ge.com].
+The GE host will provide the password (key) which can be used by going to https://guest.ge.com [https://guest.ge.com].
 
 --Note.GuestWiFiAccess
 Guest enters the password (key) to access the Guest WiFi provided by host.
