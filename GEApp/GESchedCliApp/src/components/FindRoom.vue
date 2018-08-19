@@ -332,6 +332,11 @@ export default {
 
   methods: {
 
+    onShowNamesOnly: function(event) {
+      event.stopPropagation();
+      return false;
+    },
+
     filterView: function(event) {
       if(event){
         var queryString = '';

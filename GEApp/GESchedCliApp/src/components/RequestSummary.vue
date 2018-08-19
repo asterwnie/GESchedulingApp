@@ -235,7 +235,7 @@ export default {
       var storeState = this.$store.state;
       if (this.inAdminMode && storeState.currentRequest != null && 
           storeState.currentRequest.processingStatus != null &&
-          storeState.currentRequest.processingStatus == "approved") {
+          (storeState.currentRequest.processingStatus == "approved" || storeState.currentRequest.processingStatus == "cancelled")) {
         status = true;
       } else {
         status = false;
