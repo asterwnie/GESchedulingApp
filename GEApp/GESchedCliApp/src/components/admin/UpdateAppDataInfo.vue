@@ -4,7 +4,7 @@
 
       <div class="alert alert-warning" role="alert">
         <h5>Notice</h5>
-        Due to time constraint, this beta version of the application do not have a direct user interface to add and maintain the following data:
+        Due to time constraints, this beta version of the application does not have a direct user interface to add and maintain the following data:
         <br>
         <ul>
           <li>Local hotel information</li>
@@ -16,10 +16,10 @@
       </div>
 
       <div class="alert alert-warning" role="alert">
-        For more information please refer to the GE Meeting & Event Request App - Maintenance & Upkeep Guide.
+        For more information please refer to the <b>GE Meeting & Event Request App - Maintenance & Upkeep Guide.</b>
       </div>
        <div class="alert alert-warning" role="alert">
-         For additional technical support, you can contact the current application development lead (Michelle Nie at 2michellen@gmail.com)
+         For additional technical support, you can contact the current application development lead (Michelle Nie at 2michellen@gmail.com).
       </div>
 
     </div>

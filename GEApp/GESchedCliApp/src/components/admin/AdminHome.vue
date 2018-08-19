@@ -176,7 +176,7 @@
             
             <div class="float-right" style="display:flex; flex-direction:horizontal">
                 <div class="input-group-prepend">
-                    # of requests found:&nbsp;<b>{{numRequests}}</b>&nbsp;
+                    Total Requests Found:&nbsp;<b>{{numRequests}}</b>&nbsp;&nbsp;
                 </div>
             </div>
             <div style="height:60px;"></div>
