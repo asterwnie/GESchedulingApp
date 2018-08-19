@@ -228,7 +228,7 @@ To access the [APPNAME], use the following link in your browser:
 [LINEBREAK]
 
 --RequestSubmittedEmailAsk
-Would you like to send a notification to the event organizers? Note if you do not send this notification, event processing and scheduling may be heavily delayed.
+Would you like to send a notification to the event organizers? Note if you do not send this notification, event processing and scheduling may be delayed.
 
 --RequestSubmittedEmailViewTitle
 Notify Request Submitted
