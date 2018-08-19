@@ -92,7 +92,7 @@
             <div id="flushOldRequestsCollapse" class="collapse" aria-labelledby="flushOldRequests" data-parent="#menuAccordian">
               <div class="card-body">
                 <div class="alert alert-danger" role="alert">
-                  <strong>Warning</strong> This will permanently delete past older requests. (Archiving will be implemented at a later time.)
+                  <strong>Warning</strong> This will permanently delete past older requests. (Archiving is not available in this version of the app.)
                 </div>
                 <p>Flushing old requests will delete all past requests that fit the criteria. Note that this action cannot be reversed.</p>
 
@@ -166,7 +166,7 @@
               <div class="card-body">
 
                 <div class="alert alert-danger" role="alert">
-                  <strong>Note</strong> This does NOT update the access code text file.
+                  <strong>Note:</strong> This does NOT update the access code data import file.
                 </div>
                 
                 <div id="manageUserAccessCodes">

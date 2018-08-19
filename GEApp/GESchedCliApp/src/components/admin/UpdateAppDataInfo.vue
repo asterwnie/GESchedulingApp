@@ -12,7 +12,7 @@
           <li>Notes for the Do First instructions, Attention notes & WiFi access instructions</li>
           <li>Application reference data such as email templates, the application’s http port, configurable UI text, view titles and miscellaneous settings.</li>
         </ul>
-        The above information are kept in a number of configuration data files. All or some of these data files are used to import data into the appliction's database by running batch scripts.
+        The above information are kept in a number of configuration data files. These data files are used to import data into the appliction's database by running batch scripts. Updates can be made to these data files and they can be re-imported. There are some settings each as the application http port and email templates that can be easily overriden without doing the re-import process. 
       </div>
 
       <div class="alert alert-warning" role="alert">
