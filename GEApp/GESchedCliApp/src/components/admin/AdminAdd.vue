@@ -113,58 +113,7 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="card">
-                <div class="card-header" data-toggle="collapse" data-target="#sendNotificationCollapse" aria-expanded="true" aria-controls="sendNotificationCollapse" id="sendNotificationHeading">
-                    Step 2: Send Notification
-                </div>
-                <div id="collapseSendNotification" class="collapse show" aria-labelledby="sendNotificationCollapse" data-parent="#adminAddAccordian">
-                    <div class="card-body">
-                    <div class="row">
-                        <div id="adminBar" class="col col-12 col-lg-6 col-xl-5">
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">Recipient Name</span>
-                                </div>
-                                <input id="recipientNameAdmin" type="text" class="form-control" aria-label="recipient-name" aria-describedby="basic-addon1" disabled>
-                            </div>
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon2">Recipient Email</span>
-                                </div>
-                                <input id="recipientEmailAdmin" type="text" class="form-control" aria-label="recipient-email" aria-describedby="basic-addon2" disabled>
-                            </div>
-                            <div v-if="canGenerateEmail">
-                                <button @click.prevent="onGenerateEmail" type="button" class="float-right btn btn-primary">Generate Email</button>
-                            </div>
-                            <div v-else>
-                                <button type="button" class="float-right btn btn-primary" disabled>Generate Email</button>
-                            </div>
-                            
-                            <p class="text-danger" :hidden="!hasFailure">{{failureMessage}}</p>
-                        </div>
-
-                        <div id="adminUI" class="col col-12 col-lg-6 col-xl-7">
-                            <div class="form-group">
-                                <label for="emailPreviewAdmin">Email Preview</label>
-                                <textarea class="form-control" id="emailPreviewAdmin" rows="10" readonly></textarea>
-                            </div>
-                            <div v-if="canEmail">
-                                <a :href="`mailto:${recipientEmail}?subject=${addAdminEmailSubject}&body=${emailStringDataExport}`">
-                                    <button type="button" class="float-right btn btn-primary">Launch Email</button>
-                                </a>
-                            </div>
-                            <div v-else>
-                                <button type="button" class="float-right btn btn-primary" disabled>Launch Email</button>
-                            </div>
-                            <button type="button" @click.prevent="onSendInviteDismiss" class="float-left btn btn-secondary">Skip</button>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-            </div> -->
         </div>
-
-
       <div class="col col-12 col-sm-1 col-md-2 col-lg-2"></div>
     </div>
     <div style="height:30px"></div>
@@ -286,7 +235,6 @@ export default {
 
         vm.currModalForDisplay = "";
 
-        //$("#collapseSendNotification").removeClass("show");
         vm.onResetAdd();
         vm.refreshAdminUI();
     },
@@ -316,29 +264,6 @@ export default {
                 })
         },
 
-
-        validateEmailString (inputVal) {
-            let vm = this;
-            let isValid = true;
-            var email = null;
-
-            try {
-                var emailRegEx = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/i;
-                email = inputVal.match(emailRegEx);
-            } catch (err) {
-                console.warn("validateEmailPrompt error: " + err);
-            }
-
-            if (email == null) {
-                isValid = false;
-                vm.hasFailure = true;
-                vm.failureMessage = "Invalid email.";
-            } else {
-                vm.hasFailure = false;
-            }
-
-            return isValid;
-        },
 
         refreshAdminUI(){
             let vm = this;
@@ -404,8 +329,7 @@ export default {
             var allValid = validatePrompts(prompts);
             if (!allValid) {
                 return;
-            }
-            
+            }       
 
             vm.recipientName = $("#recipientNameAdminInput")[0].value;
             vm.recipientEmail = $("#recipientEmailAdminInput")[0].value;
@@ -413,7 +337,6 @@ export default {
 
             if(vm.recipientName != "" && vm.recipientEmail != ""){
 
-                let isValid = vm.validateEmailString(vm.recipientEmail);
                 let isExistingStandardUser = false;
                 let existingStandardUserId = null;
 
@@ -435,7 +358,6 @@ export default {
                                             console.log("onFindExistingUser return status: " + res.status);
 
                                             if(res.data[0].isAdmin){
-                                                isValid = false;
 
                                                 vm.hasFailure = true;
                                                 vm.failureMessage = "Error: A user with this email already exists!";   
@@ -465,63 +387,63 @@ export default {
                 });
 
                 checkIfDupe.then(function() {
-                    if(isValid){
-                        if(!isExistingStandardUser){
-                            //gather new user
-                            let newUser = {
-                                email: vm.recipientEmail,
-                                name: vm.recipientName,
-                                isAdmin: true,
-                            };
-                            if(vm.recipientPhone != ""){
-                                newUser.phone = vm.recipientPhone;
-                            }
-
-                            //get url
-                            let url = apiMgr.getUsersUrl();
-                            
-                            //create (post) new user
-                            axios.post(url, newUser)
-                                .then(res => {
-                                    console.log("onAddAdmin return status: " + res.status);
-                                    vm.createAdminSuccess();
-
-                                })
-                                .catch((err) => {
-                                    vm.hasFailure = true;
-                                    vm.failureMessage = `An error has occured. ${err}`;                               
-                                });
-
-                        } else {
-                            //gather modified user
-                            let modifiedUser = {
-                                _id: existingStandardUserId,
-                                name: vm.recipientName,
-                                email: vm.recipientEmail,
-                                isAdmin: true,
-                            }
-
-                            if(vm.recipientPhone != ""){
-                                newUser.phone = vm.recipientPhone;
-                            }
-
-                            //get url
-                            let url = apiMgr.getUsersUrl();
-                            
-                            //update (put) admin user
-                            axios.put(url, modifiedUser)
-                                .then(res => {
-                                    console.log("onAddAdmin return status: " + res.status);
-                                    vm.createAdminSuccess();
-
-                                })
-                                .catch((err) => {
-                                    vm.hasFailure = true;
-                                    vm.failureMessage = `An error has occured. ${err}`;                               
-                                });
+                    
+                    if(!isExistingStandardUser){
+                        //gather new user
+                        let newUser = {
+                            email: vm.recipientEmail,
+                            name: vm.recipientName,
+                            isAdmin: true,
+                        };
+                        if(vm.recipientPhone != ""){
+                            newUser.phone = vm.recipientPhone;
                         }
+
+                        //get url
+                        let url = apiMgr.getUsersUrl();
                         
+                        //create (post) new user
+                        axios.post(url, newUser)
+                            .then(res => {
+                                console.log("onAddAdmin return status: " + res.status);
+                                vm.createAdminSuccess();
+
+                            })
+                            .catch((err) => {
+                                vm.hasFailure = true;
+                                vm.failureMessage = `An error has occured. ${err}`;                               
+                            });
+
+                    } else {
+                        //gather modified user
+                        let modifiedUser = {
+                            _id: existingStandardUserId,
+                            name: vm.recipientName,
+                            email: vm.recipientEmail,
+                            isAdmin: true,
+                        }
+
+                        if(vm.recipientPhone != ""){
+                            newUser.phone = vm.recipientPhone;
+                        }
+
+                        //get url
+                        let url = apiMgr.getUsersUrl();
+                        
+                        //update (put) admin user
+                        axios.put(url, modifiedUser)
+                            .then(res => {
+                                console.log("onAddAdmin return status: " + res.status);
+                                vm.createAdminSuccess();
+
+                            })
+                            .catch((err) => {
+                                vm.hasFailure = true;
+                                vm.failureMessage = `An error has occured. ${err}`;                               
+                            });
                     }
+                    
+                
                 });
 
 
@@ -559,7 +481,7 @@ export default {
             this.emailStringDataExport = "";
             this.emailStringDataDisplay = "";
             $("#collapseAddAdmin").collapse("show");
-            //$("#collapseSendNotification").removeClass("show");
+            
             this.$forceUpdate();
         },
 
@@ -658,8 +580,6 @@ export default {
             this.$store.state.isModalBeingDisplayed = false;
             this.currModalForDisplay = "";
 
-           // this.onResetAdd();
-
         }
 
     }
@@ -671,7 +591,5 @@ export default {
 .pad-bottom {
   padding-bottom:5px
 }
-.required-star {
-  color: red
-}
+
 </style>

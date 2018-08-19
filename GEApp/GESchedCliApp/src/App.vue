@@ -494,6 +494,14 @@ body.canvas-sliding, body.canvas-slid {
     left: auto !important;
 }
 
+.required-star {
+  color: red
+}
+
+.ge-blue {
+  color: rgb(40, 100, 160)
+}
+
 /* The switch - the box around the slider */
 .switch {
   position: relative;

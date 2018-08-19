@@ -2,13 +2,13 @@
     <div class="containerDiv container-fluid" style="width:100%">
         
         <div class="row">
-            <div class="col col-sm-1 col-md-2 col-lg-4"></div>
-            <div class="col col-12 col-sm-10 col-md-8 col-lg-4" style="width:100%">
+            <div class="col col-sm-1 col-md-3 col-lg-4"></div>
+            <div class="col col-12 col-sm-10 col-md-6 col-lg-4" style="width:100%">
                 <div>
-                    <h5 class="display-8 text-center" v-html="$store.state.appConfig.appTitle"></h5>
-                    <div>
-                        <div class="pagination-centered"><span class="badge badge-secondary">Beta</span></div><br>
-                        <div class="pagination-centered"><img src="@/assets/ge-monogram.svg" alt="header" /></div>
+                    <h4 style="margin-top: -10px; padding: 0px;" class="display-8 text-center ge-blue" v-html="$store.state.appConfig.appTitle"></h4>
+                    <div style="margin: 0px; padding: 0px;">
+                        <div class="pagination-centered" style="margin: 1px; padding: 0px;"><span class="badge badge-secondary">Beta</span></div><br>
+                        <div class="pagination-centered" style="margin-top: -10px; padding: 0px;"><img style="margin: 0px; padding: 0px;" src="@/assets/ge-monogram.svg" alt="header" /></div>
                         <div id="loading" class="pagination-centered" :hidden="!isLoading||hasFailure">
                             <br>
                             <br>
@@ -69,7 +69,7 @@
                       
 
             </div>
-            <div class="col col-sm-1 col-md-2 col-lg-4"></div>
+            <div class="col col-sm-1 col-md-3 col-lg-4"></div>
         </div>
     </div>
 </template>
