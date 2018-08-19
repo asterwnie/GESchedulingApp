@@ -424,7 +424,9 @@ export default {
 
                     prepareRequestsForUI(vm.$store.state.currentRequestsPreview);         
                     vm.getNumPages();
-                    window.scrollTo(0, 0);
+                    if (!util.detectIsInSmallWidthMode()) {
+                      window.scrollTo(0, 0);
+                    }
                 })
                 .catch((err) => {
                     vm.hasFailure = true;

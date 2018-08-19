@@ -414,6 +414,10 @@ body {
   min-width: 90px;
 }
 
+.room-find-custom-filter-input {
+  min-width: 90px;
+}
+
 .site-name-footer {
   font-weight: bold;
   font-size  : .885rem;

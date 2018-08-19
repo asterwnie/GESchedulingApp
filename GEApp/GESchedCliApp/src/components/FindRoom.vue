@@ -100,7 +100,7 @@
   <div class="row">
     <div class="col col-12 col-md-1 col-lg-2"></div>
 
-    <div id="searchUI" class="col col-12 col-md-5 col-lg-3 col-xl-2" style="margin-bottom:20px">
+    <div id="searchUI" class="col col-12 col-md-5 col-lg-4" style="margin-bottom:20px">
       <div class="card">
       <div class="dropdownMenu card-header bg-primary text-light" id="searchHeader" style="cursor:pointer;" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
       <i class="fa fa-search-plus" aria-hidden="true"></i>&nbsp;&nbsp;Search Menu&nbsp;&nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i>
@@ -116,14 +116,14 @@
               <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Room Name</span>
               </div>
-              <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+              <input type="text" class="form-control room-find-custom-filter-input" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
             </div>
 
             <div id="inputBuilding" class="input-group input-group-sm mb-3">
               <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Building</span>
               </div>
-              <select class="custom-select">
+              <select class="custom-select room-find-custom-filter-input">
                 <option selected></option>
                   <option v-bind:id="buildingLabel" v-bind:value='buildingLabel' v-for="(buildingLabel, index) in buildings" :key="index">
                     {{buildingLabel}}
@@ -135,16 +135,16 @@
               <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Seating Capacity</span>
               </div>
-              <input type="number" placeholder="ex. 50" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+              <input type="number" placeholder="ex. 50" class="form-control room-find-custom-filter-input" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
             </div>
     
             <div id="inputSizeType" class="input-group input-group-sm mb-3">
               <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Size Type</span>
               </div>
-              <select class="custom-select">
-                <option selected></option>
-                  <option v-bind:id="sizeItem._id" v-bind:value='sizeItem._id' v-for="(sizeItem, index) in sizeTypes" :key="index">
+              <select class="custom-select room-find-custom-filter-input">
+                <option class="room-find-custom-filter-input" selected></option>
+                  <option class="room-find-custom-filter-input" v-bind:id="sizeItem._id" v-bind:value='sizeItem._id' v-for="(sizeItem, index) in sizeTypes" :key="index">
                     <span>{{sizeItem._id}} &nbsp;
                     <div v-if="sizeItem.minSeatingCapacity == sizeItem.maxSeatingCapacity">
                       ({{sizeItem.minSeatingCapacity}} seats)
@@ -180,7 +180,7 @@
       </div>
     </div>
 
-    <div id="roomUI" class="col col-12 col-md-5 col-lg-5 col-xl-6">
+    <div id="roomUI" class="col col-12 col-md-5 col-lg-4">
       <div class="card">
         <div class="card-header bg-secondary text-light">
           Rooms
@@ -445,7 +445,10 @@ export default {
                     });
                     
                     vm.isFetchingRooms = false;
-                    //vm.$forceUpdate();
+                    
+                    if (!util.detectIsInSmallWidthMode()) {
+                      window.scrollTo(0, 0);
+                    }
                 })
                 .catch((err) => {
                     vm.hasFailure = true;
