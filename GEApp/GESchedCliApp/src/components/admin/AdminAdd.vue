@@ -469,6 +469,7 @@ export default {
             vm.$forceUpdate();
         },
 
+
         onResetAdd() {
 
             $("input").each(function(){
