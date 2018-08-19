@@ -316,30 +316,6 @@ export default {
                 })
         },
 
-
-        validateEmailString (inputVal) {
-            let vm = this;
-            let isValid = true;
-            var email = null;
-
-            try {
-                var emailRegEx = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/i;
-                email = inputVal.match(emailRegEx);
-            } catch (err) {
-                console.warn("validateEmailPrompt error: " + err);
-            }
-
-            if (email == null) {
-                isValid = false;
-                vm.hasFailure = true;
-                vm.failureMessage = "Invalid email.";
-            } else {
-                vm.hasFailure = false;
-            }
-
-            return isValid;
-        },
-
         refreshAdminUI(){
             let vm = this;
 
@@ -413,7 +389,6 @@ export default {
 
             if(vm.recipientName != "" && vm.recipientEmail != ""){
 
-                let isValid = vm.validateEmailString(vm.recipientEmail);
                 let isExistingStandardUser = false;
                 let existingStandardUserId = null;
 
