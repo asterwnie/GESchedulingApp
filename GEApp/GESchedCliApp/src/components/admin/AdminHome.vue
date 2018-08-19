@@ -3,22 +3,22 @@
 <!--Page Contents-->
 <div class="container-fluid">
     <div class="row">
-        <div class="col col-12 col-sm-1 col-md-1 col-lg-1"></div>
-        <div class="col col-12 col-sm-10 col-md-10 col-lg-10" style="color:gray">
+        <div class="col col-12 col-sm-0 col-md-0 col-lg-1"></div>
+        <div class="col col-12 col-sm-12 col-md-12 col-lg-10" style="color:gray">
         <div style="padding:18px;background-color:#ffb3b3;">
             <div class="float-left"><img src="@/assets/ge-monogram.svg" width="40" height="40" class="d-inline-block align-top" alt=""></div>
             <div class="welcome-back-msg">{{welcomeMessage}}</div>
             <div style="cursor:pointer;" class="logoff-label" @click.prevent="$router.push('/login')">Log Out&nbsp;<span class="fas fa-chevron-right"></span></div>
         </div>
         </div>
-        <div class="col col-12 col-sm-1 col-md-1 col-lg-1"></div>
+        <div class="col col-12 col-sm-0 col-md-0 col-lg-1"></div>
     </div>
     
     <div style="height:10px"></div>
 
     <div class="row">
-        <div class="col col-12 col-sm-1 col-md-1 col-lg-1"></div>
-        <div class="col col-12 col-sm-10 col-md-10 col-lg-10" style="color:gray">
+        <div class="col col-12 col-sm-0 col-md-0 col-lg-1"></div>
+        <div class="col col-12 col-sm-12 col-md-12 col-lg-10" style="color:gray">
     
             <div class="card" style="width:100%">
                     <div class="card-header bg-info text-light">
@@ -27,15 +27,15 @@
             </div>
 
         </div>
-        <div class="col col-12 col-sm-1 col-md-1 col-lg-1"></div>
+        <div class="col col-12 col-sm-0 col-md-0 col-lg-1"></div>
     </div>
 
     <div style="height:10px"></div>
 
     <div class="row">
-    <div class="col col-12 col-sm-1 col-md-1 col-lg-1"></div>
+    <div class="col col-12 col-sm-0 col-md-0 col-lg-1"></div>
 
-    <div id="searchUI" class="col col-12 col-sm-10 col-md-4 col-lg-3" style="margin-bottom:20px">
+    <div id="searchUI" class="col col-12 col-sm-5 col-md-5 col-lg-3" style="margin-bottom:20px">
         <div class="card-header">
             <span>
                 Quick Filter:&nbsp;<br>
@@ -114,7 +114,7 @@
       </div>
     </div>
 
-    <div id="requestUI" style="margin: 0px;" class="col col-12 col-md-6 col-lg-7">
+    <div id="requestUI" style="margin: 0px;" class="col col-12 col-sm-7 col-md-7 col-lg-7">
             <div v-if="requestsPreview.length < 1">
                 <div class="card" style="margin: 0px; padding: 0px">
                     <br>
@@ -183,7 +183,7 @@
             
     </div>
 
-    <div class="col col-12 col-md-1 col-lg-1"></div>
+    <div class="col col-12 col-sm-0 col-md-0 col-lg-1"></div>
     </div>
     <div style="height:30px"></div>
     <div class="row">
