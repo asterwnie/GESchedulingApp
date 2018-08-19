@@ -98,10 +98,13 @@
                             <label for="recipientNameAdminInput">Recipient Name<i class="required-star">*</i></label>
                             <input type="text" class="form-control" id="recipientNameAdminInput" aria-describedby="nameHelp">
                             <small id="nameHelp" class="form-text text-muted">How the name is displayed here is how it will be displayed in the app.</small>
+                            <p class="text-danger" style="display:none;" id="REQUIRED-MSG-FOR-recipientNameAdminInput">The recipient name is required.</p>
                         </div>
                         <div class="form-group">
                             <label for="recipientEmailAdminInput">Email address<i class="required-star">*</i></label>
                             <input type="text" class="form-control" id="recipientEmailAdminInput" aria-describedby="recipient-email">
+                            <p class="text-danger validation-msg" style="display:none;" id="INVALID-MSG-FOR-recipientEmailAdminInput">Please enter a valid email address.</p>
+                            <p class="text-danger validation-msg" style="display:none;" id="REQUIRED-MSG-FOR-recipientEmailAdminInput">A email address is required.</p>
                         </div>
                         <div class="form-group">
                             <label for="recipientPhoneAdminInput">Phone Number</label>
@@ -471,6 +474,8 @@ export default {
 
 
         onResetAdd() {
+
+            $(".validation-msg").hide(); 
 
             $("input").each(function(){
                 if(this.id.indexOf("AdminInput") > -1){

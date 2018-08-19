@@ -113,7 +113,7 @@
                     </div>
                     <div>
                         <p class="text-danger validation-msg" style="display:none;" id="REQUIRED-MSG-FOR-inputOlderThan">A number is required.</p>
-                        <p class="text-danger" style="display:none;" id="INVALID-MSG-FOR-inputOlderThan">Only a positive number is allowed.</p>
+                        <p class="text-danger validation-msg" style="display:none;" id="INVALID-MSG-FOR-inputOlderThan">Only a positive number is allowed.</p>
                     </div>
 
                     <div class="input-group input-group-sm mb-3">
@@ -166,7 +166,7 @@
               <div class="card-body">
 
                 <div class="alert alert-danger" role="alert">
-                  <strong>Note:</strong> This does NOT update the access code data import file.
+                  <strong>Note</strong> This does NOT update the access code data import file.
                 </div>
                 
                 <div id="manageUserAccessCodes">
