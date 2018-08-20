@@ -263,8 +263,6 @@ export default {
         previewRequestNum: 3,
         currentHeader: "Select a maintenance option.",
         requestsToDelete: null,
-        processingStatusOptions: this.$store.state.processingStatusOptions,
-
         modalUI: null,
         isAccessCodeDeleteFailure: false,
         isAccessCodeCreateFailure: false,
@@ -287,7 +285,10 @@ export default {
         },
         deleteOlderThanNumDays() {
           return this.$store.state.appConfig.deleteOlderThanNumDays; 
-        }
+        },
+        processingStatusOptions() {
+            return this.$store.state.processingStatusOptions; 
+        },
     },
 
     activated() {
